@@ -5,7 +5,7 @@
 
 # Compiler options here.
 ifeq ($(USE_OPT),)
-  USE_OPT = -O2 -ggdb -fomit-frame-pointer -falign-functions=16
+  USE_OPT = -O2 -ggdb -fomit-frame-pointer -falign-functions=16 --specs=nosys.specs --specs=nano.specs
 endif
 
 # C specific options here (added to USE_OPT).
@@ -116,10 +116,17 @@ include $(CHIBIOS)/test/oslib/oslib_test.mk
 # Define linker script file here
 LDSCRIPT= $(STARTUPLD)/STM32F407xG.ld
 
+#LDFLAGS += -L$(CHIBIOS)/os/hal/platforms/STM32F4xx/ld \
+           -T$(STARTUPLD)/STM32F407xG.ld \
+           -lchibios_rt \
+
+
 # C sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
 CSRC = $(ALLCSRC) \
        $(TESTSRC) \
+       $(CHIBIOS)/os/various/syscalls.c \
+       $(CHIBIOS)/os/hal/lib/streams/chprintf.c \
        main.c \
        sign.c \
        nist.c \
@@ -130,10 +137,13 @@ CSRC = $(ALLCSRC) \
        keygen.c \
        rng.c \
        shake.c \
-       vrfy.c
+       vrfy.c \
+       katrng.c
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
+
+
 CPPSRC = $(ALLCPPSRC)
 
 # List ASM source files here.
@@ -143,7 +153,11 @@ ASMSRC = $(ALLASMSRC)
 ASMXSRC = $(ALLXASMSRC)
 
 # Inclusion directories.
-INCDIR = $(CONFDIR) $(ALLINC) $(TESTINC)
+INCDIR = $(CONFDIR) $(ALLINC) $(TESTINC) \
+          $(CHIBIOS)/os/various/devices_lib/accel \
+          $(CHIBIOS)/os/various \
+          $(CHIBIOS)/os/various/cpp_wrappers \
+          $(CHIBIOS)/os/hal/lib/streams/ \
 
 # Define C warning options here.
 CWARN = -Wall -Wextra -Wundef -Wstrict-prototypes

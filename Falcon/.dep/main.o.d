@@ -116,7 +116,7 @@ build/obj/main.o: main.c ../../chibios2111/os/rt/include/ch.h \
  ../../chibios2111/os/hal/include/hal_st.h \
  ../../chibios2111/os/hal/ports/STM32/LLD/SYSTICKv1/hal_st_lld.h \
  ../../chibios2111/os/hal/include/hal_mmc_spi.h \
- ../../chibios2111/os/hal/include/hal_serial_usb.h \
+ ../../chibios2111/os/hal/include/hal_serial_usb.h api.h \
  ../../chibios2111/test/rt/source/test/rt_test_root.h \
  ../../chibios2111/os/test/include/ch_test.h \
  ../../chibios2111/test/rt/source/test/rt_test_sequence_001.h \
@@ -140,20 +140,26 @@ build/obj/main.o: main.c ../../chibios2111/os/rt/include/ch.h \
  ../../chibios2111/test/oslib/source/test/oslib_test_sequence_006.h \
  ../../chibios2111/test/oslib/source/test/oslib_test_sequence_007.h \
  ../../chibios2111/test/oslib/source/test/oslib_test_sequence_008.h \
- ../../chibios2111/test/oslib/source/test/oslib_test_sequence_009.h api.h \
+ ../../chibios2111/test/oslib/source/test/oslib_test_sequence_009.h \
+ ../../chibios2111/os/hal/lib/streams/chprintf.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\stdlib.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\machine\ieeefp.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\_ansi.h \
- c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\newlib.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\newlib-nano\newlib.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\config.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\reent.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\_ansi.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_types.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\machine\_types.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\lock.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\assert.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\cdefs.h \
  c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\machine\stdlib.h \
- c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\alloca.h
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\alloca.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\string.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_locale.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\strings.h \
+ c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\string.h
 ../../chibios2111/os/rt/include/ch.h:
 ../../chibios2111/os/license/chlicense.h:
 ../../chibios2111/os/license/chversion.h:
@@ -276,6 +282,7 @@ cfg/mcuconf.h:
 ../../chibios2111/os/hal/ports/STM32/LLD/SYSTICKv1/hal_st_lld.h:
 ../../chibios2111/os/hal/include/hal_mmc_spi.h:
 ../../chibios2111/os/hal/include/hal_serial_usb.h:
+api.h:
 ../../chibios2111/test/rt/source/test/rt_test_root.h:
 ../../chibios2111/os/test/include/ch_test.h:
 ../../chibios2111/test/rt/source/test/rt_test_sequence_001.h:
@@ -300,17 +307,22 @@ cfg/mcuconf.h:
 ../../chibios2111/test/oslib/source/test/oslib_test_sequence_007.h:
 ../../chibios2111/test/oslib/source/test/oslib_test_sequence_008.h:
 ../../chibios2111/test/oslib/source/test/oslib_test_sequence_009.h:
-api.h:
+../../chibios2111/os/hal/lib/streams/chprintf.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\stdlib.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\machine\ieeefp.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\_ansi.h:
-c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\newlib.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\newlib-nano\newlib.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\config.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\reent.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\_ansi.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_types.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\machine\_types.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\lock.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\assert.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\cdefs.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\machine\stdlib.h:
 c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\alloca.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\string.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\_locale.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\strings.h:
+c:\chibistudio\tools\gnu\ tools\ arm\ embedded\11.3\ 2022.08\arm-none-eabi\include\sys\string.h:
