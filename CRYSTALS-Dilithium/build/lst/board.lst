@@ -1,0 +1,3092 @@
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 2
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"board.c"
+  14              		.file 1 "c:\\chibistudio\\tools\\gnu tools arm embedded\\11.3 2022.08\\arm-none-eabi\\include\\mac
+  15              		.file 2 "c:\\chibistudio\\tools\\gnu tools arm embedded\\11.3 2022.08\\arm-none-eabi\\include\\sys
+  16              		.file 3 "../../chibios2111/os/common/ext/ST/STM32F4xx/stm32f407xx.h"
+  17              		.file 4 "../../chibios2111/os/hal/ports/STM32/LLD/GPIOv2/stm32_gpio.h"
+  18              		.file 5 "../../chibios2111/os/hal/boards/ST_STM32F4_DISCOVERY/board.c"
+  19              		.file 6 "../../chibios2111/os/hal/ports/STM32/STM32F4xx/hal_lld_type1.h"
+  20              		.section	.gnu.debuglto_.debug_info,"e",%progbits
+  21              	.Ldebug_info0:
+  22              		.hidden	board.c.2b0d070b
+  23              		.weak	board.c.2b0d070b
+  24              	board.c.2b0d070b:
+  25 0000 74040000 		.4byte	0x474
+  26 0004 0500     		.2byte	0x5
+  27 0006 01       		.byte	0x1
+  28 0007 04       		.byte	0x4
+  29 0008 00000000 		.4byte	.Ldebug_abbrev0
+  30 000c 0D       		.uleb128 0xd
+  31 000d 2A000000 		.4byte	.LASF75
+  32 0011 1D       		.byte	0x1d
+  33 0012 E3010000 		.4byte	.LASF76
+  34 0016 DE020000 		.4byte	.LASF77
+  35 001a 00000000 		.4byte	.Ldebug_line0
+  36 001e 0E       		.uleb128 0xe
+  37 001f 04       		.byte	0x4
+  38 0020 05       		.byte	0x5
+  39 0021 696E7400 		.ascii	"int\000"
+  40 0025 03       		.uleb128 0x3
+  41 0026 04       		.byte	0x4
+  42 0027 07       		.byte	0x7
+  43 0028 D8030000 		.4byte	.LASF0
+  44 002c 03       		.uleb128 0x3
+  45 002d 08       		.byte	0x8
+  46 002e 05       		.byte	0x5
+  47 002f 83010000 		.4byte	.LASF1
+  48 0033 03       		.uleb128 0x3
+  49 0034 08       		.byte	0x8
+  50 0035 04       		.byte	0x4
+  51 0036 D7010000 		.4byte	.LASF2
+  52 003a 03       		.uleb128 0x3
+  53 003b 01       		.byte	0x1
+  54 003c 06       		.byte	0x6
+  55 003d 36020000 		.4byte	.LASF3
+  56 0041 03       		.uleb128 0x3
+  57 0042 01       		.byte	0x1
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 2
+
+
+  58 0043 08       		.byte	0x8
+  59 0044 20020000 		.4byte	.LASF4
+  60 0048 03       		.uleb128 0x3
+  61 0049 02       		.byte	0x2
+  62 004a 05       		.byte	0x5
+  63 004b EC000000 		.4byte	.LASF5
+  64 004f 04       		.uleb128 0x4
+  65 0050 39010000 		.4byte	.LASF8
+  66 0054 01       		.byte	0x1
+  67 0055 39       		.byte	0x39
+  68 0056 19       		.byte	0x19
+  69 0057 5B000000 		.4byte	0x5b
+  70 005b 03       		.uleb128 0x3
+  71 005c 02       		.byte	0x2
+  72 005d 07       		.byte	0x7
+  73 005e AF020000 		.4byte	.LASF6
+  74 0062 03       		.uleb128 0x3
+  75 0063 04       		.byte	0x4
+  76 0064 05       		.byte	0x5
+  77 0065 9F010000 		.4byte	.LASF7
+  78 0069 04       		.uleb128 0x4
+  79 006a 20010000 		.4byte	.LASF9
+  80 006e 01       		.byte	0x1
+  81 006f 4F       		.byte	0x4f
+  82 0070 19       		.byte	0x19
+  83 0071 75000000 		.4byte	0x75
+  84 0075 03       		.uleb128 0x3
+  85 0076 04       		.byte	0x4
+  86 0077 07       		.byte	0x7
+  87 0078 7B020000 		.4byte	.LASF10
+  88 007c 03       		.uleb128 0x3
+  89 007d 08       		.byte	0x8
+  90 007e 07       		.byte	0x7
+  91 007f 42020000 		.4byte	.LASF11
+  92 0083 04       		.uleb128 0x4
+  93 0084 72020000 		.4byte	.LASF12
+  94 0088 02       		.byte	0x2
+  95 0089 24       		.byte	0x24
+  96 008a 14       		.byte	0x14
+  97 008b 4F000000 		.4byte	0x4f
+  98 008f 04       		.uleb128 0x4
+  99 0090 59020000 		.4byte	.LASF13
+ 100 0094 02       		.byte	0x2
+ 101 0095 30       		.byte	0x30
+ 102 0096 14       		.byte	0x14
+ 103 0097 69000000 		.4byte	0x69
+ 104 009b 08       		.uleb128 0x8
+ 105 009c 8F000000 		.4byte	0x8f
+ 106 00a0 03       		.uleb128 0x3
+ 107 00a1 01       		.byte	0x1
+ 108 00a2 08       		.byte	0x8
+ 109 00a3 CC020000 		.4byte	.LASF14
+ 110 00a7 0F       		.uleb128 0xf
+ 111 00a8 8F000000 		.4byte	0x8f
+ 112 00ac B7000000 		.4byte	0xb7
+ 113 00b0 10       		.uleb128 0x10
+ 114 00b1 25000000 		.4byte	0x25
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 3
+
+
+ 115 00b5 01       		.byte	0x1
+ 116 00b6 00       		.byte	0
+ 117 00b7 11       		.uleb128 0x11
+ 118 00b8 88       		.byte	0x88
+ 119 00b9 03       		.byte	0x3
+ 120 00ba 6502     		.2byte	0x265
+ 121 00bc 09       		.byte	0x9
+ 122 00bd 29020000 		.4byte	0x229
+ 123 00c1 07       		.uleb128 0x7
+ 124 00c2 435200   		.ascii	"CR\000"
+ 125 00c5 6702     		.2byte	0x267
+ 126 00c7 9B000000 		.4byte	0x9b
+ 127 00cb 00       		.byte	0
+ 128 00cc 01       		.uleb128 0x1
+ 129 00cd A2020000 		.4byte	.LASF15
+ 130 00d1 6802     		.2byte	0x268
+ 131 00d3 9B000000 		.4byte	0x9b
+ 132 00d7 04       		.byte	0x4
+ 133 00d8 01       		.uleb128 0x1
+ 134 00d9 60010000 		.4byte	.LASF16
+ 135 00dd 6902     		.2byte	0x269
+ 136 00df 9B000000 		.4byte	0x9b
+ 137 00e3 08       		.byte	0x8
+ 138 00e4 07       		.uleb128 0x7
+ 139 00e5 43495200 		.ascii	"CIR\000"
+ 140 00e9 6A02     		.2byte	0x26a
+ 141 00eb 9B000000 		.4byte	0x9b
+ 142 00ef 0C       		.byte	0xc
+ 143 00f0 01       		.uleb128 0x1
+ 144 00f1 BF030000 		.4byte	.LASF17
+ 145 00f5 6B02     		.2byte	0x26b
+ 146 00f7 9B000000 		.4byte	0x9b
+ 147 00fb 10       		.byte	0x10
+ 148 00fc 01       		.uleb128 0x1
+ 149 00fd 69020000 		.4byte	.LASF18
+ 150 0101 6C02     		.2byte	0x26c
+ 151 0103 9B000000 		.4byte	0x9b
+ 152 0107 14       		.byte	0x14
+ 153 0108 01       		.uleb128 0x1
+ 154 0109 C8030000 		.4byte	.LASF19
+ 155 010d 6D02     		.2byte	0x26d
+ 156 010f 9B000000 		.4byte	0x9b
+ 157 0113 18       		.byte	0x18
+ 158 0114 01       		.uleb128 0x1
+ 159 0115 26030000 		.4byte	.LASF20
+ 160 0119 6E02     		.2byte	0x26e
+ 161 011b 8F000000 		.4byte	0x8f
+ 162 011f 1C       		.byte	0x1c
+ 163 0120 01       		.uleb128 0x1
+ 164 0121 19000000 		.4byte	.LASF21
+ 165 0125 6F02     		.2byte	0x26f
+ 166 0127 9B000000 		.4byte	0x9b
+ 167 012b 20       		.byte	0x20
+ 168 012c 01       		.uleb128 0x1
+ 169 012d C1010000 		.4byte	.LASF22
+ 170 0131 7002     		.2byte	0x270
+ 171 0133 9B000000 		.4byte	0x9b
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 4
+
+
+ 172 0137 24       		.byte	0x24
+ 173 0138 01       		.uleb128 0x1
+ 174 0139 30030000 		.4byte	.LASF23
+ 175 013d 7102     		.2byte	0x271
+ 176 013f A7000000 		.4byte	0xa7
+ 177 0143 28       		.byte	0x28
+ 178 0144 01       		.uleb128 0x1
+ 179 0145 79030000 		.4byte	.LASF24
+ 180 0149 7202     		.2byte	0x272
+ 181 014b 9B000000 		.4byte	0x9b
+ 182 014f 30       		.byte	0x30
+ 183 0150 01       		.uleb128 0x1
+ 184 0151 22000000 		.4byte	.LASF25
+ 185 0155 7302     		.2byte	0x273
+ 186 0157 9B000000 		.4byte	0x9b
+ 187 015b 34       		.byte	0x34
+ 188 015c 01       		.uleb128 0x1
+ 189 015d 74010000 		.4byte	.LASF26
+ 190 0161 7402     		.2byte	0x274
+ 191 0163 9B000000 		.4byte	0x9b
+ 192 0167 38       		.byte	0x38
+ 193 0168 01       		.uleb128 0x1
+ 194 0169 3A030000 		.4byte	.LASF27
+ 195 016d 7502     		.2byte	0x275
+ 196 016f 8F000000 		.4byte	0x8f
+ 197 0173 3C       		.byte	0x3c
+ 198 0174 01       		.uleb128 0x1
+ 199 0175 65010000 		.4byte	.LASF28
+ 200 0179 7602     		.2byte	0x276
+ 201 017b 9B000000 		.4byte	0x9b
+ 202 017f 40       		.byte	0x40
+ 203 0180 01       		.uleb128 0x1
+ 204 0181 2E020000 		.4byte	.LASF29
+ 205 0185 7702     		.2byte	0x277
+ 206 0187 9B000000 		.4byte	0x9b
+ 207 018b 44       		.byte	0x44
+ 208 018c 01       		.uleb128 0x1
+ 209 018d 44030000 		.4byte	.LASF30
+ 210 0191 7802     		.2byte	0x278
+ 211 0193 A7000000 		.4byte	0xa7
+ 212 0197 48       		.byte	0x48
+ 213 0198 01       		.uleb128 0x1
+ 214 0199 00000000 		.4byte	.LASF31
+ 215 019d 7902     		.2byte	0x279
+ 216 019f 9B000000 		.4byte	0x9b
+ 217 01a3 50       		.byte	0x50
+ 218 01a4 01       		.uleb128 0x1
+ 219 01a5 15030000 		.4byte	.LASF32
+ 220 01a9 7A02     		.2byte	0x27a
+ 221 01ab 9B000000 		.4byte	0x9b
+ 222 01af 54       		.byte	0x54
+ 223 01b0 01       		.uleb128 0x1
+ 224 01b1 4F010000 		.4byte	.LASF33
+ 225 01b5 7B02     		.2byte	0x27b
+ 226 01b7 9B000000 		.4byte	0x9b
+ 227 01bb 58       		.byte	0x58
+ 228 01bc 01       		.uleb128 0x1
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 5
+
+
+ 229 01bd 4E030000 		.4byte	.LASF34
+ 230 01c1 7C02     		.2byte	0x27c
+ 231 01c3 8F000000 		.4byte	0x8f
+ 232 01c7 5C       		.byte	0x5c
+ 233 01c8 01       		.uleb128 0x1
+ 234 01c9 C2020000 		.4byte	.LASF35
+ 235 01cd 7D02     		.2byte	0x27d
+ 236 01cf 9B000000 		.4byte	0x9b
+ 237 01d3 60       		.byte	0x60
+ 238 01d4 01       		.uleb128 0x1
+ 239 01d5 EF030000 		.4byte	.LASF36
+ 240 01d9 7E02     		.2byte	0x27e
+ 241 01db 9B000000 		.4byte	0x9b
+ 242 01df 64       		.byte	0x64
+ 243 01e0 01       		.uleb128 0x1
+ 244 01e1 58030000 		.4byte	.LASF37
+ 245 01e5 7F02     		.2byte	0x27f
+ 246 01e7 A7000000 		.4byte	0xa7
+ 247 01eb 68       		.byte	0x68
+ 248 01ec 01       		.uleb128 0x1
+ 249 01ed 09010000 		.4byte	.LASF38
+ 250 01f1 8002     		.2byte	0x280
+ 251 01f3 9B000000 		.4byte	0x9b
+ 252 01f7 70       		.byte	0x70
+ 253 01f8 07       		.uleb128 0x7
+ 254 01f9 43535200 		.ascii	"CSR\000"
+ 255 01fd 8102     		.2byte	0x281
+ 256 01ff 9B000000 		.4byte	0x9b
+ 257 0203 74       		.byte	0x74
+ 258 0204 01       		.uleb128 0x1
+ 259 0205 62030000 		.4byte	.LASF39
+ 260 0209 8202     		.2byte	0x282
+ 261 020b A7000000 		.4byte	0xa7
+ 262 020f 78       		.byte	0x78
+ 263 0210 01       		.uleb128 0x1
+ 264 0211 44010000 		.4byte	.LASF40
+ 265 0215 8302     		.2byte	0x283
+ 266 0217 9B000000 		.4byte	0x9b
+ 267 021b 80       		.byte	0x80
+ 268 021c 01       		.uleb128 0x1
+ 269 021d 15010000 		.4byte	.LASF41
+ 270 0221 8402     		.2byte	0x284
+ 271 0223 9B000000 		.4byte	0x9b
+ 272 0227 84       		.byte	0x84
+ 273 0228 00       		.byte	0
+ 274 0229 12       		.uleb128 0x12
+ 275 022a AF010000 		.4byte	.LASF42
+ 276 022e 03       		.byte	0x3
+ 277 022f 8502     		.2byte	0x285
+ 278 0231 03       		.byte	0x3
+ 279 0232 B7000000 		.4byte	0xb7
+ 280 0236 03       		.uleb128 0x3
+ 281 0237 01       		.byte	0x1
+ 282 0238 02       		.byte	0x2
+ 283 0239 0F030000 		.4byte	.LASF43
+ 284 023d 05       		.uleb128 0x5
+ 285 023e 04       		.byte	0x4
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 6
+
+
+ 286 023f 04       		.byte	0x4
+ 287 0240 5B       		.byte	0x5b
+ 288 0241 05       		.byte	0x5
+ 289 0242 60020000 		.4byte	0x260
+ 290 0246 06       		.uleb128 0x6
+ 291 0247 73657400 		.ascii	"set\000"
+ 292 024b 04       		.byte	0x4
+ 293 024c 5C       		.byte	0x5c
+ 294 024d 83000000 		.4byte	0x83
+ 295 0251 00       		.byte	0
+ 296 0252 02       		.uleb128 0x2
+ 297 0253 CA010000 		.4byte	.LASF44
+ 298 0257 04       		.byte	0x4
+ 299 0258 5D       		.byte	0x5d
+ 300 0259 19       		.byte	0x19
+ 301 025a 83000000 		.4byte	0x83
+ 302 025e 02       		.byte	0x2
+ 303 025f 00       		.byte	0
+ 304 0260 13       		.uleb128 0x13
+ 305 0261 04       		.byte	0x4
+ 306 0262 04       		.byte	0x4
+ 307 0263 59       		.byte	0x59
+ 308 0264 0C       		.byte	0xc
+ 309 0265 7C020000 		.4byte	0x27c
+ 310 0269 09       		.uleb128 0x9
+ 311 026a 5700     		.ascii	"W\000"
+ 312 026c 5A       		.byte	0x5a
+ 313 026d 19       		.byte	0x19
+ 314 026e 8F000000 		.4byte	0x8f
+ 315 0272 09       		.uleb128 0x9
+ 316 0273 4800     		.ascii	"H\000"
+ 317 0275 5E       		.byte	0x5e
+ 318 0276 07       		.byte	0x7
+ 319 0277 3D020000 		.4byte	0x23d
+ 320 027b 00       		.byte	0
+ 321 027c 08       		.uleb128 0x8
+ 322 027d 60020000 		.4byte	0x260
+ 323 0281 05       		.uleb128 0x5
+ 324 0282 28       		.byte	0x28
+ 325 0283 04       		.byte	0x4
+ 326 0284 51       		.byte	0x51
+ 327 0285 09       		.byte	0x9
+ 328 0286 0B030000 		.4byte	0x30b
+ 329 028a 02       		.uleb128 0x2
+ 330 028b BB010000 		.4byte	.LASF45
+ 331 028f 04       		.byte	0x4
+ 332 0290 53       		.byte	0x53
+ 333 0291 19       		.byte	0x19
+ 334 0292 9B000000 		.4byte	0x9b
+ 335 0296 00       		.byte	0
+ 336 0297 02       		.uleb128 0x2
+ 337 0298 6D010000 		.4byte	.LASF46
+ 338 029c 04       		.byte	0x4
+ 339 029d 54       		.byte	0x54
+ 340 029e 19       		.byte	0x19
+ 341 029f 9B000000 		.4byte	0x9b
+ 342 02a3 04       		.byte	0x4
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 7
+
+
+ 343 02a4 02       		.uleb128 0x2
+ 344 02a5 11000000 		.4byte	.LASF47
+ 345 02a9 04       		.byte	0x4
+ 346 02aa 55       		.byte	0x55
+ 347 02ab 19       		.byte	0x19
+ 348 02ac 9B000000 		.4byte	0x9b
+ 349 02b0 08       		.byte	0x8
+ 350 02b1 02       		.uleb128 0x2
+ 351 02b2 91010000 		.4byte	.LASF48
+ 352 02b6 04       		.byte	0x4
+ 353 02b7 56       		.byte	0x56
+ 354 02b8 19       		.byte	0x19
+ 355 02b9 9B000000 		.4byte	0x9b
+ 356 02bd 0C       		.byte	0xc
+ 357 02be 06       		.uleb128 0x6
+ 358 02bf 49445200 		.ascii	"IDR\000"
+ 359 02c3 04       		.byte	0x4
+ 360 02c4 57       		.byte	0x57
+ 361 02c5 9B000000 		.4byte	0x9b
+ 362 02c9 10       		.byte	0x10
+ 363 02ca 06       		.uleb128 0x6
+ 364 02cb 4F445200 		.ascii	"ODR\000"
+ 365 02cf 04       		.byte	0x4
+ 366 02d0 58       		.byte	0x58
+ 367 02d1 9B000000 		.4byte	0x9b
+ 368 02d5 14       		.byte	0x14
+ 369 02d6 02       		.uleb128 0x2
+ 370 02d7 4A010000 		.4byte	.LASF49
+ 371 02db 04       		.byte	0x4
+ 372 02dc 5F       		.byte	0x5f
+ 373 02dd 05       		.byte	0x5
+ 374 02de 7C020000 		.4byte	0x27c
+ 375 02e2 18       		.byte	0x18
+ 376 02e3 02       		.uleb128 0x2
+ 377 02e4 6C030000 		.4byte	.LASF50
+ 378 02e8 04       		.byte	0x4
+ 379 02e9 60       		.byte	0x60
+ 380 02ea 19       		.byte	0x19
+ 381 02eb 9B000000 		.4byte	0x9b
+ 382 02ef 1C       		.byte	0x1c
+ 383 02f0 02       		.uleb128 0x2
+ 384 02f1 AA020000 		.4byte	.LASF51
+ 385 02f5 04       		.byte	0x4
+ 386 02f6 61       		.byte	0x61
+ 387 02f7 19       		.byte	0x19
+ 388 02f8 9B000000 		.4byte	0x9b
+ 389 02fc 20       		.byte	0x20
+ 390 02fd 02       		.uleb128 0x2
+ 391 02fe 9D020000 		.4byte	.LASF52
+ 392 0302 04       		.byte	0x4
+ 393 0303 62       		.byte	0x62
+ 394 0304 19       		.byte	0x19
+ 395 0305 9B000000 		.4byte	0x9b
+ 396 0309 24       		.byte	0x24
+ 397 030a 00       		.byte	0
+ 398 030b 04       		.uleb128 0x4
+ 399 030c F6000000 		.4byte	.LASF53
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 8
+
+
+ 400 0310 04       		.byte	0x4
+ 401 0311 63       		.byte	0x63
+ 402 0312 03       		.byte	0x3
+ 403 0313 81020000 		.4byte	0x281
+ 404 0317 0A       		.uleb128 0xa
+ 405 0318 0B030000 		.4byte	0x30b
+ 406 031c 05       		.uleb128 0x5
+ 407 031d 1C       		.byte	0x1c
+ 408 031e 05       		.byte	0x5
+ 409 031f 28       		.byte	0x28
+ 410 0320 09       		.byte	0x9
+ 411 0321 80030000 		.4byte	0x380
+ 412 0325 02       		.uleb128 0x2
+ 413 0326 B9030000 		.4byte	.LASF54
+ 414 032a 05       		.byte	0x5
+ 415 032b 29       		.byte	0x29
+ 416 032c 19       		.byte	0x19
+ 417 032d 8F000000 		.4byte	0x8f
+ 418 0331 00       		.byte	0
+ 419 0332 02       		.uleb128 0x2
+ 420 0333 62020000 		.4byte	.LASF55
+ 421 0337 05       		.byte	0x5
+ 422 0338 2A       		.byte	0x2a
+ 423 0339 19       		.byte	0x19
+ 424 033a 8F000000 		.4byte	0x8f
+ 425 033e 04       		.byte	0x4
+ 426 033f 02       		.uleb128 0x2
+ 427 0340 97010000 		.4byte	.LASF56
+ 428 0344 05       		.byte	0x5
+ 429 0345 2B       		.byte	0x2b
+ 430 0346 19       		.byte	0x19
+ 431 0347 8F000000 		.4byte	0x8f
+ 432 034b 08       		.byte	0x8
+ 433 034c 02       		.uleb128 0x2
+ 434 034d 9C030000 		.4byte	.LASF57
+ 435 0351 05       		.byte	0x5
+ 436 0352 2C       		.byte	0x2c
+ 437 0353 19       		.byte	0x19
+ 438 0354 8F000000 		.4byte	0x8f
+ 439 0358 0C       		.byte	0xc
+ 440 0359 06       		.uleb128 0x6
+ 441 035a 6F647200 		.ascii	"odr\000"
+ 442 035e 05       		.byte	0x5
+ 443 035f 2D       		.byte	0x2d
+ 444 0360 8F000000 		.4byte	0x8f
+ 445 0364 10       		.byte	0x10
+ 446 0365 02       		.uleb128 0x2
+ 447 0366 B4030000 		.4byte	.LASF58
+ 448 036a 05       		.byte	0x5
+ 449 036b 2E       		.byte	0x2e
+ 450 036c 19       		.byte	0x19
+ 451 036d 8F000000 		.4byte	0x8f
+ 452 0371 14       		.byte	0x14
+ 453 0372 02       		.uleb128 0x2
+ 454 0373 A2030000 		.4byte	.LASF59
+ 455 0377 05       		.byte	0x5
+ 456 0378 2F       		.byte	0x2f
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 9
+
+
+ 457 0379 19       		.byte	0x19
+ 458 037a 8F000000 		.4byte	0x8f
+ 459 037e 18       		.byte	0x18
+ 460 037f 00       		.byte	0
+ 461 0380 04       		.uleb128 0x4
+ 462 0381 A7030000 		.4byte	.LASF60
+ 463 0385 05       		.byte	0x5
+ 464 0386 30       		.byte	0x30
+ 465 0387 03       		.byte	0x3
+ 466 0388 1C030000 		.4byte	0x31c
+ 467 038c 0B       		.uleb128 0xb
+ 468 038d 80030000 		.4byte	0x380
+ 469 0391 05       		.uleb128 0x5
+ 470 0392 FC       		.byte	0xfc
+ 471 0393 05       		.byte	0x5
+ 472 0394 35       		.byte	0x35
+ 473 0395 09       		.byte	0x9
+ 474 0396 10040000 		.4byte	0x410
+ 475 039a 02       		.uleb128 0x2
+ 476 039b 7C010000 		.4byte	.LASF61
+ 477 039f 05       		.byte	0x5
+ 478 03a0 37       		.byte	0x37
+ 479 03a1 19       		.byte	0x19
+ 480 03a2 80030000 		.4byte	0x380
+ 481 03a6 00       		.byte	0
+ 482 03a7 02       		.uleb128 0x2
+ 483 03a8 D1030000 		.4byte	.LASF62
+ 484 03ac 05       		.byte	0x5
+ 485 03ad 3A       		.byte	0x3a
+ 486 03ae 19       		.byte	0x19
+ 487 03af 80030000 		.4byte	0x380
+ 488 03b3 1C       		.byte	0x1c
+ 489 03b4 02       		.uleb128 0x2
+ 490 03b5 0A000000 		.4byte	.LASF63
+ 491 03b9 05       		.byte	0x5
+ 492 03ba 3D       		.byte	0x3d
+ 493 03bb 19       		.byte	0x19
+ 494 03bc 80030000 		.4byte	0x380
+ 495 03c0 38       		.byte	0x38
+ 496 03c1 02       		.uleb128 0x2
+ 497 03c2 A8010000 		.4byte	.LASF64
+ 498 03c6 05       		.byte	0x5
+ 499 03c7 40       		.byte	0x40
+ 500 03c8 19       		.byte	0x19
+ 501 03c9 80030000 		.4byte	0x380
+ 502 03cd 54       		.byte	0x54
+ 503 03ce 02       		.uleb128 0x2
+ 504 03cf 1F030000 		.4byte	.LASF65
+ 505 03d3 05       		.byte	0x5
+ 506 03d4 43       		.byte	0x43
+ 507 03d5 19       		.byte	0x19
+ 508 03d6 80030000 		.4byte	0x380
+ 509 03da 70       		.byte	0x70
+ 510 03db 02       		.uleb128 0x2
+ 511 03dc E5000000 		.4byte	.LASF66
+ 512 03e0 05       		.byte	0x5
+ 513 03e1 46       		.byte	0x46
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 10
+
+
+ 514 03e2 19       		.byte	0x19
+ 515 03e3 80030000 		.4byte	0x380
+ 516 03e7 8C       		.byte	0x8c
+ 517 03e8 02       		.uleb128 0x2
+ 518 03e9 D0010000 		.4byte	.LASF67
+ 519 03ed 05       		.byte	0x5
+ 520 03ee 49       		.byte	0x49
+ 521 03ef 19       		.byte	0x19
+ 522 03f0 80030000 		.4byte	0x380
+ 523 03f4 A8       		.byte	0xa8
+ 524 03f5 02       		.uleb128 0x2
+ 525 03f6 72030000 		.4byte	.LASF68
+ 526 03fa 05       		.byte	0x5
+ 527 03fb 4C       		.byte	0x4c
+ 528 03fc 19       		.byte	0x19
+ 529 03fd 80030000 		.4byte	0x380
+ 530 0401 C4       		.byte	0xc4
+ 531 0402 02       		.uleb128 0x2
+ 532 0403 0E010000 		.4byte	.LASF69
+ 533 0407 05       		.byte	0x5
+ 534 0408 4F       		.byte	0x4f
+ 535 0409 19       		.byte	0x19
+ 536 040a 80030000 		.4byte	0x380
+ 537 040e E0       		.byte	0xe0
+ 538 040f 00       		.byte	0
+ 539 0410 04       		.uleb128 0x4
+ 540 0411 2B010000 		.4byte	.LASF70
+ 541 0415 05       		.byte	0x5
+ 542 0416 57       		.byte	0x57
+ 543 0417 03       		.byte	0x3
+ 544 0418 91030000 		.4byte	0x391
+ 545 041c 0B       		.uleb128 0xb
+ 546 041d 10040000 		.4byte	0x410
+ 547 0421 14       		.uleb128 0x14
+ 548 0422 F9030000 		.4byte	.LASF78
+ 549 0426 05       		.byte	0x5
+ 550 0427 5C       		.byte	0x5c
+ 551 0428 1C       		.byte	0x1c
+ 552 0429 1C040000 		.4byte	0x41c
+ 553 042d 15       		.uleb128 0x15
+ 554 042e 8B030000 		.4byte	.LASF79
+ 555 0432 06       		.byte	0x6
+ 556 0433 F107     		.2byte	0x7f1
+ 557 0435 08       		.byte	0x8
+ 558 0436 16       		.uleb128 0x16
+ 559 0437 E5030000 		.4byte	.LASF71
+ 560 043b 05       		.byte	0x5
+ 561 043c 0801     		.2byte	0x108
+ 562 043e 06       		.byte	0x6
+ 563 043f 17       		.uleb128 0x17
+ 564 0440 D1020000 		.4byte	.LASF72
+ 565 0444 05       		.byte	0x5
+ 566 0445 D2       		.byte	0xd2
+ 567 0446 06       		.byte	0x6
+ 568 0447 18       		.uleb128 0x18
+ 569 0448 8D020000 		.4byte	.LASF80
+ 570 044c 05       		.byte	0x5
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 11
+
+
+ 571 044d 9A       		.byte	0x9a
+ 572 044e 0D       		.byte	0xd
+ 573 044f 19       		.uleb128 0x19
+ 574 0450 81030000 		.4byte	.LASF81
+ 575 0454 05       		.byte	0x5
+ 576 0455 8F       		.byte	0x8f
+ 577 0456 0D       		.byte	0xd
+ 578 0457 72040000 		.4byte	0x472
+ 579 045b 0C       		.uleb128 0xc
+ 580 045c 03010000 		.4byte	.LASF73
+ 581 0460 8F       		.byte	0x8f
+ 582 0461 25       		.byte	0x25
+ 583 0462 17030000 		.4byte	0x317
+ 584 0466 0C       		.uleb128 0xc
+ 585 0467 59010000 		.4byte	.LASF74
+ 586 046b 8F       		.byte	0x8f
+ 587 046c 40       		.byte	0x40
+ 588 046d 72040000 		.4byte	0x472
+ 589 0471 00       		.byte	0
+ 590 0472 0A       		.uleb128 0xa
+ 591 0473 8C030000 		.4byte	0x38c
+ 592 0477 00       		.byte	0
+ 593              		.section	.gnu.debuglto_.debug_abbrev,"e",%progbits
+ 594              	.Ldebug_abbrev0:
+ 595 0000 01       		.uleb128 0x1
+ 596 0001 0D       		.uleb128 0xd
+ 597 0002 00       		.byte	0
+ 598 0003 03       		.uleb128 0x3
+ 599 0004 0E       		.uleb128 0xe
+ 600 0005 3A       		.uleb128 0x3a
+ 601 0006 21       		.uleb128 0x21
+ 602 0007 03       		.sleb128 3
+ 603 0008 3B       		.uleb128 0x3b
+ 604 0009 05       		.uleb128 0x5
+ 605 000a 39       		.uleb128 0x39
+ 606 000b 21       		.uleb128 0x21
+ 607 000c 11       		.sleb128 17
+ 608 000d 49       		.uleb128 0x49
+ 609 000e 13       		.uleb128 0x13
+ 610 000f 38       		.uleb128 0x38
+ 611 0010 0B       		.uleb128 0xb
+ 612 0011 00       		.byte	0
+ 613 0012 00       		.byte	0
+ 614 0013 02       		.uleb128 0x2
+ 615 0014 0D       		.uleb128 0xd
+ 616 0015 00       		.byte	0
+ 617 0016 03       		.uleb128 0x3
+ 618 0017 0E       		.uleb128 0xe
+ 619 0018 3A       		.uleb128 0x3a
+ 620 0019 0B       		.uleb128 0xb
+ 621 001a 3B       		.uleb128 0x3b
+ 622 001b 0B       		.uleb128 0xb
+ 623 001c 39       		.uleb128 0x39
+ 624 001d 0B       		.uleb128 0xb
+ 625 001e 49       		.uleb128 0x49
+ 626 001f 13       		.uleb128 0x13
+ 627 0020 38       		.uleb128 0x38
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 12
+
+
+ 628 0021 0B       		.uleb128 0xb
+ 629 0022 00       		.byte	0
+ 630 0023 00       		.byte	0
+ 631 0024 03       		.uleb128 0x3
+ 632 0025 24       		.uleb128 0x24
+ 633 0026 00       		.byte	0
+ 634 0027 0B       		.uleb128 0xb
+ 635 0028 0B       		.uleb128 0xb
+ 636 0029 3E       		.uleb128 0x3e
+ 637 002a 0B       		.uleb128 0xb
+ 638 002b 03       		.uleb128 0x3
+ 639 002c 0E       		.uleb128 0xe
+ 640 002d 00       		.byte	0
+ 641 002e 00       		.byte	0
+ 642 002f 04       		.uleb128 0x4
+ 643 0030 16       		.uleb128 0x16
+ 644 0031 00       		.byte	0
+ 645 0032 03       		.uleb128 0x3
+ 646 0033 0E       		.uleb128 0xe
+ 647 0034 3A       		.uleb128 0x3a
+ 648 0035 0B       		.uleb128 0xb
+ 649 0036 3B       		.uleb128 0x3b
+ 650 0037 0B       		.uleb128 0xb
+ 651 0038 39       		.uleb128 0x39
+ 652 0039 0B       		.uleb128 0xb
+ 653 003a 49       		.uleb128 0x49
+ 654 003b 13       		.uleb128 0x13
+ 655 003c 00       		.byte	0
+ 656 003d 00       		.byte	0
+ 657 003e 05       		.uleb128 0x5
+ 658 003f 13       		.uleb128 0x13
+ 659 0040 01       		.byte	0x1
+ 660 0041 0B       		.uleb128 0xb
+ 661 0042 0B       		.uleb128 0xb
+ 662 0043 3A       		.uleb128 0x3a
+ 663 0044 0B       		.uleb128 0xb
+ 664 0045 3B       		.uleb128 0x3b
+ 665 0046 0B       		.uleb128 0xb
+ 666 0047 39       		.uleb128 0x39
+ 667 0048 0B       		.uleb128 0xb
+ 668 0049 01       		.uleb128 0x1
+ 669 004a 13       		.uleb128 0x13
+ 670 004b 00       		.byte	0
+ 671 004c 00       		.byte	0
+ 672 004d 06       		.uleb128 0x6
+ 673 004e 0D       		.uleb128 0xd
+ 674 004f 00       		.byte	0
+ 675 0050 03       		.uleb128 0x3
+ 676 0051 08       		.uleb128 0x8
+ 677 0052 3A       		.uleb128 0x3a
+ 678 0053 0B       		.uleb128 0xb
+ 679 0054 3B       		.uleb128 0x3b
+ 680 0055 0B       		.uleb128 0xb
+ 681 0056 39       		.uleb128 0x39
+ 682 0057 21       		.uleb128 0x21
+ 683 0058 19       		.sleb128 25
+ 684 0059 49       		.uleb128 0x49
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 13
+
+
+ 685 005a 13       		.uleb128 0x13
+ 686 005b 38       		.uleb128 0x38
+ 687 005c 0B       		.uleb128 0xb
+ 688 005d 00       		.byte	0
+ 689 005e 00       		.byte	0
+ 690 005f 07       		.uleb128 0x7
+ 691 0060 0D       		.uleb128 0xd
+ 692 0061 00       		.byte	0
+ 693 0062 03       		.uleb128 0x3
+ 694 0063 08       		.uleb128 0x8
+ 695 0064 3A       		.uleb128 0x3a
+ 696 0065 21       		.uleb128 0x21
+ 697 0066 03       		.sleb128 3
+ 698 0067 3B       		.uleb128 0x3b
+ 699 0068 05       		.uleb128 0x5
+ 700 0069 39       		.uleb128 0x39
+ 701 006a 21       		.uleb128 0x21
+ 702 006b 11       		.sleb128 17
+ 703 006c 49       		.uleb128 0x49
+ 704 006d 13       		.uleb128 0x13
+ 705 006e 38       		.uleb128 0x38
+ 706 006f 0B       		.uleb128 0xb
+ 707 0070 00       		.byte	0
+ 708 0071 00       		.byte	0
+ 709 0072 08       		.uleb128 0x8
+ 710 0073 35       		.uleb128 0x35
+ 711 0074 00       		.byte	0
+ 712 0075 49       		.uleb128 0x49
+ 713 0076 13       		.uleb128 0x13
+ 714 0077 00       		.byte	0
+ 715 0078 00       		.byte	0
+ 716 0079 09       		.uleb128 0x9
+ 717 007a 0D       		.uleb128 0xd
+ 718 007b 00       		.byte	0
+ 719 007c 03       		.uleb128 0x3
+ 720 007d 08       		.uleb128 0x8
+ 721 007e 3A       		.uleb128 0x3a
+ 722 007f 21       		.uleb128 0x21
+ 723 0080 04       		.sleb128 4
+ 724 0081 3B       		.uleb128 0x3b
+ 725 0082 0B       		.uleb128 0xb
+ 726 0083 39       		.uleb128 0x39
+ 727 0084 0B       		.uleb128 0xb
+ 728 0085 49       		.uleb128 0x49
+ 729 0086 13       		.uleb128 0x13
+ 730 0087 00       		.byte	0
+ 731 0088 00       		.byte	0
+ 732 0089 0A       		.uleb128 0xa
+ 733 008a 0F       		.uleb128 0xf
+ 734 008b 00       		.byte	0
+ 735 008c 0B       		.uleb128 0xb
+ 736 008d 21       		.uleb128 0x21
+ 737 008e 04       		.sleb128 4
+ 738 008f 49       		.uleb128 0x49
+ 739 0090 13       		.uleb128 0x13
+ 740 0091 00       		.byte	0
+ 741 0092 00       		.byte	0
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 14
+
+
+ 742 0093 0B       		.uleb128 0xb
+ 743 0094 26       		.uleb128 0x26
+ 744 0095 00       		.byte	0
+ 745 0096 49       		.uleb128 0x49
+ 746 0097 13       		.uleb128 0x13
+ 747 0098 00       		.byte	0
+ 748 0099 00       		.byte	0
+ 749 009a 0C       		.uleb128 0xc
+ 750 009b 05       		.uleb128 0x5
+ 751 009c 00       		.byte	0
+ 752 009d 03       		.uleb128 0x3
+ 753 009e 0E       		.uleb128 0xe
+ 754 009f 3A       		.uleb128 0x3a
+ 755 00a0 21       		.uleb128 0x21
+ 756 00a1 05       		.sleb128 5
+ 757 00a2 3B       		.uleb128 0x3b
+ 758 00a3 0B       		.uleb128 0xb
+ 759 00a4 39       		.uleb128 0x39
+ 760 00a5 0B       		.uleb128 0xb
+ 761 00a6 49       		.uleb128 0x49
+ 762 00a7 13       		.uleb128 0x13
+ 763 00a8 00       		.byte	0
+ 764 00a9 00       		.byte	0
+ 765 00aa 0D       		.uleb128 0xd
+ 766 00ab 11       		.uleb128 0x11
+ 767 00ac 01       		.byte	0x1
+ 768 00ad 25       		.uleb128 0x25
+ 769 00ae 0E       		.uleb128 0xe
+ 770 00af 13       		.uleb128 0x13
+ 771 00b0 0B       		.uleb128 0xb
+ 772 00b1 03       		.uleb128 0x3
+ 773 00b2 0E       		.uleb128 0xe
+ 774 00b3 1B       		.uleb128 0x1b
+ 775 00b4 0E       		.uleb128 0xe
+ 776 00b5 10       		.uleb128 0x10
+ 777 00b6 17       		.uleb128 0x17
+ 778 00b7 00       		.byte	0
+ 779 00b8 00       		.byte	0
+ 780 00b9 0E       		.uleb128 0xe
+ 781 00ba 24       		.uleb128 0x24
+ 782 00bb 00       		.byte	0
+ 783 00bc 0B       		.uleb128 0xb
+ 784 00bd 0B       		.uleb128 0xb
+ 785 00be 3E       		.uleb128 0x3e
+ 786 00bf 0B       		.uleb128 0xb
+ 787 00c0 03       		.uleb128 0x3
+ 788 00c1 08       		.uleb128 0x8
+ 789 00c2 00       		.byte	0
+ 790 00c3 00       		.byte	0
+ 791 00c4 0F       		.uleb128 0xf
+ 792 00c5 01       		.uleb128 0x1
+ 793 00c6 01       		.byte	0x1
+ 794 00c7 49       		.uleb128 0x49
+ 795 00c8 13       		.uleb128 0x13
+ 796 00c9 01       		.uleb128 0x1
+ 797 00ca 13       		.uleb128 0x13
+ 798 00cb 00       		.byte	0
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 15
+
+
+ 799 00cc 00       		.byte	0
+ 800 00cd 10       		.uleb128 0x10
+ 801 00ce 21       		.uleb128 0x21
+ 802 00cf 00       		.byte	0
+ 803 00d0 49       		.uleb128 0x49
+ 804 00d1 13       		.uleb128 0x13
+ 805 00d2 2F       		.uleb128 0x2f
+ 806 00d3 0B       		.uleb128 0xb
+ 807 00d4 00       		.byte	0
+ 808 00d5 00       		.byte	0
+ 809 00d6 11       		.uleb128 0x11
+ 810 00d7 13       		.uleb128 0x13
+ 811 00d8 01       		.byte	0x1
+ 812 00d9 0B       		.uleb128 0xb
+ 813 00da 0B       		.uleb128 0xb
+ 814 00db 3A       		.uleb128 0x3a
+ 815 00dc 0B       		.uleb128 0xb
+ 816 00dd 3B       		.uleb128 0x3b
+ 817 00de 05       		.uleb128 0x5
+ 818 00df 39       		.uleb128 0x39
+ 819 00e0 0B       		.uleb128 0xb
+ 820 00e1 01       		.uleb128 0x1
+ 821 00e2 13       		.uleb128 0x13
+ 822 00e3 00       		.byte	0
+ 823 00e4 00       		.byte	0
+ 824 00e5 12       		.uleb128 0x12
+ 825 00e6 16       		.uleb128 0x16
+ 826 00e7 00       		.byte	0
+ 827 00e8 03       		.uleb128 0x3
+ 828 00e9 0E       		.uleb128 0xe
+ 829 00ea 3A       		.uleb128 0x3a
+ 830 00eb 0B       		.uleb128 0xb
+ 831 00ec 3B       		.uleb128 0x3b
+ 832 00ed 05       		.uleb128 0x5
+ 833 00ee 39       		.uleb128 0x39
+ 834 00ef 0B       		.uleb128 0xb
+ 835 00f0 49       		.uleb128 0x49
+ 836 00f1 13       		.uleb128 0x13
+ 837 00f2 00       		.byte	0
+ 838 00f3 00       		.byte	0
+ 839 00f4 13       		.uleb128 0x13
+ 840 00f5 17       		.uleb128 0x17
+ 841 00f6 01       		.byte	0x1
+ 842 00f7 0B       		.uleb128 0xb
+ 843 00f8 0B       		.uleb128 0xb
+ 844 00f9 3A       		.uleb128 0x3a
+ 845 00fa 0B       		.uleb128 0xb
+ 846 00fb 3B       		.uleb128 0x3b
+ 847 00fc 0B       		.uleb128 0xb
+ 848 00fd 39       		.uleb128 0x39
+ 849 00fe 0B       		.uleb128 0xb
+ 850 00ff 01       		.uleb128 0x1
+ 851 0100 13       		.uleb128 0x13
+ 852 0101 00       		.byte	0
+ 853 0102 00       		.byte	0
+ 854 0103 14       		.uleb128 0x14
+ 855 0104 34       		.uleb128 0x34
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 16
+
+
+ 856 0105 00       		.byte	0
+ 857 0106 03       		.uleb128 0x3
+ 858 0107 0E       		.uleb128 0xe
+ 859 0108 3A       		.uleb128 0x3a
+ 860 0109 0B       		.uleb128 0xb
+ 861 010a 3B       		.uleb128 0x3b
+ 862 010b 0B       		.uleb128 0xb
+ 863 010c 39       		.uleb128 0x39
+ 864 010d 0B       		.uleb128 0xb
+ 865 010e 49       		.uleb128 0x49
+ 866 010f 13       		.uleb128 0x13
+ 867 0110 00       		.byte	0
+ 868 0111 00       		.byte	0
+ 869 0112 15       		.uleb128 0x15
+ 870 0113 2E       		.uleb128 0x2e
+ 871 0114 00       		.byte	0
+ 872 0115 3F       		.uleb128 0x3f
+ 873 0116 19       		.uleb128 0x19
+ 874 0117 03       		.uleb128 0x3
+ 875 0118 0E       		.uleb128 0xe
+ 876 0119 3A       		.uleb128 0x3a
+ 877 011a 0B       		.uleb128 0xb
+ 878 011b 3B       		.uleb128 0x3b
+ 879 011c 05       		.uleb128 0x5
+ 880 011d 39       		.uleb128 0x39
+ 881 011e 0B       		.uleb128 0xb
+ 882 011f 27       		.uleb128 0x27
+ 883 0120 19       		.uleb128 0x19
+ 884 0121 3C       		.uleb128 0x3c
+ 885 0122 19       		.uleb128 0x19
+ 886 0123 00       		.byte	0
+ 887 0124 00       		.byte	0
+ 888 0125 16       		.uleb128 0x16
+ 889 0126 2E       		.uleb128 0x2e
+ 890 0127 00       		.byte	0
+ 891 0128 3F       		.uleb128 0x3f
+ 892 0129 19       		.uleb128 0x19
+ 893 012a 03       		.uleb128 0x3
+ 894 012b 0E       		.uleb128 0xe
+ 895 012c 3A       		.uleb128 0x3a
+ 896 012d 0B       		.uleb128 0xb
+ 897 012e 3B       		.uleb128 0x3b
+ 898 012f 05       		.uleb128 0x5
+ 899 0130 39       		.uleb128 0x39
+ 900 0131 0B       		.uleb128 0xb
+ 901 0132 27       		.uleb128 0x27
+ 902 0133 19       		.uleb128 0x19
+ 903 0134 00       		.byte	0
+ 904 0135 00       		.byte	0
+ 905 0136 17       		.uleb128 0x17
+ 906 0137 2E       		.uleb128 0x2e
+ 907 0138 00       		.byte	0
+ 908 0139 3F       		.uleb128 0x3f
+ 909 013a 19       		.uleb128 0x19
+ 910 013b 03       		.uleb128 0x3
+ 911 013c 0E       		.uleb128 0xe
+ 912 013d 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 17
+
+
+ 913 013e 0B       		.uleb128 0xb
+ 914 013f 3B       		.uleb128 0x3b
+ 915 0140 0B       		.uleb128 0xb
+ 916 0141 39       		.uleb128 0x39
+ 917 0142 0B       		.uleb128 0xb
+ 918 0143 27       		.uleb128 0x27
+ 919 0144 19       		.uleb128 0x19
+ 920 0145 00       		.byte	0
+ 921 0146 00       		.byte	0
+ 922 0147 18       		.uleb128 0x18
+ 923 0148 2E       		.uleb128 0x2e
+ 924 0149 00       		.byte	0
+ 925 014a 03       		.uleb128 0x3
+ 926 014b 0E       		.uleb128 0xe
+ 927 014c 3A       		.uleb128 0x3a
+ 928 014d 0B       		.uleb128 0xb
+ 929 014e 3B       		.uleb128 0x3b
+ 930 014f 0B       		.uleb128 0xb
+ 931 0150 39       		.uleb128 0x39
+ 932 0151 0B       		.uleb128 0xb
+ 933 0152 27       		.uleb128 0x27
+ 934 0153 19       		.uleb128 0x19
+ 935 0154 00       		.byte	0
+ 936 0155 00       		.byte	0
+ 937 0156 19       		.uleb128 0x19
+ 938 0157 2E       		.uleb128 0x2e
+ 939 0158 01       		.byte	0x1
+ 940 0159 03       		.uleb128 0x3
+ 941 015a 0E       		.uleb128 0xe
+ 942 015b 3A       		.uleb128 0x3a
+ 943 015c 0B       		.uleb128 0xb
+ 944 015d 3B       		.uleb128 0x3b
+ 945 015e 0B       		.uleb128 0xb
+ 946 015f 39       		.uleb128 0x39
+ 947 0160 0B       		.uleb128 0xb
+ 948 0161 27       		.uleb128 0x27
+ 949 0162 19       		.uleb128 0x19
+ 950 0163 01       		.uleb128 0x1
+ 951 0164 13       		.uleb128 0x13
+ 952 0165 00       		.byte	0
+ 953 0166 00       		.byte	0
+ 954 0167 00       		.byte	0
+ 955              		.section	.gnu.debuglto_.debug_line,"e",%progbits
+ 956              	.Ldebug_line0:
+ 957 0000 63000000 		.4byte	.LELT0-.LSLT0
+ 958              	.LSLT0:
+ 959 0004 0500     		.2byte	0x5
+ 960 0006 04       		.byte	0x4
+ 961 0007 00       		.byte	0
+ 962 0008 5B000000 		.4byte	.LELTP0-.LASLTP0
+ 963              	.LASLTP0:
+ 964 000c 01       		.byte	0x1
+ 965 000d 01       		.byte	0x1
+ 966 000e 01       		.byte	0x1
+ 967 000f F6       		.byte	0xf6
+ 968 0010 F2       		.byte	0xf2
+ 969 0011 0D       		.byte	0xd
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 18
+
+
+ 970 0012 00       		.byte	0
+ 971 0013 01       		.byte	0x1
+ 972 0014 01       		.byte	0x1
+ 973 0015 01       		.byte	0x1
+ 974 0016 01       		.byte	0x1
+ 975 0017 00       		.byte	0
+ 976 0018 00       		.byte	0
+ 977 0019 00       		.byte	0
+ 978 001a 01       		.byte	0x1
+ 979 001b 00       		.byte	0
+ 980 001c 00       		.byte	0
+ 981 001d 01       		.byte	0x1
+ 982 001e 01       		.byte	0x1
+ 983 001f 01       		.uleb128 0x1
+ 984 0020 1F       		.uleb128 0x1f
+ 985 0021 07       		.uleb128 0x7
+ 986 0022 49010000 		.4byte	.LASF82
+ 987 0026 EC010000 		.4byte	.LASF83
+ 988 002a 7A010000 		.4byte	.LASF84
+ 989 002e 6A000000 		.4byte	.LASF85
+ 990 0032 9A000000 		.4byte	.LASF86
+ 991 0036 C9000000 		.4byte	.LASF87
+ 992 003a 17000000 		.4byte	.LASF88
+ 993 003e 02       		.byte	0x2
+ 994 003f 01       		.uleb128 0x1
+ 995 0040 1F       		.uleb128 0x1f
+ 996 0041 02       		.uleb128 0x2
+ 997 0042 0B       		.uleb128 0xb
+ 998 0043 07       		.uleb128 0x7
+ 999 0044 AF010000 		.4byte	.LASF89
+ 1000 0048 00       		.byte	0
+ 1001 0049 28010000 		.4byte	.LASF90
+ 1002 004d 05       		.byte	0x5
+ 1003 004e 00000000 		.4byte	.LASF91
+ 1004 0052 06       		.byte	0x6
+ 1005 0053 19020000 		.4byte	.LASF92
+ 1006 0057 01       		.byte	0x1
+ 1007 0058 0A000000 		.4byte	.LASF93
+ 1008 005c 03       		.byte	0x3
+ 1009 005d 20010000 		.4byte	.LASF94
+ 1010 0061 02       		.byte	0x2
+ 1011 0062 39010000 		.4byte	.LASF95
+ 1012 0066 04       		.byte	0x4
+ 1013              	.LELTP0:
+ 1014              	.LELT0:
+ 1015              		.section	.gnu.debuglto_.debug_str,"eMS",%progbits,1
+ 1016              	.LASF31:
+ 1017 0000 41484231 		.ascii	"AHB1LPENR\000"
+ 1017      4C50454E 
+ 1017      5200
+ 1018              	.LASF63:
+ 1019 000a 50434461 		.ascii	"PCData\000"
+ 1019      746100
+ 1020              	.LASF47:
+ 1021 0011 4F535045 		.ascii	"OSPEEDR\000"
+ 1021      45445200 
+ 1022              	.LASF21:
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 19
+
+
+ 1023 0019 41504231 		.ascii	"APB1RSTR\000"
+ 1023      52535452 
+ 1023      00
+ 1024              	.LASF25:
+ 1025 0022 41484232 		.ascii	"AHB2ENR\000"
+ 1025      454E5200 
+ 1026              	.LASF75:
+ 1027 002a 474E5520 		.ascii	"GNU C17 11.3.1 20220712 -mcpu=cortex-m4 -mthumb -mf"
+ 1027      43313720 
+ 1027      31312E33 
+ 1027      2E312032 
+ 1027      30323230 
+ 1028 005d 6C6F6174 		.ascii	"loat-abi=soft -march=armv7e-m -ggdb -O2 -fomit-fram"
+ 1028      2D616269 
+ 1028      3D736F66 
+ 1028      74202D6D 
+ 1028      61726368 
+ 1029 0090 652D706F 		.ascii	"e-pointer -falign-functions=16 -ffunction-sections "
+ 1029      696E7465 
+ 1029      72202D66 
+ 1029      616C6967 
+ 1029      6E2D6675 
+ 1030 00c3 2D666461 		.ascii	"-fdata-sections -fno-common -flto\000"
+ 1030      74612D73 
+ 1030      65637469 
+ 1030      6F6E7320 
+ 1030      2D666E6F 
+ 1031              	.LASF66:
+ 1032 00e5 50464461 		.ascii	"PFData\000"
+ 1032      746100
+ 1033              	.LASF5:
+ 1034 00ec 73686F72 		.ascii	"short int\000"
+ 1034      7420696E 
+ 1034      7400
+ 1035              	.LASF53:
+ 1036 00f6 73746D33 		.ascii	"stm32_gpio_t\000"
+ 1036      325F6770 
+ 1036      696F5F74 
+ 1036      00
+ 1037              	.LASF73:
+ 1038 0103 6770696F 		.ascii	"gpiop\000"
+ 1038      7000
+ 1039              	.LASF38:
+ 1040 0109 42444352 		.ascii	"BDCR\000"
+ 1040      00
+ 1041              	.LASF69:
+ 1042 010e 50494461 		.ascii	"PIData\000"
+ 1042      746100
+ 1043              	.LASF41:
+ 1044 0115 504C4C49 		.ascii	"PLLI2SCFGR\000"
+ 1044      32534346 
+ 1044      475200
+ 1045              	.LASF9:
+ 1046 0120 5F5F7569 		.ascii	"__uint32_t\000"
+ 1046      6E743332 
+ 1046      5F7400
+ 1047              	.LASF70:
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 20
+
+
+ 1048 012b 6770696F 		.ascii	"gpio_config_t\000"
+ 1048      5F636F6E 
+ 1048      6669675F 
+ 1048      7400
+ 1049              	.LASF8:
+ 1050 0139 5F5F7569 		.ascii	"__uint16_t\000"
+ 1050      6E743136 
+ 1050      5F7400
+ 1051              	.LASF40:
+ 1052 0144 53534347 		.ascii	"SSCGR\000"
+ 1052      5200
+ 1053              	.LASF49:
+ 1054 014a 42535252 		.ascii	"BSRR\000"
+ 1054      00
+ 1055              	.LASF33:
+ 1056 014f 41484233 		.ascii	"AHB3LPENR\000"
+ 1056      4C50454E 
+ 1056      5200
+ 1057              	.LASF74:
+ 1058 0159 636F6E66 		.ascii	"config\000"
+ 1058      696700
+ 1059              	.LASF16:
+ 1060 0160 43464752 		.ascii	"CFGR\000"
+ 1060      00
+ 1061              	.LASF28:
+ 1062 0165 41504231 		.ascii	"APB1ENR\000"
+ 1062      454E5200 
+ 1063              	.LASF46:
+ 1064 016d 4F545950 		.ascii	"OTYPER\000"
+ 1064      455200
+ 1065              	.LASF26:
+ 1066 0174 41484233 		.ascii	"AHB3ENR\000"
+ 1066      454E5200 
+ 1067              	.LASF61:
+ 1068 017c 50414461 		.ascii	"PAData\000"
+ 1068      746100
+ 1069              	.LASF1:
+ 1070 0183 6C6F6E67 		.ascii	"long long int\000"
+ 1070      206C6F6E 
+ 1070      6720696E 
+ 1070      7400
+ 1071              	.LASF48:
+ 1072 0191 50555044 		.ascii	"PUPDR\000"
+ 1072      5200
+ 1073              	.LASF56:
+ 1074 0197 6F737065 		.ascii	"ospeedr\000"
+ 1074      65647200 
+ 1075              	.LASF7:
+ 1076 019f 6C6F6E67 		.ascii	"long int\000"
+ 1076      20696E74 
+ 1076      00
+ 1077              	.LASF64:
+ 1078 01a8 50444461 		.ascii	"PDData\000"
+ 1078      746100
+ 1079              	.LASF42:
+ 1080 01af 5243435F 		.ascii	"RCC_TypeDef\000"
+ 1080      54797065 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 21
+
+
+ 1080      44656600 
+ 1081              	.LASF45:
+ 1082 01bb 4D4F4445 		.ascii	"MODER\000"
+ 1082      5200
+ 1083              	.LASF22:
+ 1084 01c1 41504232 		.ascii	"APB2RSTR\000"
+ 1084      52535452 
+ 1084      00
+ 1085              	.LASF44:
+ 1086 01ca 636C6561 		.ascii	"clear\000"
+ 1086      7200
+ 1087              	.LASF67:
+ 1088 01d0 50474461 		.ascii	"PGData\000"
+ 1088      746100
+ 1089              	.LASF2:
+ 1090 01d7 6C6F6E67 		.ascii	"long double\000"
+ 1090      20646F75 
+ 1090      626C6500 
+ 1091              	.LASF76:
+ 1092 01e3 2E2E2F2E 		.ascii	"../../chibios2111/os/hal/boards/ST_STM32F4_DISCOVER"
+ 1092      2E2F6368 
+ 1092      6962696F 
+ 1092      73323131 
+ 1092      312F6F73 
+ 1093 0216 592F626F 		.ascii	"Y/board.c\000"
+ 1093      6172642E 
+ 1093      6300
+ 1094              	.LASF4:
+ 1095 0220 756E7369 		.ascii	"unsigned char\000"
+ 1095      676E6564 
+ 1095      20636861 
+ 1095      7200
+ 1096              	.LASF29:
+ 1097 022e 41504232 		.ascii	"APB2ENR\000"
+ 1097      454E5200 
+ 1098              	.LASF3:
+ 1099 0236 7369676E 		.ascii	"signed char\000"
+ 1099      65642063 
+ 1099      68617200 
+ 1100              	.LASF11:
+ 1101 0242 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1101      206C6F6E 
+ 1101      6720756E 
+ 1101      7369676E 
+ 1101      65642069 
+ 1102              	.LASF13:
+ 1103 0259 75696E74 		.ascii	"uint32_t\000"
+ 1103      33325F74 
+ 1103      00
+ 1104              	.LASF55:
+ 1105 0262 6F747970 		.ascii	"otyper\000"
+ 1105      657200
+ 1106              	.LASF18:
+ 1107 0269 41484232 		.ascii	"AHB2RSTR\000"
+ 1107      52535452 
+ 1107      00
+ 1108              	.LASF12:
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 22
+
+
+ 1109 0272 75696E74 		.ascii	"uint16_t\000"
+ 1109      31365F74 
+ 1109      00
+ 1110              	.LASF10:
+ 1111 027b 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1111      20756E73 
+ 1111      69676E65 
+ 1111      6420696E 
+ 1111      7400
+ 1112              	.LASF80:
+ 1113 028d 73746D33 		.ascii	"stm32_gpio_init\000"
+ 1113      325F6770 
+ 1113      696F5F69 
+ 1113      6E697400 
+ 1114              	.LASF52:
+ 1115 029d 41465248 		.ascii	"AFRH\000"
+ 1115      00
+ 1116              	.LASF15:
+ 1117 02a2 504C4C43 		.ascii	"PLLCFGR\000"
+ 1117      46475200 
+ 1118              	.LASF51:
+ 1119 02aa 4146524C 		.ascii	"AFRL\000"
+ 1119      00
+ 1120              	.LASF6:
+ 1121 02af 73686F72 		.ascii	"short unsigned int\000"
+ 1121      7420756E 
+ 1121      7369676E 
+ 1121      65642069 
+ 1121      6E7400
+ 1122              	.LASF35:
+ 1123 02c2 41504231 		.ascii	"APB1LPENR\000"
+ 1123      4C50454E 
+ 1123      5200
+ 1124              	.LASF14:
+ 1125 02cc 63686172 		.ascii	"char\000"
+ 1125      00
+ 1126              	.LASF72:
+ 1127 02d1 5F5F6561 		.ascii	"__early_init\000"
+ 1127      726C795F 
+ 1127      696E6974 
+ 1127      00
+ 1128              	.LASF77:
+ 1129 02de 433A5C43 		.ascii	"C:\\ChibiStudio\\workspace_user\\CRYSTALS-Dilithium"
+ 1129      68696269 
+ 1129      53747564 
+ 1129      696F5C77 
+ 1129      6F726B73 
+ 1130 030e 00       		.ascii	"\000"
+ 1131              	.LASF43:
+ 1132 030f 5F426F6F 		.ascii	"_Bool\000"
+ 1132      6C00
+ 1133              	.LASF32:
+ 1134 0315 41484232 		.ascii	"AHB2LPENR\000"
+ 1134      4C50454E 
+ 1134      5200
+ 1135              	.LASF65:
+ 1136 031f 50454461 		.ascii	"PEData\000"
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 23
+
+
+ 1136      746100
+ 1137              	.LASF20:
+ 1138 0326 52455345 		.ascii	"RESERVED0\000"
+ 1138      52564544 
+ 1138      3000
+ 1139              	.LASF23:
+ 1140 0330 52455345 		.ascii	"RESERVED1\000"
+ 1140      52564544 
+ 1140      3100
+ 1141              	.LASF27:
+ 1142 033a 52455345 		.ascii	"RESERVED2\000"
+ 1142      52564544 
+ 1142      3200
+ 1143              	.LASF30:
+ 1144 0344 52455345 		.ascii	"RESERVED3\000"
+ 1144      52564544 
+ 1144      3300
+ 1145              	.LASF34:
+ 1146 034e 52455345 		.ascii	"RESERVED4\000"
+ 1146      52564544 
+ 1146      3400
+ 1147              	.LASF37:
+ 1148 0358 52455345 		.ascii	"RESERVED5\000"
+ 1148      52564544 
+ 1148      3500
+ 1149              	.LASF39:
+ 1150 0362 52455345 		.ascii	"RESERVED6\000"
+ 1150      52564544 
+ 1150      3600
+ 1151              	.LASF50:
+ 1152 036c 4C4F434B 		.ascii	"LOCKR\000"
+ 1152      5200
+ 1153              	.LASF68:
+ 1154 0372 50484461 		.ascii	"PHData\000"
+ 1154      746100
+ 1155              	.LASF24:
+ 1156 0379 41484231 		.ascii	"AHB1ENR\000"
+ 1156      454E5200 
+ 1157              	.LASF81:
+ 1158 0381 6770696F 		.ascii	"gpio_init\000"
+ 1158      5F696E69 
+ 1158      7400
+ 1159              	.LASF79:
+ 1160 038b 73746D33 		.ascii	"stm32_clock_init\000"
+ 1160      325F636C 
+ 1160      6F636B5F 
+ 1160      696E6974 
+ 1160      00
+ 1161              	.LASF57:
+ 1162 039c 70757064 		.ascii	"pupdr\000"
+ 1162      7200
+ 1163              	.LASF59:
+ 1164 03a2 61667268 		.ascii	"afrh\000"
+ 1164      00
+ 1165              	.LASF60:
+ 1166 03a7 6770696F 		.ascii	"gpio_setup_t\000"
+ 1166      5F736574 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 24
+
+
+ 1166      75705F74 
+ 1166      00
+ 1167              	.LASF58:
+ 1168 03b4 6166726C 		.ascii	"afrl\000"
+ 1168      00
+ 1169              	.LASF54:
+ 1170 03b9 6D6F6465 		.ascii	"moder\000"
+ 1170      7200
+ 1171              	.LASF17:
+ 1172 03bf 41484231 		.ascii	"AHB1RSTR\000"
+ 1172      52535452 
+ 1172      00
+ 1173              	.LASF19:
+ 1174 03c8 41484233 		.ascii	"AHB3RSTR\000"
+ 1174      52535452 
+ 1174      00
+ 1175              	.LASF62:
+ 1176 03d1 50424461 		.ascii	"PBData\000"
+ 1176      746100
+ 1177              	.LASF0:
+ 1178 03d8 756E7369 		.ascii	"unsigned int\000"
+ 1178      676E6564 
+ 1178      20696E74 
+ 1178      00
+ 1179              	.LASF71:
+ 1180 03e5 626F6172 		.ascii	"boardInit\000"
+ 1180      64496E69 
+ 1180      7400
+ 1181              	.LASF36:
+ 1182 03ef 41504232 		.ascii	"APB2LPENR\000"
+ 1182      4C50454E 
+ 1182      5200
+ 1183              	.LASF78:
+ 1184 03f9 6770696F 		.ascii	"gpio_default_config\000"
+ 1184      5F646566 
+ 1184      61756C74 
+ 1184      5F636F6E 
+ 1184      66696700 
+ 1185              		.section	.gnu.debuglto_.debug_line_str,"eMS",%progbits,1
+ 1186              	.LASF91:
+ 1187 0000 5F737464 		.ascii	"_stdint.h\000"
+ 1187      696E742E 
+ 1187      6800
+ 1188              	.LASF93:
+ 1189 000a 73746D33 		.ascii	"stm32_gpio.h\000"
+ 1189      325F6770 
+ 1189      696F2E68 
+ 1189      00
+ 1190              	.LASF88:
+ 1191 0017 633A5C63 		.ascii	"c:\\chibistudio\\tools\\gnu tools arm embedded\\11."
+ 1191      68696269 
+ 1191      73747564 
+ 1191      696F5C74 
+ 1191      6F6F6C73 
+ 1192 0046 33203230 		.ascii	"3 2022.08\\arm-none-eabi\\include\\sys\000"
+ 1192      32322E30 
+ 1192      385C6172 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 25
+
+
+ 1192      6D2D6E6F 
+ 1192      6E652D65 
+ 1193              	.LASF85:
+ 1194 006a 2E2E2F2E 		.ascii	"../../chibios2111/os/hal/ports/STM32/LLD/GPIOv2\000"
+ 1194      2E2F6368 
+ 1194      6962696F 
+ 1194      73323131 
+ 1194      312F6F73 
+ 1195              	.LASF86:
+ 1196 009a 2E2E2F2E 		.ascii	"../../chibios2111/os/hal/ports/STM32/STM32F4xx\000"
+ 1196      2E2F6368 
+ 1196      6962696F 
+ 1196      73323131 
+ 1196      312F6F73 
+ 1197              	.LASF87:
+ 1198 00c9 633A5C63 		.ascii	"c:\\chibistudio\\tools\\gnu tools arm embedded\\11."
+ 1198      68696269 
+ 1198      73747564 
+ 1198      696F5C74 
+ 1198      6F6F6C73 
+ 1199 00f8 33203230 		.ascii	"3 2022.08\\arm-none-eabi\\include\\machine\000"
+ 1199      32322E30 
+ 1199      385C6172 
+ 1199      6D2D6E6F 
+ 1199      6E652D65 
+ 1200              	.LASF94:
+ 1201 0120 626F6172 		.ascii	"board.c\000"
+ 1201      642E6300 
+ 1202              	.LASF90:
+ 1203 0128 5F646566 		.ascii	"_default_types.h\000"
+ 1203      61756C74 
+ 1203      5F747970 
+ 1203      65732E68 
+ 1203      00
+ 1204              	.LASF95:
+ 1205 0139 68616C5F 		.ascii	"hal_lld_type1.h\000"
+ 1205      6C6C645F 
+ 1205      74797065 
+ 1205      312E6800 
+ 1206              	.LASF82:
+ 1207 0149 433A5C43 		.ascii	"C:\\ChibiStudio\\workspace_user\\CRYSTALS-Dilithium"
+ 1207      68696269 
+ 1207      53747564 
+ 1207      696F5C77 
+ 1207      6F726B73 
+ 1208 0179 00       		.ascii	"\000"
+ 1209              	.LASF84:
+ 1210 017a 2E2E2F2E 		.ascii	"../../chibios2111/os/hal/boards/ST_STM32F4_DISCOVER"
+ 1210      2E2F6368 
+ 1210      6962696F 
+ 1210      73323131 
+ 1210      312F6F73 
+ 1211 01ad 5900     		.ascii	"Y\000"
+ 1212              	.LASF89:
+ 1213 01af 2E2E2F2E 		.ascii	"../../chibios2111/os/hal/boards/ST_STM32F4_DISCOVER"
+ 1213      2E2F6368 
+ 1213      6962696F 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 26
+
+
+ 1213      73323131 
+ 1213      312F6F73 
+ 1214 01e2 592F626F 		.ascii	"Y/board.c\000"
+ 1214      6172642E 
+ 1214      6300
+ 1215              	.LASF83:
+ 1216 01ec 2E2E2F2E 		.ascii	"../../chibios2111/os/common/ext/ST/STM32F4xx\000"
+ 1216      2E2F6368 
+ 1216      6962696F 
+ 1216      73323131 
+ 1216      312F6F73 
+ 1217              	.LASF92:
+ 1218 0219 73746D33 		.ascii	"stm32f407xx.h\000"
+ 1218      32663430 
+ 1218      3778782E 
+ 1218      6800
+ 1219              		.text
+ 1220              		.section	.gnu.lto_.profile.8e7ef83a,"e",%progbits
+ 1221 0000 789C6362 		.ascii	"x\234cb\000\001\000\000\022\000\003"
+ 1221      00010000 
+ 1221      120003
+ 1222              		.text
+ 1223              		.section	.gnu.lto_.icf.8e7ef83a,"e",%progbits
+ 1224 0000 789CB361 		.ascii	"x\234\263ad\200\003f\206\357\363\317\356d\236\304\310"
+ 1224      64800366 
+ 1224      86EFF3CF 
+ 1224      EE649EC4 
+ 1224      C8
+ 1225 0011 C4C0442C 		.ascii	"\304\300D,f\032\251\230\261\351\365\227\013\234\014"
+ 1225      661AA998 
+ 1225      B1E9F597 
+ 1225      0B9C0C
+ 1226 0020 4C672675 		.ascii	"Lg&u\365\26030\000\000\0238\013W"
+ 1226      F5B03330 
+ 1226      00001338 
+ 1226      0B57
+ 1227              		.text
+ 1228              		.section	.gnu.lto_.ipa_sra.8e7ef83a,"e",%progbits
+ 1229 0000 789CE367 		.ascii	"x\234\343g@\000f\006\006FF\0060d\002\022\000\002\023"
+ 1229      40006606 
+ 1229      06464606 
+ 1229      30640212 
+ 1229      000213
+ 1230 0013 001B     		.ascii	"\000\033"
+ 1231              		.text
+ 1232              		.section	.gnu.lto_.inline.8e7ef83a,"e",%progbits
+ 1233 0000 789CAB64 		.ascii	"x\234\253d@\000f\006\206\013\014\015\015\015{\2302\031"
+ 1233      40006606 
+ 1233      860B0C0D 
+ 1233      0D0D7B98 
+ 1233      3219
+ 1234 0012 19986631 		.ascii	"\031\230f1\002\231[\2302\031\030\330\200\214\006\246"
+ 1234      02995B98 
+ 1234      321918D8 
+ 1234      808C06A6 
+ 1235 0022 14260626 		.ascii	"\024&\006&\220*F\006V \367\001S:#\210\337\010d\327a"
+ 1235      902A4606 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 27
+
+
+ 1235      5620F701 
+ 1235      533A2388 
+ 1235      DF0864D7 
+ 1236 0037 28E14290 		.ascii	"(\341B\220L\014\314\0209\334\312\031\000\263\243\030"
+ 1236      4C0CCC10 
+ 1236      39DCCA19 
+ 1236      00B3A318 
+ 1237 0047 D5       		.ascii	"\325"
+ 1238              		.text
+ 1239              		.section	.gnu.lto_.jmpfuncs.8e7ef83a,"e",%progbits
+ 1240 0000 789CE365 		.ascii	"x\234\343e@\000f f\0041\230\200\030\000\001\226\000"
+ 1240      40006620 
+ 1240      66043198 
+ 1240      80180001 
+ 1240      9600
+ 1241 0012 14       		.ascii	"\024"
+ 1242              		.text
+ 1243              		.section	.gnu.lto_.pureconst.8e7ef83a,"e",%progbits
+ 1244 0000 789CE362 		.ascii	"x\234\343b```f\230\305\3028\203\205\251\201\005\000"
+ 1244      60606066 
+ 1244      98C5C238 
+ 1244      8385A981 
+ 1244      0500
+ 1245 0012 09BC01CF 		.ascii	"\011\274\001\317"
+ 1246              		.text
+ 1247              		.section	.gnu.lto_.ipa_modref.8e7ef83a,"e",%progbits
+ 1248 0000 789C3361 		.ascii	"x\2343a@\000&\006\006\005\001\001\006F&f fa\004s\230"
+ 1248      40002606 
+ 1248      06050101 
+ 1248      06462666 
+ 1248      20666104 
+ 1249 0016 601C2656 		.ascii	"`\034&V\010\315\000\021\207\020\014\014\000,\021\001"
+ 1249      08CD0011 
+ 1249      87100C0C 
+ 1249      002C1101 
+ 1250 0026 64       		.ascii	"d"
+ 1251              		.text
+ 1252              		.section	.gnu.lto_.lto.8e7ef83a,"e",%progbits
+ 1253 0000 0B000300 		.ascii	"\013\000\003\000\001\000\000\000"
+ 1253      01000000 
+ 1254              		.text
+ 1255              		.section	.gnu.lto_stm32_gpio_init.386.8e7ef83a,"e",%progbits
+ 1256 0000 789CA5D8 		.ascii	"x\234\245\330\177L\023g\030\007\360{\336k\013D\243q"
+ 1256      7F4C1367 
+ 1256      1807F07B 
+ 1256      DE6B0B44 
+ 1256      A371
+ 1257 0012 3F92FD37 		.ascii	"?\222\3757\266\375\263\314)\322-.Y\262d\006\335b6g\264"
+ 1257      B6FDB3CC 
+ 1257      29D22D2E 
+ 1257      59B26406 
+ 1257      DD623667 
+ 1258 0027 3A43D410 		.ascii	":C\324\020@\247\215:\024$\323\030\303Y\361\307\230N"
+ 1258      40A78D3A 
+ 1258      1424D318 
+ 1258      C359F1C7 
+ 1258      984E
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 28
+
+
+ 1259 0039 FC15F037 		.ascii	"\374\025\3607\272i\210\2729uN\304!\025\005\261(j\345"
+ 1259      BA6988BA 
+ 1259      39754EC4 
+ 1259      211505B1 
+ 1259      286AE5
+ 1260 004c 375AB04E 		.ascii	"7Z\260N\235sSt\016\211\242\335s\357]\357\236^\373\362"
+ 1260      9D735374 
+ 1260      0E89A2DD 
+ 1260      73EF5DEF 
+ 1260      9E5EFBF2 
+ 1261 0060 0F8497DE 		.ascii	"\017\204\227\336\365\375\336s\317{\237\036\245\344\275"
+ 1261      F5FDDE73 
+ 1261      CF7B9F1E 
+ 1261      A5E4BD
+ 1262 006f 22498592 		.ascii	"\"I\205\222$\275\205\003d\0116\254/`\222\242(\037\307"
+ 1262      24BD8503 
+ 1262      640936AC 
+ 1262      2F6092A2 
+ 1262      281FC7
+ 1263 0082 3158B6BE 		.ascii	"1X\266\276 \001\216\003\337\003)\217A\036\354\226\223"
+ 1263      20018E03 
+ 1263      DF03298F 
+ 1263      411EEC96 
+ 1263      93
+ 1264 0093 70B767C5 		.ascii	"p\267g\305\266\362\275qJ\251\027\376\222\244<I\377\032"
+ 1264      B6F2BD71 
+ 1264      4AA917FE 
+ 1264      92A43C49 
+ 1264      FF1A
+ 1265 00a5 C0B713EC 		.ascii	"\300\267\023\354\200\033KO\200d\007\307\313`\303\237"
+ 1265      801B4B4F 
+ 1265      806407C7 
+ 1265      CB60C39F 
+ 1266 00b5 AF42A21D 		.ascii	"\257B\242\035\342\263\361\211a^E\351\332\265w\343\240"
+ 1266      E2B3F189 
+ 1266      615E45E9 
+ 1266      DAB577E3 
+ 1266      A0
+ 1267 00c6 4258F23B 		.ascii	"BX\362;,=\011\345 U\000c\213\332\343\3550T\235,\337"
+ 1267      2C3D09E5 
+ 1267      20550063 
+ 1267      8BDAE3ED 
+ 1267      30549D2C 
+ 1268 00db BB6A50E1 		.ascii	"\273jP\341\262x\234\315\323g\2612\036]\000\306\341+"
+ 1268      B2789CCD 
+ 1268      D367B132 
+ 1268      1E5D00C6 
+ 1268      E12B
+ 1269 00ed 829DA0BC 		.ascii	"\202\235\240\274\264\270R?\336\013L^t\333r<\316\346"
+ 1269      B4B8523F 
+ 1269      DE0B4C5E 
+ 1269      74DB723C 
+ 1269      CEE6
+ 1270 00ff E9B3FCF8 		.ascii	"\351\263\374\370\001j\327\267\234\247\341\024He\260"
+ 1270      016AD7B7 
+ 1270      9CA7E114 
+ 1270      4865B0
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 29
+
+
+ 1271 010e 54EDB50A 		.ascii	"T\355\265\012x\217}\235U\235+\334\256x\363\023\245X"
+ 1271      788F7D9D 
+ 1271      559D2BDC 
+ 1271      AE78F313 
+ 1271      A558
+ 1272 0120 05CBEE38 		.ascii	"\005\313\3568\253\341\254Q\260\246\337\005{\376v\236"
+ 1272      ABE1AC51 
+ 1272      B0A6DF05 
+ 1272      7BFE769E 
+ 1273 0130 875AA3A0 		.ascii	"\207Z\243\240\257\377\035\336w^\204\013F\301\372\376"
+ 1273      AFFF1DDE 
+ 1273      775E840B 
+ 1273      46C1FAFE 
+ 1274 0140 77F8C079 		.ascii	"w\370\300y\005.\033\005\375\375\357\360?g#4\030\005"
+ 1274      052E1B05 
+ 1274      FDFDEFF0 
+ 1274      3F672334 
+ 1274      1805
+ 1275 0152 9BFADF61 		.ascii	"\233\372\337a\267\263\025Z\214\202m\375\357\260\327"
+ 1275      B7B3155A 
+ 1275      8C826DFD 
+ 1275      EFB0D7
+ 1276 0161 791DAE19 		.ascii	"y\035\256\031\005\003\375\357\360\271\363\006t\032\005"
+ 1276      0503FDEF 
+ 1276      F0B9F306 
+ 1276      741A05
+ 1277 0170 836A4175 		.ascii	"\203jAu\366\220\337\356UzC\353\024\245yh]o0a<H\314\306"
+ 1277      F690DFEE 
+ 1277      557A43EB 
+ 1277      14A57968 
+ 1277      5D6F3061 
+ 1278 0188 70C8386C 		.ascii	"p\3108l8\3548\0348\342p\304\343\030\210c0\016I\332)"
+ 1278      38EC381C 
+ 1278      38E270C4 
+ 1278      E3188863 
+ 1278      300E49DA 
+ 1279 019d ABF7AC62 		.ascii	"\253\367\254b\003\305+I\273d\246\355,\307\235'L\011"
+ 1279      03C52B49 
+ 1279      BB64A6ED 
+ 1279      2CC79D27 
+ 1279      4C09
+ 1280 01af 3EF781F4 		.ascii	">\367\201\364\214U\235J\220\001\357\306\\~g\346\202"
+ 1280      8C559D4A 
+ 1280      9001EFC6 
+ 1280      5C7E67E6 
+ 1280      82
+ 1281 01c0 D2B55AC1 		.ascii	"\322\265Z\301\273\363\240z\177\307\347\334\202?@\032"
+ 1281      BBF3A07A 
+ 1281      7FC7E7DC 
+ 1281      823F401A 
+ 1282 01d0 F9C682DB 		.ascii	"\371\306\202\333\220\205\255<c\3137\255\002\231\311"
+ 1282      9085AD3C 
+ 1282      63CB37AD 
+ 1282      0299C9
+ 1283 01df E0781B42 		.ascii	"\340x\033B\262z\364\243\002\210\012\337U\3032SO\362"
+ 1283      B27AF4A3 
+ 1283      02880ADF 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 30
+
+
+ 1283      55C33253 
+ 1283      4FF2
+ 1284 01f1 A67E0639 		.ascii	"\246~\0069*t/\\\261\030+\332d\031+\342*C\203EE\357\363"
+ 1284      2A742F5C 
+ 1284      B1182BDA 
+ 1284      64192BE2 
+ 1284      2A438345 
+ 1285 0208 A2365A74 		.ascii	"\2426Zt\240%\264\0337\027t\361\272\230\332S\004|\231"
+ 1285      A025B41B 
+ 1285      371774F1 
+ 1285      BA98DA53 
+ 1285      047C99
+ 1286 021b 216399F6 		.ascii	"!c\231\366\250\242\217`\236\271,\0076y\007D\347\177"
+ 1286      A8A28F60 
+ 1286      9EB92C07 
+ 1286      36790744 
+ 1286      E77F
+ 1287 022d AC466587 		.ascii	"\254Fe\207v~\322D\\T\262\033\346\230E\343\345\270>\212"
+ 1287      767ED244 
+ 1287      5C54B21B 
+ 1287      E69845E3 
+ 1287      E5B83E8A 
+ 1288 0241 F6A85139 		.ascii	"\366\250Q9\236\326\033\034kQOyIuQ\307\264E\025\325\251"
+ 1288      9ED61B1C 
+ 1288      6B514F79 
+ 1288      497551C7 
+ 1288      B44515D5 
+ 1289 0256 8F9E44A8 		.ascii	"\217\236D\250\000\307\022\214\243\231\266\357U-\335"
+ 1289      00C7128C 
+ 1289      A399B6EF 
+ 1289      552DDD
+ 1290 0265 AA65013E 		.ascii	"\252e\001>\316\222\324j\266\231/\340\271\372\324\310"
+ 1290      CE92D46A 
+ 1290      B6992FE0 
+ 1290      B9FAD4C8 
+ 1291 0275 7C45297D 		.ascii	"|E)}73\004\351\222T\000+\025\345OX\254\2602^\362f\245"
+ 1291      373304E9 
+ 1291      9254002B 
+ 1291      15E54F58 
+ 1291      ACB0325E 
+ 1292 028c EF7B80D3 		.ascii	"\357{\200\323Z\371\253\276\004\250\322\273ndv\365\034"
+ 1292      5AF9ABBE 
+ 1292      04A8D2BB 
+ 1292      6E6476F5 
+ 1292      1C
+ 1293 029d BC9294D6 		.ascii	"\274\222\224\326\013\036\306\233*\035\270`9\233\216"
+ 1293      0B1EC69B 
+ 1293      2A1DB860 
+ 1293      399B8E
+ 1294 02ac BF2E114E 		.ascii	"\277.\021N{=5\372\310\021\326\354J6U\313\206\232_ \262"
+ 1294      7B3D35FA 
+ 1294      C811D6EC 
+ 1294      4A3655CB 
+ 1294      869A5F20 
+ 1295 02c1 9A6FEE2B 		.ascii	"\232o\356+\377-K\325\362\015J>_\233\022l\355+\277\206"
+ 1295      FF2D4BD5 
+ 1295      F20D4A3E 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 31
+
+
+ 1295      5F9B126C 
+ 1295      ED2BBF86 
+ 1296 02d5 4DD1EBE3 		.ascii	"M\321\353\343\353RM\267\367\225^\307&kiEi\331o\347\371"
+ 1296      EB524DB7 
+ 1296      F7955EC7 
+ 1296      266B6945 
+ 1296      69D96FE7 
+ 1297 02ea EB7DE537 		.ascii	"\353}\34570\227\236ox\207\247;\372Jof\023\302iO\243"
+ 1297      30979E6F 
+ 1297      7887A73B 
+ 1297      FA4A6F66 
+ 1297      13C2694F 
+ 1298 02ff 7A1B783A 		.ascii	"z\033x:\213\352\324\267L\250\340\227\2123i\327l\373"
+ 1298      8BEAD4B7 
+ 1298      4CA8E097 
+ 1298      8A3369D7 
+ 1298      6CFB
+ 1299 0311 006DFF0C 		.ascii	"\000m\377\014g\\m0\236\205H\300-\214\002ne\343M\300"
+ 1299      675C6D30 
+ 1299      9E8548C0 
+ 1299      2D8C026E 
+ 1299      65E34DC0 
+ 1300 0325 6D1180D5 		.ascii	"m\021\200\325&`\215\245\305bf\266\270\003\351j\324\026"
+ 1300      26608DA5 
+ 1300      C56266B6 
+ 1300      B803E96A 
+ 1300      D416
+ 1301 0337 BDB6D876 		.ascii	"\275\266\330v4\\\202v5\332\265\015\211\354h\376\007"
+ 1301      345C8276 
+ 1301      35DAB50D 
+ 1301      89EC68FE 
+ 1301      07
+ 1302 0348 B4E3F9CD 		.ascii	"\264\343\371\315\005\325\372\325\215\262\243\371}hW"
+ 1302      05D5FAD5 
+ 1302      8DB2A3F9 
+ 1302      7D6857
+ 1303 0357 03B096C5 		.ascii	"\003\260\226\305\206\243\321R\204\253\321\340\224\304"
+ 1303      86A3D152 
+ 1303      84ABD1E0 
+ 1303      94C4
+ 1304 0365 D86E347E 		.ascii	"\330n4~\000\335\264eJ\261\331h\370gd\323j\237N\344h"
+ 1304      00DDB465 
+ 1304      4AB1D968 
+ 1304      F86764D3 
+ 1304      6A9F4EE4 
+ 1305 037a 3B34B433 		.ascii	";4\2643a\264\263:\332\021\035\355\034G+4\320j-hG\"\320"
+ 1305      61B4B33A 
+ 1305      DA111DED 
+ 1305      1C472B34 
+ 1305      D06A2D68 
+ 1306 0391 8EB27126 		.ascii	"\216\262q&\332\257\021h\347M4k\203\207I\203\277!\232"
+ 1306      DAAF1168 
+ 1306      E74D346B 
+ 1306      83874983 
+ 1306      BF219A
+ 1307 03a4 0F209FC5 		.ascii	"\017 \237\305&\243\3212$\303\350n\026[\213F\313Q\313"
+ 1307      26A3D132 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 32
+
+
+ 1307      24C3E86E 
+ 1307      165B8B46 
+ 1307      CB51CB
+ 1308 03b7 C7EFB4FD 		.ascii	"\307\357\264\375\233\366\010\264h\276\002\265|b-\032"
+ 1308      9BF608B4 
+ 1308      68BE02B5 
+ 1308      7C622D1A 
+ 1309 03c7 AD442D9F 		.ascii	"\255D-\237\256\2458bs\321|\025ri\3715\257\305\366\242"
+ 1309      AEA53862 
+ 1309      73D17C15 
+ 1309      7269F935 
+ 1309      AFC5F6A2 
+ 1310 03db E96AF4E2 		.ascii	"\351j\364\342\351e\212g\010\007;\252\201\235\013\203"
+ 1310      E9658A67 
+ 1310      08073BAA 
+ 1310      819D0B83 
+ 1311 03eb D5EA6065 		.ascii	"\325\352`e:X\035\007+6\300.X\300\316G\200\371\330g&"
+ 1311      3A581D07 
+ 1311      2B36C02E 
+ 1311      58C0CE47 
+ 1311      80F9D867 
+ 1312 0400 585D04D8 		.ascii	"X]\004\330E\023\254\336\322a-\351\360\"\202\325\213"
+ 1312      4513ACDE 
+ 1312      D2612DE9 
+ 1312      F02282D5 
+ 1312      8B
+ 1313 0411 C168F412 		.ascii	"\301h\364\022\202\325\213\301h\364\012\202\325\253\353"
+ 1313      82D58BC1 
+ 1313      68F40A82 
+ 1313      D5ABEB
+ 1314 0420 6E2C6964 		.ascii	"n,id\261\275h\274\001\275x<\364zl1\032nF1\263\343(,"
+ 1314      B1BD68BC 
+ 1314      01BD783C 
+ 1314      F47A6C31 
+ 1314      1A6E4631 
+ 1315 0438 1A6D452C 		.ascii	"\032mE,3\032%E\243\355(\305[P<J\251\235S\235\320\250"
+ 1315      331A2545 
+ 1315      A3ED28C5 
+ 1315      5B503C4A 
+ 1315      A99D539D 
+ 1316 044e EAC25417 		.ascii	"\352\302T\027t\252S:\325%NUbP]\266PuDPu\262\261&\325"
+ 1316      74AA533A 
+ 1316      D5254E55 
+ 1316      62505DB6 
+ 1316      50754450 
+ 1317 0467 8D08AA2B 		.ascii	"\215\010\252+&\225\337\322b\200\264x\023\251\374b*\032"
+ 1317      2695DFD2 
+ 1317      6280B478 
+ 1317      13A9FC62 
+ 1317      2A1A
+ 1318 0479 BD85547E 		.ascii	"\275\205T~1\025\215\336A*\263j\024\023\215\336E&\277"
+ 1318      31158DDE 
+ 1318      412AB36A 
+ 1318      14138DDE 
+ 1318      4526BF
+ 1319 048c F8B6A2D1 		.ascii	"\370\266\242\321{\210\344\027#\321\350?\210\344\027"
+ 1319      7B88E417 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 33
+
+
+ 1319      23D1E83F 
+ 1319      88E417
+ 1320 049b 23D1E803 		.ascii	"#\321\350\003D\302\350A\355\015\253R\363\271\024\366"
+ 1320      44C2E841 
+ 1320      ED0DAB52 
+ 1320      F3B914F6 
+ 1321 04ab B9ACFB34 		.ascii	"\271\254\3734\350>W\271O\251\341\323`\361y\024\341\363"
+ 1321      E83E57B9 
+ 1321      4FA9E1D3 
+ 1321      60F17914 
+ 1321      E1F3
+ 1322 04bd 2FFBD4F4 		.ascii	"/\373\324\364y\034\341\323h\3724Y\272{H\272\353F\237"
+ 1322      791CE1D3 
+ 1322      68FA3459 
+ 1322      BA7B48BA 
+ 1322      EB469F
+ 1323 04d0 26B10F8D 		.ascii	"&\261\017\215\366\240O\223\330\207F\237\242O\223\330"
+ 1323      F6A04F93 
+ 1323      D887469F 
+ 1323      A24F93D8 
+ 1324 04e0 87467BD1 		.ascii	"\207F{\321\247I\354C\243/\320\247I\354C\243\212\354"
+ 1324      A749EC43 
+ 1324      A32FD0A7 
+ 1324      49EC43A3 
+ 1324      8AEC
+ 1325 04f2 22D1281F 		.ascii	"\"\321(\037\032\365\310\023\214\250\247\263Q\363\271"
+ 1325      1AF5C813 
+ 1325      8CA8A7B3 
+ 1325      51F3B9
+ 1326 0501 1AF669D0 		.ascii	"\032\366i\320}\332t\237f\356\363\213\341\323b\361Y!"
+ 1326      7DDA749F 
+ 1326      66EEF38B 
+ 1326      E1D362F1 
+ 1326      5921
+ 1327 0513 539F95F2 		.ascii	"S\237\225\362\030\323g\225L}ZM\2376Kw\3712\371{M\236"
+ 1327      18D36795 
+ 1327      4C7D5A4D 
+ 1327      9F364B77 
+ 1327      F932F97B 
+ 1328 0529 8E1FAA84 		.ascii	"\216\037\252\204>4\372\235<U\215\212|ht\255\234J\252"
+ 1328      3E34FA9D 
+ 1328      3C558D8A 
+ 1328      7C6874AD 
+ 1328      9C4AAA
+ 1329 053c 46F9D0E8 		.ascii	"F\371\320\350:y\212\032\025\371\320\350zy2\251\032\345"
+ 1329      3A798A1A 
+ 1329      15F9D0E8 
+ 1329      7A7932A9 
+ 1329      1AE5
+ 1330 054e 43A31BD1 		.ascii	"C\243\033\321\247M\354C\243\233\321\247\315\360i\327"
+ 1330      A74DEC43 
+ 1330      A39BD1A7 
+ 1330      CDF069D7 
+ 1331 055e 7C9AC33E 		.ascii	"|\232\303>-\272O\227\356\323\316}\312\014\237k\026\237"
+ 1331      2DBA4F97 
+ 1331      EED3CE7D 
+ 1331      CA0C9F6B 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 34
+
+
+ 1331      169F
+ 1332 0570 E2089F2D 		.ascii	"\342\010\237-r\212\351\2635\302\347\272\351\023\260"
+ 1332      728AE9B3 
+ 1332      35C2E7BA 
+ 1332      E913B0
+ 1333 057f 745744BA 		.ascii	"tWD\272\333\216>\001\261\017\215\356D\237\200\330\207"
+ 1333      DB8E3E01 
+ 1333      B10F8DEE 
+ 1333      449F80D8 
+ 1333      87
+ 1334 0590 464BD027 		.ascii	"FK\320' \366\241\321=\350\023\020\373\320\350\217\350"
+ 1334      20F6A1D1 
+ 1334      3DE81310 
+ 1334      FBD0E88F 
+ 1334      E8
+ 1335 05a1 1310FBD0 		.ascii	"\023\020\373\320\350>\364\011\210}h\264\024}\002\206"
+ 1335      E83EF409 
+ 1335      887D68B4 
+ 1335      147D0286 
+ 1336 05b1 CF43CDA7 		.ascii	"\317C\315\247=\354sM\367\351\326}:\270\217\327\360\351"
+ 1336      3DEC734D 
+ 1336      F7E9D67D 
+ 1336      3AB88FD7 
+ 1336      F0E9
+ 1337 05c3 B4F81C88 		.ascii	"\264\370\034\210\3609(\2172}~\212\360\271a\372\004-"
+ 1337      F039288F 
+ 1337      327D7E8A 
+ 1337      F0B961FA 
+ 1337      042D
+ 1338 05d5 DDED27DD 		.ascii	"\335\355'\335\035B\237\240\330\207F\017\243OP\354C\243"
+ 1338      1D429FA0 
+ 1338      D887460F 
+ 1338      A34F50EC 
+ 1338      43A3
+ 1339 05e7 47D12728 		.ascii	"G\321'(\366\241\321c\350\023\024\373\320\350q\364\011"
+ 1339      F6A1D163 
+ 1339      E81314FB 
+ 1339      D0E871F4 
+ 1339      09
+ 1340 05f8 8A7D68F4 		.ascii	"\212}h\364\004\372\004\305>4z\022}\202\206\317\023\315"
+ 1340      04FA04C5 
+ 1340      3E347A12 
+ 1340      7D8286CF 
+ 1340      13CD
+ 1341 060a A723ECD3 		.ascii	"\247#\354\323\211\033!\365\203\324\027\374\237\212;"
+ 1341      891B21F5 
+ 1341      83D417FC 
+ 1341      9F8A3B
+ 1342 0619 65D0FE99 		.ascii	"e\320\376\231\341\361\252\273\311)\037NK\231\355\316"
+ 1342      E1F1AABB 
+ 1342      C9291F4E 
+ 1342      4B99EDCE 
+ 1343 0629 70BB16E6 		.ascii	"p\273\026\346\316pgM\373&+{N\316\374\364\314\231i\271"
+ 1343      CE70674D 
+ 1343      FB262B7B 
+ 1343      4ECEFCF4 
+ 1343      CC9969B9 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 35
+
+
+ 1344 063d 3933B3A7 		.ascii	"93\263\247\245LLuM\032\365\271k\330h\367\\\367\302\331"
+ 1344      A54C4C75 
+ 1344      4D1AF5B9 
+ 1344      6BD868F7 
+ 1344      5CF7C2D9 
+ 1345 0651 EEDC79D2 		.ascii	"\356\334y\322G\303\207'\341w\246zPV\2163999)+'iv\372"
+ 1345      47C38727 
+ 1345      E177A67A 
+ 1345      50568E33 
+ 1345      39393929 
+ 1346 066a DCA48CAC 		.ascii	"\334\244\214\254\364\354\0319I\256Ii\256I\343\336s~"
+ 1346      F4EC1939 
+ 1346      49AE4969 
+ 1346      AE49E3DE 
+ 1346      737E
+ 1347 067c F27EDAE8 		.ascii	"\362~\332\350\261\256\224\361_\216\231\230\252\315\015"
+ 1347      B1AE94F1 
+ 1347      5F8E9998 
+ 1347      AACD0D
+ 1348 068b CF94ECB3 		.ascii	"\317\224\354\263\346\273\263\346\017\321w\207;3F\314"
+ 1348      E6BBB3E6 
+ 1348      0FD17787 
+ 1348      3B3346CC 
+ 1349 069b 18F1C188 		.ascii	"\030\361\301\210\014\311\221\231\365\365W\356Y\377\003"
+ 1349      0CC99199 
+ 1349      F5F557EE 
+ 1349      59FF03
+ 1350 06aa 20CF4FC5 		.ascii	" \317O\305"
+ 1351              		.text
+ 1352              		.section	.gnu.lto___early_init.387.8e7ef83a,"e",%progbits
+ 1353 0000 789C9BC9 		.ascii	"x\234\233\311\300\300P\010\304\312@\314\310\314\300"
+ 1353      C0C05008 
+ 1353      C4CA40CC 
+ 1353      C8CCC0
+ 1354 000f 38696217 		.ascii	"8ib\027\023CCC\203\003;\023c\343\304.N\306\355\214`"
+ 1354      13434343 
+ 1354      83033B13 
+ 1354      63E3C42E 
+ 1354      4EC6ED8C 
+ 1355 0024 1E23433D 		.ascii	"\036#C=\023c=\343Bf} \367G\353\354U\307\031\033V\034"
+ 1355      13633DE3 
+ 1355      42667D20 
+ 1355      F747EBEC 
+ 1355      55C7191B 
+ 1356 003a 607CC5C0 		.ascii	"`|\305\300P\317\000\005\334\0206#\020\257\277\304z\240"
+ 1356      50CF0005 
+ 1356      DC103623 
+ 1356      10AFBFC4 
+ 1356      7AA0
+ 1357 004c E1CFFFFE 		.ascii	"\341\317\377\376\206\206\263\217\031\327\251\26300\314"
+ 1357      8686B38F 
+ 1357      19D7A9B3 
+ 1357      3030CC
+ 1358 005b 630699DA 		.ascii	"c\006\231\332\300\302\330p\200\201a>3\023\204\323\010"
+ 1358      C0C2D870 
+ 1358      8081613E 
+ 1358      331384D3 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 36
+
+
+ 1358      08
+ 1359 006c E47C676A 		.ascii	"\344|gjxt\363\034#\303_\246f\005\206.F\246\332j\006"
+ 1359      7874F31C 
+ 1359      23C35FA6 
+ 1359      6605862E 
+ 1359      46A6DA6A 
+ 1360 0081 062666B0 		.ascii	"\006&f\260\360->\204h9X\364?S\323\203\273~`\353\346"
+ 1360      F02D3E84 
+ 1360      683958F4 
+ 1360      3F53D383 
+ 1360      BB7E60EB 
+ 1361 0096 3133224C 		.ascii	"13\"Ld`0t\266\212q\316\310L\312\014.)M\311\314\217)"
+ 1361      64603074 
+ 1361      B68A71CE 
+ 1361      C84CCA0C 
+ 1361      2E294DC9 
+ 1362 00ad CF2FCA2E 		.ascii	"\317/\312..HLN\215/-N-\212q\016\212\014\016q\364\011"
+ 1362      2E484C4E 
+ 1362      8D2F2D4E 
+ 1362      2D8A710E 
+ 1362      8A0C0E71 
+ 1363 00c3 D675C9CC 		.ascii	"\326u\311\314\311,\311\310,\315e\260\325\323\323\007"
+ 1363      C92CC9C8 
+ 1363      2CCD65B0 
+ 1363      D5D3D307 
+ 1364 00d3 A26490A6 		.ascii	"\242d\220\246\374b#CCC\375\374b\375\214\304\034\375"
+ 1364      FC622343 
+ 1364      4343FDFC 
+ 1364      62FD8CC4 
+ 1364      1CFD
+ 1365 00e5 A4FCC4A2 		.ascii	"\244\374\304\242\224b\375\340\220\370\340\020_c#7\223"
+ 1365      9462FDE0 
+ 1365      90F8E010 
+ 1365      5F632337 
+ 1365      93
+ 1366 00f6 7817CF60 		.ascii	"x\027\317`g\3770\327\240H\210\234^2\003\000\201\260"
+ 1366      67FF30D7 
+ 1366      A048889C 
+ 1366      5E320300 
+ 1366      81B0
+ 1367 0108 5E97     		.ascii	"^\227"
+ 1368              		.text
+ 1369              		.section	.gnu.lto_boardInit.388.8e7ef83a,"e",%progbits
+ 1370 0000 789CCB67 		.ascii	"x\234\313g``(\004be fdf`\2344\261\213\211\241\241\241"
+ 1370      60602804 
+ 1370      62652066 
+ 1370      6466609C 
+ 1370      34B18B89 
+ 1371 0017 C1819D89 		.ascii	"\301\201\235\211\261qb\027'\343vF0\217\221\241\236\211"
+ 1371      B1716217 
+ 1371      27E37646 
+ 1371      308F91A1 
+ 1371      9E89
+ 1372 0029 B19E7121 		.ascii	"\261\236q!\263>\220\373\243u\366\214\223\214\015+\016"
+ 1372      B33E90FB 
+ 1372      A375F68C 
+ 1372      938C0D2B 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 37
+
+
+ 1372      0E
+ 1373 003a 30BE6260 		.ascii	"0\276b`\250g\200\002n\010\233\021\210\327_b=\320\360"
+ 1373      A8678002 
+ 1373      6E089B11 
+ 1373      88D75F62 
+ 1373      3DD0F0
+ 1374 004d E77F7F43 		.ascii	"\347\177\177C\303\327G\214\2634\231\030\030\3461\203"
+ 1374      C3D7478C 
+ 1374      B3349918 
+ 1374      18E63183 
+ 1375 005d 4C6D6061 		.ascii	"Lm`al8\300\3000\237\231\011\302i\004r\27635(1\374gj"
+ 1375      6C38C0C0 
+ 1375      309F9909 
+ 1375      C2690472 
+ 1375      BE333528 
+ 1376 0075 52001B32 		.ascii	"R\000\0332\217\231\021\241\216\201\301\320\331*\306"
+ 1376      8F9911A1 
+ 1376      8E81C1D0 
+ 1376      D92AC6
+ 1377 0084 39233329 		.ascii	"9#3)3\270\2444%3?\246<\277(\273\270 195\276\2648\265"
+ 1377      33B8A434 
+ 1377      25333FA6 
+ 1377      3CBF28BB 
+ 1377      B8203139 
+ 1378 009d 28C63928 		.ascii	"(\3069(28\304\321'X\327%3'\263$#\2634\227\301VOO\037"
+ 1378      3238C4D1 
+ 1378      2758D725 
+ 1378      3327B324 
+ 1378      23B33497 
+ 1379 00b6 8892419A 		.ascii	"\210\222A\232\362\213\215\014\015\015\365\363\213\365"
+ 1379      F28B8D0C 
+ 1379      0D0DF5F3 
+ 1379      8BF5
+ 1380 00c4 331273F4 		.ascii	"3\022s\364\223\362\023\213R\212\365\203C\342\203C|\215"
+ 1380      93F2138B 
+ 1380      528AF583 
+ 1380      43E28343 
+ 1380      7C8D
+ 1381 00d6 8DDC4CE2 		.ascii	"\215\334L\342]<\203\235\375\303\\\203\"!rz\311\014\000"
+ 1381      5D3C839D 
+ 1381      FDC35C83 
+ 1381      2221727A 
+ 1381      C90C00
+ 1382 00e9 74C95086 		.ascii	"t\311P\206"
+ 1383              		.text
+ 1384              		.section	.gnu.lto_.symbol_nodes.8e7ef83a,"e",%progbits
+ 1385 0000 789C6DCB 		.ascii	"x\234m\313\311\015\2000\014D\3211\203X\252\240\027\032"
+ 1385      C90D8030 
+ 1385      0C44D131 
+ 1385      8358AAA0 
+ 1385      171A
+ 1386 0012 B34DC29D 		.ascii	"\263M\302\235v\240\010Z\002\207pA\342\237,\275\261!"
+ 1386      76A0085A 
+ 1386      02877041 
+ 1386      E29F2CBD 
+ 1386      B121
+ 1387 0024 6A166A67 		.ascii	"j\026jgQ+\333\011(\260\233\273\261P\242\366\037:\314"
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 38
+
+
+ 1387      512BDB09 
+ 1387      28B09BBB 
+ 1387      B150A2F6 
+ 1387      1F3ACC
+ 1388 0037 A540A60E 		.ascii	"\245@\246\016\177 +u\274\336\246\007\201\330\025\243"
+ 1388      7F202B75 
+ 1388      BCDEA607 
+ 1388      81D815A3 
+ 1389 0047 A0BECC14 		.ascii	"\240\276\314\024\326+\013n\311a&k"
+ 1389      D62B0B6E 
+ 1389      C961266B 
+ 1390              		.text
+ 1391              		.section	.gnu.lto_.refs.8e7ef83a,"e",%progbits
+ 1392 0000 789C6364 		.ascii	"x\234cd\000\002\000\000\012\000\002"
+ 1392      00020000 
+ 1392      0A0002
+ 1393              		.text
+ 1394              		.section	.gnu.lto_.decls.8e7ef83a,"e",%progbits
+ 1395 0000 789CAD57 		.ascii	"x\234\255W}T\224U\032\277\367\316;\303\205H\340X\033"
+ 1395      7D549455 
+ 1395      1ABFF7CE 
+ 1395      3BC38548 
+ 1395      E0581B
+ 1396 0013 EDE90FFF 		.ascii	"\355\351\017\377\213\323\236\204\001\313\266\266V\035"
+ 1396      8BD39E84 
+ 1396      01CBB6B6 
+ 1396      561D
+ 1397 0021 50384BC2 		.ascii	"P8K\302\231\261\366tNg'\20418\201C0\224\355\266\273"
+ 1397      99B1F674 
+ 1397      4E672784 
+ 1397      31388143 
+ 1397      3094EDB6 
+ 1398 0036 7760C231 		.ascii	"w`\3021L\007+\033\321jB]\311R)\323\3204^>\024\314/\024"
+ 1398      4C072B1B 
+ 1398      D16A425D 
+ 1398      C95229D3 
+ 1398      D0345E3E 
+ 1399 004e 54504C0C 		.ascii	"TPL\014?\020\021\320\322\360{\237\373\276w.L\253\235"
+ 1399      3F1011D0 
+ 1399      D2F07B9F 
+ 1399      FBBE772E 
+ 1399      4CAB9D
+ 1400 0061 FED839FC 		.ascii	"\376\3309\374\270\367\276\277\347\353>\317}\237\367"
+ 1400      B8F7BEBF 
+ 1400      E7EB3ECF 
+ 1400      7D9FF7
+ 1401 0070 7D1BA210 		.ascii	"}\033\242\020:i@\350\024B\3506\374\024\030\333\001\021"
+ 1401      3A6940E8 
+ 1401      1442E836 
+ 1401      FC1418DB 
+ 1401      0111
+ 1402 0082 803AC07D 		.ascii	"\200:\300}\030\241g\000\343\001*\254\237\206\321\002"
+ 1402      18A16700 
+ 1402      E3012AAC 
+ 1402      9F86D102 
+ 1403 0092 4801CC00 		.ascii	"H\001\314\000\244\001\346\023\204& \375\372sB>\027\360"
+ 1403      A401E613 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 39
+
+
+ 1403      842620FD 
+ 1403      FA73423E 
+ 1403      17F0
+ 1404 00a4 B0D00FEA 		.ascii	"\260\320\017\352\336\000\374\010\300\260\366\000\312"
+ 1404      DE00FC08 
+ 1404      C0B0F600 
+ 1404      CA
+ 1405 00b1 01655C1F 		.ascii	"\001e\\\037\360O\254\333~\002\220\004H\004<\006x\012"
+ 1405      F04FACDB 
+ 1405      7E029004 
+ 1405      48043C06 
+ 1405      780A
+ 1406 00c3 6006FC11 		.ascii	"`\006\374\021\340\006\274\011\370\027\340\015\000\003"
+ 1406      E006BC09 
+ 1406      F817E00D 
+ 1406      0003
+ 1407 00d1 FC1BF00F 		.ascii	"\374\033\360\017\300\337\001\025\020\207\021\351\261"
+ 1407      C0DF0115 
+ 1407      108711E9 
+ 1407      B1
+ 1408 00de 79459CD3 		.ascii	"yE\234\323D\214\213\201\203A\213\3314\036+\246\373\361"
+ 1408      448C8B81 
+ 1408      83418BD9 
+ 1408      341E2BA6 
+ 1408      FBF1
+ 1409 00f0 04852CFD 		.ascii	"\004\205,\375\271rb\214\312\3300\0134*qu\370k`\267\350"
+ 1409      B972628C 
+ 1409      CAD8300B 
+ 1409      342A7175 
+ 1409      F86B60B7 
+ 1410 0105 120C5382 		.ascii	"\022\014S\202Lq\230'%\012FD)z\214i\277\352l\364-\267"
+ 1410      4C719827 
+ 1410      250A4644 
+ 1410      297A8C69 
+ 1410      BFEA6CF4 
+ 1411 011b 85D0CC48 		.ascii	"\205\320\314H\372\022R\210\257\252k\243!\252\207\333"
+ 1411      FA125288 
+ 1411      AFAA6BA3 
+ 1411      21AA87DB 
+ 1412 012b 513DE148 		.ascii	"Q=\341H\263\243\342\270z\274\035o\303`k\204\033\244"
+ 1412      B3A3E2B8 
+ 1412      7ABC1D6F 
+ 1412      C3606B84 
+ 1412      1BA4
+ 1413 013d E0524534 		.ascii	"\340RE4\017\344O\017\236\254\2727\212\011\371\361\272"
+ 1413      0FE44F0F 
+ 1413      9EACBA37 
+ 1413      8A09F9F1 
+ 1413      BA
+ 1414 014e DF9D1899 		.ascii	"\337\235\030\231\023\025\262\376\374\017=\021Q\352\235"
+ 1414      1315B2FE 
+ 1414      FC0F3D11 
+ 1414      51EA9D
+ 1415 015d 6D29A4FE 		.ascii	"m)\244\376\302\222^\374\000\250z\030\013\220\026\334"
+ 1415      C2925EFC 
+ 1415      00A87A18 
+ 1415      0B9016DC 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 40
+
+
+ 1416 016d 8C9B40B7 		.ascii	"\214\233@\267\025su\356e\030\321bD_\347\323>D\337\344"
+ 1416      157375EE 
+ 1416      6518D162 
+ 1416      445FE7D3 
+ 1416      3E44DFE4 
+ 1417 0181 630FA290 		.ascii	"c\017\242\220i\352\303|\321\211h\025,Vi\2136D\327\303"
+ 1417      69EAC37C 
+ 1417      D1896815 
+ 1417      2C56698B 
+ 1417      3644D7C3 
+ 1418 0195 A24E5BB4 		.ascii	"\242N[\264\"\332\250M \310=p\265C[<A\273a~F\233'\320"
+ 1418      22DAA84D 
+ 1418      20C83D70 
+ 1418      B5435B3C 
+ 1418      41BB617E 
+ 1419 01ad 41985FD1 		.ascii	"A\230_\321\346q\364\2266N\240^\202h%\341\363XZ\005\363"
+ 1419      E671F496 
+ 1419      364EA05E 
+ 1419      826825E1 
+ 1419      F3585A05 
+ 1420 01c2 55DA3C9A 		.ascii	"U\332<\232\256\203\371f@=\240\011\320\012h\3238/\346"
+ 1420      AE83F966 
+ 1420      403DA009 
+ 1420      D00A68D3 
+ 1420      382FE6
+ 1421 01d5 A9A0B49D 		.ascii	"\251\240\264\235 \345\231\265;\032\257G=r\267_\254\366"
+ 1421      20E599B5 
+ 1421      3B1AAF47 
+ 1421      3D72B75F 
+ 1421      ACF6
+ 1422 01e7 FF246323 		.ascii	"\377$c#7\227v\354|r\331\301a\306\226$4\340\223\370\035"
+ 1422      379776EC 
+ 1422      7C72D9C1 
+ 1422      61C69624 
+ 1422      34E093F8 
+ 1423 01fc A2A7ED04 		.ascii	"\242\247\355\004?0\010$j+6\025\266\252\270\001\177#"
+ 1423      3F300824 
+ 1423      6A2B3615 
+ 1423      B6AAB801 
+ 1423      7F23
+ 1424 020e B9AD92EB 		.ascii	"\271\255\222\353\333\250s\247%w\012\000\033\347\344"
+ 1424      DBA873A7 
+ 1424      25770A00 
+ 1424      1BE7E4
+ 1425 021d 09419E09 		.ascii	"\011A\236\011!u\305A\301\035\223\\\227\306A\005j\317"
+ 1425      2175C541 
+ 1425      C11D935C 
+ 1425      97C64105 
+ 1425      6ACF
+ 1426 022f 6D54806B 		.ascii	"mT\200k\305\275\300\351u\370A\352\015\011\275\243!z"
+ 1426      C5BDC0E9 
+ 1426      75F841EA 
+ 1426      0D09BDA3 
+ 1426      217A
+ 1427 0241 E0902BDE 		.ascii	"\340\220+\336\026\212{\245\342\036\251x^(\366\204\354"
+ 1427      168A7BA5 
+ 1427      E21EA978 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 41
+
+
+ 1427      5E28F684 
+ 1427      EC
+ 1428 0252 50447A4C 		.ascii	"PDzL\220\003\222\354\227\321\214\010\243\235\322\350"
+ 1428      900392EC 
+ 1428      97D18C08 
+ 1428      A39DD2E8 
+ 1429 0262 1169B45B 		.ascii	"\021i\264[\350\235\017\321\023F\275\"o\273%\271K*\016"
+ 1429      E89D0FD1 
+ 1429      1346BD22 
+ 1429      6FBB25B9 
+ 1429      4B2A0E
+ 1430 0275 08C5EF25 		.ascii	"\010\305\357%\327-\271\253\202;,\271\016\215\203\263"
+ 1430      D72DB9AB 
+ 1430      823B2CB9 
+ 1430      0E8D83B3 
+ 1431 0285 5BFBBDC6 		.ascii	"[\373\275\306\265\340>\311\235\035uxS(\266Ir\2374z\\"
+ 1431      B5E03EC9 
+ 1431      9D1D7578 
+ 1431      5328B649 
+ 1431      729F347A 
+ 1432 029a 70E74214 		.ascii	"p\347B\024u\356\250\340.H\256I7\312=^\020\036\217\207"
+ 1432      75EEA8E0 
+ 1432      2E48AE49 
+ 1432      37CA3D5E 
+ 1432      101E8F87 
+ 1433 02ae 442A3CEE 		.ascii	"D*<\356\027\232\303\2224\007\215.\020\273\377.d\367"
+ 1433      179AC392 
+ 1433      34078D2E 
+ 1433      10BBFF2E 
+ 1433      64F7
+ 1434 02c0 426FA120 		.ascii	"Bo\241 \177\0149R\202\274.\214\266K\362\200\014\265"
+ 1434      7F0C3952 
+ 1434      82BC2E8C 
+ 1434      B64BF280 
+ 1434      0CB5
+ 1435 02d2 4B708321 		.ascii	"Kp\203!\241j\205\202\033WU\320%|\021.\274C\352\261\227"
+ 1435      A16A8582 
+ 1435      1B5755D0 
+ 1435      257C112E 
+ 1435      BC43EAB1 
+ 1436 02e7 F8C84252 		.ascii	"\370\310BRNn\342\333\370-RF~\306W\360U\374\023\276\201"
+ 1436      4E6EE2DB 
+ 1436      F82D5246 
+ 1436      7EC657F0 
+ 1436      55FC13BE 
+ 1437 02fc DD643E19 		.ascii	"\335d>\031\301\327\360-\\J\026\223\012\262\204xH%\271"
+ 1437      C1D7F02D 
+ 1437      5C4A1693 
+ 1437      0AB28478 
+ 1437      4825B9
+ 1438 030f 8E195940 		.ascii	"\216\031Y@\026\221\313\370m\350iZ\351\337\336\244\227"
+ 1438      1691CBF8 
+ 1438      6DE8695A 
+ 1438      E9DFDEA4 
+ 1438      97
+ 1439 0320 7E872C7D 		.ascii	"~\207,}\243\214\344\232\210\344PH\225\304\026:\0059"
+ 1439      A38CE49A 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 42
+
+
+ 1439      88E45048 
+ 1439      95C4163A 
+ 1439      0539
+ 1440 0332 34362F82 		.ascii	"46/\202\273%\270\375!U\022\331\276!\262}0d\357@\322"
+ 1440      BB25B8FD 
+ 1440      215512D9 
+ 1440      BE21B27D 
+ 1440      3064EF40 
+ 1441 0347 3D066870 		.ascii	"=\006hp\233\0174WD\304\206n\366]\362\177\330\255B:z"
+ 1441      9B0F3457 
+ 1441      44C4866E 
+ 1441      F65DF27F 
+ 1441      D8AD423A 
+ 1442 035c B76DBD47 		.ascii	"\267m\275G\366\354\367\204\367\367\201\244\235\006D"
+ 1442      F6ECF784 
+ 1442      F7F781A4 
+ 1442      9D0644
+ 1443 036b 8F037A01 		.ascii	"\217\003z\001}\200~\003\202F\023\015\035\207\320\001"
+ 1443      7D807E03 
+ 1443      8246130D 
+ 1443      1D87D001 
+ 1444 037b 983F0CCD 		.ascii	"\230?\014\315\334\000\377\021\275\304\203\274\360\376"
+ 1444      DC00FF11 
+ 1444      BDC483BC 
+ 1444      F0FE
+ 1445 0389 D5E506DE 		.ascii	"\325\345\006\336i\007\230ZjD\313\311\012\202\002\344"
+ 1445      6907985A 
+ 1445      6A44CBC9 
+ 1445      0A8202E4 
+ 1446 0399 E17AFC31 		.ascii	"\341z\3741\371\210\320\353 b\352j\035\330\020\001]\010"
+ 1446      F988D0EB 
+ 1446      2062EA6A 
+ 1446      1DD81001 
+ 1446      5D08
+ 1447 03ab 84466E7D 		.ascii	"\204Fn}\274m\345\270\345 \032\371\011\251&\253\211&"
+ 1447      BC6DE5B8 
+ 1447      E5201AF9 
+ 1447      09A926AB 
+ 1447      8926
+ 1448 03bd AF9F239E 		.ascii	"\257\237#\236\221\355\275\345,\232s\037\216\345\226"
+ 1448      91EDBDE5 
+ 1448      2C9A731F 
+ 1448      8EE596
+ 1449 03cc 9360C989 		.ascii	"\223`\311\211\336\312\321jH\302J\262J\333\214iq\323"
+ 1449      DECAD16A 
+ 1449      48C24AB2 
+ 1449      4ADB8C69 
+ 1449      71D3
+ 1450 03de FA9FEE79 		.ascii	"\372\237\356y\344\301G\370\243\340\333^c\215\212W\223"
+ 1450      E4C147F8 
+ 1450      A3E0DB5E 
+ 1450      638D8A57 
+ 1450      93
+ 1451 03ef 2AB266EC 		.ascii	"*\262f\354\031\325\236\022<\211\372\2655\240^C\376\303"
+ 1451      19D59E12 
+ 1451      3C89FAB5 
+ 1451      35A05E43 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 43
+
+
+ 1451      FEC3
+ 1452 0401 D5790EB6 		.ascii	"\325y\016\266\256\\4\316\3476\264\340e\241Z\012\251"
+ 1452      AE5C34CE 
+ 1452      E736B4E0 
+ 1452      65A15A0A 
+ 1452      A9
+ 1453 0412 DABAB726 		.ascii	"\332\272\267&\374\301\300]\265\351v\005\321\006\300"
+ 1453      FCC1C05D 
+ 1453      B5E97605 
+ 1453      D106C0
+ 1454 0421 0EC06E40 		.ascii	"\016\300n@;\340\250\3023\246\022\332\243 \345w\003e"
+ 1454      3BE0A8C2 
+ 1454      33A612DA 
+ 1454      A320E577 
+ 1454      0365
+ 1455 0433 0BF7DE2B 		.ascii	"\013\367\336+\233\260\326\206k\277+\233\317\242=\221"
+ 1455      9BB0D686 
+ 1455      6BBF2B9B 
+ 1455      CFA23D91 
+ 1456 0443 0DF80BB2 		.ascii	"\015\370\013\262\351\177;\351\372 \373\271d\233F\331"
+ 1456      E97F3BE9 
+ 1456      FA20FBB9 
+ 1456      649B46D9 
+ 1457 0453 7541765D 		.ascii	"uAv]\010;\346\256\250%\274\203n\202(\267\222-\344+\262"
+ 1457      083BE6AE 
+ 1457      A825BC83 
+ 1457      6E8228B7 
+ 1457      922DE42B 
+ 1458 0468 917C4D36 		.ascii	"\221|M6\223:\362\015\331F\276\344Qs3uA3k\245\2311\335"
+ 1458      933AF20D 
+ 1458      D946BEE4 
+ 1458      51733375 
+ 1458      41336BA5 
+ 1459 047f 6C4390FD 		.ascii	"lC\220\375,\204MB\237@*\352W\276\012\307\366S\342\227"
+ 1459      2C844D42 
+ 1459      9F402AEA 
+ 1459      57BE0AC7 
+ 1459      F653E297 
+ 1460 0493 9CEC2EC3 		.ascii	"\234\354.\303\237\353\251l\300\353%9z3|\026\264\272"
+ 1460      9FEBA96C 
+ 1460      C0EB2539 
+ 1460      7A337C16 
+ 1460      B4BA
+ 1461 04a5 612CA9DF 		.ascii	"a,\251\337a\255A\356\203\020\253BsW\220]\032\222\260"
+ 1461      61AD41EE 
+ 1461      8310AB42 
+ 1461      7357905D 
+ 1461      1A92B0
+ 1462 04b8 24444F43 		.ascii	"$DOC\216I\337\251\235\035\341\261\241\011\330N~%\003"
+ 1462      8E49DFA9 
+ 1462      9D1DE1B1 
+ 1462      A109D84E 
+ 1462      7E2503
+ 1463 04cb 0AE90F1C 		.ascii	"\012\351\017\034?\033!\357\200o\205\321zP\001\262k\337"
+ 1463      3F1B21EF 
+ 1463      806F85D1 
+ 1463      7A5001B2 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 44
+
+
+ 1463      6BDF
+ 1464 04dd 9A2DE422 		.ascii	"\232-\344\"\006\203^\246\272\233\251\257\272\217\325"
+ 1464      06835EA6 
+ 1464      BA9BA9AF 
+ 1464      BA8FD5
+ 1465 04ec 3256C876 		.ascii	"2V\310v\366\371\253\312\373\2741\225\245\274cx\331\357"
+ 1465      F6F9ABCA 
+ 1465      FBBC3195 
+ 1465      A5BC6378 
+ 1465      D9EF
+ 1466 04fe FD70B9AA 		.ascii	"\375p\271\252\252\307G\002\006\356\234\261\262H\366"
+ 1466      AAC74702 
+ 1466      06EE9CB1 
+ 1466      B248F6
+ 1467 050d 150CA5B9 		.ascii	"\025\014\245\271\254\254\234\257\027\306\006\312\364"
+ 1467      ACAC9CAF 
+ 1467      17C606CA 
+ 1467      F4
+ 1468 051a 179E36CC 		.ascii	"\027\2366\314\324rV\253\232\252\233X\271\237\245WU\365"
+ 1468      D47256AB 
+ 1468      9AAA9B58 
+ 1468      B99FA557 
+ 1468      55F5
+ 1469 052c B572176C 		.ascii	"\265r\027lI\317\212\371Q\201\262no\240\211=\030\000"
+ 1469      49CF8AF9 
+ 1469      5181B26E 
+ 1469      6FA0893D 
+ 1469      1800
+ 1470 053e 2B7EE651 		.ascii	"+~\346Q+\261\033T\334*\253T\261/\260\342\235E\236\346"
+ 1470      2BB11B54 
+ 1470      DC2AAB54 
+ 1470      B12FB0E2 
+ 1470      9D459EE6 
+ 1471 0552 B68F7065 		.ascii	"\266\217pe@e\356\200\352\305\356j\325\353\006\331\007"
+ 1471      4065EE80 
+ 1471      EAC5EE6A 
+ 1471      D5EB06D9 
+ 1471      07
+ 1472 0563 2A4B9B19 		.ascii	"*K\233\031k\364P7k\366V\006\232\2751\276\352fVY\335"
+ 1472      6BF45037 
+ 1472      6BF65606 
+ 1472      9ABD31BE 
+ 1472      EA665659 
+ 1473 0578 EC8D0E70 		.ascii	"\354\215\016p\021\305W\2522_\300C}\245\335\340J\365"
+ 1473      11C557AA 
+ 1473      325FC043 
+ 1473      7DA5DDE0 
+ 1473      4AF5
+ 1474 058a 467375E0 		.ascii	"Fsu\340\251\017\024\340\002\213\361A\340\356j\346\213"
+ 1474      A90F14E0 
+ 1474      028BF141 
+ 1474      E0EE6AE6 
+ 1474      8B
+ 1475 059b 71577BDC 		.ascii	"qW{\334n\320\214\001\232}P\315\274\321\225\325\036\220"
+ 1475      6ED08C01 
+ 1475      9A7D50CD 
+ 1475      BCD195D5 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 45
+
+
+ 1475      1E90
+ 1476 05ad 5518387A 		.ascii	"U\0308zI{U\003\023\374^\234\242\220\255\276\226c\246"
+ 1476      497B5503 
+ 1476      13FC5E9C 
+ 1476      A290ADBE 
+ 1476      9663A6
+ 1477 05c0 4B3CFEBA 		.ascii	"K<\376\272\375\356\003&|\277o\012\302\011\321\264\302"
+ 1477      FDEE0326 
+ 1477      7CBF6F0A 
+ 1477      C209D1B4 
+ 1477      C2
+ 1478 05d1 08F9FB74 		.ascii	"\010\371\373t\244\273\311\360\020\343M\201\335\327\257"
+ 1478      A4BBC9F0 
+ 1478      10E34D81 
+ 1478      DDD7AF
+ 1479 05e0 370504AF 		.ascii	"7\005\004\257/\027\301D\234\317\317F\256\364\007\216"
+ 1479      2F17C144 
+ 1479      9CCFCF46 
+ 1479      AEF4078E 
+ 1480 05f0 4C6A2863 		.ascii	"Lj(c5 3\245\2114\362\264\303\257\221\240\006\242\222"
+ 1480      352033A5 
+ 1480      8934F2B4 
+ 1480      C3AF91A0 
+ 1480      06A292
+ 1481 0603 992D9476 		.ascii	"\231-\224vq;g\257\014\273#\342\374~6\274\266\345U!\273"
+ 1481      713B67AF 
+ 1481      0CBB23E2 
+ 1481      FC7E36BC 
+ 1481      B6E55521 
+ 1482 0618 43C8EE10 		.ascii	"C\310\356\020\262\365\224\236\341\262\333\227}u\231"
+ 1482      B2F5949E 
+ 1482      E1B2DB97 
+ 1482      7D7599
+ 1483 0627 C6ADF0B3 		.ascii	"\306\255\360\263Z\377\0028,\274@J\023i\021\322-Bz3\245"
+ 1483      5AFF0238 
+ 1483      2CBC404A 
+ 1483      136911D2 
+ 1483      2D427A33 
+ 1484 063c C35C7AF5 		.ascii	"\303\\z\365\332\252\322\3108?t\244%\227|7\243\374u\314"
+ 1484      DAAAD2C8 
+ 1484      383F74A4 
+ 1484      25977C37 
+ 1484      A3FC75CC 
+ 1485 0650 63840877 		.ascii	"c\204\010w\011\361]\374\220\314\\Gi\203\011\204\217"
+ 1485      09F15DFC 
+ 1485      90CC5C47 
+ 1485      69830984 
+ 1485      8F
+ 1486 0661 BDF5C522 		.ascii	"\275\365\305\"\034\253WQ\325\337Y\367\350\202t7\347"
+ 1486      1CAB5751 
+ 1486      D5DF59F7 
+ 1486      E8827437 
+ 1486      E7
+ 1487 0672 FB0E9C1A 		.ascii	"\373\016\234\0326j\274*\370\275D\010(\304\177dhp\264"
+ 1487      366ABC2A 
+ 1487      F8BD4408 
+ 1487      28C47F64 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 46
+
+
+ 1487      6870B4
+ 1488 0685 D5EE1307 		.ascii	"\325\356\023\007m?\341\334\271\303kZ\306\205#\276\274"
+ 1488      6D3FE1DC 
+ 1488      B9C36B5A 
+ 1488      C68523BE 
+ 1488      BC
+ 1489 0696 78673F07 		.ascii	"xg?\007\202f\016u\266.\212\012\341\266\023I\236;\261"
+ 1489      82660E75 
+ 1489      B62E8A0A 
+ 1489      E1B61349 
+ 1489      9E3BB1
+ 1490 06a9 7C7998F4 		.ascii	"|y\230\364qP\370h\327|\034\351\361\026p\027\355\244"
+ 1490      7150F868 
+ 1490      D77C1CE9 
+ 1490      F1167017 
+ 1490      EDA4
+ 1491 06bb 8D2864BE 		.ascii	"\215(d\276\377\313#\344\227\2259DP\007\221\225\031n"
+ 1491      FFCB23E4 
+ 1491      97953944 
+ 1491      50079195 
+ 1491      196E
+ 1492 06cd 1795F14D 		.ascii	"\027\225\361M9Dv\353.\016\303DO\340~J;M\360\204\000"
+ 1492      394476EB 
+ 1492      2E0EC344 
+ 1492      4FE07E4A 
+ 1492      3B4DF084 
+ 1493 06e2 9C049C05 		.ascii	"\234\004\234\005\014\001\256\230\370;\351C\320\367z"
+ 1493      0C01AE98 
+ 1493      F83BE943 
+ 1493      D0F77A
+ 1494 06f1 30BD0149 		.ascii	"0\275\001I\211^u\360\3202%\330\367xh\307.\351O\273\243"
+ 1494      895E75F0 
+ 1494      D03225D8 
+ 1494      F77868C7 
+ 1494      2EE94FBB 
+ 1495 0706 A437A46F 		.ascii	"\2447\244o\361\276\337U\307Xxd\013\356\226\234|$\034"
+ 1495      F1BEDF55 
+ 1495      C7587864 
+ 1495      0BEE969C 
+ 1495      7C241C
+ 1496 0719 1754A7A4 		.ascii	"\027T\247\244\344\333\232~\267\177O\216C\360\275\020"
+ 1496      E4DB9A7E 
+ 1496      B77F4F8E 
+ 1496      43F0BD10 
+ 1497 0729 E849728A 		.ascii	"\350Ir\212\364\220\263\344\007r\206\234\026\315\275"
+ 1497      F490B3E4 
+ 1497      0772869C 
+ 1497      16CDBD
+ 1498 0738 F6A8D03F 		.ascii	"\366\250\320?6\326\264x\000\237\020\334\011\311\235"
+ 1498      36D6B478 
+ 1498      009F10DC 
+ 1498      09C99D
+ 1499 0747 1D7DF912 		.ascii	"\035}\371\022\334\221\020\277B\261[\220]!{\251\343\275"
+ 1499      DC9110BF 
+ 1499      42B15B90 
+ 1499      5D217BA9 
+ 1499      E3BD
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 47
+
+
+ 1500 0759 6368F386 		.ascii	"ch\363\206\371z/Ret{\311\035\303S\310\340\327\037\271"
+ 1500      F97A2F52 
+ 1500      65747BC9 
+ 1500      1DC353C8 
+ 1500      E0D71FB9 
+ 1501 076d 4DB2707D 		.ascii	"M\262p}\302\3269\242}\205\364\360\257\036\025Sw\030"
+ 1501      C2D639A2 
+ 1501      7D85F4F0 
+ 1501      AF1E1553 
+ 1501      7718
+ 1502 077f 4856EC5E 		.ascii	"HV\354^Z\023\026\033\272\351\273\230\005\255\032L\275"
+ 1502      5A13161B 
+ 1502      BAE9BB98 
+ 1502      05AD1A4C 
+ 1502      BD
+ 1503 0790 61882E06 		.ascii	"a\210.\006,\005|\010X\005\370\014\360e\030\027\270\301"
+ 1503      2C057C08 
+ 1503      5805F80C 
+ 1503      F0651817 
+ 1503      B8C1
+ 1504 07a2 BF1E7AA2 		.ascii	"\277\036z\242\350\026\260}\337\266\317\317\367\233b"
+ 1504      E816B07D 
+ 1504      DFB6CFCF 
+ 1504      F79B62
+ 1505 07b1 E5E78274 		.ascii	"\345\347\202t\3623\271\002\366\256\202\217[\244\324"
+ 1505      F233B902 
+ 1505      F6AE828F 
+ 1505      5BA4D4
+ 1506 07c0 7093DC26 		.ascii	"p\223\334&\327\210\333\300\0147\310\365\340KS\305"
+ 1506      D788DBC0 
+ 1506      0C37C8F5 
+ 1506      E04B53C5 
+ 1507 07d0 4AC61BF3 		.ascii	"J\306\033\363\005r\221\\%z%v\311\227\351\217\203\344"
+ 1507      0572915C 
+ 1507      257A2576 
+ 1507      C997E98F 
+ 1507      83E4
+ 1508 07e2 8824FB49 		.ascii	"\210$\373I\220\\\021$\007$y\236\310\227\373\233\245"
+ 1508      905C1124 
+ 1508      0724799E 
+ 1508      C897FB9B 
+ 1508      A5
+ 1509 07f3 3CC117C8 		.ascii	"<\301\027\310\217\222\354\226f\207\004wYr\301g|\255"
+ 1509      8F92EC96 
+ 1509      66870477 
+ 1509      5972C167 
+ 1509      7CAD
+ 1510 0805 3768F492 		.ascii	"7h\364\222\344:F\277\030\226\005\331!\311\016\312x\026"
+ 1510      E43A46BF 
+ 1510      189605D9 
+ 1510      21C90ECA 
+ 1510      7816
+ 1511 0817 05C96149 		.ascii	"\005\311aI^\034U\275&|\376$I\361t\242*\257\316\372\313"
+ 1511      5E1C55BD 
+ 1511      267CFE24 
+ 1511      49F174A2 
+ 1511      2AAFCEFA 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 48
+
+
+ 1512 082c 4BFE365A 		.ascii	"K\3766Zs-oe\206\273&N!'>\330r\216\310\272{\014z\335"
+ 1512      732D6F65 
+ 1512      86BB264E 
+ 1512      21273ED8 
+ 1512      728EC8BA 
+ 1513 0844 DF324047 		.ascii	"\3372@G\331\027\206\376\360\236\217\015o+\313\360a\217"
+ 1513      D91786FE 
+ 1513      F09E8F0D 
+ 1513      6F2BCBF0 
+ 1513      618F
+ 1514 0856 A1DC508F 		.ascii	"\241\334P\217\365:\224\033\360&<\363\023\252\220\232"
+ 1514      F53A941B 
+ 1514      F0263CF3 
+ 1514      13AA909A 
+ 1515 0866 B60ADFB8 		.ascii	"\266\012\337\270_\034\261;\337\000\320\2477\036\356"
+ 1515      5F1CB13B 
+ 1515      DF00D0A7 
+ 1515      371EEE
+ 1516 0875 1D6D0D4D 		.ascii	"\035m\015M\342\204-\000O\310h\263YfX\3774qb<\374e\347"
+ 1516      E2842D00 
+ 1516      4FC868B3 
+ 1516      596658FF 
+ 1516      3471623C 
+ 1517 088c E6CDCE73 		.ascii	"\346\315\316s\026'\232\315\346xgq|nV~\374lgVQNq\274"
+ 1517      16279ACD 
+ 1517      E6786771 
+ 1517      7C6E567E 
+ 1517      FC6C6756 
+ 1518 08a4 6D96DD36 		.ascii	"m\226\3356\353\331\244\304\351\223\354\311i6K\306\363"
+ 1518      EBD9A4C4 
+ 1518      E993ECC9 
+ 1518      69364BC6 
+ 1518      F3
+ 1519 08b5 29D61774 		.ascii	")\326\027tnb6\2351\363\271\011\026\363d\024#.LL\234"
+ 1519      6E62369D 
+ 1519      31F3B909 
+ 1519      16F36414 
+ 1519      232E4C4C 
+ 1520 08ca 9D909330 		.ascii	"\235\220\22309a6\242%ys]I\211vW\2705\305\226b}>%\371"
+ 1520      396136A2 
+ 1520      2579735D 
+ 1520      49897657 
+ 1520      B835C596 
+ 1521 08e3 7183C566 		.ascii	"q\203\305fU\246%[\254\362\322c\341S3\247%\246g\246\314"
+ 1521      55A6255B 
+ 1521      ACF2D263 
+ 1521      E15333A7 
+ 1521      25A667A6 
+ 1522 08f8 B4F29959 		.ascii	"\264\362\231Y\237\005\331I\341SS\247%\0116U\312\245"
+ 1522      9F05D949 
+ 1522      E15353A7 
+ 1522      25093655 
+ 1522      CAA5
+ 1523 090a FE522E29 		.ascii	"\376R.)\214[\201+|4\217e\022\303\270\005\215I\025\022"
+ 1523      8C5B812B 
+ 1523      7C348F65 
+ 1523      12C3B805 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 49
+
+
+ 1523      8D491512 
+ 1524 091e A9A11266 		.ascii	"\251\241\022f\312u\255\266YV>1\363\211\344\022(\327"
+ 1524      CA75ADB6 
+ 1524      59563E31 
+ 1524      F389E412 
+ 1524      28D7
+ 1525 0930 D6B9D4A0 		.ascii	"\326\271\324\240P\252.d\260\244Y\025\313\364\031\326"
+ 1525      50AA2E64 
+ 1525      B0A45915 
+ 1525      CBF419D6 
+ 1526 0940 B0CCF474 		.ascii	"\260\314\364t>\022\2135\002\246i\2116\2762[\236|\321"
+ 1526      3E128B35 
+ 1526      02A66989 
+ 1526      36BE325B 
+ 1526      9E7CD1
+ 1527 0953 C2536A73 		.ascii	"\302Sjs\225\344\3449_|\335Y\364JqaV\266\303^R\354(z"
+ 1527      95E4E439 
+ 1527      5F7CDD59 
+ 1527      F44A7161 
+ 1527      56B6C35E 
+ 1528 096b D1627DC1 		.ascii	"\321b}\3016kj\272\355\321\344\274\374<Wn^I\001z\352"
+ 1528      366B6ABA 
+ 1528      EDD1E4BC 
+ 1528      FC3C576E 
+ 1528      5E49017A 
+ 1529 0980 8E75C876 		.ascii	"\216u\310v\026\0248\347\306;\346\271\240\016\361\242"
+ 1529      161438E7 
+ 1529      C63BE6B9 
+ 1529      A00EF1A2 
+ 1530 0990 0EF3E6C5 		.ascii	"\016\363\346\305\027\273\012\222\022\347LJ\230<o\336"
+ 1530      17BB0A92 
+ 1530      12E74C4A 
+ 1530      983C6FDE 
+ 1531 09a0 C45C748F 		.ascii	"\304\\t\217\325b\261\317z\243\320\221\354\230\243L\235"
+ 1531      D562B1CF 
+ 1531      7AA3D091 
+ 1531      EC98A34C 
+ 1531      9D
+ 1532 09b1 6E4D37A6 		.ascii	"nM7\246gX\376\002\271\266Y\255\370\2578\325\230\235"
+ 1532      6758FE02 
+ 1532      B9B659AD 
+ 1532      F8AF38D5 
+ 1532      989D
+ 1533 09c3 EFC82AD2 		.ascii	"\357\310*\322*b~\334\3562\024;\\O\337\265\354\205\316"
+ 1533      2A627EDC 
+ 1533      EE32143B 
+ 1533      5C4FDFB5 
+ 1533      EC85CE
+ 1534 09d6 2257B1EE 		.ascii	"\"W\261\356*>==9~FfZ\306k\211\272G\373\313\205yNph\310"
+ 1534      2A3E3D3D 
+ 1534      397E4666 
+ 1534      5AC66B89 
+ 1534      BA47FBCB 
+ 1535 09f0 48B61AD2 		.ascii	"H\266\032\322\222\255\306\314\3472\223\255a\031\266"
+ 1535      92ADC6CC 
+ 1535      E73293AD 
+ 1535      6119B6
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 50
+
+
+ 1536 09ff CC949464 		.ascii	"\314\224\224d\253)c\326\013\231)V\343\263\031\311)V"
+ 1536      AB2963D6 
+ 1536      0B992956 
+ 1536      E3B319C9 
+ 1536      2956
+ 1537 0a11 1E476AE4 		.ascii	"\036Gj\344\250\026\2705?\216\302\263\212\012^\233\354"
+ 1537      A816B835 
+ 1537      3F8EC2B3 
+ 1537      8A0A5E9B 
+ 1537      EC
+ 1538 0a22 78B40045 		.ascii	"x\264\000Ed\203\037\307\274G\013&\241\2501Rys\363~%"
+ 1538      64831FC7 
+ 1538      BC470B26 
+ 1538      A1A83152 
+ 1538      7973F37E 
+ 1539 0a37 B6DF7024 		.ascii	"\266\337p$Q\244\335\016\233\315\177C3\025\256]M\203"
+ 1539      51A4DD0E 
+ 1539      9BCD7F43 
+ 1539      3315AE5D 
+ 1539      4D83
+ 1540 0a49 59B4EE24 		.ascii	"Y\264\356$;\337\231\375\212F\375\3717e`4\345\300\330"
+ 1540      3BDF99FD 
+ 1540      8A46FDF9 
+ 1540      37656034 
+ 1540      E5C0D8
+ 1541 0a5c F3F373EC 		.ascii	"\363\363s\354.\310\263\031r\020.\343\215\324f\220\324"
+ 1541      2EC8B319 
+ 1541      72102EE3 
+ 1541      8DD46690 
+ 1541      D4
+ 1542 0a6d 9242BB4B 		.ascii	"\222B\273K\311\232S\224op\346\024\031\013K\012s\212"
+ 1542      C99A5394 
+ 1542      6F70E614 
+ 1542      190B4B0A 
+ 1542      738A
+ 1543 0a7f C29CC585 		.ascii	"\302\234\305\205\016GN\221\311\311\365\212\214\005\316"
+ 1543      0E474E91 
+ 1543      C9C9F58A 
+ 1543      8C05CE
+ 1544 0a8e 1C471197 		.ascii	"\034G\021\227\3115e\246&g\271\262L\2313\364a\272>\244"
+ 1544      C93565A6 
+ 1544      2667B9B2 
+ 1544      4C9933F4 
+ 1544      61BA3EA4 
+ 1545 0aa2 E843B23E 		.ascii	"\350C\262>X\364a\232>L\325\2074>\334\2539\315v\316\235"
+ 1545      58F4619A 
+ 1545      3E4CD587 
+ 1545      343EDCAB 
+ 1545      39CD76CE 
+ 1546 0ab7 93F7B2DD 		.ascii	"\223\367\262\3355^[\3458\346d\225\344\273\304\325\377"
+ 1546      355E5BE5 
+ 1546      38E66495 
+ 1546      E4BBC4D5 
+ 1546      FF
+ 1547 0ac8 0289D4E1 		.ascii	"\002\211\324\341h"
+ 1547      68
+ 1548              		.text
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 51
+
+
+ 1549              		.section	.gnu.lto_.symtab.8e7ef83a,"e",%progbits
+ 1550 0000 5F5F6561 		.ascii	"__early_init\000"
+ 1550      726C795F 
+ 1550      696E6974 
+ 1550      00
+ 1551 000d 00       		.ascii	"\000"
+ 1552 000e 00       		.ascii	"\000"
+ 1553 000f 00       		.ascii	"\000"
+ 1554 0010 00000000 		.ascii	"\000\000\000\000\000\000\000\000"
+ 1554      00000000 
+ 1555 0018 45010000 		.ascii	"E\001\000\000"
+ 1556 001c 626F6172 		.ascii	"boardInit\000"
+ 1556      64496E69 
+ 1556      7400
+ 1557 0026 00       		.ascii	"\000"
+ 1558 0027 00       		.ascii	"\000"
+ 1559 0028 00       		.ascii	"\000"
+ 1560 0029 00000000 		.ascii	"\000\000\000\000\000\000\000\000"
+ 1560      00000000 
+ 1561 0031 47010000 		.ascii	"G\001\000\000"
+ 1562 0035 73746D33 		.ascii	"stm32_clock_init\000"
+ 1562      325F636C 
+ 1562      6F636B5F 
+ 1562      696E6974 
+ 1562      00
+ 1563 0046 00       		.ascii	"\000"
+ 1564 0047 02       		.ascii	"\002"
+ 1565 0048 00       		.ascii	"\000"
+ 1566 0049 00000000 		.ascii	"\000\000\000\000\000\000\000\000"
+ 1566      00000000 
+ 1567 0051 49010000 		.ascii	"I\001\000\000"
+ 1568              		.text
+ 1569              		.section	.gnu.lto_.ext_symtab.8e7ef83a,"e",%progbits
+ 1570 0000 01       		.ascii	"\001"
+ 1571 0001 01       		.ascii	"\001"
+ 1572 0002 00       		.ascii	"\000"
+ 1573 0003 01       		.ascii	"\001"
+ 1574 0004 00       		.ascii	"\000"
+ 1575 0005 01       		.ascii	"\001"
+ 1576 0006 00       		.ascii	"\000"
+ 1577              		.text
+ 1578              		.section	.gnu.lto_.opts,"e",%progbits
+ 1579 0000 272D666E 		.ascii	"'-fno-openmp' '-fno-openacc' '-fno-pie' '-fcf-prote"
+ 1579      6F2D6F70 
+ 1579      656E6D70 
+ 1579      2720272D 
+ 1579      666E6F2D 
+ 1580 0033 6374696F 		.ascii	"ction=none' '-g' '-mcpu=cortex-m4' '-mthumb' '-mflo"
+ 1580      6E3D6E6F 
+ 1580      6E652720 
+ 1580      272D6727 
+ 1580      20272D6D 
+ 1581 0066 61742D61 		.ascii	"at-abi=soft' '-mlibarch=armv7e-m' '-march=armv7e-m'"
+ 1581      62693D73 
+ 1581      6F667427 
+ 1581      20272D6D 
+ 1581      6C696261 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 52
+
+
+ 1582 0099 20272D4F 		.ascii	" '-O2' '-fomit-frame-pointer' '-falign-functions=16"
+ 1582      32272027 
+ 1582      2D666F6D 
+ 1582      69742D66 
+ 1582      72616D65 
+ 1583 00cc 2720272D 		.ascii	"' '-ffunction-sections' '-fdata-sections' '-fno-com"
+ 1583      6666756E 
+ 1583      6374696F 
+ 1583      6E2D7365 
+ 1583      6374696F 
+ 1584 00ff 6D6F6E27 		.ascii	"mon' '-flto' '-Xassembler' '-alms=./build/lst/board"
+ 1584      20272D66 
+ 1584      6C746F27 
+ 1584      20272D58 
+ 1584      61737365 
+ 1585 0132 2E6C7374 		.ascii	".lst'\000"
+ 1585      2700
+ 1586              		.text
+ 1587              		.comm	__gnu_lto_slim,1,1
+ 1588              		.ident	"GCC: (Arm GNU Toolchain 11.3.Rel1) 11.3.1 20220712"
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s 			page 53
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 board.c
+C:\Users\Ridwane\AppData\Local\Temp\ccIdeAX3.s:24     .gnu.debuglto_.debug_info:00000000 board.c.2b0d070b
+                            *COM*:00000001 __gnu_lto_slim
+
+NO UNDEFINED SYMBOLS
