@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -10,7 +10,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
    7              		.eabi_attribute 24, 1
    8              		.eabi_attribute 25, 1
    9              		.eabi_attribute 26, 1
-  10              		.eabi_attribute 30, 2
+  10              		.eabi_attribute 30, 6
   11              		.eabi_attribute 34, 1
   12              		.eabi_attribute 18, 4
   13              		.file	"hal_lld.c"
@@ -32,10 +32,10 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
   29 0007 04       		.byte	0x4
   30 0008 00000000 		.4byte	.Ldebug_abbrev0
   31 000c 0C       		.uleb128 0xc
-  32 000d 1B000000 		.4byte	.LASF71
+  32 000d 00010000 		.4byte	.LASF71
   33 0011 1D       		.byte	0x1d
   34 0012 F4010000 		.4byte	.LASF72
-  35 0016 34010000 		.4byte	.LASF73
+  35 0016 79000000 		.4byte	.LASF73
   36 001a 00000000 		.4byte	.Ldebug_line0
   37 001e 0D       		.uleb128 0xd
   38 001f 04       		.byte	0x4
@@ -48,7 +48,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
   45 002c 03       		.uleb128 0x3
   46 002d 08       		.byte	0x8
   47 002e 05       		.byte	0x5
-  48 002f 05010000 		.4byte	.LASF1
+  48 002f 4A000000 		.4byte	.LASF1
   49 0033 03       		.uleb128 0x3
   50 0034 08       		.byte	0x8
   51 0035 04       		.byte	0x4
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
   55 003c 06       		.byte	0x6
   56 003d 76020000 		.4byte	.LASF3
   57 0041 09       		.uleb128 0x9
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 2
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 2
 
 
   58 0042 D9010000 		.4byte	.LASF8
@@ -73,7 +73,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
   67 0054 03       		.uleb128 0x3
   68 0055 02       		.byte	0x2
   69 0056 05       		.byte	0x5
-  70 0057 DF000000 		.4byte	.LASF5
+  70 0057 24000000 		.4byte	.LASF5
   71 005b 03       		.uleb128 0x3
   72 005c 02       		.byte	0x2
   73 005d 07       		.byte	0x7
@@ -83,7 +83,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
   77 0064 05       		.byte	0x5
   78 0065 BB010000 		.4byte	.LASF7
   79 0069 09       		.uleb128 0x9
-  80 006a 13010000 		.4byte	.LASF9
+  80 006a 58000000 		.4byte	.LASF9
   81 006e 01       		.byte	0x1
   82 006f 4F       		.byte	0x4f
   83 0070 19       		.byte	0x19
@@ -97,7 +97,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
   91 007e 07       		.byte	0x7
   92 007f 82020000 		.4byte	.LASF11
   93 0083 09       		.uleb128 0x9
-  94 0084 5E010000 		.4byte	.LASF12
+  94 0084 A3000000 		.4byte	.LASF12
   95 0088 02       		.byte	0x2
   96 0089 18       		.byte	0x18
   97 008a 13       		.byte	0x13
@@ -105,7 +105,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
   99 008f 04       		.uleb128 0x4
  100 0090 83000000 		.4byte	0x83
  101 0094 09       		.uleb128 0x9
- 102 0095 77010000 		.4byte	.LASF13
+ 102 0095 BC000000 		.4byte	.LASF13
  103 0099 02       		.byte	0x2
  104 009a 30       		.byte	0x30
  105 009b 14       		.byte	0x14
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  112 00ab 01       		.byte	0x1
  113 00ac 08       		.byte	0x8
  114 00ad F6020000 		.4byte	.LASF14
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 3
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 3
 
 
  115 00b1 07       		.uleb128 0x7
@@ -127,14 +127,14 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  118 00b4 B801     		.2byte	0x1b8
  119 00b6 E1010000 		.4byte	0x1e1
  120 00ba 01       		.uleb128 0x1
- 121 00bb 24010000 		.4byte	.LASF15
+ 121 00bb 69000000 		.4byte	.LASF15
  122 00bf 03       		.byte	0x3
  123 00c0 BA01     		.2byte	0x1ba
  124 00c2 12       		.byte	0x12
  125 00c3 A5000000 		.4byte	0xa5
  126 00c7 00       		.byte	0
  127 00c8 01       		.uleb128 0x1
- 128 00c9 A2010000 		.4byte	.LASF16
+ 128 00c9 E7000000 		.4byte	.LASF16
  129 00cd 03       		.byte	0x3
  130 00ce BB01     		.2byte	0x1bb
  131 00d0 12       		.byte	0x12
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  169 011c 01       		.uleb128 0x1
  170 011d 99020000 		.4byte	.LASF19
  171 0121 03       		.byte	0x3
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 4
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 4
 
 
  172 0122 C101     		.2byte	0x1c1
@@ -214,7 +214,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  202 015d A0000000 		.4byte	0xa0
  203 0161 34       		.byte	0x34
  204 0162 01       		.uleb128 0x1
- 205 0163 B6010000 		.4byte	.LASF24
+ 205 0163 FB000000 		.4byte	.LASF24
  206 0167 03       		.byte	0x3
  207 0168 C601     		.2byte	0x1c6
  208 016a 12       		.byte	0x12
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  226 018d 44465200 		.ascii	"DFR\000"
  227 0191 03       		.byte	0x3
  228 0192 C901     		.2byte	0x1c9
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 5
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 5
 
 
  229 0194 12       		.byte	0x12
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  283 0205 00       		.byte	0
  284 0206 0A       		.uleb128 0xa
  285 0207 F6010000 		.4byte	0x1f6
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 6
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 6
 
 
  286 020b 04       		.uleb128 0x4
@@ -333,7 +333,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  315 0252 04       		.byte	0x4
  316 0253 00       		.byte	0
  317 0254 08       		.uleb128 0x8
- 318 0255 66010000 		.4byte	.LASF30
+ 318 0255 AB000000 		.4byte	.LASF30
  319 0259 03       		.byte	0x3
  320 025a CF01     		.2byte	0x1cf
  321 025c 03       		.byte	0x3
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  340 0282 BE020000 		.4byte	0x2be
  341 0286 01       		.uleb128 0x1
  342 0287 91030000 		.4byte	.LASF31
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 7
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 7
 
 
  343 028b 04       		.byte	0x4
@@ -374,14 +374,14 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  353 029c A0000000 		.4byte	0xa0
  354 02a0 04       		.byte	0x4
  355 02a1 01       		.uleb128 0x1
- 356 02a2 AF010000 		.4byte	.LASF32
+ 356 02a2 F4000000 		.4byte	.LASF32
  357 02a6 04       		.byte	0x4
  358 02a7 4F01     		.2byte	0x14f
  359 02a9 11       		.byte	0x11
  360 02aa A0000000 		.4byte	0xa0
  361 02ae 08       		.byte	0x8
  362 02af 01       		.uleb128 0x1
- 363 02b0 9B010000 		.4byte	.LASF33
+ 363 02b0 E0000000 		.4byte	.LASF33
  364 02b4 04       		.byte	0x4
  365 02b5 5001     		.2byte	0x150
  366 02b7 11       		.byte	0x11
@@ -414,11 +414,11 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  393 02eb A0000000 		.4byte	0xa0
  394 02ef 04       		.byte	0x4
  395 02f0 01       		.uleb128 0x1
- 396 02f1 A7010000 		.4byte	.LASF36
+ 396 02f1 EC000000 		.4byte	.LASF36
  397 02f5 04       		.byte	0x4
  398 02f6 DD01     		.2byte	0x1dd
  399 02f8 11       		.byte	0x11
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 8
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 8
 
 
  400 02f9 A0000000 		.4byte	0xa0
@@ -478,11 +478,11 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  454 0361 A0000000 		.4byte	0xa0
  455 0365 04       		.byte	0x4
  456 0366 00       		.byte	0
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 9
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 9
 
 
  457 0367 08       		.uleb128 0x8
- 458 0368 F9000000 		.4byte	.LASF40
+ 458 0368 3E000000 		.4byte	.LASF40
  459 036c 04       		.byte	0x4
  460 036d 5F02     		.2byte	0x25f
  461 036f 03       		.byte	0x3
@@ -507,7 +507,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  480 0393 A0000000 		.4byte	0xa0
  481 0397 04       		.byte	0x4
  482 0398 01       		.uleb128 0x1
- 483 0399 59010000 		.4byte	.LASF42
+ 483 0399 9E000000 		.4byte	.LASF42
  484 039d 04       		.byte	0x4
  485 039e 6902     		.2byte	0x269
  486 03a0 11       		.byte	0x11
@@ -528,7 +528,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  501 03bd A0000000 		.4byte	0xa0
  502 03c1 10       		.byte	0x10
  503 03c2 01       		.uleb128 0x1
- 504 03c3 D6000000 		.4byte	.LASF44
+ 504 03c3 1B000000 		.4byte	.LASF44
  505 03c7 04       		.byte	0x4
  506 03c8 6C02     		.2byte	0x26c
  507 03ca 11       		.byte	0x11
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  511 03d1 A6030000 		.4byte	.LASF45
  512 03d5 04       		.byte	0x4
  513 03d6 6D02     		.2byte	0x26d
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 10
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 10
 
 
  514 03d8 11       		.byte	0x11
@@ -598,13 +598,13 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  568 0445 04       		.byte	0x4
  569 0446 7502     		.2byte	0x275
  570 0448 11       		.byte	0x11
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 11
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 11
 
 
  571 0449 94000000 		.4byte	0x94
  572 044d 3C       		.byte	0x3c
  573 044e 01       		.uleb128 0x1
- 574 044f 6F010000 		.4byte	.LASF53
+ 574 044f B4000000 		.4byte	.LASF53
  575 0453 04       		.byte	0x4
  576 0454 7602     		.2byte	0x276
  577 0456 11       		.byte	0x11
@@ -639,7 +639,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  606 048f A0000000 		.4byte	0xa0
  607 0493 54       		.byte	0x54
  608 0494 01       		.uleb128 0x1
- 609 0495 2A010000 		.4byte	.LASF58
+ 609 0495 6F000000 		.4byte	.LASF58
  610 0499 04       		.byte	0x4
  611 049a 7B02     		.2byte	0x27b
  612 049c 11       		.byte	0x11
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  625 04b6 7D02     		.2byte	0x27d
  626 04b8 11       		.byte	0x11
  627 04b9 A0000000 		.4byte	0xa0
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 12
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 12
 
 
  628 04bd 60       		.byte	0x60
@@ -677,7 +677,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  641 04d5 61020000 		.4byte	0x261
  642 04d9 68       		.byte	0x68
  643 04da 01       		.uleb128 0x1
- 644 04db E9000000 		.4byte	.LASF63
+ 644 04db 2E000000 		.4byte	.LASF63
  645 04df 04       		.byte	0x4
  646 04e0 8002     		.2byte	0x280
  647 04e2 11       		.byte	0x11
@@ -698,14 +698,14 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  662 04ff 61020000 		.4byte	0x261
  663 0503 78       		.byte	0x78
  664 0504 01       		.uleb128 0x1
- 665 0505 1E010000 		.4byte	.LASF65
+ 665 0505 63000000 		.4byte	.LASF65
  666 0509 04       		.byte	0x4
  667 050a 8302     		.2byte	0x283
  668 050c 11       		.byte	0x11
  669 050d A0000000 		.4byte	0xa0
  670 0511 80       		.byte	0x80
  671 0512 01       		.uleb128 0x1
- 672 0513 EE000000 		.4byte	.LASF66
+ 672 0513 33000000 		.4byte	.LASF66
  673 0517 04       		.byte	0x4
  674 0518 8402     		.2byte	0x284
  675 051a 11       		.byte	0x11
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  682 0527 8502     		.2byte	0x285
  683 0529 03       		.byte	0x3
  684 052a 74030000 		.4byte	0x374
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 13
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 13
 
 
  685 052e 03       		.uleb128 0x3
@@ -742,7 +742,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  703 054d C4020000 		.4byte	.LASF70
  704 0551 72       		.byte	0x72
  705 0552 11       		.uleb128 0x11
- 706 0553 80010000 		.4byte	.LASF76
+ 706 0553 C5000000 		.4byte	.LASF76
  707 0557 05       		.byte	0x5
  708 0558 36       		.byte	0x36
  709 0559 0D       		.byte	0xd
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  739 001a 39       		.uleb128 0x39
  740 001b 0B       		.uleb128 0xb
  741 001c 49       		.uleb128 0x49
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 14
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 14
 
 
  742 001d 13       		.uleb128 0x13
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  796 0053 13       		.uleb128 0x13
  797 0054 00       		.byte	0
  798 0055 00       		.byte	0
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 15
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 15
 
 
  799 0056 08       		.uleb128 0x8
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  853 008c 00       		.byte	0
  854 008d 00       		.byte	0
  855 008e 0C       		.uleb128 0xc
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 16
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 16
 
 
  856 008f 11       		.uleb128 0x11
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  910 00c5 0B       		.uleb128 0xb
  911 00c6 00       		.byte	0
  912 00c7 00       		.byte	0
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 17
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 17
 
 
  913 00c8 10       		.uleb128 0x10
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  967 0016 01       		.byte	0x1
  968 0017 00       		.byte	0
  969 0018 00       		.byte	0
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 18
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 18
 
 
  970 0019 00       		.byte	0
@@ -1072,115 +1072,115 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  1014              	.LASF50:
  1015 0013 41484232 		.ascii	"AHB2ENR\000"
  1015      454E5200 
- 1016              	.LASF71:
- 1017 001b 474E5520 		.ascii	"GNU C17 11.3.1 20220712 -mcpu=cortex-m4 -mthumb -mf"
- 1017      43313720 
- 1017      31312E33 
- 1017      2E312032 
- 1017      30323230 
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 19
+ 1016              	.LASF44:
+ 1017 001b 41484232 		.ascii	"AHB2RSTR\000"
+ 1017      52535452 
+ 1017      00
+ 1018              	.LASF5:
+ 1019 0024 73686F72 		.ascii	"short int\000"
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 19
 
 
- 1018 004e 6C6F6174 		.ascii	"loat-abi=soft -march=armv7e-m -ggdb -O2 -fomit-fram"
- 1018      2D616269 
- 1018      3D736F66 
- 1018      74202D6D 
- 1018      61726368 
- 1019 0081 652D706F 		.ascii	"e-pointer -falign-functions=16 -ffunction-sections "
- 1019      696E7465 
- 1019      72202D66 
- 1019      616C6967 
- 1019      6E2D6675 
- 1020 00b4 2D666461 		.ascii	"-fdata-sections -fno-common -flto\000"
- 1020      74612D73 
- 1020      65637469 
- 1020      6F6E7320 
- 1020      2D666E6F 
- 1021              	.LASF44:
- 1022 00d6 41484232 		.ascii	"AHB2RSTR\000"
- 1022      52535452 
- 1022      00
- 1023              	.LASF5:
- 1024 00df 73686F72 		.ascii	"short int\000"
- 1024      7420696E 
- 1024      7400
- 1025              	.LASF63:
- 1026 00e9 42444352 		.ascii	"BDCR\000"
- 1026      00
- 1027              	.LASF66:
- 1028 00ee 504C4C49 		.ascii	"PLLI2SCFGR\000"
- 1028      32534346 
- 1028      475200
- 1029              	.LASF40:
- 1030 00f9 5057525F 		.ascii	"PWR_TypeDef\000"
- 1030      54797065 
- 1030      44656600 
- 1031              	.LASF1:
- 1032 0105 6C6F6E67 		.ascii	"long long int\000"
- 1032      206C6F6E 
- 1032      6720696E 
- 1032      7400
- 1033              	.LASF9:
- 1034 0113 5F5F7569 		.ascii	"__uint32_t\000"
- 1034      6E743332 
- 1034      5F7400
- 1035              	.LASF65:
- 1036 011e 53534347 		.ascii	"SSCGR\000"
- 1036      5200
- 1037              	.LASF15:
- 1038 0124 43505549 		.ascii	"CPUID\000"
- 1038      4400
- 1039              	.LASF58:
- 1040 012a 41484233 		.ascii	"AHB3LPENR\000"
- 1040      4C50454E 
- 1040      5200
- 1041              	.LASF73:
- 1042 0134 433A5C43 		.ascii	"C:\\ChibiStudio\\workspace_user\\Falcon\000"
- 1042      68696269 
- 1042      53747564 
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 20
+ 1019      7420696E 
+ 1019      7400
+ 1020              	.LASF63:
+ 1021 002e 42444352 		.ascii	"BDCR\000"
+ 1021      00
+ 1022              	.LASF66:
+ 1023 0033 504C4C49 		.ascii	"PLLI2SCFGR\000"
+ 1023      32534346 
+ 1023      475200
+ 1024              	.LASF40:
+ 1025 003e 5057525F 		.ascii	"PWR_TypeDef\000"
+ 1025      54797065 
+ 1025      44656600 
+ 1026              	.LASF1:
+ 1027 004a 6C6F6E67 		.ascii	"long long int\000"
+ 1027      206C6F6E 
+ 1027      6720696E 
+ 1027      7400
+ 1028              	.LASF9:
+ 1029 0058 5F5F7569 		.ascii	"__uint32_t\000"
+ 1029      6E743332 
+ 1029      5F7400
+ 1030              	.LASF65:
+ 1031 0063 53534347 		.ascii	"SSCGR\000"
+ 1031      5200
+ 1032              	.LASF15:
+ 1033 0069 43505549 		.ascii	"CPUID\000"
+ 1033      4400
+ 1034              	.LASF58:
+ 1035 006f 41484233 		.ascii	"AHB3LPENR\000"
+ 1035      4C50454E 
+ 1035      5200
+ 1036              	.LASF73:
+ 1037 0079 433A5C43 		.ascii	"C:\\ChibiStudio\\workspace_user\\Falcon\000"
+ 1037      68696269 
+ 1037      53747564 
+ 1037      696F5C77 
+ 1037      6F726B73 
+ 1038              	.LASF42:
+ 1039 009e 43464752 		.ascii	"CFGR\000"
+ 1039      00
+ 1040              	.LASF12:
+ 1041 00a3 75696E74 		.ascii	"uint8_t\000"
+ 1041      385F7400 
+ 1042              	.LASF30:
+ 1043 00ab 5343425F 		.ascii	"SCB_Type\000"
+ 1043      54797065 
+ 1043      00
+ 1044              	.LASF53:
+ 1045 00b4 41504231 		.ascii	"APB1ENR\000"
+ 1045      454E5200 
+ 1046              	.LASF13:
+ 1047 00bc 75696E74 		.ascii	"uint32_t\000"
+ 1047      33325F74 
+ 1047      00
+ 1048              	.LASF76:
+ 1049 00c5 68616C5F 		.ascii	"hal_lld_backup_domain_init\000"
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 20
 
 
- 1042      696F5C77 
- 1042      6F726B73 
- 1043              	.LASF42:
- 1044 0159 43464752 		.ascii	"CFGR\000"
- 1044      00
- 1045              	.LASF12:
- 1046 015e 75696E74 		.ascii	"uint8_t\000"
- 1046      385F7400 
- 1047              	.LASF30:
- 1048 0166 5343425F 		.ascii	"SCB_Type\000"
- 1048      54797065 
- 1048      00
- 1049              	.LASF53:
- 1050 016f 41504231 		.ascii	"APB1ENR\000"
- 1050      454E5200 
- 1051              	.LASF13:
- 1052 0177 75696E74 		.ascii	"uint32_t\000"
- 1052      33325F74 
- 1052      00
- 1053              	.LASF76:
- 1054 0180 68616C5F 		.ascii	"hal_lld_backup_domain_init\000"
- 1054      6C6C645F 
- 1054      6261636B 
- 1054      75705F64 
- 1054      6F6D6169 
- 1055              	.LASF33:
- 1056 019b 41504232 		.ascii	"APB2FZ\000"
- 1056      465A00
- 1057              	.LASF16:
- 1058 01a2 49435352 		.ascii	"ICSR\000"
- 1058      00
- 1059              	.LASF36:
- 1060 01a7 4F50544B 		.ascii	"OPTKEYR\000"
- 1060      45595200 
- 1061              	.LASF32:
- 1062 01af 41504231 		.ascii	"APB1FZ\000"
- 1062      465A00
- 1063              	.LASF24:
- 1064 01b6 42464152 		.ascii	"BFAR\000"
- 1064      00
+ 1049      6C6C645F 
+ 1049      6261636B 
+ 1049      75705F64 
+ 1049      6F6D6169 
+ 1050              	.LASF33:
+ 1051 00e0 41504232 		.ascii	"APB2FZ\000"
+ 1051      465A00
+ 1052              	.LASF16:
+ 1053 00e7 49435352 		.ascii	"ICSR\000"
+ 1053      00
+ 1054              	.LASF36:
+ 1055 00ec 4F50544B 		.ascii	"OPTKEYR\000"
+ 1055      45595200 
+ 1056              	.LASF32:
+ 1057 00f4 41504231 		.ascii	"APB1FZ\000"
+ 1057      465A00
+ 1058              	.LASF24:
+ 1059 00fb 42464152 		.ascii	"BFAR\000"
+ 1059      00
+ 1060              	.LASF71:
+ 1061 0100 474E5520 		.ascii	"GNU C17 11.3.1 20220712 -mcpu=cortex-m4 -mthumb -mf"
+ 1061      43313720 
+ 1061      31312E33 
+ 1061      2E312032 
+ 1061      30323230 
+ 1062 0133 6C6F6174 		.ascii	"loat-abi=soft -march=armv7e-m -ggdb -O0 -fomit-fram"
+ 1062      2D616269 
+ 1062      3D736F66 
+ 1062      74202D6D 
+ 1062      61726368 
+ 1063 0166 652D706F 		.ascii	"e-pointer -falign-functions=16 -ffunction-sections "
+ 1063      696E7465 
+ 1063      72202D66 
+ 1063      616C6967 
+ 1063      6E2D6675 
+ 1064 0199 2D666461 		.ascii	"-fdata-sections -fno-common -flto\000"
+ 1064      74612D73 
+ 1064      65637469 
+ 1064      6F6E7320 
+ 1064      2D666E6F 
  1065              	.LASF7:
  1066 01bb 6C6F6E67 		.ascii	"long int\000"
  1066      20696E74 
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  1072      6E74385F 
  1072      7400
  1073              	.LASF69:
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 21
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 21
 
 
  1074 01e3 73746D33 		.ascii	"stm32_clock_init\000"
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  1101 0299 53484353 		.ascii	"SHCSR\000"
  1101      5200
  1102              	.LASF0:
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 22
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 22
 
 
  1103 029f 756E7369 		.ascii	"unsigned int\000"
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  1129      7265436C 
  1129      6F636B00 
  1130              	.LASF21:
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 23
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 23
 
 
  1131 032f 48465352 		.ascii	"HFSR\000"
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  1160              	.LASF39:
  1161 03af 464C4153 		.ascii	"FLASH_TypeDef\000"
  1161      485F5479 
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 24
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 24
 
 
  1161      70654465 
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  1184      6C6C642E 
  1184      6300
  1185              	.LASF84:
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 25
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 25
 
 
  1186 00ed 5F646566 		.ascii	"_default_types.h\000"
@@ -1486,1754 +1486,1821 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 1
  1200      3778782E 
  1200      6800
  1201              		.text
- 1202              		.section	.gnu.lto_.profile.79e3ab27,"e",%progbits
- 1203 0000 789C6362 		.ascii	"x\234cb\000\001\000\000\022\000\003"
- 1203      00010000 
- 1203      120003
- 1204              		.text
- 1205              		.section	.gnu.lto_.icf.79e3ab27,"e",%progbits
- 1206 0000 789CD365 		.ascii	"x\234\323ed\200\003\026\206w\027\037Lc\342cb`b\204b"
- 1206      64800316 
- 1206      8677171F 
- 1206      4C63E263 
- 1206      62606284 
- 1207 0015 26240C16 		.ascii	"&$\014\026c\334\363v\363\031&#4)\332\340W-\377Z\270"
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 26
+ 1202              		.section	.gnu.lto_.inline.98e560d9,"e",%progbits
+ 1203 0000 789CAB64 		.ascii	"x\234\253d@\000f\006\006\376\206\206\206\003\314i\014"
+ 1203      40006606 
+ 1203      06FE8686 
+ 1203      8603CC69 
+ 1203      0C
+ 1204 0011 0C4C5230 		.ascii	"\014LR0\026\013C#\220Y\307\304\300\004R\303\310\240"
+ 1204      160B4323 
+ 1204      9059C7C4 
+ 1204      C00452C3 
+ 1204      C8A0
+ 1205 0023 02E4AD60 		.ascii	"\002\344\255`\316\000*q\000\262:\23020\224p!H&\2063"
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 26
 
 
- 1207      63DCF376 
- 1207      F3192623 
- 1207      3429DAE0 
- 1207      572DFF5A 
- 1208 002a 3C906CA7 		.ascii	"<\220l\247\226\321\310f1\0031\013\020\263\"a\274\372"
- 1208      96D1C866 
- 1208      3103310B 
- 1208      10B32261 
- 1208      BCFA
- 1209 003c 994FB64E 		.ascii	"\231O\266N]\304\305\000\000l\210\016I"
- 1209      5DC4C500 
- 1209      006C880E 
- 1209      49
- 1210              		.text
- 1211              		.section	.gnu.lto_.ipa_sra.79e3ab27,"e",%progbits
- 1212 0000 789CE367 		.ascii	"x\234\343g@\000f\006\006FF\0060d\002\022\000\002\023"
- 1212      40006606 
- 1212      06464606 
- 1212      30640212 
- 1212      000213
- 1213 0013 001B     		.ascii	"\000\033"
+ 1205      CE002A71 
+ 1205      00B23A98 
+ 1205      32309470 
+ 1205      21482686 
+ 1206 0038 0C40A935 		.ascii	"\014@\2515L\231@\366\024F\030\023U\003\003\000\2171"
+ 1206      4C9940F6 
+ 1206      14461813 
+ 1206      55030300 
+ 1206      8F31
+ 1207 004a 19A4     		.ascii	"\031\244"
+ 1208              		.text
+ 1209              		.section	.gnu.lto_.jmpfuncs.98e560d9,"e",%progbits
+ 1210 0000 789C6362 		.ascii	"x\234cb@\006\000\000*\000\003"
+ 1210      40060000 
+ 1210      2A0003
+ 1211              		.text
+ 1212              		.section	.gnu.lto_.ipa_modref.98e560d9,"e",%progbits
+ 1213 0000 789C6362 		.ascii	"x\234cb@\006\000\000*\000\003"
+ 1213      40060000 
+ 1213      2A0003
  1214              		.text
- 1215              		.section	.gnu.lto_.inline.79e3ab27,"e",%progbits
- 1216 0000 789CAB64 		.ascii	"x\234\253d@\000f\006\006\376)w\346\255bNcd`\222\000"
- 1216      40006606 
- 1216      06FE2977 
- 1216      E6AD624E 
- 1216      63646092 
- 1217 0015 B25E31A5 		.ascii	"\262^1\24510\2605\000\001S\012\023\003\023H\015#\203"
- 1217      3130B035 
- 1217      0001530A 
- 1217      13031348 
- 1217      0D2383
- 1218 0028 0A90BB82 		.ascii	"\012\220\273\2029\003\250\304\016\310\372\300\234\216"
- 1218      3903A8C4 
- 1218      0EC8FAC0 
- 1218      9C8E
- 1219 0036 A1840B41 		.ascii	"\241\204\013A21\234aX\364\355\333)\246l\240\372I\214"
- 1219      32319C61 
- 1219      58F4EDDB 
- 1219      29A66CA0 
- 1219      FA498C
- 1220 0049 40E609A6 		.ascii	"@\346\011\246lt\015\014\000c\271\035M"
- 1220      6C740D0C 
- 1220      0063B91D 
- 1220      4D
- 1221              		.text
- 1222              		.section	.gnu.lto_.jmpfuncs.79e3ab27,"e",%progbits
- 1223 0000 789CE365 		.ascii	"x\234\343e@\000f f\0041\230\200\030\000\001\226\000"
- 1223      40006620 
- 1223      66043198 
- 1223      80180001 
- 1223      9600
- 1224 0012 14       		.ascii	"\024"
- 1225              		.text
- 1226              		.section	.gnu.lto_.pureconst.79e3ab27,"e",%progbits
- 1227 0000 789CE362 		.ascii	"x\234\343b```f\230\305\3028\213\205i\026\013\000\011"
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 27
+ 1215              		.section	.gnu.lto_.lto.98e560d9,"e",%progbits
+ 1216 0000 0B000300 		.ascii	"\013\000\003\000\001\000\000\000"
+ 1216      01000000 
+ 1217              		.text
+ 1218              		.section	.gnu.lto_hal_lld_backup_domain_init.385.98e560d9,"e",%progbits
+ 1219 0000 789C6D91 		.ascii	"x\234m\221Mh\023Q\020\307\347cw\2234\211\275x\020=\210"
+ 1219      4D681351 
+ 1219      10C7E763 
+ 1219      77933489 
+ 1219      BD78103D 
+ 1220 0015 A8E0294B 		.ascii	"\250\340)K\252\010\366\240\207b=y\252\340%PbZi\354\332"
+ 1220      AA08F6A0 
+ 1220      87623D79 
+ 1220      AAE02550 
+ 1220      625A69EC 
+ 1221 002a 6DB3094D 		.ascii	"m\263\011MA\311kS\251\324\203D\212\346\324\322[\017"
+ 1221      41C96B53 
+ 1221      A9D48344 
+ 1221      8AE6D4D2 
+ 1221      5B0F
+ 1222 003c 82478B4A 		.ascii	"\202G\213J?\"\010\242 \010\202\307\036\024\244\007\021"
+ 1222      3F2208A2 
+ 1222      200882C7 
+ 1222      1E14A407 
+ 1222      11
+ 1223 004d A952A8B0 		.ascii	"\251R\250\260\316\333\215\333\322\372\330\331y\363\336"
+ 1223      CEDB8DDB 
+ 1223      D2FAD8D9 
+ 1223      79F3DE
+ 1224 005c FEE6E3BF 		.ascii	"\376\346\343\277\327\011 \017\000\227\305\300\004|\324"
+ 1224      D709200F 
+ 1224      0097C5C0 
+ 1224      047CD4
+ 1225 006b 9825F07D 		.ascii	"\230%\360}\277f\020\325\033\017\010\237c\020M7\016\005"
+ 1225      BF6610D5 
+ 1225      1B0F089F 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 27
 
 
- 1227      60606066 
- 1227      98C5C238 
- 1227      8B856916 
- 1227      0B0009
- 1228 0013 FA01EB   		.ascii	"\372\001\353"
- 1229              		.text
- 1230              		.section	.gnu.lto_.ipa_modref.79e3ab27,"e",%progbits
- 1231 0000 789C9BC9 		.ascii	"x\234\233\311\200\000\314\014\014\012\002\002\014LL"
- 1231      8000CC0C 
- 1231      0C0A0202 
- 1231      0C4C4C
- 1232 000f 6C0C8C4C 		.ascii	"l\014\214L\354\214\014L\034\020\032\253 \003D\234\021"
- 1232      EC8C0C4C 
- 1232      1C101AAB 
- 1232      2003449C 
- 1232      11
- 1233 0020 59119CC3 		.ascii	"Y\021\234\303\300\004\346\263\302\370p\315\234P\232"
- 1233      C004E6B3 
- 1233      C2F870CD 
- 1233      9C509A
- 1234 002f 0B487303 		.ascii	"\013Hs\003i\036\204ff\014\305PI\006\006\000Lw\003["
- 1234      691E8466 
- 1234      660CC550 
- 1234      49060600 
- 1234      4C77035B 
- 1235              		.text
- 1236              		.section	.gnu.lto_.lto.79e3ab27,"e",%progbits
- 1237 0000 0B000300 		.ascii	"\013\000\003\000\001\000\000\000"
- 1237      01000000 
- 1238              		.text
- 1239              		.section	.gnu.lto_hal_lld_backup_domain_init.385.79e3ab27,"e",%progbits
- 1240 0000 789C7D91 		.ascii	"x\234}\221MHTQ\024\307\317\307}\257\302F\027\341\246"
- 1240      4D485451 
- 1240      14C7CFC7 
- 1240      7DAFC246 
- 1240      17E1A6
- 1241 0013 5D44102E 		.ascii	"]D\020.\3461\026A\256\004AW\255l9 \323(88\365l\236\303"
- 1241      E6311641 
- 1241      AE044157 
- 1241      AD6C3920 
- 1241      D3283838 
- 1242 002b 182DE68E 		.ascii	"\030-\346\216\037(\343B\246\206j52\2641\010ZF\0112\032"
- 1242      1F28E342 
- 1242      A6866A35 
- 1242      32B43108 
- 1242      5A460932 
- 1243 0040 1451100A 		.ascii	"\024Q\020\012\355Zh\020\224DDe\037\214\361:\367\275"
- 1243      ED5A6810 
- 1243      94444465 
- 1243      1F8CF13A 
- 1243      F7BD
- 1244 0052 6934241F 		.ascii	"i4$\037\357\177\271\347\335\377=\277s\316;F\000\011"
- 1244      EF7FB9E7 
- 1244      DDFF3DBF 
- 1244      73CE3B46 
- 1244      0009
- 1245 0064 00E813A1 		.ascii	"\000\350\023\241\005x\243T$\320Zw\037\"\232,\315\021"
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 28
+ 1225      63104D37 
+ 1225      0E05
+ 1226 007d 9E712EFA 		.ascii	"\236q.\372\302\300\311S\377\356\021j\304\006\326p\221"
+ 1226      C2C0C953 
+ 1226      FFEE116A 
+ 1226      C406D670 
+ 1226      91
+ 1227 008e 6DA5D4F6 		.ascii	"m\245\324\366\275\307\337\273\325\322\032n\002\324\240"
+ 1227      BDC7DFBB 
+ 1227      D5D21A6E 
+ 1227      02D4A0
+ 1228 009d BD92E11E 		.ascii	"\275\222\341\036\305\236}4\327\324\037\377\241R\277"
+ 1228      C59E7D34 
+ 1228      D7D41FFF 
+ 1228      A152BF
+ 1229 00ac BEE2BB93 		.ascii	"\276\342\273\223\207\021\010\011\210X\274!\336\004b"
+ 1229      87110809 
+ 1229      8858BC21 
+ 1229      DE0462
+ 1230 00bb 4B7C4C2C 		.ascii	"K|L,.\373\204X\207\334%%N\211O\213\007\230g\335H\260"
+ 1230      2EFB8458 
+ 1230      87DC2525 
+ 1230      4E894F8B 
+ 1230      079867DD 
+ 1231 00d1 8E4BD605 		.ascii	"\216K\326\005\246\335\020a\207\246\266\266_\035c\264"
+ 1231      A6DD1061 
+ 1231      87A6B6B6 
+ 1231      5F1D63B4 
+ 1232 00e1 EEA2DA98 		.ascii	"\356\242\332\230T\206\234\264V\022L\246>\001\023\237"
+ 1232      54869CB4 
+ 1232      56124CA6 
+ 1232      3E01139F 
+ 1233 00f1 A2741A1F 		.ascii	"\242t\032\037\277\363\002\341\374\211\312K\364\2441"
+ 1233      BFF302E1 
+ 1233      FC89CA4B 
+ 1233      F4A431
+ 1234 0100 0DC59971 		.ascii	"\015\305\231qY\363\365\271\031d\203\311:\203\2124\375"
+ 1234      59F3F5B9 
+ 1234      196483C9 
+ 1234      3A838A34 
+ 1234      FD
+ 1235 0111 731623AC 		.ascii	"s\026#\254\032b+\032c#\000\233\027\331\264&P\375\270"
+ 1235      1A622B1A 
+ 1235      6323009B 
+ 1235      17D9B426 
+ 1235      50FDB8
+ 1236 0124 1F15B3A4 		.ascii	"\037\025\263\244\330\304n\261\261\362\272P\213\262\253"
+ 1236      D8C46EB1 
+ 1236      B1F2BA50 
+ 1236      8BB2AB
+ 1237 0133 B4D00DEA 		.ascii	"\264\320\015\352\325\2333\237\210cl\351*\026\374\246"
+ 1237      D59B339F 
+ 1237      88636CE9 
+ 1237      2A16FCA6 
+ 1238 0143 E9CDD747 		.ascii	"\351\315\327G9\246##\220m\201y\377X\313\253G8\216\253"
+ 1238      39A62323 
+ 1238      906D8179 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 28
 
 
- 1245      0578A354 
- 1245      24D05A77 
- 1245      1F229A2C 
- 1245      CD11
- 1246 0076 3EC4F29B 		.ascii	">\304\362\233J\207\232*\265~\274\273\331\256\030\313"
- 1246      4A879A2A 
- 1246      B57EBCBB 
- 1246      D9AE18CB 
- 1247 0086 4D87C242 		.ascii	"M\207\302B\251xD\034A\204\220'V\230\307*;\362\341\347"
- 1247      A978441C 
- 1247      41849027 
- 1247      5698C72A 
- 1247      3BF2E1E7 
- 1248 009a F4AD4F5D 		.ascii	"\364\255O]z\261\206[\000yh<-\341\036E\017\326\255\232"
- 1248      7AB1865B 
- 1248      0079683C 
- 1248      2DE11E45 
- 1248      0FD6AD9A 
- 1249 00ae DEF1E7B5 		.ascii	"\336\361\347\265\336~\207/NF\020\010I\304\"%\262D\266"
- 1249      DE7E872F 
- 1249      4E461008 
- 1249      49C42225 
- 1249      B244B6
- 1250 00c1 08A0C206 		.ascii	"\010\240\302\006\247\025\352\032\300\002S\030\024$\370"
- 1250      A715EA1A 
- 1250      C0025318 
- 1250      1424F8
- 1251 00d0 41FAEDD7 		.ascii	"A\372\355\327\010\324iu\371C\204\321B\373:B\260\352"
- 1251      08D46975 
- 1251      F94384D1 
- 1251      42FB3A42 
- 1251      B0EA
- 1252 00e2 8D825616 		.ascii	"\215\202V\026\3367\245\035\276\366\030\037!\234;\221"
- 1252      DE37A51D 
- 1252      BEF6181F 
- 1252      219C3B91 
- 1253 00f2 5BC2AC90 		.ascii	"[\302\254\220\3534Y\236A&F\3734j2\327\277\024q\237y"
- 1253      EB34599E 
- 1253      412646FB 
- 1253      346A32D7 
- 1253      BF14719F 
- 1254 0107 D9989902 		.ascii	"\331\230\231\002\310\257&\204%\275\027@<\324\237gw!"
- 1254      C8AF2684 
- 1254      25BD1740 
- 1254      3CD49F67 
- 1254      7721
- 1255 0119 5757B026 		.ascii	"WW\260&\367\252\262\315\255\242\033r\356\314\274\226"
- 1255      F7AAB2CD 
- 1255      ADA21B72 
- 1255      EECCBC96 
- 1256 0129 99301B90 		.ascii	"\2310\033\220\015\337ij\353\311qV&R\301<\026\230\253"
- 1256      0DDF696A 
- 1256      EBC97156 
- 1256      2652C13C 
- 1256      1698AB
- 1257 013c 9BDB6BD4 		.ascii	"\233\333k\324\354\346w\273\001}{\337\326H\273xto\336"
- 1257      ECE677BB 
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 29
+ 1238      FF58CBAB 
+ 1238      47388EAB 
+ 1239 0157 3A686D7D 		.ascii	":hm}\353lg_J\215\215D\351\337\350\364\326m9\017{\373"
+ 1239      EB6C675F 
+ 1239      4A8D8D44 
+ 1239      E9DFE8F4 
+ 1239      D66D390F 
+ 1240 016d 7C8913FF 		.ascii	"|\211\023\377#\234\210x\333&\302\232\306\001)\277\254"
+ 1240      239C8878 
+ 1240      DB26C29A 
+ 1240      C60129BF 
+ 1240      AC
+ 1241 017e 337784C2 		.ascii	"3w\204\302\350\311\222\221\022\267B%\336\343p$`\252"
+ 1241      E8C99291 
+ 1241      12B74225 
+ 1241      DEE37024 
+ 1241      60AA
+ 1242 0190 2D605304 		.ascii	"-`S\004LsR\206\361w|\277s\277\2067C\362\203&9\015>M"
+ 1242      4C735286 
+ 1242      F1777CBF 
+ 1242      73BF8637 
+ 1242      43F28326 
+ 1243 01a8 6D3CB912 		.ascii	"m<\271\022\014=\317\270\367\327\002\234\356\351\316"
+ 1243      0C3DCFB8 
+ 1243      F7D7029C 
+ 1243      EEE9CE
+ 1244 01b7 F50C156F 		.ascii	"\365\014\025o\024\373\312\225\201\242\233\033wK\303"
+ 1244      14FBCA95 
+ 1244      81A29B1B 
+ 1244      774BC3
+ 1245 01c6 DE68BE30 		.ascii	"\336h\2760\330_\361\006K\271\336\274SpG\340B&c\313S"
+ 1245      D85FF106 
+ 1245      4BB9DEBC 
+ 1245      537047E0 
+ 1245      422663CB 
+ 1246 01db D01FBA5E 		.ascii	"\320\037\272^W6\233\265]\317\036\312;\366\250[*{v\337"
+ 1246      57369BB5 
+ 1246      5DCF1ECA 
+ 1246      3BF6A85B 
+ 1246      2A7B76DF 
+ 1247 01ef B5AB67BB 		.ascii	"\265\253g\273\302w\357\271jU\337\364;\316@\246\000\177"
+ 1247      C277EFB9 
+ 1247      6A55DFF4 
+ 1247      3BCE40A6 
+ 1247      007F
+ 1248 0201 01A462FB 		.ascii	"\001\244b\373/"
+ 1248      2F
+ 1249              		.text
+ 1250              		.section	.gnu.lto_hal_lld_init.386.98e560d9,"e",%progbits
+ 1251 0000 789C6D54 		.ascii	"x\234mT[HTA\030\236\177\346\354\272\253y\311[w]\315"
+ 1251      5B485441 
+ 1251      189E7FE6 
+ 1251      ECBAAB79 
+ 1251      C95B775D 
+ 1252 0015 60BBB0DB 		.ascii	"`\273\260\333nf\031=\004\205DT\004\365\320\203P\272"
+ 1252      6E66193D 
+ 1252      04854454 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 29
 
 
- 1257      017D7BDF 
- 1257      D648BB78 
- 1257      746FDE
- 1258 014f A726AF7D 		.ascii	"\247&\257}Y\016T\340\366\017t?o\270C\220\372wl7\237"
- 1258      590E54E0 
- 1258      F60F743F 
- 1258      6FB84390 
- 1258      FA776C37 
- 1259 0164 61D0D2BD 		.ascii	"a\320\322\275V\266\366\265\376\022G\376\326\217l\263"
- 1259      56B6F6B5 
- 1259      FE1247FE 
- 1259      D68F6CB3 
- 1260 0174 2505FB75 		.ascii	"%\005\373u\337o\373\337\250^\031?\333\340\323\304\306"
- 1260      DF6FFBDF 
- 1260      A85E193F 
- 1260      DBE0D3C4 
- 1260      C6
- 1261 0185 EDBEA0B3 		.ascii	"\355\276\240\263\012\343\356O\0038\325\323\025\357\031"
- 1261      0AE3EE4F 
- 1261      0338D5D3 
- 1261      15EF19
- 1262 0194 4E5D4AF5 		.ascii	"N]J\365\217e\007Sn<\347fF\274\321Drh \353\015e\342\275"
- 1262      8F650753 
- 1262      6E3CE766 
- 1262      46BCD144 
- 1262      726820EB 
- 1263 01ac 8974D2BD 		.ascii	"\211t\322\275\002\347\243QG\336\2441\272^g,\026s\\\317"
- 1263      02E7A351 
- 1263      47DEA431 
- 1263      BA5E672C 
- 1263      16735CCF 
- 1264 01c0 194EA49D 		.ascii	"\031N\244\235Q73\3469\375\027/\234\351\014\327\336\263"
- 1264      513733E6 
- 1264      39FD172F 
- 1264      9CE90CD7 
- 1264      DEB3
- 1265 01d2 E3E3E664 		.ascii	"\343\343\346d \235\036\214&\341\017\210 \326\005"
- 1265      209D1E8C 
- 1265      26E10F88 
- 1265      20D605
- 1266              		.text
- 1267              		.section	.gnu.lto_hal_lld_init.386.79e3ab27,"e",%progbits
- 1268 0000 789C7D94 		.ascii	"x\234}\224[h\023A\024\206\317\231\331\334\243\266\224"
- 1268      5B681341 
- 1268      1486CF99 
- 1268      D9DCA3B6 
- 1268      94
- 1269 0011 424B2944 		.ascii	"BK)DK\301\247,\251\"\350\223P\350\203\340S\005_\002"
- 1269      4BC1A72C 
- 1269      A922E893 
- 1269      50E883E0 
- 1269      53055F02 
- 1270 0025 25A6C586 		.ascii	"%\246\305\206F\267\3156\244\"\222\251E\224\274HD\274"
- 1270      46B7CD36 
- 1270      A42292A9 
- 1270      4594BC48 
- 1270      44BC
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 30
+ 1252      04F5D083 
+ 1252      50BA
+ 1253 0027 5A5A5B6B 		.ascii	"ZZ[k\256\246E\261\307\314\012\011\272R>D\2277\211\240"
+ 1253      AEA645B1 
+ 1253      C7CC0A09 
+ 1253      BA523E44 
+ 1253      973789A0 
+ 1254 003b 9EBA5FEC 		.ascii	"\236\272_\354FEQ`AE\024RD Ev\243\233v\372g\3464\347"
+ 1254      46455160 
+ 1254      41451452 
+ 1254      44204576 
+ 1254      A39B76FA 
+ 1255 0053 1CEDB0FF 		.ascii	"\034\355\260\377|\263\363\177\2273s\016'-\211\220\303"
+ 1255      7CB3F37F 
+ 1255      9733730E 
+ 1255      272D8990 
+ 1255      C3
+ 1256 0064 84909958 		.ascii	"\204\220\231X\304E`\377\276vJ\014\303Hh\024\016\340"
+ 1256      C44560FF 
+ 1256      BE764A0C 
+ 1256      C3486814 
+ 1256      0EE0
+ 1257 0076 1CCE81F8 		.ascii	"\034\316\201\370\307\340\340\276d1\323\240E\023\023"
+ 1257      C7E0E0BE 
+ 1257      6431D3A0 
+ 1257      451313
+ 1258 0085 2009CA34 		.ascii	" \011\3124H\300\011\026\324u\375G\333\241\336\233\240"
+ 1258      48C00916 
+ 1258      D475FD47 
+ 1258      DBA1DE9B 
+ 1258      A0
+ 1259 0096 7776412F 		.ascii	"wvA/!\011b^)r\016\204x]\340\316\002\015\307\034\360"
+ 1259      2109625E 
+ 1259      29720E84 
+ 1259      785DE0CE 
+ 1259      020DC71C 
+ 1260 00ab B9C05349 		.ascii	"\271\300SI&w\265\350}?\336\364\035\207\273\272\346\277"
+ 1260      2677B5E8 
+ 1260      7D3FDEF4 
+ 1260      1D87BBBA 
+ 1260      E6BF
+ 1261 00bd 04898B70 		.ascii	"\004\211\213p\001\204\012\3335\242}\346W\353\316\366"
+ 1261      01840ADB 
+ 1261      35A27DE6 
+ 1261      57EBCEF6 
+ 1262 00cd 8CED3EFF 		.ascii	"\214\355>\377\025gw\275\350\356=\322\331\265\335G\374"
+ 1262      156777BD 
+ 1262      E8EE3DD2 
+ 1262      D9B5DD47 
+ 1262      FC
+ 1263 00de D79CCD06 		.ascii	"\327\234\315\006G\363\272\263\271Y\372\366\233\2767"
+ 1263      47F3BAB3 
+ 1263      B959FAF6 
+ 1263      9BBE37
+ 1264 00ed 9D5D1D64 		.ascii	"\235]\035d{\300l\337v\266w\200\303\372\216\263\273\333"
+ 1264      7BC06CDF 
+ 1264      76B67780 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 30
 
 
- 1271 0037 2054EA93 		.ascii	" T\352\223\202\340\233\242B\011-R,^\320\202(\"^\212"
- 1271      82E09BA2 
- 1271      42092D52 
- 1271      2C5ED082 
- 1271      28225E8A 
- 1272 004b 88152F15 		.ascii	"\210\025/\025E%J<3I\263\253\233d\331\177\331\231\371"
- 1272      45254A3C 
- 1272      3349B3AB 
- 1272      9B64D97F 
- 1272      D999F9
- 1273 005e F9E63F73 		.ascii	"\371\346?s`>i\0001\000\350\"!\007<\225\3171\020B\354"
- 1273      603E6900 
- 1273      3100E822 
- 1273      21073C95 
- 1273      CF311042 
- 1274 0073 F4309CCC 		.ascii	"\3640\234\314\347|x\003\325\010!\3130\2133\\\247\341"
- 1274      E77C7803 
- 1274      D50821CB 
- 1274      308B335C 
- 1274      A7E1
- 1275 0085 CF636756 		.ascii	"\317cgV\346Q\\.\340\012@\026*O\240\374\217\244k\217"
- 1275      E6515C2E 
- 1275      E00A4016 
- 1275      2A4FA0FC 
- 1275      8FA46B8F 
- 1276 0099 5D05F1BB 		.ascii	"]\005\361\273tR\210\373\313x\245\273\013\201!#q\222"
- 1276      745288FB 
- 1276      CB78A5BB 
- 1276      0B812123 
- 1276      7192
- 1277 00ab 467291DC 		.ascii	"Fr\221\334$\017\311K\362\221\374\244\000)Hj\"5\223Z"
- 1277      240FC94B 
- 1277      F291FCA4 
- 1277      0029486A 
- 1277      2235935A 
- 1278 00bf 48ADA436 		.ascii	"H\255\2446R;\251\203\324I\012\221\000\246\271L*4\024"
- 1278      523BA983 
- 1278      D4490A91 
- 1278      00A6B94C 
- 1278      2A3414
- 1279 00d2 05808B9C 		.ascii	"\005\200\213\234\225\007\2234\370\301\304\233\325\005"
- 1279      95079334 
- 1279      F8C1C49B 
- 1279      D505
- 1280 00e0 84229B9B 		.ascii	"\204\"\233\233\365qt\241\3730\202\372\212/'\204\346"
- 1280      F57174A1 
- 1280      FB3082FA 
- 1280      8A2F2784 
- 1280      E6
- 1281 00f1 C2ABB22A 		.ascii	"\302\253\262*\357\241[x\023a\333\306\314mLS\352\"\233"
- 1281      EFA15B78 
- 1281      1361DBC6 
- 1281      CC6D4C53 
- 1281      EA229B
- 1282 0104 3A7D1C39 		.ascii	":}\0349\343\350\336\214\024\277\264A\002\276\346\320"
- 1282      E3E8DE8C 
- 1282      14BFB441 
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 31
+ 1264      C3FA8EB3 
+ 1264      BBDB
+ 1265 00ff D9BDE7EC 		.ascii	"\331\275\347\354\3567\255w\265I\353\373\266\366\351"
+ 1265      EE37AD77 
+ 1265      B549EBFB 
+ 1265      B6F6E9
+ 1266 010e 6E5797DE 		.ascii	"nW\227\336o\354\321\365\247y\027.\237\364\316\006B\201"
+ 1266      6FECD1F5 
+ 1266      A779172E 
+ 1266      9FF4CE06 
+ 1266      4281
+ 1267 0120 124A19A2 		.ascii	"\022J\031\242\206\350Bt#&!z\020\275\210\311X)X\303\260"
+ 1267      86E84274 
+ 1267      2326217A 
+ 1267      10BD88C9 
+ 1267      582958C3 
+ 1268 0135 52B1D2B0 		.ascii	"R\261\322\260\322\2612\260?\0341\0231\0131\0331\007"
+ 1268      D2B132B0 
+ 1268      3F1C3113 
+ 1268      310B311B 
+ 1268      3107
+ 1269 0147 31177104 		.ascii	"1\027q\004\342H\254QX\243\261\306`\215\305\032\207\225"
+ 1269      E248AC51 
+ 1269      58A3B1C6 
+ 1269      608DC51A 
+ 1269      8795
+ 1270 0159 87FD7C44 		.ascii	"\207\375|D\037b\001b!\342x\304\"D?\326D\234OB\234\202"
+ 1270      1F620162 
+ 1270      21E278C4 
+ 1270      22443FD6 
+ 1270      449C4F42 
+ 1271 016f 15C00A61 		.ascii	"\025\300\012a\205\261\212\261J\260J\261\0109\312\370"
+ 1271      85B18AB1 
+ 1271      4AB04AB1 
+ 1271      0839CAF8 
+ 1272 017f EB23AE7C 		.ascii	"\353#\256|\334\3341F\255\277@~\323m_\317\367\207\030"
+ 1272      DCDC3146 
+ 1272      ADBF407E 
+ 1272      D36D5FCF 
+ 1272      F78718
+ 1273 0192 B8B782DE 		.ascii	"\270\267\202\336\267K\327p\345\306U/\243.\276\202\307"
+ 1273      B74BD770 
+ 1273      E5C6552F 
+ 1273      A32EBE82 
+ 1273      C7
+ 1274 01a3 740AF055 		.ascii	"t\012\360U\362l\332\362\020HIA\323#h\304\323\341\"\017"
+ 1274      F26CDAF2 
+ 1274      10484941 
+ 1274      D32368C4 
+ 1274      D3E1220F 
+ 1275 01b7 63F080EB 		.ascii	"c\360\200\353[\017\356\004\2461\352\366\003\236\230"
+ 1275      5B0FEE04 
+ 1275      A631EAF6 
+ 1275      039E98
+ 1276 01c6 91CE0D3E 		.ascii	"\221\316\015>\267\203R6Ke7W2\315\324\272\244\226'\271"
+ 1276      B7835236 
+ 1276      4B653757 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 31
 
 
- 1282      02BEE6D0 
- 1283 0114 E19F957E 		.ascii	"\341\237\225~\316\344>\233*\233p\207\251\260\006=GP"
- 1283      CEE43E9B 
- 1283      2A9B7087 
- 1283      A9B0063D 
- 1283      4750
- 1284 0126 8D738296 		.ascii	"\215s\202\226x=\342\274\"jvb\323\177\246\031\372\315"
- 1284      783DE2BC 
- 1284      226A7662 
- 1284      D37FA619 
- 1284      FACD
- 1285 0138 DC515072 		.ascii	"\334QPr]:\217\252\314\357\3252\233\035\320\0054U\202"
- 1285      5D3A8FAA 
- 1285      CCEFD532 
- 1285      9B1DD005 
- 1285      345582
- 1286 014b B96F5EC7 		.ascii	"\271o^\307\332]\271&#\225d\235\266m[\034\326{\0150\017"
- 1286      DA5DB926 
- 1286      2395649D 
- 1286      B66D5B1C 
- 1286      D67B0D30 
- 1287 0160 2A18B023 		.ascii	"*\030\260#Zk%\177\244(2\371^\025\374W5\270\313A]\302"
- 1287      5A6B257F 
- 1287      A42832F9 
- 1287      5E15FC57 
- 1287      35B8CB41 
- 1288 0176 31AB1F6E 		.ascii	"1\253\037n\356\252\344\\_\357\364\236H?w\3333x\034\246"
- 1288      EEAAE45C 
- 1288      5FEFF49E 
- 1288      483F77DB 
- 1288      33781CA6 
- 1289 018a A76B50D9 		.ascii	"\247kP\331\017/\367\310&\323\203\365\240\317\025\324"
- 1289      0F2FF7C8 
- 1289      26D383F5 
- 1289      A0CF15D4 
- 1290 019a 6B87B6D5 		.ascii	"k\207\266\325*\354\205\342\312\302.\224[R\254V\326\356"
- 1290      2AEC85E2 
- 1290      CAC22E94 
- 1290      5B52AC56 
- 1290      D6EE
- 1291 01ac 80BE44A3 		.ascii	"\200\276D\243\356Y\276\226k\270\210\366\035;\034\256"
- 1291      EE59BE96 
- 1291      6BB888F6 
- 1291      1D3B1CAE 
- 1292 01bc E50684B7 		.ascii	"\345\006\204\267\212\360\360\037Bg\255\314\357\024\304"
- 1292      8AF0F01F 
- 1292      4267ADCC 
- 1292      EF14C4
- 1293 01cb 6A467E71 		.ascii	"jF~q-\262\317\001}\217\007\254f\370\271\017\237\325"
- 1293      2DB2CF01 
- 1293      7D8F07AC 
- 1293      66F8B90F 
- 1293      9FD5
- 1294 01dd 3DB20FD2 		.ascii	"=\262\017\322\312\375\345\355m\031\002\016\347G\034"
- 1294      CAFDE5ED 
- 1294      6D19020E 
- 1294      E7471C
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 32
+ 1276      32CDD4BA 
+ 1276      A49627B9 
+ 1277 01da 15B34132 		.ascii	"\025\263A2\237\3302\222\314\214\016\314\36007f\030l"
+ 1277      9FD83292 
+ 1277      CC8C0ECC 
+ 1277      F0303766 
+ 1277      186C
+ 1278 01ec 70409D94 		.ascii	"p@\235\224=\025\001\036S\350\265\002\374\212\031\345"
+ 1278      3D15011E 
+ 1278      53E8B502 
+ 1278      FC8A19E5 
+ 1279 01fc CC13386B 		.ascii	"\314\0238kz\2562:\006\200%[\344I\212\274F\332\276\200"
+ 1279      7AAE323A 
+ 1279      0680255B 
+ 1279      E4498ABC 
+ 1279      46DABE80 
+ 1280 0210 B8BA9B14 		.ascii	"\270\272\233\024\223\367\325\243X5\222\365\222\263\370"
+ 1280      93F7D5A3 
+ 1280      583592F5 
+ 1280      92B3F8
+ 1281 021f DD19F204 		.ascii	"\335\031\362\0048{\230\345:E\361WI~\217\3155u\250k\225"
+ 1281      387B98E5 
+ 1281      3A45F157 
+ 1281      497E8FCD 
+ 1281      3575A86B 
+ 1282 0234 64BD365D 		.ascii	"d\2756]\3771\323,\307\200\342V\252M\275U\246\035\177"
+ 1282      FF31D32C 
+ 1282      C780E256 
+ 1282      AA4DBD55 
+ 1282      A61D7F
+ 1283 0247 80A55BE4 		.ascii	"\200\245[\344\014E^)\215\337\301\006\025?\334\366\030"
+ 1283      0C455E29 
+ 1283      8DDFC106 
+ 1283      153FDCF6 
+ 1283      18
+ 1284 0258 335986B9 		.ascii	"3Y\206\271\211\264\301\247\\.\225\275\\\3112Mm\226\225"
+ 1284      89B4C1A7 
+ 1284      5C2E95BD 
+ 1284      5CC9324D 
+ 1284      6D9695
+ 1285 026b 91AD98CB 		.ascii	"\221\255\230\313%\363\275-#\307\366\030sY6\177U\360"
+ 1285      25F3BD2D 
+ 1285      23C7F618 
+ 1285      7359367F 
+ 1285      55F0
+ 1286 027d 82C119CB 		.ascii	"\202\301\031\313\244\362\243\310\3105\265#\254\214\220"
+ 1286      A4F2A3C8 
+ 1286      C835B523 
+ 1286      AC8C90
+ 1287 028c 622E519B 		.ascii	"b.Q\233\376\244b\236\341\246GZ\344\260\"/\226\266_ "
+ 1287      FEA4629E 
+ 1287      E1A6475A 
+ 1287      E4B0222F 
+ 1287      96B65F20 
+ 1288 02a0 A66E68D4 		.ascii	"\246nh\324\3203_(Y\3378\013^\201I\034m\031\026+\352"
+ 1288      D0335F28 
+ 1288      59DF380B 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 32
 
 
- 1295 01ec B1A0411E 		.ascii	"\261\240A\036h\000\375,\255<h\347\205j\325\264\252\220"
- 1295      6800FD2C 
- 1295      AD3C68E7 
- 1295      856AD5B4 
- 1295      AA90
- 1296 01fe B2A623AA 		.ascii	"\262\246#\252\246\263T\323\0376\025\202\034\262\304"
- 1296      A6B354D3 
- 1296      1F361582 
- 1296      1CB2C4
- 1297 020d 7E00B64E 		.ascii	"~\000\266NM_\367[\263q5[bG_-\355Rw\3304G\353J\001\350"
- 1297      4D5FF75B 
- 1297      B371355B 
- 1297      62475F2D 
- 1297      ED5277D8 
- 1298 0227 EEDD11ED 		.ascii	"\356\335\021\355\035N\354K\364\217\247\007\023F4c\244"
- 1298      1D4EEC4B 
- 1298      F48FA707 
- 1298      13463463 
- 1298      A4
- 1299 0238 46CCD158 		.ascii	"F\314\321X|h m\016\245\242}\261d\3348\010\333\303a\235"
- 1299      7C68206D 
- 1299      0EA5A27D 
- 1299      B164DC38 
- 1299      08DBC361 
- 1300 024d DEB8341A 		.ascii	"\336\2704\032fO$\022\321\015S\037\216%\365Q#5n\352\375"
- 1300      664F2412 
- 1300      D10D531F 
- 1300      8E25F551 
- 1300      23356EEA 
- 1301 0262 7B766FE9 		.ascii	"{vo\351)\177\373\266NL\310\225\201dr0\034\207\277\357"
- 1301      297FFBB6 
- 1301      4E4CC895 
- 1301      81647230 
- 1301      1C87BFEF 
- 1302 0276 9C9D9C   		.ascii	"\234\235\234"
- 1303              		.text
- 1304              		.section	.gnu.lto_stm32_clock_init.387.79e3ab27,"e",%progbits
- 1305 0000 789C7D56 		.ascii	"x\234}VilTU\024\276\347\236\331;\033\235\245\355t/\030"
- 1305      696C5455 
- 1305      14BEE79E 
- 1305      D93B1B9D 
- 1305      A5ED742F 
- 1306 0015 8D249D14 		.ascii	"\215$\235\024\225\355\227\011\011\177\0141\246\"1`H"
- 1306      95ED9709 
- 1306      097F0C31 
- 1306      A6223160 
- 1306      48
- 1307 0026 2D442AD5 		.ascii	"-D*\325\002\205\024\343\017^\201\0026\032:-X\226\322"
- 1307      028514E3 
- 1307      0F5E8102 
- 1307      361A3A2D 
- 1307      5896D2
- 1308 0039 4A8D4911 		.ascii	"J\215I\021(\241?\204\026\201\"\240(\212\261UH\005\303"
- 1308      28A13F84 
- 1308      168122A0 
- 1308      288AB155 
- 1308      4805C3
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 33
+ 1288      5E81491C 
+ 1288      6D19162B 
+ 1289 02b5 0249FD6E 		.ascii	"\002I\375n3\0343\324p\276d\375\024\206o\376\031\216"
+ 1289      331C33D4 
+ 1289      70BE64FD 
+ 1289      14866FFE 
+ 1289      198E
+ 1290 02c7 B50C4B14 		.ascii	"\265\014K\024\265Lm\347\267\362\354\270E\3318\213\234"
+ 1290      B54C6DE7 
+ 1290      B7F2ECB8 
+ 1290      45D9388B 
+ 1290      9C
+ 1291 02d8 A7C8F3A4 		.ascii	"\247\310\363\244\357\000\254S\351\371\266g\350cy\360"
+ 1291      EF00AC53 
+ 1291      E9F9B667 
+ 1291      E86379F0 
+ 1292 02e8 61C8D1CE 		.ascii	"a\310\321\316\221\"\203\213\230\217\360\357\000\263"
+ 1292      9122838B 
+ 1292      988FF0EF 
+ 1292      00B3
+ 1293 02f6 7D0740FA 		.ascii	"}\007@\372\024Xy\205Jz9!\265-t\255\012\034o\013,b\205"
+ 1293      14587985 
+ 1293      4A7A3921 
+ 1293      B52D74AD 
+ 1293      0A1C6F0B 
+ 1294 030d FF093C6F 		.ascii	"\377\011<o\252Z\271\212\025\211D\315\226\250I\243\211"
+ 1294      AA5AB98A 
+ 1294      158944CD 
+ 1294      96A849A3 
+ 1294      89
+ 1295 031e 5662A9D2 		.ascii	"Vb\251\322\236J\250\363h\023\241\003\264\265\347P2i"
+ 1295      9E4AA8F3 
+ 1295      6813A103 
+ 1295      B4B5E750 
+ 1295      3269
+ 1296 0330 075ABB9A 		.ascii	"\007Z\273\232\020\232*\026\316\312\205\210X0\350\266"
+ 1296      109A2A16 
+ 1296      CECA8588 
+ 1296      5830E8B6 
+ 1297 0340 9EC70BC4 		.ascii	"\236\307\013\304\267\373(\003\373\007\217\220\011sg"
+ 1297      B7FB2803 
+ 1297      FB078F90 
+ 1297      097367
+ 1298 034f 95CFADA9 		.ascii	"\225\317\255\251\255\254]\332\320XU\033+o\212\325\257"
+ 1298      ADAC5DDA 
+ 1298      D058551B 
+ 1298      2B6F8AD5 
+ 1298      AF
+ 1299 0360 8DD75544 		.ascii	"\215\327UD\252W4\306\253\353\313\313*\242\221\330zR"
+ 1299      AA5734C6 
+ 1299      ABEBCBCB 
+ 1299      2AA291D8 
+ 1299      7A52
+ 1300 0372 1A0804F1 		.ascii	"\032\010\004\361\027\341\304X<\034\012\205\202\261x"
+ 1300      17E1C458 
+ 1300      3C1C0A85 
+ 1300      82B178
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 33
 
 
- 1309 004c E2C2A24D 		.ascii	"\342\302\242M\012\210T\212\326\363\356{w\336\033g\206"
- 1309      0A88548A 
- 1309      D6F3EE7B 
- 1309      77DE1B67 
- 1309      86
- 1310 005d A6DFE4BE 		.ascii	"\246\337\344\2767\337\375\316\371\316\271\313Lv1V\301"
- 1310      37DFFDCE 
- 1310      F9CEB9CB 
- 1310      4C763156 
- 1310      C1
- 1311 006e 189BCF19 		.ascii	"\030\233\317\031\203\"\006\315\261F\316\024Ey\326\316"
- 1311      832206CD 
- 1311      B146CE14 
- 1311      4579D6CE 
- 1312 007e A125D678 		.ascii	"\241%\326x\177\177\217\005\016\201x\201\374xS\017\014"
- 1312      7F7F8F05 
- 1312      0E817881 
- 1312      FC78530F 
- 1312      0C
- 1313 008f 8C3C986E 		.ascii	"\214<\230nY\037\363von\260[\012\241\345\240_\243[`k"
- 1313      591FF376 
- 1313      6F6EB05B 
- 1313      0AA1E5A0 
- 1313      5FA35B60 
- 1314 00a4 ACF1F76E 		.ascii	"\254\361\367n.\331V~L\2627\350\354\002\330*\3316h%\366"
- 1314      2ED9567E 
- 1314      4CB237E8 
- 1314      EC02D82A 
- 1314      D9366825 
- 1315 00b9 E138DBCE 		.ascii	"\3418\333\316\217J\366\266\246k \350\371\320*\351\016"
- 1315      8F4AF6B6 
- 1315      A66B20E8 
- 1315      F9D02AE9 
- 1315      0E
- 1316 00ca D8DEDC79 		.ascii	"\330\336\334y\260\355qIw\362O%}\207\244\347\021g\203"
- 1316      B0ED7149 
- 1316      77F24F25 
- 1316      7D87A4E7 
- 1316      116783
- 1317 00dd 9EBB0B76 		.ascii	"\236\273\013v\022\377p\234\237\301\217H\376\001\311"
- 1317      12FF709C 
- 1317      9FC18F48 
- 1317      FE01C9
- 1318 00ec CF258EE4 		.ascii	"\317%\216\344gA\033\027\0037\357k\352)\246i\202\273"
- 1318      67411B17 
- 1318      0337EF6B 
- 1318      EA29A669 
- 1318      82BB
- 1319 00fe 4B7223D0 		.ascii	"Kr#\320\026\347zx\273F\371\343\303\253!K\027Q\266\\"
- 1319      16E77A78 
- 1319      BB46F9E3 
- 1319      C3AB214B 
- 1319      1751B65C 
- 1320 0112 6A7FD2E2 		.ascii	"j\177\322\342\345\035\024\"\361\235\017>n\356\274=\374"
- 1320      E51D1422 
- 1320      F19D0F3E 
- 1320      6EEEBC3D 
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 34
+ 1301 0381 B0A6221A 		.ascii	"\260\246\"\032\254\213\3257\304\203K\227-\232\026\226"
+ 1301      AC8BD537 
+ 1301      C4834B97 
+ 1301      2D9A1696 
+ 1302 0391 63597173 		.ascii	"cYqs3\357\254\210F\253\002\021\342\332\030\213\006\246"
+ 1302      33EFAC88 
+ 1302      46AB0211 
+ 1302      E2DA188B 
+ 1302      06A6
+ 1303 03a3 8A3124C6 		.ascii	"\2121$\306\260\030\247\211\261X\214\323\305X\"\306\031"
+ 1303      B018A789 
+ 1303      B1588CD3 
+ 1303      C55822C6 
+ 1303      19
+ 1304 03b4 629CF917 		.ascii	"b\234\371\027\326\244R\244"
+ 1304      D6A452A4 
+ 1305              		.text
+ 1306              		.section	.gnu.lto_stm32_clock_init.387.98e560d9,"e",%progbits
+ 1307 0000 789C6D56 		.ascii	"x\234mV\011l\024U\030\236\377\375\273\323m\267\273\333"
+ 1307      096C1455 
+ 1307      189EFFFD 
+ 1307      BBD36DB7 
+ 1307      BBDB
+ 1308 0012 BB05E4BE 		.ascii	"\273\005\344\276\012\205--wA\256BI\0244\010x\204\032"
+ 1308      0A852D2D 
+ 1308      7741AE42 
+ 1308      49143408 
+ 1308      78841A
+ 1309 0025 420B42A1 		.ascii	"B\013B\241\272@\251\020Qv\012-\324J\224V\356\243@\203"
+ 1309      BA40A910 
+ 1309      51760A2D 
+ 1309      D44A9456 
+ 1309      EEA34083 
+ 1310 0039 A6088856 		.ascii	"\246\010\210V\203\005\221\033$F\210\301\200D%!\034R"
+ 1310      8305911B 
+ 1310      244688C1 
+ 1310      80442521 
+ 1310      1C52
+ 1311 004b B904AC6D 		.ascii	"\271\004\254m\321B\375g\336\314\274a\207M\337|\377{"
+ 1311      D142FD67 
+ 1311      DECCBC61 
+ 1311      874DDF7C 
+ 1311      FF7B
+ 1312 005d F3BEEF3F 		.ascii	"\363\276\357?\3361\015\272%i\246$I\215@\217V\022T\224"
+ 1312      DE310DBA 
+ 1312      2569A624 
+ 1312      498D408F 
+ 1312      56125494 
+ 1313 0071 9731A9A5 		.ascii	"\2271\251\245\245%\350`\360qyY\343\236\032\007|\003"
+ 1313      A525E860 
+ 1313      F0717959 
+ 1313      E39E1A07 
+ 1313      7C03
+ 1314 0083 DA00B265 		.ascii	"\332\000\262e\345n\315*.\367j\350\2005\345e\267\374"
+ 1314      E56ECD2A 
+ 1314      2EF76AE8 
+ 1314      8035E565 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 34
 
 
- 1320      FC
- 1321 0123 8E4B4CF4 		.ascii	"\216KL\364\253O\305\232H&tk\001\303\274\327\024p\257"
- 1321      AB4FC59A 
- 1321      4826746B 
- 1321      01C3BCD7 
- 1321      1470AF
- 1322 0136 0C9803DD 		.ascii	"\014\230\003\335\361\200\001\330G*\357\356\235-\335"
- 1322      F18001D8 
- 1322      472AEFEE 
- 1322      9D2DDD
- 1323 0145 04F961E9 		.ascii	"\004\371a\351f\277\234\220M$9!\004\365\261\306\353C"
- 1323      66BF9C90 
- 1323      4D243921 
- 1323      04F5B1C6 
- 1323      EB43
- 1324 0157 25920F6C 		.ascii	"%\222\017l\015\307B\213\265\300f\317w8\363\\\031\271"
- 1324      0DC7428B 
- 1324      B5C066CF 
- 1324      7738F35C 
- 1324      19B9
- 1325 0169 59EE88C7 		.ascii	"Y\356\210\307\353\363g\206s\002\301\354\020\254q\"3"
- 1325      EBF36786 
- 1325      7302C1EC 
- 1325      10AC7122 
- 1325      33
- 1326 017a FEACA6B1 		.ascii	"\376\254\246\261\3354v\232\306\031\246\261\3334\016"
- 1326      DD34769A 
- 1326      C619A6B1 
- 1326      DB340E
- 1327 0189 9BC641D3 		.ascii	"\233\306A\323x7F)\225\321\206\367\373N\203\322\325\017"
- 1327      78374629 
- 1327      95D186F7 
- 1327      FB4E83D2 
- 1327      D50F
- 1328 019b B7185B63 		.ascii	"\267\030[c\322R\307@80`\355W\036\216oV\224\341\237\241"
- 1328      D252C740 
- 1328      383060ED 
- 1328      571E8E6F 
- 1328      5694E19F 
- 1329 01b0 6DF20C60 		.ascii	"m\362\014`\0348\001\011\026\202\225`#\330\011\016\202"
- 1329      1C380109 
- 1329      16829560 
- 1329      23D8090E 
- 1329      82
- 1330 01c1 93E02264 		.ascii	"\223\340\"d\020\334\004\017\301K\360\021\374\204\011"
- 1330      10DC040F 
- 1330      C14BF011 
- 1330      FC8409
- 1331 01d0 844C4280 		.ascii	"\204LB\200\020$\204\010aB\026!\233\220C\210\020r\011"
- 1331      10248408 
- 1331      61421621 
- 1331      9B904388 
- 1331      107209
- 1332 01e3 79847C42 		.ascii	"y\204|B\001\241\220PD(&\224\020&\022&\021\246\021\030"
- 1332      01A19050 
- 1332      44282694 
- 1332      10261226 
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 35
+ 1314      B7FC
+ 1315 0095 9AED6425 		.ascii	"\232\355d%\372\333\345\372[\031\326\321\333A\232\035"
+ 1315      FADBE5FA 
+ 1315      5B19D6D1 
+ 1315      DB419A1D 
+ 1316 00a5 C656E86F 		.ascii	"\306V\350o\327\257\272\302\345\\\260\241\242\352\313"
+ 1316      D7AFBAC2 
+ 1316      E55CB0A1 
+ 1316      A2EACB
+ 1317 00b4 CD615A27 		.ascii	"\315aZ'\234mXU\303\3077\032\023\"`\023M\250\345\023"
+ 1317      9C6D5855 
+ 1317      C3C7371A 
+ 1317      13226013 
+ 1317      4DA8E513 
+ 1318 00c8 DC6C9331 		.ascii	"\334l\2231a\2631!\022\266\320\204\213|\202\207m1&T\032"
+ 1318      61B33121 
+ 1318      12B6D084 
+ 1318      8B7C8287 
+ 1318      6D312654 
+ 1319 00dd 13BC6CAB 		.ascii	"\023\274l\2531\266\323\030\363\261j\333X\024|VQu\377"
+ 1319      31B6D318 
+ 1319      F3B16ADB 
+ 1319      58147C56 
+ 1319      5175FF
+ 1320 00f0 CEFB115A 		.ascii	"\316\373\021Z/Z\355u\344E\210\201]\364\346\321\316,"
+ 1320      2F5AED75 
+ 1320      E4458881 
+ 1320      5DF4E6D1 
+ 1320      CE2C
+ 1321 0102 A308B16C 		.ascii	"\243\010\261l\227A\337m\320\343`\017\305\261\222\347"
+ 1321      9741DF6D 
+ 1321      D0E3600F 
+ 1321      C5B192E7 
+ 1322 0112 17CFF618 		.ascii	"\027\317\366\030\023>7&$\300\336\212*n&B\255a&A\321"
+ 1322      133E3726 
+ 1322      24C0DE8A 
+ 1322      2A6E2642 
+ 1322      AD612641 
+ 1323 0127 E61BDC25 		.ascii	"\346\033\334%HA\206\016\247\034\346\012\217pGz\274\276"
+ 1323      4841860E 
+ 1323      A71CE60A 
+ 1323      8F70477A 
+ 1323      BCBE
+ 1324 0139 A8E898D8 		.ascii	"\250\350\230\330\270\370\204\304$\010\206\243$~N\213"
+ 1324      B8F884C4 
+ 1324      240886A3 
+ 1324      247E4E8B 
+ 1325 0149 1D66B1C3 		.ascii	"\035f\261\303-\266\333b{,v\254\305\216\267\330\3331"
+ 1325      2DB6DB62 
+ 1325      7B2C76AC 
+ 1325      C58EB7D8 
+ 1325      DB31
+ 1326 015b 555194A6 		.ascii	"UQ\224\246\222\265\007N\202R}\004nJR\320\242\245\332"
+ 1326      92B5074E 
+ 1326      82527D04 
+ 1326      6E4A52D0 
+ 1326      A2A5DA
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 35
 
 
- 1332      11A61118 
- 1333 01f7 6B4736F2 		.ascii	"kG6\362\240k:(\375\214u \027\343z\032\337\347\312\265"
- 1333      A06B3A28 
- 1333      FD8C7520 
- 1333      17E37A1A 
- 1333      DFE7CAB5 
- 1334 020b 96B3C0C6 		.ascii	"\226\263\300\306\370g\177v\005\255`{\033\230\370TF6"
- 1334      F8677F76 
- 1334      05AD607B 
- 1334      1B98F854 
- 1334      4636
- 1335 021d 29162BEC 		.ascii	")\026+\354S\333\321\205o\365A/\260\251\273\025\305Q"
- 1335      53DBD185 
- 1335      6FF5412F 
- 1335      B0A9BB15 
- 1335      C551
- 1336 022f 77045631 		.ascii	"w\004V1f\253U\277P@\010\354\322\005nxh\352r!\260\034"
- 1336      66AB55BF 
- 1336      504008EC 
- 1336      D2056E78 
- 1336      68EA7221 
- 1337 0245 942BF526 		.ascii	"\224+\365&\201\232\343pL\012\364\303\033\272\000\212"
- 1337      819AE370 
- 1337      4C0AF4C3 
- 1337      1BBA008A 
- 1338 0255 E947B4E9 		.ascii	"\351G\264\351\307nz\020\364\011\016=`q\335IXJE\036\343"
- 1338      C76E7A10 
- 1338      F4090E3D 
- 1338      6071DD49 
- 1338      584A451E 
- 1339 026a EBB66C04 		.ascii	"\353\266l\004\344\010\266'@\260\3574&s?W\271\310\205"
- 1339      E408B627 
- 1339      40B0EF34 
- 1339      26733F57 
- 1339      B9C885
- 1340 027d E8D1B36A 		.ascii	"\350\321\263js:\020\3254-\252W\240\327\235\317h\221"
- 1340      733A10D5 
- 1340      342DAA57 
- 1340      A0D79DCF 
- 1340      6891
- 1341 028f 7C88FF9B 		.ascii	"|\210\377\233-2;#\203m\333\370+G\013\"E\343\354/\276"
- 1341      2D323B23 
- 1341      836DDBF8 
- 1341      2B470B22 
- 1341      45E3EC2F 
- 1342 02a4 FEE6C9D7 		.ascii	"\376\346\311\327\321B\017Z\367\333\261\260\251\341\302"
- 1342      D1420F5A 
- 1342      F7DBB1B0 
- 1342      A9E1C2
- 1343 02b3 17489974 		.ascii	"\027H\231t\240%\241\226C\322\213\027\255I\371}\015U"
- 1343      A025A196 
- 1343      43D28B17 
- 1343      AD49F97D 
- 1343      0D55
- 1344 02c5 521ED086 		.ascii	"R\036\320\206V\022|8>>\356K\347\347[\225\2176!|Q\367"
- 1344      56127C38 
- 1344      3E3EEE4B 
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 36
+ 1327 016e B439C009 		.ascii	"\2649\300\011r,8\350\031\017\035\234\340\312\221R\216"
+ 1327      722C38E8 
+ 1327      190F1D9C 
+ 1327      E0CA9152 
+ 1327      8E
+ 1328 017f 1429F736 		.ascii	"\024)\3676\335\272\267\015N+\216\344o!x\000\366\203"
+ 1328      DDBAB70D 
+ 1328      4E2B8EE4 
+ 1328      6F217800 
+ 1328      F683
+ 1329 0191 C6DA7BCE 		.ascii	"\306\332{\316yDin\371HQ~I\371\216r\314\006\211\001\223"
+ 1329      7944696E 
+ 1329      F948517E 
+ 1329      49F98E72 
+ 1329      CC068901 
+ 1330 01a6 18434287 		.ascii	"\030CB\207\304\320I(\023\206\021\272\010\303\251E\220"
+ 1330      C4D04928 
+ 1330      138611BA 
+ 1330      08C3A945 
+ 1330      90
+ 1331 01b7 ED268C24 		.ascii	"\355&\214$\364\020z\011}\204Q\324\242\311\216!\214%"
+ 1331      F4107A09 
+ 1331      7D8451D4 
+ 1331      A2C98E21 
+ 1331      8C25
+ 1332 01c9 8C238C27 		.ascii	"\214#\214'L\240\226Hv\022a+\302\326\204m\010\237\241"
+ 1332      4CA09648 
+ 1332      7612612B 
+ 1332      C2D6846D 
+ 1332      089FA1
+ 1333 01dc D696EC76 		.ascii	"\326\226\354v\204\355\011;\020v$\354D\330\231Z\027\262"
+ 1333      84ED093B 
+ 1333      107624EC 
+ 1333      44D8995A 
+ 1333      17B2
+ 1334 01ee BB52EB46 		.ascii	"\273R\353Fvw\302d\302\036\024[O\302\024j\275h\2547\241"
+ 1334      7677C264 
+ 1334      C21E145B 
+ 1334      4FC2146A 
+ 1334      BD68AC37 
+ 1335 0203 9F5A2AD9 		.ascii	"\237Z*\331}$\346H#;]b\316\276\204\375$&\367\2476\200"
+ 1335      7D24E648 
+ 1335      233B5D62 
+ 1335      CEBE84FD 
+ 1335      2426F7A7 
+ 1336 0219 DA40EA0F 		.ascii	"\332@\352\017\2426\230\346e\020\016!\034J\370,\3410"
+ 1336      A23698E6 
+ 1336      65100E21 
+ 1336      1C4AF82C 
+ 1336      E130
+ 1337 022b C2E1D446 		.ascii	"\302\341\324F\220=\222p\024a&\341h\3021\204Y\204c\011"
+ 1337      903D9270 
+ 1337      146126E1 
+ 1337      68C23184 
+ 1337      59846309 
+ 1338 023f C7114E21 		.ascii	"\307\021N!\224\244JT7\235\366kO\205\334\212LtA\372\217"
+ 1338      94A44A54 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 36
 
 
- 1344      E7E75B95 
- 1344      8F36217C 
- 1345 02db 634DF4B3 		.ascii	"cM\364\263S\013\267\307\207\366T\206\2763\"\016st\240"
- 1345      530BB7C7 
- 1345      87F65486 
- 1345      BE33220E 
- 1345      7374A0
- 1346 02ee 9D42BA55 		.ascii	"\235B\272UC\267N~B\317\360\025\350\206\012\014C\266"
- 1346      43B74E7E 
- 1346      42CFF015 
- 1346      E8860A0C 
- 1346      43B6
- 1347 0300 0443778D 		.ascii	"\004Cw\215\3468\223\022\374\336\250\027\240\013\235"
- 1347      E6389312 
- 1347      FCDEA817 
- 1347      A00B9D
- 1348 030f A4FE77DA 		.ascii	"\244\376w\332\356\\\020\335q\011\325{r\305xS.\261!5"
- 1348      EE5C10DD 
- 1348      7109D57B 
- 1348      72C57853 
- 1348      2EB12135 
- 1349 0323 6D5A215A 		.ascii	"mZ!Z\012\255\347\342)d$\251^2\257\0177fP\012T\237t9"
- 1349      0AADE7E2 
- 1349      296424A9 
- 1349      5E32AF0F 
- 1349      3766500A 
- 1350 033b 5C1639B8 		.ascii	"\\\0269\270\205\354\316sZE\355\211\025\335\036\257\250"
- 1350      85ECCE73 
- 1350      5A45ED89 
- 1350      15DD1EAF 
- 1350      A8
- 1351 034c 275545AF 		.ascii	"'UE\257\032\226\177\342\350E\217\010\350\320\026I\017"
- 1351      1A967FE2 
- 1351      E8458F08 
- 1351      E8D01649 
- 1351      0F
- 1352 035d BD316A9A 		.ascii	"\2751j\232o\324\324\221P\323C\272\241=^\364%\245\370"
- 1352      6FD4D491 
- 1352      50D343BA 
- 1352      A13D5EF4 
- 1352      25A5F8
- 1353 0370 0BBC6618 		.ascii	"\013\274f\030\362\243\017N\245\255\350o*\025\375B\263"
- 1353      F2A30F4E 
- 1353      A5ADE86F 
- 1353      2A15FD42 
- 1353      B3
- 1354 0381 5777E34C 		.ascii	"Ww\343Lt\263+\356fB*77d0\261\3403q\002|\011\232\225"
- 1354      74B32BEE 
- 1354      66422A37 
- 1354      376430B1 
- 1354      E0337102 
- 1355 0399 3E7A34AC 		.ascii	">z4\254\344\031V\\\011V~8g\234\035)\032y\013\026\213"
- 1355      E419565C 
- 1355      09567E38 
- 1355      679C1D29 
- 1355      1A790B16 
- 1356 03ae 466EEAAA 		.ascii	"Fn\352\252\237\251\355\017\243\227\201$?\303\346^\006"
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 37
+ 1338      379DF66B 
+ 1338      4F85DC8A 
+ 1338      4C7441FA 
+ 1339 0254 2DAD6FBA 		.ascii	"-\255o\272\226\203 \277\007\312\275R\305A#\307\352\253"
+ 1339      968320BF 
+ 1339      07CABD52 
+ 1339      C54123C7 
+ 1339      EAAB
+ 1340 0266 E39CEA80 		.ascii	"\343\234\352\200\344\204\335@\253X\215\363\336=\004"
+ 1340      E484DD40 
+ 1340      AB588DF3 
+ 1340      DE3D04
+ 1341 0275 D280ED8A 		.ascii	"\322\200\355\212\342\012\034\2067%I\236\243\216+\234"
+ 1341      E20A1C86 
+ 1341      3725499E 
+ 1341      A38E2B9C 
+ 1342 0285 BFFE0643 		.ascii	"\277\376\006C&/\006\345r\221\316\257\363\020\177\261"
+ 1342      262F06E5 
+ 1342      7291CEAF 
+ 1342      F3107FB1 
+ 1343 0295 859FF7CE 		.ascii	"\205\237\367\316q\203\177\002f\352|\344\336\357\326"
+ 1343      71837F02 
+ 1343      66EA7CE4 
+ 1343      DEEFD6
+ 1344 02a4 20221C54 		.ascii	" \"\034T\265\216\035\012\247\015\313I\256y\213T\237"
+ 1344      B58E1D0A 
+ 1344      A70DCB49 
+ 1344      AE798B54 
+ 1344      9F
+ 1345 02b5 1D03DFC3 		.ascii	"\035\003\337\303\014Z}u\252\013\235|\336\262\325+\000"
+ 1345      0C5A7D75 
+ 1345      AA0B9D7C 
+ 1345      DEB2D52B 
+ 1345      00
+ 1346 02c6 6574C8C9 		.ascii	"et\310\311Z\012\307\036\224\201\311Z\300Y?\250,\224"
+ 1346      5A0AC71E 
+ 1346      9481C95A 
+ 1346      C0593FA8 
+ 1346      2C94
+ 1347 02d8 253563B4 		.ascii	"%5c\264d\014\252P\355_\017\020\303\204O\227\311\236"
+ 1347      640CAA50 
+ 1347      ED5F0F10 
+ 1347      C3844F97 
+ 1347      C99E
+ 1348 02ea 6BE6F9A3 		.ascii	"k\346\371\243\356v\331\372\025\327i/\241\213\2341\251"
+ 1348      EE76D9FA 
+ 1348      15D7692F 
+ 1348      A18B9C31 
+ 1348      A9
+ 1349 02fb 8115FF79 		.ascii	"\201\025\377y|6\206S\207\357\345\255\350\010\255gm\303"
+ 1349      7C368653 
+ 1349      87EFE5AD 
+ 1349      E808AD67 
+ 1349      6DC3
+ 1350 030d 39C408A1 		.ascii	"9\304\010\241\3566\325g\363\330~\202\\3\243H=\243\365"
+ 1350      EE36D567 
+ 1350      F3D87E82 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 37
 
 
- 1356      9FA9ED0F 
- 1356      A3978124 
- 1356      3FC3E65E 
- 1356      06
- 1357 03bf 31204A4B 		.ascii	"1 JK\265Mc\177D43(to\353\3663\322\331\017\311\351\346"
- 1357      B54D637F 
- 1357      44343328 
- 1357      746FEBF6 
- 1357      33D2D90F 
- 1358 03d6 93E80E54 		.ascii	"\223\350\016T\232\354\2071$\"\032\025\010\033\025\310"
- 1358      9AEC8731 
- 1358      24221A15 
- 1358      081B15C8 
- 1359 03e6 951568C7 		.ascii	"\225\025h\307,Q\001\265\026\356\204h\327\016n\366\310"
- 1359      2C5101B5 
- 1359      16EE8468 
- 1359      D70E6EF6 
- 1359      C8
- 1360 03f7 E3252B55 		.ascii	"\343%+U\265\357%\034/\331\230\245\031\364\313\023&\333"
- 1360      B5EF251C 
- 1360      2FD998A5 
- 1360      19F4CB13 
- 1360      26DB
- 1361 0409 0817310A 		.ascii	"\010\0271\012\356I(\370\366\201G\356\234Q}\347(]\235"
- 1361      EE4928F8 
- 1361      F68147EE 
- 1361      9C517DE7 
- 1361      285D9D
- 1362 041c A7B4D375 		.ascii	"\247\264\323uh0^\203\034:\230+\304\361\\A\027A\223\""
- 1362      68305E83 
- 1362      1C3A982B 
- 1362      C4F15C41 
- 1362      17419322 
- 1363 0430 251C0B1F 		.ascii	"%\034\013\037\302\230T\370\007^\241\014DF\021\314\261"
- 1363      C29854F8 
- 1363      075EA10C 
- 1363      444611CC 
- 1363      B1
- 1364 0441 D541EC4C 		.ascii	"\325A\354L\275\302EZ\035\350\035mh\011\010\277\302g"
- 1364      BDC2455A 
- 1364      1DE81D6D 
- 1364      680908BF 
- 1364      C267
- 1365 0453 2946486C 		.ascii	")FHl\276\220\234\017\312\217\353\014\311\227\3539\315"
- 1365      BE909C0F 
- 1365      CA8FEB0C 
- 1365      C997EB39 
- 1365      CD
- 1366 0464 9AFA110D 		.ascii	"\232\372\021\015\347\255\345s\245$\0255b\233\007'\326"
- 1366      E7ADE573 
- 1366      A5241535 
- 1366      629B0727 
- 1366      D6
- 1367 0475 1FDF64D1 		.ascii	"\037\337d\3215}\247\367\237\260\305\375]\034\344\306"
- 1367      357DA7F7 
- 1367      9FB0C5FD 
- 1367      5D1CE4C6 
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 38
+ 1350      5C33A348 
+ 1350      3DA3F5
+ 1351 0320 949107DD 		.ascii	"\224\221\007\335\244\333LR\276\320\254\336\340\314\237"
+ 1351      A4DB4C52 
+ 1351      BED0ACDE 
+ 1351      E0CC9F
+ 1352 032f 55267A34 		.ascii	"U&z4\277\316\320\254\232\032\256 z\205_\237\311\316"
+ 1352      BFCED0AC 
+ 1352      9A1AAE20 
+ 1352      7A855F9F 
+ 1352      C9CE
+ 1353 0341 31B33AAF 		.ascii	"1\263:\257\273&\177w\350\024\240\217\034F\252Y\335<"
+ 1353      BB267F77 
+ 1353      E814A08F 
+ 1353      1C46AA59 
+ 1353      DD3C
+ 1354 0353 BE8FFA70 		.ascii	"\276\217\372p\026\364\254d\333.i\246u\212\026\3521\246"
+ 1354      16F4AC64 
+ 1354      DB2E69A6 
+ 1354      758A16EA 
+ 1354      31A6
+ 1355 0365 7A368FED 		.ascii	"z6\217\355\242e\235b-Y\305a\0149yh[\250W9\3557m\241"
+ 1355      A2659D62 
+ 1355      2D59C561 
+ 1355      0C397968 
+ 1355      5BA85739 
+ 1356 037d E278E51E 		.ascii	"\342x\345\036\345`\274\356\242\276\316+\266\337$3\201"
+ 1356      E560BCEE 
+ 1356      A2BECE2B 
+ 1356      B6DF2433 
+ 1356      81
+ 1357 038e 4B6A02B4 		.ascii	"Kj\002\264}\270\247\246\223_!&\210\240\022M\365\227"
+ 1357      7DB8A7A6 
+ 1357      935F2126 
+ 1357      88A0124D 
+ 1357      F597
+ 1358 03a0 B8FA654B 		.ascii	"\270\372eKPI\226\315\323\012\023)(\205\357WkT/p\336"
+ 1358      504996CD 
+ 1358      D30A1329 
+ 1358      2885EF57 
+ 1358      6B542F70 
+ 1359 03b5 552DAA56 		.ascii	"U-\252VZ)\302l\205>u\025\261\265\360\332\306d?g\306"
+ 1359      5A29C26C 
+ 1359      853E7515 
+ 1359      B1B5F0DA 
+ 1359      C6643F67 
+ 1360 03ca 795D6C9F 		.ascii	"y]l\237Kt}`\033\315\235\213o\240\032\032\021\245v\331"
+ 1360      4B747D60 
+ 1360      1BCD9D8B 
+ 1360      6FA01A1A 
+ 1360      11A576D9 
+ 1361 03de 4A7DE638 		.ascii	"J}\3468b[\241\337\316\324\037\315\243\253\203ifV\355"
+ 1361      625BA1DF 
+ 1361      CED41FCD 
+ 1361      A3AB8369 
+ 1361      6656ED
+ 1362 03f1 2D5975C0 		.ascii	"-Yu\300vp\332V\350\021\234tS%a\007\315e\270\355D\234"
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 38
 
 
- 1368 0485 65542E94 		.ascii	"eT.\224\313A\0315]F\236\0276\360\006\256g\273\221?/"
- 1368      CB411935 
- 1368      5D469E17 
- 1368      36F006AE 
- 1368      67BB913F 
- 1369 049a FC3670A1 		.ascii	"\3746p\241\345\337\373\315\365\262\270\326e\223V\212"
- 1369      E5DFFBCD 
- 1369      F5B2B8D6 
- 1369      6593568A 
- 1370 04aa B98D72AE 		.ascii	"\271\215r\256W\314\315\224u\006\365)\254\265\026Dc\307"
- 1370      57CCCD94 
- 1370      7506F529 
- 1370      ACB51644 
- 1370      63C7
- 1371 04bc 07B58B6E 		.ascii	"\007\265\213nl0\252\3252\210\271\322\250Y\361=UQk\360"
- 1371      6C30AAD5 
- 1371      3288B9D2 
- 1371      A859F13D 
- 1371      55516BF0 
- 1372 04d0 3D8E7998 		.ascii	"=\216y\230K\015\366i\307\355\277\364LOV\275\2779\315"
- 1372      4B0DF669 
- 1372      C7EDBFF4 
- 1372      4C4F56BD 
- 1372      BF39CD
- 1373 04e3 F1FE0612 		.ascii	"\361\376\006\022\372\333z>~\201\344'\255\370\030\257"
- 1373      FADB7A3E 
- 1373      7E81E427 
- 1373      ADF818AF 
- 1374 04f3 32364801 		.ascii	"26H\001\346\253\2735\315\346hQ\251X\240\255\231\363"
- 1374      E6ABBB35 
- 1374      CDE66851 
- 1374      A958A0AD 
- 1374      99F3
- 1375 0505 DAE608A6 		.ascii	"\332\346\010\246\273;\012S\255\326\255\334|w\024a!\014"
- 1375      BB3B0A53 
- 1375      ADD6ADDC 
- 1375      7C771461 
- 1375      210C
- 1376 0517 40FCEA28 		.ascii	"@\374\352(\"/\016\335K\266\341%\224x\316\351^\234X\234"
- 1376      222F0EDD 
- 1376      4BB6E125 
- 1376      9478CEE9 
- 1376      5E9C589C 
- 1377 052b 94DF363E 		.ascii	"\224\3376>\307\260R\202\305p7\255\225\035*\025KTI\375"
- 1377      C7B05282 
- 1377      C57037AD 
- 1377      951D2A15 
- 1377      4B5449FD 
- 1378 053f 43139D98 		.ascii	"C\023\235\230\304l\343\317\031\242\223p\342#D\333U*"
- 1378      C46CE3CF 
- 1378      19A29370 
- 1378      E22344DB 
- 1378      552A
- 1379 0551 4E32EB4D 		.ascii	"N2\353MKU\205\017\204\244Z.z5\316\327^\351}I\267\015"
- 1379      4B55850F 
- 1379      84A45A2E 
- 1379      7A35CED7 
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 39
+ 1362      7670DA56 
+ 1362      E8119C74 
+ 1362      53256107 
+ 1362      CD65B8ED 
+ 1363 0407 A5943A0A 		.ascii	"\245\224:\012\227\235L\366\301\240\231\323m\335-?\022"
+ 1363      979D4CF6 
+ 1363      C1A099D3 
+ 1363      6DDD2D3F 
+ 1363      12
+ 1364 0418 9DB1139C 		.ascii	"\235\261\023\234\001\236\320\001\352\212\204\"l'\342"
+ 1364      019ED001 
+ 1364      EA8A8422 
+ 1364      6C27E2
+ 1365 0427 7C2E7631 		.ascii	"|.v1\326U\275\\\214u\335'\304\357\302TmaK\253\21328"
+ 1365      D655BD5C 
+ 1365      8C75DD27 
+ 1365      C4EFC254 
+ 1365      6D614BAB 
+ 1366 043e E902AD6D 		.ascii	"\351\002\255mW\021R73\244\257\203<\243\373\226\305\355"
+ 1366      57115237 
+ 1366      33A4AF83 
+ 1366      3CA3FB96 
+ 1366      C5ED
+ 1367 0450 6E294332 		.ascii	"n)C2v\323\252M\345\016)\305\027:\263^[\336d-Z\267\255"
+ 1367      76D3AA4D 
+ 1367      E50E29C5 
+ 1367      173AB35E 
+ 1367      5BDE642D 
+ 1368 0467 16BF532D 		.ascii	"\026\277S-z\300Q\303qO\203\236\267;h^c\015\360\272\245"
+ 1368      7AC051C3 
+ 1368      714F839E 
+ 1368      B73B685E 
+ 1368      630DF0BA 
+ 1369 047c 1629D853 		.ascii	"\026)\330S\363(\312\221b\224\243\022#\255\345\330\212"
+ 1369      F328CA91 
+ 1369      6294A312 
+ 1369      23ADE5D8 
+ 1369      8A
+ 1370 048d 1E9BBFDB 		.ascii	"\036\233\277\333\177#\366\022\211\3666\303\375T\224"
+ 1370      7F23F612 
+ 1370      89F636C3 
+ 1370      FD5494
+ 1371 049c E7E113D7 		.ascii	"\347\341\023\327\221\037{\363\014\243\214\033\311/\312"
+ 1371      911F7BF3 
+ 1371      0CA38C1B 
+ 1371      C92FCA
+ 1372 04ab EFB595FF 		.ascii	"\357\265\225\377\324tL}\332\261\332&\364\233\365s\245"
+ 1372      D4744C7D 
+ 1372      DAB1DA26 
+ 1372      F49BF573 
+ 1372      A5
+ 1373 04bc 54579D40 		.ascii	"TW\235@\375\032\273\206\330G^\010\312\221U\212W\217"
+ 1373      FD1ABB86 
+ 1373      D8475E08 
+ 1373      CA91558A 
+ 1373      578F
+ 1374 04ce 2D8D2EF6 		.ascii	"-\215.\366\205\346\305\356\232R\031T\230\256P\304^#"
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 39
 
 
- 1379      5EE97D49 
- 1380 0567 F11F548C 		.ascii	"\361\037T\214=6k\346\202YK\252^\255*_\271jQU\315\202"
- 1380      3D366BE6 
- 1380      82594BAA 
- 1380      5EAD2A5F 
- 1380      B96A5155 
- 1381 057d BA9A154B 		.ascii	"\272\232\025Kk\227UT.^\270\252v\361\212\005\263+\252"
- 1381      6B975554 
- 1381      2E5EB8AA 
- 1381      76F18A05 
- 1381      B32BAA
- 1382 0590 2B6BDE64 		.ascii	"+k\336d3JK\243\364_\251\022kj\247\224\225\225Ekj\243"
- 1382      334A4BA3 
- 1382      F45FA912 
- 1382      6B6AA794 
- 1382      9595456B 
- 1383 05a6 4B2AAAA3 		.ascii	"K*\252\243\313jV\254\254\215\226\2778\347\251)\332\347"
- 1383      CB6A56AC 
- 1383      AC8D96BF 
- 1383      38E7A929 
- 1383      DAE7
- 1384 05b8 ECA757AF 		.ascii	"\354\247W\257V\277YX]\275\250\264\222\375\007e'\363"
- 1384      56BF5958 
- 1384      5DBDA8B4 
- 1384      92FD0765 
- 1384      27F3
- 1385 05ca 26       		.ascii	"&"
- 1386              		.text
- 1387              		.section	.gnu.lto_.symbol_nodes.79e3ab27,"e",%progbits
- 1388 0000 789CEB64 		.ascii	"x\234\353d\000\002\246F\346z\336\006 `a\234p\216\201"
- 1388      0002A646 
- 1388      E67ADE06 
- 1388      2060619C 
- 1388      708E81
- 1389 0013 A19E8161 		.ascii	"\241\236\201agCcc\0033H\252\211\271\236\017EjWC##H\242"
- 1389      67436363 
- 1389      033348AA 
- 1389      89B99E0F 
- 1389      456A5743 
- 1390 002b 99B99EFF 		.ascii	"\231\271\236\377\303\257\025\026h\342\254\015\314\002"
- 1390      C3AF1516 
- 1390      68E2AC0D 
- 1390      CC02
- 1391 0039 8D4E4006 		.ascii	"\215N@\006c\013s\275\340\177(\220\007\253b`\000\032"
- 1391      630B73BD 
- 1391      E07F2890 
- 1391      07AB6260 
- 1391      001A
- 1392 004b 0452C4CC 		.ascii	"\004R\304\314\310\0001\363\22043#\013\204\331\"\307"
- 1392      C80031F3 
- 1392      90343323 
- 1392      0B84D922 
- 1392      C7
- 1393 005c 00003DF6 		.ascii	"\000\000=\366)g"
- 1393      2967
- 1394              		.text
- 1395              		.section	.gnu.lto_.refs.79e3ab27,"e",%progbits
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 40
+ 1374      85E6C5EE 
+ 1374      9A521954 
+ 1374      98AE50C4 
+ 1374      5E23
+ 1375 04e0 F75A38AD 		.ascii	"\367Z8\2551M\016@\371\351\"z\311c\362\205&]\347\307"
+ 1375      314D0E40 
+ 1375      F9E9227A 
+ 1375      C963F285 
+ 1375      265DE7C7 
+ 1376 04f4 74B91094 		.ascii	"t\271\020\224_\227\231\332}I\273Ph\277\2621XB\332\237"
+ 1376      5F9799DA 
+ 1376      7D49BB50 
+ 1376      68BFB231 
+ 1376      5842DA9F 
+ 1377 0508 90397939 		.ascii	"\2209y9\233hhSm\373\312\223\341h\361\341R\207.\036e"
+ 1377      9B686853 
+ 1377      6DFBCA93 
+ 1377      E168F1E1 
+ 1377      52872E1E 
+ 1378 051d 3B400D3B 		.ascii	";@\015;\020\373\311\005\2404=\361I+\020\237$\317\204"
+ 1378      10FBC905 
+ 1378      A0343DF1 
+ 1378      492B109F 
+ 1378      24CF84
+ 1379 0530 B5C13223 		.ascii	"\265\3012#\364\017\330\213Z\362%L\323\213\016\325\273"
+ 1379      F40FD88B 
+ 1379      5AF2254C 
+ 1379      D38B0ED5 
+ 1379      BB
+ 1380 0541 D8E8C0FE 		.ascii	"\330\350\300\376P\312B\366\257g\302j\241\361\241\241"
+ 1380      50CA42F6 
+ 1380      AF67C26A 
+ 1380      A1F1A1A1 
+ 1381 0551 E1D53462 		.ascii	"\341\3254b\254\032\352@\254\355\026y\\\354\304\001\272"
+ 1381      AC1AEA40 
+ 1381      ACED1679 
+ 1381      5CECC401 
+ 1381      BA
+ 1382 0562 2AA53FD0 		.ascii	"*\245?\320H|B\205P-WU\371\262\377C\377\025\340@Zv\037"
+ 1382      487C4285 
+ 1382      502D5755 
+ 1382      F9B2FF43 
+ 1382      FF15E040 
+ 1383 0579 BFAF1F53 		.ascii	"\277\257\037S\237zN\275\010q\266\"\234<\2178Xl\253\014"
+ 1383      9F7A4EBD 
+ 1383      0871B622 
+ 1383      9C3C8F38 
+ 1383      586CAB0C 
+ 1384 058d 735BADD4 		.ascii	"s[\255\324O\301\032&\276CC,\347g(f\250';\344\354\224"
+ 1384      4FC11A26 
+ 1384      BE43432C 
+ 1384      E7672866 
+ 1384      A8273BE4 
+ 1385 05a3 EAAC752A 		.ascii	"\352\254u*\013\207jN\343m{\371\324u\304g\205\323a&\275"
+ 1385      0B876A4E 
+ 1385      E36D7BF9 
+ 1385      D475C467 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 40
 
 
- 1396 0000 789C6364 		.ascii	"x\234cd\000\002\000\000\012\000\002"
- 1396      00020000 
- 1396      0A0002
- 1397              		.text
- 1398              		.section	.gnu.lto_.decls.79e3ab27,"e",%progbits
- 1399 0000 789CAD58 		.ascii	"x\234\255X{PT\327\031\277\347\273\227\345\3620@\215"
- 1399      7B5054D7 
- 1399      19BFE7BB 
- 1399      97E5F230 
- 1399      408D
- 1400 0012 0D499369 		.ascii	"\015I\223i\362G\022\232&\342\202\211\246\235\351\010"
- 1400      F247129A 
- 1400      26E28289 
- 1400      A69DE908 
- 1401 0022 8B3CA692 		.ascii	"\213<\246\2220wM:M\235!\004\311H\025!\200\255\371\243"
- 1401      30774D3A 
- 1401      4D9D2104 
- 1401      C9481521 
- 1401      80ADF9A3 
- 1402 0036 9DB3B0C8 		.ascii	"\235\263\260\310\242\240\213F%D\223\015\325b\324(\006"
- 1402      A2A08B46 
- 1402      2544930D 
- 1402      D562D428 
- 1402      06
- 1403 0047 1F111156 		.ascii	"\037\021\021V@\305G\304\250\030\025T\2101\3017\032\023"
- 1403      40C547C4 
- 1403      A8181554 
- 1403      8831C137 
- 1403      1A13
- 1404 0059 1010FA9D 		.ascii	"\020\020\372\235{\317\275\356E3\235t\272\303w\3579\347"
- 1404      7BCFBDEE 
- 1404      45339D74 
- 1404      BAC377EF 
- 1404      39E7
- 1405 006b F7BDBFEF 		.ascii	"\367\275\277\357\234\263K~\250 4\212\2020\205\010\302"
- 1405      9CB34B7E 
- 1405      A820348A 
- 1405      82308508 
- 1405      C2
- 1406 007c 087E2441 		.ascii	"\010~$A\020\216#\375\002\351s\244V\244\307\020{\006"
- 1406      108E23FD 
- 1406      02E973A4 
- 1406      56A4C710 
- 1406      7B06
- 1407 008e 6936D23F 		.ascii	"i6\322?\221\366\343Z#\322\2438~\032\351\257H\317#\375"
- 1407      91F6E35A 
- 1407      23D2A338 
- 1407      7E1AE9AF 
- 1407      48CF23FD 
- 1408 00a2 03A908A9 		.ascii	"\003\251\010\251\030\251\004\251\024i1R\020\352\017"
- 1408      18A904A9 
- 1408      14693152 
- 1408      10EA0F
- 1409 00b1 1234EC59 		.ascii	"\0224\354Y\256S\327\321\302\3653]~HGp\336\214\024\202"
- 1409      AE53D7D1 
- 1409      C2F5335D 
- 1409      7E484770 
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 41
+ 1385      85D36126 
+ 1386 05b8 58ECB50D 		.ascii	"X\354\265\015\314\372\021\032\216\303\340\002\230\337"
+ 1386      CCFA111A 
+ 1386      8EC3E002 
+ 1386      98DF
+ 1387 05c6 A0E19493 		.ascii	"\240\341\224\223K\317)\301~3\366\307\021B}\244\251\376"
+ 1387      4BCF29C1 
+ 1387      7E33F6C7 
+ 1387      11427DA4 
+ 1387      A9FE
+ 1388 05d8 78090F6E 		.ascii	"x\011\017n3\033o\2464\312\222R&\216\204F[J\377\352\254"
+ 1388      331B6FA6 
+ 1388      34CA9252 
+ 1388      268E8446 
+ 1388      5B4AFFEA 
+ 1389 05ed 4A958599 		.ascii	"J\225\205\231\232\317\304\320\224\\8Zx\034cr\033t\356"
+ 1389      9ACFC4D0 
+ 1389      945C385A 
+ 1389      781C6372 
+ 1389      1B74EE
+ 1390 0600 36F6BCE9 		.ascii	"6\366\274\3511\313\342q,\216y\212\307\007:\253Je\341"
+ 1390      31CBE271 
+ 1390      2C8E798A 
+ 1390      C7073AAB 
+ 1390      4A65E1
+ 1391 0613 58CD6392 		.ascii	"X\315c\222\305\243\203\013\215\023\036\247\230\334?"
+ 1391      C5A3830B 
+ 1391      8D131EA7 
+ 1391      98DC3F
+ 1392 0622 969815DC 		.ascii	"\226\230\025\334\2419maK/\357\177Y\277e@\250\250\003"
+ 1392      A1396D61 
+ 1392      4B2FEF7F 
+ 1392      59BF6540 
+ 1392      A8A803
+ 1393 0635 5D3333B2 		.ascii	"]33\2623g\345\345\344M\\P8=/\220\27500\177N\301\334"
+ 1393      3367E5E5 
+ 1393      E44D5C50 
+ 1393      383D2F90 
+ 1393      BD30307F 
+ 1394 064c 69B933A6 		.ascii	"i\2713\246\026\026\314\230\237\2355-?7\360\2264\330"
+ 1394      1616CC98 
+ 1394      9F9D352D 
+ 1394      3F37F096 
+ 1394      34D8
+ 1395 065e EF4FA5BF 		.ascii	"\357O\245\277\\ub\240 =---5P\220:kZ~\352\334\300\374"
+ 1395      5C7562A0 
+ 1395      203D2D2D 
+ 1395      2D355090 
+ 1395      3A6B5A7E 
+ 1396 0676 0505A913 		.ascii	"\005\005\251\023'\215\357\233\316\237Y\375\026-R\337"
+ 1396      278DEF9B 
+ 1396      CE9F59FD 
+ 1396      162D52DF 
+ 1397 0686 4CCDCF9F 		.ascii	"L\315\317\237\356\317\225\234o\007\362\375\203\377\007"
+ 1397      EECF959C 
+ 1397      6F07F2FD 
+ 1397      83FF07
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 41
 
 
- 1409      DE8C1482 
- 1410 00c5 322182A6 		.ascii	"2!\202\246\353Y\037\036&\003\370\226\220\206p<\210t"
- 1410      EB591F1E 
- 1410      2603F896 
- 1410      9086703C 
- 1410      8874
- 1411 00d7 172900E7 		.ascii	"\027)\000\347K\270}'\267;\026u\374J\320|\031\255\203"
- 1411      4BB87D27 
- 1411      B73B1675 
- 1411      FC4AD07C 
- 1411      19AD83
- 1412 00ea C91CF1F1 		.ascii	"\311\034\361\361\205\3711\006\2610\244\207\220\306\021"
- 1412      85F93106 
- 1412      B130A487 
- 1412      90C611
- 1413 00f9 CD8F6778 		.ascii	"\315\217gx\214O\361\370\365Xg\360\\\260\230\347\261"
- 1413      8C4FF1F8 
- 1413      F55867F0 
- 1413      5CB098E7 
- 1413      B1
- 1414 010a DC21EF2F 		.ascii	"\334!\357/\361m\031K$\3138\362\244\004+\372\312\307"
- 1414      F16D194B 
- 1414      24CB38F2 
- 1414      A4042BFA 
- 1414      CAC7
- 1415 011c 877929ED 		.ascii	"\207y)\355\245\236&)\342s\262\003\321\235H2\010\226"
- 1415      A59E2629 
- 1415      E273B203 
- 1415      D19D4832 
- 1415      0896
- 1416 012e 08C2721D 		.ascii	"\010\302r\035\202oA\366\023^\244\352\247\351\327\302"
- 1416      826F41F6 
- 1416      135EA4EA 
- 1416      A7E9D7C2 
- 1417 013e 6EC4F193 		.ascii	"n\304\361\223\020,\377E\220\300]y\272V\014\351b*\274"
- 1417      102CFF45 
- 1417      90C05D79 
- 1417      BA560CE9 
- 1417      622ABC
- 1418 0151 CE004155 		.ascii	"\316\000AU\321H\"\032H=\331E\320\220\214\206\274\202"
- 1418      D148221A 
- 1418      483DD945 
- 1418      D0908C86 
- 1418      BC82
- 1419 0163 3C53902C 		.ascii	"<S\220,\325+\007\232\003\237{.\274\233\322\376-\305"
- 1419      D52B079A 
- 1419      039F7B2E 
- 1419      BC9BD2FE 
- 1419      2DC5
- 1420 0175 6D4D91EF 		.ascii	"mM\221\357\037\353\245t\351\004/i&\373\210f\334\212"
- 1420      1FEBA574 
- 1420      E9042F69 
- 1420      26FB8866 
- 1420      DC8A
- 1421 0187 15250272 		.ascii	"\025%\002r\324\354\256\315i\365\022/\251\363\305\242"
- 1421      D4ECAECD 
- 1421      69F5122F 
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 42
+ 1398 0695 AD72A8CC 		.ascii	"\255r\250\314"
+ 1399              		.text
+ 1400              		.section	.gnu.lto_.symbol_nodes.98e560d9,"e",%progbits
+ 1401 0000 789C9BC7 		.ascii	"x\234\233\307\000\004L\215\314\365\014\377\241@\236"
+ 1401      00044C8D 
+ 1401      CCF50CFF 
+ 1401      A1409E
+ 1402 000f 71C23906 		.ascii	"q\3029\006\206z\006\206=\215\215\215\015\314 \351&\346"
+ 1402      867A0686 
+ 1402      3D8D8D8D 
+ 1402      0DCC20E9 
+ 1402      26E6
+ 1403 0021 7A460CE9 		.ascii	"zF\014\351}\215\215\214 \311f\346z&\\\222\254\015\314"
+ 1403      7D8D8D8C 
+ 1403      20C966E6 
+ 1403      7A265C92 
+ 1403      AC0DCC
+ 1404 0034 CCED4E40 		.ascii	"\314\355N@\006c\013s=\013\252*\006\206\206\206\006\220"
+ 1404      06630B73 
+ 1404      3D0BAA2A 
+ 1404      06868686 
+ 1404      0690
+ 1405 0046 22664624 		.ascii	"\"fF$\273\027\31313\")<,\307\000\000\347\026G\013"
+ 1405      BB17CB31 
+ 1405      3322293C 
+ 1405      2CC70000 
+ 1405      E716470B 
+ 1406              		.text
+ 1407              		.section	.gnu.lto_.refs.98e560d9,"e",%progbits
+ 1408 0000 789C6364 		.ascii	"x\234cd\000\002\000\000\012\000\002"
+ 1408      00020000 
+ 1408      0A0002
+ 1409              		.text
+ 1410              		.section	.gnu.lto_.decls.98e560d9,"e",%progbits
+ 1411 0000 789CAD57 		.ascii	"x\234\255W\013P\025\327\031>\347\337\345\336\345\212"
+ 1411      0B5015D7 
+ 1411      193EE7DF 
+ 1411      E5DEE58A 
+ 1412 0010 014733A5 		.ascii	"\001G3\245y\3148\235dbl#^|\246\355t\204\013\010\023"
+ 1412      79CC389D 
+ 1412      64626C23 
+ 1412      5E7CA6ED 
+ 1412      74840B08 
+ 1413 0025 89CC5E93 		.ascii	"\211\314^\223N3\316P\202dd\002B\000\033\322Ng\366\312"
+ 1413      4E33CE50 
+ 1413      82646402 
+ 1413      42001BD2 
+ 1413      4E67F6CA 
+ 1414 0039 EB8220A0 		.ascii	"\353\202 \2401\022\202\311\025k\211\217*\011\210\017"
+ 1414      311282C9 
+ 1414      156B898F 
+ 1414      2A09880F 
+ 1415 0049 1EDE022A 		.ascii	"\036\336\002*\224P5\276\025#jL\020_\0305A@\350\177v"
+ 1415      945035BE 
+ 1415      15236A4C 
+ 1415      105F1835 
+ 1415      4140E87F 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 42
 
 
- 1421      A9F3C5A2 
- 1422 0197 05F4C149 		.ascii	"\005\364\301I\251W\022\232\310\036\\\333G\032\310^\322"
- 1422      A957129A 
- 1422      C81E5CDB 
- 1422      471AC85E 
- 1422      D2
- 1423 01a8 C25C920F 		.ascii	"\302\\\222\017\022\364\347\322\341\225[\344p3\327~\342"
- 1423      12F4E7D2 
- 1423      E1955BE4 
- 1423      7033D77E 
- 1423      E2
- 1424 01b9 C3268177 		.ascii	"\303&\201wx\343\015bD\335\312\265\037\320\022C\211|"
- 1424      78E30D62 
- 1424      44DDCAB5 
- 1424      1FD01243 
- 1424      897C
- 1425 01cb 92B041BF 		.ascii	"\222\260A\277 w2\205\027\257wW\216\011\241<\300\261"
- 1425      20773285 
- 1425      17AF7757 
- 1425      8E09A13C 
- 1425      C0B1
- 1426 01dd 1AF31122 		.ascii	"\032\363\021\"X\243$\330t\345\353\256\300\020\357\203"
- 1426      58A324D8 
- 1426      74E5EBAE 
- 1426      C010EF83 
- 1427 01ed 8397A0F1 		.ascii	"\203\227\240\361\332\322\013\344\021\315\027\017\264"
- 1427      DAD20BE4 
- 1427      11CD170F 
- 1427      B4
- 1428 01fa 11CDE5A3 		.ascii	"\021\315\345\243\204\2113\023\275\202\374\255j\253G"
- 1428      84893313 
- 1428      BD82FCAD 
- 1428      6AAB47
- 1429 0209 90AFA883 		.ascii	"\220\257\250\203.A\376\001\323=\242NN\011r\011\010\362"
- 1429      2E41FE01 
- 1429      D33DA24E 
- 1429      4E097209 
- 1429      08F2
- 1430 021b 326093A3 		.ascii	"2`\223\243\202\274\032'\325\352\244U\220\267\250\003"
- 1430      82BC1A27 
- 1430      D5EAA455 
- 1430      90B7A803 
- 1431 022b CCEC2E5C 		.ascii	"\314\354.\\mV'\223\345C8nW\307\023\344\2638\276\250"
- 1431      6D562793 
- 1431      E543386E 
- 1431      57C713E4 
- 1431      B338BEA8 
- 1432 023f 8E23E46B 		.ascii	"\216#\344k\352\373I\271\017\327\250\310\306\341r\211"
- 1432      EAFB49B9 
- 1432      0FD7A8C8 
- 1432      C6E17289 
- 1433 024f 88AAD571 		.ascii	"\210\252\325q\250\274\012\307k\2216!}\206\264C]w\021"
- 1433      A8BC0AC7 
- 1433      6B913621 
- 1433      7D86B443 
- 1433      5D7711
- 1434 0262 563B59C6 		.ascii	"V;Y\306\255'\375a\375\336\246\301\220\347~\352\023\256"
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 43
+ 1416 005e CFAE7749 		.ascii	"\317\256wI2\235tz\207\177\367\234\363\375\357\377\234"
+ 1416      329D747A 
+ 1416      877FF79C 
+ 1416      F3FDEFFF 
+ 1416      9C
+ 1417 006f F32F9141 		.ascii	"\363/\221A\204\034\020\010\011\240\204\214\341O$\204"
+ 1417      841C1008 
+ 1417      09A0848C 
+ 1417      E14F2484 
+ 1418 007f 1C47F243 		.ascii	"\034G\362CjA\362\"\265\"u!u#\375\025\371&p\354\014\322"
+ 1418      6A41F222 
+ 1418      B5227521 
+ 1418      7523FD15 
+ 1418      F92670EC 
+ 1419 0095 7348CFE3 		.ascii	"sH\317\343\332i|\037A:\2014\015\347S\220:\270.\027\216"
+ 1419      DA697C1F 
+ 1419      413A8134 
+ 1419      0DE75390 
+ 1419      3AB82E17 
+ 1420 00aa 03B92EC6 		.ascii	"\003\271.\306\373\034\347a\374\223\360=\231\351D\262"
+ 1420      FB1CE761 
+ 1420      FC93F03D 
+ 1420      99E944B2 
+ 1421 00ba 51CD8F60 		.ascii	"Q\315\217`\244\351T\263\321\314\355\346\341\374I\356"
+ 1421      A4E954B3 
+ 1421      D1CCEDE6 
+ 1421      E1FC49EE 
+ 1422 00ca 0BD3A1DB 		.ascii	"\013\323\241\333\236\213\343\277 \255\241\217t\006p"
+ 1422      9E8BE3BF 
+ 1422      20ADA18F 
+ 1422      740670
+ 1423 00d9 DBA7B93F 		.ascii	"\333\247\271?O\341|*\322\323H\317P\315\2479\370\266"
+ 1423      4FE17C2A 
+ 1423      D2D348CF 
+ 1423      50CDA739 
+ 1423      F8B6
+ 1424 00eb 23FD19E9 		.ascii	"#\375\031\351\267H)H%T\263\363\030\322\263H\"4\025n"
+ 1424      B7482948 
+ 1424      2554B3F3 
+ 1424      18D2B348 
+ 1424      2234156E 
+ 1425 00ff 1A863B54 		.ascii	"\032\206;Ta?\257\253]*\253\356Sj\025%]9\324WQ\231\337"
+ 1425      613FAFAB 
+ 1425      5D2AABEE 
+ 1425      536A1525 
+ 1425      5D39D457 
+ 1426 0116 E79E54BE 		.ascii	"\347\236T\276\012\221Z\267\362D\005.WV\366\226\201G"
+ 1426      0A915AB7 
+ 1426      F244052E 
+ 1426      5756F696 
+ 1426      8147
+ 1427 0128 5072197B 		.ascii	"Pr\031{N\200R\217\257U\313\225\234|6/\016\366\344\250"
+ 1427      4E80528F 
+ 1427      AF55CB95 
+ 1427      9C7C362F 
+ 1427      0EF6E4A8 
+ 1428 013c 7A94A354 		.ascii	"z\224\243T\361\346+\265^Ku\233\222_\241,\252\254\354"
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 43
 
 
- 1434      AD27FD61 
- 1434      FDDEA6C1 
- 1434      90E77EEA 
- 1434      13AE
- 1435 0274 3E59D92E 		.ascii	">Y\331.\363\262\365\220e\240\345\012C\304\2721l\321"
- 1435      F3B2F590 
- 1435      65A0E50A 
- 1435      43C4BA31 
- 1435      6CD1
- 1436 0286 360D3B64 		.ascii	"6\015;d`\007\015\254\207\313]50\314\210\336\013\347"
- 1436      60070DAC 
- 1436      87CB5D35 
- 1436      30CC88DE 
- 1436      0BE7
- 1437 0298 3978CD04 		.ascii	"9x\315\004j\202\3279\366\265\201u\021\336(5\227j%\304"
- 1437      6A82D739 
- 1437      F6B58175 
- 1437      11DE2835 
- 1437      976A25C4 
- 1438 02ac 8E92CB88 		.ascii	"\216\222\313\210i\311\277d\310\335\340r\335&94\310\004"
- 1438      69C9BF64 
- 1438      C8DDE072 
- 1438      DD263934 
- 1438      C804
- 1439 02be 47B8E009 		.ascii	"G\270\340\011C\360\270!x\205\013~g\212\220{\332\301"
- 1439      43F0B821 
- 1439      78850B7E 
- 1439      678A907B 
- 1439      DAC1
- 1440 02d0 C1EF0DF0 		.ascii	"\301\357\015\360\246\341M?Wz\336Pz\316P\332\311\345"
- 1440      A6E14D3F 
- 1440      577ADE50 
- 1440      7ACE50DA 
- 1440      C9E5
- 1441 02e2 6E99E4B8 		.ascii	"n\231\344\270R\027\317\3331\003\374\322\020\274\312"
- 1441      5217CFDB 
- 1441      3103FCD2 
- 1441      10BCCA
- 1442 02f1 052F1AD8 		.ascii	"\005/\032\330\005\003\273\303\261\263\006\326\241b\330"
- 1442      0503BBC3 
- 1442      B1B306D6 
- 1442      A162D8
- 1443 0300 B035E754 		.ascii	"\2605\347T\254\215\3340\260\353\367\014\336\345\202"
- 1443      AC8DDC30 
- 1443      B0EBF70C 
- 1443      DEE582
- 1444 030f 5F1960BB 		.ascii	"_\031`\273\241\364,\307zM\202\032v\206c\267\015l\217"
- 1444      A1F42CC7 
- 1444      7A4D821A 
- 1444      768663B7 
- 1444      0D6C8F
- 1445 0322 A69459BC 		.ascii	"\246\224Y\274\306-~c\362\224[l3v\273\016Zu\245%<\372"
- 1445      C62D7E63 
- 1445      F2945B6C 
- 1445      3376BB0E 
- 1445      5A75A525 
- 1446 0338 6653F45C 		.ascii	"fS\364\\\256\224\203wL-\305\301A\256\364\214\001\236"
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 44
+ 1428      F1E62BB5 
+ 1428      5E4B759B 
+ 1428      925FA12C 
+ 1428      AAACEC
+ 1429 014f EB504DAC 		.ascii	"\353PM\254\355\255*\010\364\344\364\270=m\312\317=\250"
+ 1429      EDAD2A08 
+ 1429      F4E4F4B8 
+ 1429      3D6DCACF 
+ 1429      3DA8
+ 1430 0161 A542C9F5 		.ascii	"\245B\311\365\226S\027\212\270\274J\271\227\226y\252"
+ 1430      9653178A 
+ 1430      B8BC4AB9 
+ 1430      979679AA 
+ 1431 0171 4AD6E4E6 		.ascii	"J\326\344\346\006)h\302\365\013&\342R\252\224\2402&"
+ 1431      062968C2 
+ 1431      F50B26E2 
+ 1431      52AA94A0 
+ 1431      3226
+ 1432 0183 AB2812BE 		.ascii	"\253(\022\276\334\232\257\253\274J\220\313\223\313\000"
+ 1432      DC9AAFAB 
+ 1432      BC4A90CB 
+ 1432      93CB00
+ 1433 0192 05B9BDEA 		.ascii	"\005\271\275\352b\320\000\270\252\333\335e\325\212b"
+ 1433      62D000B8 
+ 1433      AADBDD65 
+ 1433      D58A62
+ 1434 01a1 70516471 		.ascii	"pQdq+\336\\\246\204\271\275\300\245\364\270]\036\024"
+ 1434      2BDE5CA6 
+ 1434      84B9BDC0 
+ 1434      A5F4B85D 
+ 1434      1E14
+ 1435 01b3 47960584 		.ascii	"G\226\005\204\375p\025\360\261@\204\375e\207\317[\276"
+ 1435      FD7015F0 
+ 1435      B14084FD 
+ 1435      6587CF5B 
+ 1435      BE
+ 1436 01c4 61B21553 		.ascii	"a\262\025S\350\343e\013\010\235\031$=I\244\271d\216"
+ 1436      E8E3650B 
+ 1436      089D1924 
+ 1436      3D49A4B9 
+ 1436      648E
+ 1437 01d6 16D9E5B7 		.ascii	"\026\331\345\267\311~\252\012e\007X&S\260<N\203D\330"
+ 1437      C97EAA0A 
+ 1437      65075826 
+ 1437      53B03C4E 
+ 1437      8344D8
+ 1438 01e9 3AD8D326 		.ascii	":\330\323&<\205\360\015E\231\322O\232i\023\253-%w\330"
+ 1438      3C85F00D 
+ 1438      4599D24F 
+ 1438      9A6913AB 
+ 1438      2D2577D8 
+ 1439 01fd 36282B53 		.ascii	"6(+S\006\367\025\335o}r\343^E\311C&\011\241}\264QU\263"
+ 1439      06F715DD 
+ 1439      6F7D72E3 
+ 1439      5E45C943 
+ 1439      2609A17D 
+ 1440 0215 8F92BD74 		.ascii	"\217\222\275t\017\315\376\334&\335\240X\216\207\335"
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 44
 
 
- 1446      AE948377 
- 1446      4C2DC5C1 
- 1446      41AEF48C 
- 1446      019E
- 1447 034a 325C3DCD 		.ascii	"2\\=\315\261\037L\256\372\234/\375\244\017\027\226A"
- 1447      B11F4CAE 
- 1447      FA9C2FFD 
- 1447      A40F1796 
- 1447      41
- 1448 035b 03590C2B 		.ascii	"\003Y\014+`)\224B!\024\301\"(\201\273d\210\214\220\001"
- 1448      60299442 
- 1448      2114C122 
- 1448      2881BB64 
- 1448      888C9001 
- 1449 036f 5200C550 		.ascii	"R\000\305P\006\303\204\202\023\\\260\034\312\241\002"
- 1449      06C38482 
- 1449      135CB01C 
- 1449      CAA102
- 1450 037e 16C24A70 		.ascii	"\026\302Jp\300\002X\002\357\301 q\003\0368\254\364\013"
- 1450      C0025802 
- 1450      EFC12071 
- 1450      031E38AC 
- 1450      F40B
- 1451 0390 B769A5FF 		.ascii	"\267i\245\377\302(\375a\303\223\001\356I\247\251J<\204"
- 1451      C228FD61 
- 1451      C39301EE 
- 1451      49A7A94A 
- 1451      3C84
- 1452 03a2 531CFCD1 		.ascii	"S\034\374\3217/\034\033\346\330IS\225x\266\207x\266"
- 1452      372F1C1B 
- 1452      E6D84953 
- 1452      9578B687 
- 1452      78B6
- 1453 03b4 4F9B6247 		.ascii	"O\233bGP>\210\333\031\266\177\331\262(0\334\034\354"
- 1453      503E88DB 
- 1453      19B67FD9 
- 1453      B22830DC 
- 1453      1CEC
- 1454 03c6 FBF07F88 		.ascii	"\373\360\177\210V\202\023\027\352\353\202\214\343\265"
- 1454      56821317 
- 1454      EAEB828C 
- 1454      E3B5
- 1455 03d4 925BFF00 		.ascii	"\222[\377\000A\371$\236-g\361l\031\307\216\331o\320"
- 1455      41F9249E 
- 1455      2D67F16C 
- 1455      19C78ED9 
- 1455      6FD0
- 1456 03e6 8FC0F61D 		.ascii	"\217\300\366\035\325w\375\325\023\204E\264nQ1\015u\006"
- 1456      D577FDD5 
- 1456      138445B4 
- 1456      6E51310D 
- 1456      7506
- 1457 03f8 7BC947B0 		.ascii	"{\311G\260\306\334@\014\375PG\353\310\232\373\222\261"
- 1457      C6DC400C 
- 1457      FD5047EB 
- 1457      C89AFB92 
- 1457      B1
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 45
+ 1440      0FCDFEDC 
+ 1440      26DDA058 
+ 1440      8E87DD
+ 1441 0224 D7374F9C 		.ascii	"\3277O\234VQ\246\014\364\267\275\3651s\267\205z9\257"
+ 1441      5651A60C 
+ 1441      F4B7BDF5 
+ 1441      3173B785 
+ 1441      7A39AF
+ 1442 0237 97F37E66 		.ascii	"\227\363~f\223\0360\336\276\017N\215M`\274\265\373\363"
+ 1442      931E30DE 
+ 1442      BE0F4E8D 
+ 1442      4D60BCB5 
+ 1442      FBF3
+ 1443 0249 0A942056 		.ascii	"\012\224 V'\261\205\266r\356V\316}\310f\231F\331\276"
+ 1443      27B185B6 
+ 1443      72EE56CE 
+ 1443      7DC86699 
+ 1443      46D9BE
+ 1444 025c 0FC43791 		.ascii	"\017\3047\221\212\200\240\337\"\372=U\204\235\327/\367"
+ 1444      8A80A0DF 
+ 1444      22FA3D55 
+ 1444      849DD72F 
+ 1444      F7
+ 1445 026d DA023177 		.ascii	"\332\0021w\003\230 \177\322A\017Sr\210Nk\244\007i;\265"
+ 1445      0398207F 
+ 1445      D2410F53 
+ 1445      72884E6B 
+ 1445      A407693B 
+ 1446 0282 7452AADC 		.ascii	"tR\252\334+9J\244u\200\326J\212\313+\254\277<\203\236"
+ 1446      2B394AA4 
+ 1446      7580D64A 
+ 1446      8ACB2BAC 
+ 1446      BF3C839E 
+ 1447 0296 1DA94F8F 		.ascii	"\035\251O\217\356\244]hG\025 ]\224v\322\354\3356i3\343"
+ 1447      EEA45D68 
+ 1447      4715205D 
+ 1447      9476D2EC 
+ 1447      DD366933 
+ 1448 02ab DB5AB3FD 		.ascii	"\333Z\263\375=\377i\025\2122\330\260\256\261\320R\245"
+ 1448      3DFF6915 
+ 1448      8A32D8B0 
+ 1448      AEB1D052 
+ 1448      A5
+ 1449 02bc B4420BED 		.ascii	"\264B\013\355\346Nu\263gv\263M\372\232\261\226U\236"
+ 1449      E64E75B3 
+ 1449      6776B34D 
+ 1449      FA9AB196 
+ 1449      559E
+ 1450 02ce AD13027B 		.ascii	"\255\023\002{\177\304\374d*\241\227^\"\365#\257\245"
+ 1450      7FC4FC64 
+ 1450      2AA1975E 
+ 1450      22F523AF 
+ 1450      A5
+ 1451 02df 66C3509B 		.ascii	"f\303P\233m\372\364\340K\250\270iCK\3353\2559J\207\227"
+ 1451      6DFAF4E0 
+ 1451      4BA8B869 
+ 1451      434BDD33 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 45
 
 
- 1458 0409 5A0757C3 		.ascii	"Z\007W\303\232\321\035\364\221\216\2552\251\365)\366"
- 1458      9AD11DF4 
- 1458      918EAD32 
- 1458      A9F529F6 
- 1459 0419 87C0B6DB 		.ascii	"\207\300\266\333\032\014\277\012>\206\177\201\207\205"
- 1459      1A0CBF0A 
- 1459      3E867F81 
- 1459      8785
- 1460 0427 225F6199 		.ascii	"\"_a\231*Z>\270=8\334\314\271\026F\261Jp\255r\331q\311"
- 1460      2A5A3EB8 
- 1460      3D38DCCC 
- 1460      B91646B1 
- 1460      4A70AD72 
- 1461 043e 88FADFDC 		.ascii	"\210\372\337\334\014\036\327\354$}\030#\366\340\205"
- 1461      0C1ED7EC 
- 1461      247D1823 
- 1461      F6E085
- 1462 044d 50DDDF5E 		.ascii	"P\335\337^\0350\372.Y\017\202u\007\202\305\316\335\213"
- 1462      1D30FA2E 
- 1462      590F8275 
- 1462      0782C5CE 
- 1462      DD8B
- 1463 045f 427C6E8B 		.ascii	"B|n\213O`\035Jo\000\306 \310\003\314\227\245\236\346"
- 1463      4F601D4A 
- 1463      6F00C620 
- 1463      C803CC97 
- 1463      A59EE6
- 1464 0472 4381EA65 		.ascii	"C\201\352e\353}\320}S\335\270)\331P\360)\230\025\214"
- 1464      EB7DD07D 
- 1464      53DDB829 
- 1464      D950F029 
- 1464      98158C
- 1465 0485 A867BA28 		.ascii	"\250g\272(AC\303\215\353d\264\023x\235Xk@\202\362\333"
- 1465      4143C38D 
- 1465      EB64B413 
- 1465      789D586B 
- 1465      4082F2DB 
- 1466 0499 032B7DAF 		.ascii	"\003+}\257,-1\237\001c@\007N\036:\373\231\350c\302\004"
- 1466      2C2D319F 
- 1466      01634007 
- 1466      4E1E3AFB 
- 1466      99E863C2 
- 1467 04ae CB4E4990 		.ascii	"\313NI\220]H\245\022\262n\3548^\026\354\303j\272\374"
- 1467      5D48A512 
- 1467      B26EEC38 
- 1467      5E16ECC3 
- 1467      6ABAFC
- 1468 04c1 6437B22D 		.ascii	"d7\262-G\252D\362 \255EZ\217\264Yb^\006c\276\360*\334"
- 1468      47AA44F2 
- 1468      20AD455A 
- 1468      8FB45962 
- 1468      5E0663BE 
- 1469 04d8 A64E8224 		.ascii	"\246N\202$\330Q\274\342\346}y\303K\317\332\004\226'"
- 1469      D851BCE2 
- 1469      E67D79C3 
- 1469      4BCFDA04 
- 1469      9627
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 46
+ 1451      AD394A87 
+ 1452 02f4 1EA5C7E9 		.ascii	"\036\245\307\351)\356\207\035\317\004%\310P\333\\\227"
+ 1452      29EE871D 
+ 1452      CF0425C8 
+ 1452      50DB5C97 
+ 1453 0304 AE62477C 		.ascii	"\256bG|\261Y\254\316\270\003\274\"\371\234\036\303\265"
+ 1453      B159ACCE 
+ 1453      B803BC22 
+ 1453      F99C1EC3 
+ 1453      B5
+ 1454 0315 53E8D449 		.ascii	"S\350\324Iz\202\271$m\023\320\237k\237m\370D\0126s\235"
+ 1454      7A82B924 
+ 1454      6D13D09F 
+ 1454      6B9F6DF8 
+ 1454      440A3673 
+ 1455 032a A63E6C22 		.ascii	"\246>l\"xGw\334\246\223\324\214yZ\3053\\\373Y$\364W"
+ 1455      784777DC 
+ 1455      A693D48C 
+ 1455      795AC533 
+ 1455      5CFB5924 
+ 1456 0340 A15283C0 		.ascii	"\241R\203\300\006\203Djb\012\257\336\272T91P\341\001"
+ 1456      0683446A 
+ 1456      620AAFDE 
+ 1456      BA543931 
+ 1456      50E101
+ 1457 0353 4ED698BF 		.ascii	"N\326\230\277\240\304\036*\302\201\233k\257\320\237"
+ 1457      A0C41E2A 
+ 1457      C2819B6B 
+ 1457      AFD09F
+ 1458 0362 69C63CD0 		.ascii	"i\306<\320I5\237.R\2063\035\003D:\244*\353#R\227:\350"
+ 1458      49359F2E 
+ 1458      5286331D 
+ 1458      03443AA4 
+ 1458      2AEB2352 
+ 1459 0379 25D24981 		.ascii	"%\322I\201H\027\325\311\031\"]\303\311]u\2025z\210\223"
+ 1459      4817D5C9 
+ 1459      19225DC3 
+ 1459      C95D7582 
+ 1459      357A8893 
+ 1460 038d 02914D3A 		.ascii	"\002\221M:\210T\256\0160u\037\210D\332\254N\346K\333"
+ 1460      8854AE0E 
+ 1460      30751F88 
+ 1460      44DAAC4E 
+ 1460      E64BDB
+ 1461 03a0 71BC5B1D 		.ascii	"q\274[\035\317\224\232q|P\035O\223\272\325\367T\351"
+ 1461      CF949A71 
+ 1461      7C501D4F 
+ 1461      93BAD5F7 
+ 1461      54E9
+ 1462 03b2 34AEF5AA 		.ascii	"4\256\365\252\343`\351\032\216\357\252\343 i\004\307"
+ 1462      E360E91A 
+ 1462      8EEFAAE3 
+ 1462      206904C7 
+ 1463 03c2 797E445A 		.ascii	"y~DZ\203\264\026i\203\037[wSV\034I\372\310\217\210\277"
+ 1463      83B41669 
+ 1463      831F5B77 
+ 1463      53561C49 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 46
 
 
- 1470 04ea B03BF121 		.ascii	"\260;\361!\310;\231\325\275Cg6\006\263\033\271\2076"
- 1470      C83B99D5 
- 1470      BD436736 
- 1470      06B31BB9 
- 1470      8736
- 1471 04fc 3944E1C5 		.ascii	"9D\341\305(a\037<\201w?\264`pC\256\222\006\177\356\322"
- 1471      28611F3C 
- 1471      81773FB4 
- 1471      607043AE 
- 1471      92067FEE 
- 1472 0511 9BFBC10B 		.ascii	"\233\373\301\013\215\350u+0M(:8RZ\241~\223y\220hm\331"
- 1472      8DE8752B 
- 1472      304D283A 
- 1472      38525AA1 
- 1472      7E937990 
- 1473 0528 D63B165D 		.ascii	"\326;\026]\364\200YT\336\203\216\357E:\200\324\206t"
- 1473      F4805954 
- 1473      DE838EEF 
- 1473      453A80D4 
- 1473      8674
- 1474 053a 02E9B4EA 		.ascii	"\002\351\264\352{)\273B\273d\371<\372\366|q\301j\013"
- 1474      7B29BB42 
- 1474      BB64F93C 
- 1474      FAF67C71 
- 1474      C16A0B
- 1475 054d BF29477D 		.ascii	"\277)G}\326\3427\242\312\357j\276\377\315RJq\327\326"
- 1475      D6E237A2 
- 1475      CAEF6ABE 
- 1475      FFCD524A 
- 1475      71D7D6
- 1476 0560 C26668E7 		.ascii	"\302fh\347\271\35507\3521\370\022-\266c\367\235\205"
- 1476      B9ED3037 
- 1476      EA31F812 
- 1476      2DB663F7 
- 1476      9D85
- 1477 0572 737012BE 		.ascii	"sp\022\276\2013p\021N\303)\370\016:\241\003\276\205"
- 1477      81337011 
- 1477      4EC329F8 
- 1477      0E3AA103 
- 1477      BE85
- 1478 0584 6EB8005F 		.ascii	"n\270\000_\303%\350\202\023\320\003_\301y\326\237l\027"
- 1478      C325E882 
- 1478      13D0035F 
- 1478      C179D69F 
- 1478      6C17
- 1479 0596 0C95F15D 		.ascii	"\014\225\361]p\004\225\217\332\0055\2537S\006n\200\033"
- 1479      7004958F 
- 1479      DA0535AB 
- 1479      3753066E 
- 1479      801B
- 1480 05a8 A49D378E 		.ascii	"\244\2357\216\317)[\262\204\2136\030\242\374v\376\230"
- 1480      CF295BB2 
- 1480      848B3618 
- 1480      A2FC76FE 
- 1480      98
- 1481 05b9 5D4F4CD6 		.ascii	"]OL\326\021|\020\366 \252e\346\336\2250\254[=l\210\336"
- 1481      117C10F6 
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 47
+ 1463      FAC88F88 
+ 1464 03d7 DB76B075 		.ascii	"\333v\260u8p\372\217\375\202\325'\253K?\257\313w\264"
+ 1464      3870FA8F 
+ 1464      FD82D527 
+ 1464      AB4B3FAF 
+ 1464      CB77B4
+ 1465 03ea 1AB464DC 		.ascii	"\032\264d\334\247\2540\014[\275[\303\316\033\3309\003"
+ 1465      A7AC300C 
+ 1465      5BBD5BC3 
+ 1465      CE1BD839 
+ 1465      03
+ 1466 03fb EBE372C3 		.ascii	"\353\343r\303\0066D\215b_\344\340\210\011\324\004oq"
+ 1466      0636448D 
+ 1466      625FE4E0 
+ 1466      8809D404 
+ 1466      6F71
+ 1467 040d EC8E81DD 		.ascii	"\354\216\201\335\246|'\324^\253\023\021\273H\037 \246"
+ 1467      A67C27D4 
+ 1467      5EAB1311 
+ 1467      BB481F20 
+ 1467      A6
+ 1468 041e 257FD090 		.ascii	"%\177\320\220\273\315\345\006Lrh\220\011\216q\301+\206"
+ 1468      BBCDE506 
+ 1468      4C726890 
+ 1468      098E71C1 
+ 1468      2B86
+ 1469 0430 E06543F0 		.ascii	"\340eC\360:\027\374\326\024!\367\364<\007W\201\016\342"
+ 1469      3A17FCD6 
+ 1469      1421F7F4 
+ 1469      3C075781 
+ 1469      0EE2
+ 1470 0442 BDC3BD19 		.ascii	"\275\303\275\031\344Jo\031Jo\032J{\270\234\313$\307"
+ 1470      E44A6F19 
+ 1470      4A6F1A4A 
+ 1470      7BB89CCB 
+ 1470      24C7
+ 1471 0454 95BA79DE 		.ascii	"\225\272y\336.\031\026{\015\301\033\\\360\236\201}c"
+ 1471      2E19167B 
+ 1471      0DC11B5C 
+ 1471      F09E817D 
+ 1471      63
+ 1472 0465 600F3876 		.ascii	"`\0178v\303\300\372U\014\367v\355\027*\326IG\015\354"
+ 1472      C3C0FA55 
+ 1472      0CF776ED 
+ 1472      172AD649 
+ 1472      470DEC
+ 1473 0478 E1A3281E 		.ascii	"\341\243(\036r\301\257\014\360KC\351\005\216\215\231"
+ 1473      72C1AF0C 
+ 1473      F04B43E9 
+ 1473      058E8D99 
+ 1474 0488 0435EC1C 		.ascii	"\0045\354\034\307r\214(\216iJ\231\305\233\334\342]\223"
+ 1474      C7728C28 
+ 1474      8E694A99 
+ 1474      C59BDCE2 
+ 1474      5D93
+ 1475 049a A7DCE211 		.ascii	"\247\334\342\021\3438\353\240]WZ\310\243?n\212\236\313"
+ 1475      E338EBA0 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 47
 
 
- 1481      20AA65E6 
- 1481      DE9530AC 
- 1481      5B3D6C88 
- 1482 05ce 34C0525D 		.ascii	"4\300R]\357.\003\364\371\266\240\203\365\006xI3z\221"
- 1482      EF2E03F4 
- 1482      F9B6A083 
- 1482      F5067849 
- 1482      337A91
- 1483 05e1 9D9A9ADE 		.ascii	"\235\232\232\336O\341\250\201\032\373}P\267\331\346"
- 1483      4FE1A881 
- 1483      1AFB7D50 
- 1483      B7D9E6
- 1484 05f0 8BE9A788 		.ascii	"\213\351\247\210\256\366\270\001\366\2516\231\326\312"
- 1484      AEF6B801 
- 1484      F6A93699 
- 1484      D6CA
- 1485 05fe 255CEB56 		.ascii	"%\\\353V\003<w/\015\213u\321\235\006\252]\266X\277\232"
- 1485      033C772F 
- 1485      0D8B75D1 
- 1485      9D06AA5D 
- 1485      B658BF9A 
- 1486 0612 0A2D833B 		.ascii	"\012-\203;`;\202Z\263w\031\261,\321%?7I\352\327\255"
- 1486      603B825A 
- 1486      B37719B1 
- 1486      2CD1253F 
- 1486      3749EAD7 
- 1487 0627 EEEF17A6 		.ascii	"\356\357\027\246\312ptDG\017\2312\310\3212]s\235)\205"
- 1487      CA707444 
- 1487      470F9932 
- 1487      C8D1325D 
- 1487      739D2985 
- 1488 063b 1C5DA8A3 		.ascii	"\034]\250\243\273M9\324<^\245y\274\0116\202^\363v#\023"
- 1488      BB4D39D4 
- 1488      3C5EA579 
- 1488      BC093682 
- 1488      5EF37623 
- 1489 0650 EFEB99D8 		.ascii	"\357\353\231\330f\312D\264 \257\363\303\315\262\245"
- 1489      66CA44B4 
- 1489      20AFF3C3 
- 1489      CDB2A5
- 1490 065f BE7300C2 		.ascii	"\276s\000\302\315my\031~v_J\320=\270\363\213`\343\334"
- 1490      CD6D7919 
- 1490      7E765F4A 
- 1490      D03DB8F3 
- 1490      8B60E3DC 
- 1491 0673 BCC24D5D 		.ascii	"\274\302M]e\333j\213\037~\023E\252CjB\332\357\307\266"
- 1491      65DB6A8B 
- 1491      1F7E1345 
- 1491      AA436A42 
- 1491      DAEFC7B6 
- 1492 0687 D4E36C47 		.ascii	"\324\343lG\021\371\020z\021\352Z>\374\236\237\317\267"
- 1492      11F9107A 
- 1492      11EA5A3E 
- 1492      FC9E9FCF 
- 1492      B7
- 1493 0698 CFFEFA85 		.ascii	"\317\376\372\205\2737\007\256\302C\002C\276\001}\246"
- 1493      BB3707AE 
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 48
+ 1475      5D575AC8 
+ 1475      A33F6E8A 
+ 1475      9ECB
+ 1476 04ac 1573D00D 		.ascii	"\025s\320\015\276[\212\203\303\\\3515C\362k\303\325"
+ 1476      BE5B8A83 
+ 1476      C35CE935 
+ 1476      43F26BC3 
+ 1476      D5
+ 1477 04bd B31CCB35 		.ascii	"\263\034\3135\271\352s\201\024@>V\240\032\032\351F\330"
+ 1477      B9EA7381 
+ 1477      14403E56 
+ 1477      A01A1AE9 
+ 1477      46D8
+ 1478 04cf 029BE003 		.ascii	"\002\233\340\003X\013\357B%T@1\254\2065P\010\345\360"
+ 1478      580BEF42 
+ 1478      25544031 
+ 1478      AC863550 
+ 1478      08E5F0
+ 1479 04e2 1E544109 		.ascii	"\036TA\011\224\302:\330\000\177\003\017\324\300\373"
+ 1479      94C23AD8 
+ 1479      007F030F 
+ 1479      D4C0FB
+ 1480 04f1 F0772883 		.ascii	"\360w(\203\365\360!l\206\"\370\010\264\326S[\264[+\375"
+ 1480      F5F0216C 
+ 1480      8622F808 
+ 1480      B4D6535B 
+ 1480      B45B2BFD 
+ 1481 0505 05A3F43D 		.ascii	"\005\243\364=\206'C\334\223\353\246*\361\020\316p0\017"
+ 1481      862743DC 
+ 1481      93EBA62A 
+ 1481      F110CE70 
+ 1481      300F
+ 1482 0517 7CF2C2B1 		.ascii	"|\362\302\261Q\216]5U\211g{\204g\273\317\024;\202\322"
+ 1482      518E5D35 
+ 1482      5589677B 
+ 1482      8467BBCF 
+ 1482      143B82D2 
+ 1483 052b 363CCED0 		.ascii	"6<\316\320p\254}\265-\330\034\354\307\360\177\210V\204"
+ 1483      70AC7DB5 
+ 1483      2DD81CEC 
+ 1483      C7F07F88 
+ 1483      5684
+ 1484 053d 13579AF6 		.ascii	"\023W\232\366O0\356\317\255\334\3726`\330\376\272SW"
+ 1484      4F30EECF 
+ 1484      ADDCFA36 
+ 1484      60D8FEBA 
+ 1484      5357
+ 1485 054f AC06D6C2 		.ascii	"\254\006\326\302\357\326\355\210I\015x\3574\343\275"
+ 1485      EFD6ED88 
+ 1485      490D78EF 
+ 1485      34E3BD
+ 1486 055e F338BB63 		.ascii	"\3638\273c\333\321G\333\311=5\017\255\352\355\302\242"
+ 1486      DBD147DB 
+ 1486      C93D350F 
+ 1486      ADEAEDC2 
+ 1486      A2
+ 1487 056f FD783536 		.ascii	"\375x56\300\334\200\243t\027\324\2337\027C?\324\321"
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 48
 
 
- 1493      C2430243 
- 1493      BE017DA6 
- 1494 06a8 3667F9D8 		.ascii	"6g\371\330\245\347\343\246\001\232\177U|\017\267\320"
- 1494      A5E7E3A6 
- 1494      019A7F55 
- 1494      7C0FB7D0 
- 1495 06b8 741FC6F1 		.ascii	"t\037\306\361#\014\300\017p\007\372a\020\206\364=\324"
- 1495      230CC00F 
- 1495      7007FA61 
- 1495      1086F43D 
- 1495      D4
- 1496 06c9 68649BF4 		.ascii	"hd\233\364\335\327\315\015:x\335d\231\227\242^G{}Ms"
- 1496      DDD7CD0D 
- 1496      3A78DD64 
- 1496      9997A25E 
- 1496      477B7D4D 
- 1497 06de B05507AF 		.ascii	"\260U\007\257A\337\3755>\240\243\267\015T\333`\3621"
- 1497      41DFFD35 
- 1497      3EA0A3B7 
- 1497      0D54DB60 
- 1497      F231
- 1498 06f0 568B8E3B 		.ascii	"V\213\216;\333o\216\0117\207p\027\036\030\203\004=\037"
- 1498      DB6F8E09 
- 1498      37877017 
- 1498      1E188304 
- 1498      3D1F
- 1499 0702 B4748391 		.ascii	"\264t\203\221\357a\256nD=\001O\037\251\336\211\207\016"
- 1499      EF61AE6E 
- 1499      443D014F 
- 1499      1FA9DE89 
- 1499      870E
- 1500 0714 6A7251AF 		.ascii	"jrQ\257\243EvW\365\320\032Js\350\276\236\212\312\005"
- 1500      A3457657 
- 1500      F5D01A4A 
- 1500      73E8BE9E 
- 1500      8ACA05
- 1501 0727 3DAEB0F2 		.ascii	"=\256\260\362\002vV\270\350c\025\270\\Y\331\345\006"
- 1501      027656B8 
- 1501      E86315B8 
- 1501      5C59D9E5 
- 1501      06
- 1502 0738 8FC8AC52 		.ascii	"\217\310\254RZ\030L\267\342\253`\026-\\\300\346\245"
- 1502      5A184CB7 
- 1502      E2AB6016 
- 1502      2D5CC0E6 
- 1502      A5
- 1503 0749 E19E42ED 		.ascii	"\341\236B\355\027\343QB\275\013h\215\327R\325L\027T"
- 1503      17E35142 
- 1503      BD0B688D 
- 1503      D752D54C 
- 1503      1754
- 1504 075b D0699595 		.ascii	"\320i\225\225=\255\314\004]\332\265\2528\304S\330\351"
- 1504      3DADCC04 
- 1504      5DDAB5AA 
- 1504      38C453D8 
- 1504      E9
- 1505 076c F234D347 		.ascii	"\3624\323G=\250\245\202:\275\345\304\201\"\016/-\367"
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 49
+ 1487      C0DC80A3 
+ 1487      7417D49B 
+ 1487      3717433F 
+ 1487      D4D1
+ 1488 0581 23B4FE7B 		.ascii	"#\264\376{\211\332\250\203\377\200\372\361\273\353#"
+ 1488      89DAA883 
+ 1488      FF80FAF1 
+ 1488      BBEB23
+ 1489 0590 1DDB6152 		.ascii	"\035\333aR\353\263\021v\002;\212\365\230\232O\341\023"
+ 1489      EBB31176 
+ 1489      023B8AF5 
+ 1489      989A4FE1 
+ 1489      13
+ 1490 05a1 A8835A16 		.ascii	"\250\203Z\026\246\324\305\262\230\267~\270! \330\314"
+ 1490      A6D4C5B2 
+ 1490      98B77EB8 
+ 1490      2120D8CC 
+ 1491 05b1 B91BC6B1 		.ascii	"\271\033\306\261\212p\263r\335q\321\210\272\201\233"
+ 1491      8A70B372 
+ 1491      DD71D188 
+ 1491      BA819B
+ 1492 05c0 D9036A13 		.ascii	"\331\003j\023\230\202\021{\250\0105\203'k\374\3077\222"
+ 1492      9882117B 
+ 1492      A8083583 
+ 1492      276BFCC7 
+ 1492      3792
+ 1493 05d2 FD40EC87 		.ascii	"\375@\354\207\021,\310m^\035\350\323I\366\301^\224n"
+ 1493      112CC86D 
+ 1493      5E1DE8D3 
+ 1493      49F6C15E 
+ 1493      946E
+ 1494 05e4 04C640A4 		.ascii	"\004\306@\244s\314\227\265\236\266.\233\332i\275\337"
+ 1494      73CC97B5 
+ 1494      9EB62E9B 
+ 1494      DA69BDDF 
+ 1495 05f4 EFB4A8FE 		.ascii	"\357\264\250\376\300\316XCA3\230\025\\T\357{A\204\226"
+ 1495      C0CE5843 
+ 1495      41339815 
+ 1495      5C54EF7B 
+ 1495      418496
+ 1496 0607 96DBB7E8 		.ascii	"\226\333\267\350x'\376\211NxA\204\362{C\033|\333\231"
+ 1496      7827FE89 
+ 1496      4E784184 
+ 1496      F27B431B 
+ 1496      7CDB99
+ 1497 061a 96985660 		.ascii	"\226\230V`\014\350\300\251\256\013\237\012>&L\260\364"
+ 1497      0CE8C0A9 
+ 1497      AE0B9F0A 
+ 1497      3E264CB0 
+ 1497      F4
+ 1498 062b 2596B70F 		.ascii	"%\226\267\017\351\006\363u\307\371\343%\001>\254\246"
+ 1498      E906F375 
+ 1498      C7F9E325 
+ 1498      013EACA6 
+ 1499 063b C6280D20 		.ascii	"\306(\015 \333}\244!$\305\202\235\011\251\010\251\324"
+ 1499      DB7DA421 
+ 1499      24C5829D 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 49
 
 
- 1505      3DA8A582 
- 1505      3ABDE5C4 
- 1505      81220E2F 
- 1505      2DF7
- 1506 077e 12B76755 		.ascii	"\022\267gU\331bg\213\267\236\224{\274\324\341\361\272"
- 1506      D962678B 
- 1506      B79E947B 
- 1506      BCD4E1F1 
- 1506      BA
- 1507 078f 88A3CAEB 		.ascii	"\210\243\312\353r \357#\345\005-\370c\324);h\213\253"
- 1507      7220EF23 
- 1507      E5052DF8 
- 1507      63D4293B 
- 1507      688BAB
- 1508 07a2 DCD3E20A 		.ascii	"\334\323\342\012sW\265\320\362\252\026W\250\207\261"
- 1508      7357B5D0 
- 1508      F2AA1657 
- 1508      A887B1
- 1509 07b1 48EE022F 		.ascii	"H\356\002/u{\234\262\273\240\023My]\241L\034q\331\215"
- 1509      757B9CB2 
- 1509      BBA0134D 
- 1509      795DA14C 
- 1509      1C71D98D 
- 1510 07c5 02B840C3 		.ascii	"\002\270@\303\334\350\270\243\212\272\303"
- 1510      DCE8B8A3 
- 1510      8ABAC3
- 1511 07d0 1C554E87 		.ascii	"\034UN\207\003%\303\020\246+\253\250+\264\274\312\211"
- 1511      0325C310 
- 1511      A62BABA8 
- 1511      2BB4BCCA 
- 1511      89
- 1512 07e1 BC124543 		.ascii	"\274\022ECo\252\277uQ\005\340c\212\004u\356\375\035"
- 1512      6FAABF75 
- 1512      5105E063 
- 1512      8A0475EE 
- 1512      FD1D
- 1513 07f3 965BCCFF 		.ascii	"\226[\314\377\232s\335\203\0262\316=E \023B\345;jo\002"
- 1513      9A73DD83 
- 1513      1632CE3D 
- 1513      45201342 
- 1513      E53B6A6F 
- 1514 0808 F666A804 		.ascii	"\366f\250\004\237\364w6\213\217#\317UJ\037\276,8\305"
- 1514      9FF47736 
- 1514      8B8F23CF 
- 1514      554A1FBE 
- 1514      2C38C5
- 1515 081b 42FC915F 		.ascii	"B\374\221_$\0127QU\204\273\202\366\237\272\325\365\251"
- 1515      240A3751 
- 1515      5584BB82 
- 1515      F69FBAD5 
- 1515      F5A9
- 1516 082d 3FB6294B 		.ascii	"?\266)K\247T$\026\210\015\204\231)\020\005\207H\305"
- 1516      A7542416 
- 1516      880D8499 
- 1516      29100587 
- 1516      48C5
- 1517 083f 846381F2 		.ascii	"\204c\201\362\021\013\326\303\271\310q8(\242\242\202"
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 50
+ 1499      09A908A9 
+ 1499      D4
+ 1500 064c C2BC0CC0 		.ascii	"\302\274\014\300|a\233\\\257N&\210\260\247\340\275;"
+ 1500      7C619B5C 
+ 1500      AF4E2688 
+ 1500      B0A7E0BD 
+ 1500      3B
+ 1501 065d DFCBDB71 		.ascii	"\337\313\333qt\371s\260<\215\267\024>\210\364\276\005"
+ 1501      74F973B0 
+ 1501      3C8DB714 
+ 1501      3E88F4BE 
+ 1501      05
+ 1502 066e AD1E1C39 		.ascii	"\255\036\0349\267#\200}\012\365)\255.\201\314\011%\247"
+ 1502      B723807D 
+ 1502      0AF529AD 
+ 1502      2E81CC09 
+ 1502      25A7
+ 1503 0680 E0696CFC 		.ascii	"\340il\374p\002\203\033q\027\266X\271K\177<\015G\341"
+ 1503      7002831B 
+ 1503      7117B658 
+ 1503      B94B7F3C 
+ 1503      0D47E1
+ 1504 0693 087A7D06 		.ascii	"\010z}\006\230&\024\035\036+\256P?c~H\264\256\244\376"
+ 1504      9826141D 
+ 1504      1E2BAE50 
+ 1504      3F637E48 
+ 1504      B4AEA4FE 
+ 1505 06a7 8145173D 		.ascii	"\201E\027=k\026\2256\241\343[\220\266\"\355B\252G\332"
+ 1505      6B169536 
+ 1505      A1E35B90 
+ 1505      B622ED42 
+ 1505      AA47DA
+ 1506 06ba A7FA5ECC 		.ascii	"\247\372^\314\332k\257$\035@\337~U\260j\243\205w\321"
+ 1506      DA6BAF24 
+ 1506      1D40DF7E 
+ 1506      55B06AA3 
+ 1506      8577D1
+ 1507 06cd 71BF2DF8 		.ascii	"q\277-\3705T\371m\355\335\347\361\343\030Ot\033\034"
+ 1507      3554F96D 
+ 1507      EDDDE7F1 
+ 1507      E3184F74 
+ 1507      1B1C
+ 1508 06df 80AB3CB7 		.ascii	"\200\253<\267\375\346\215z\031.\341\342U\334}7\341\026"
+ 1508      FDE68D7A 
+ 1508      192EE1E2 
+ 1508      55DC7D37 
+ 1508      E116
+ 1509 06f1 7C05F7A0 		.ascii	"|\005\367\240\037\356\3035\350\203\357\340\006\\\207"
+ 1509      1FEEC335 
+ 1509      E883EFE0 
+ 1509      065C87
+ 1510 0700 6FE10EDC 		.ascii	"o\341\016\334\205o\340\001\014\300\2270\010_\303m\266"
+ 1510      856FE001 
+ 1510      0CC09730 
+ 1510      085FC36D 
+ 1510      B6
+ 1511 0711 3FD92918 		.ascii	"?\331)\030)\341\247\340\013T>\356\024\324n\334\2450"
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 50
 
 
- 1517      110BD6C3 
- 1517      B9C87138 
- 1517      28A2A282 
- 1518 084f F65E6E7E 		.ascii	"\366^n~g\035\362N)\022\2139o1\347=\034(w0\336\333\303"
- 1518      671DF24E 
- 1518      29128B39 
- 1518      6F31E73D 
- 1518      1C287730 
- 1519 0866 B52BFC18 		.ascii	"\265+\374\030oM]\021v\013\327\\\302\271K8\367\276@K"
- 1519      6F4D5D11 
- 1519      760BD75C 
- 1519      C2B94B38 
- 1519      F7BE404B 
- 1520 087a 1B21F476 		.ascii	"\033!\364v\031\376\234\274\312\304\312J\313+\374\177"
- 1520      19FE9CBC 
- 1520      CAC4CA4A 
- 1520      CB2BFC7F 
- 1521 088a 7BCA4D7B 		.ascii	"{\312M{\333\266\346$\266\221R\024\320Z\242T$\013\305"
- 1521      DBB6E624 
- 1521      B6915214 
- 1521      D05AA254 
- 1521      240BC5
- 1522 089d 846D81F2 		.ascii	"\204m\201\362\020\343\373\244z\303\212\200\210\012\334"
- 1522      10E3FBA4 
- 1522      7AC38A80 
- 1522      880ADC
- 1523 08ac 62150335 		.ascii	"b\025\0035+\237\332S\350\211(\022\027s\355\213E\366"
- 1523      2B9FDA53 
- 1523      E8892812 
- 1523      1773ED8B 
- 1523      45F6
- 1524 08be FF80DD81 		.ascii	"\377\200\335\201\230\236\332\223\027\374\215\356*\022"
- 1524      989EDA93 
- 1524      17FC8DEE 
- 1524      2A12
- 1525 08cc 35556E86 		.ascii	"5Un\206\203M\231<~|$\376\245\317\312|+3;/\312j\265F"
- 1525      834D993C 
- 1525      7E7C24FE 
- 1525      A5CFCA7C 
- 1525      2B333B2F 
- 1526 08e4 66E745CE 		.ascii	"f\347E\316J\233\023\231\223\235\233\237\027i\237\236"
- 1526      4A9B1399 
- 1526      939D9B9F 
- 1526      17699F9E 
- 1527 08f4 1C1DA53D 		.ascii	"\034\035\245=\343'\316\237\317\220\3249sf\216O\227\023"
- 1527      E327CE9F 
- 1527      CF90D439 
- 1527      73668E4F 
- 1527      9713
- 1528 0906 5E79ED49 		.ascii	"^y\355I\233u\2220\326X\032\2376\351\355\227\323_\236"
- 1528      9B759230 
- 1528      D6581A9F 
- 1528      36E9ED97 
- 1528      D35F9E
- 1529 0919 9C21C8F3 		.ascii	"\234!\310\3632\347\346GG\245\346\2136\273\362\264\355"
- 1529      32E7E647 
- 1529      47A5E68B 
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 51
+ 1511      29E1A7E0 
+ 1511      0B543EEE 
+ 1511      14D46EDC 
+ 1511      A530
+ 1512 0723 B01146E9 		.ascii	"\260\021F\351U\276q|n\340\302R.\372oC\224w\356M\254"
+ 1512      55BE717C 
+ 1512      6EE0C252 
+ 1512      2EFA6F43 
+ 1512      9477EE4D 
+ 1513 0738 75315957 		.ascii	"u1YW\30098\206\250\226\231G\355bT\267\332c\210j\335"
+ 1513      C0393886 
+ 1513      A8969947 
+ 1513      ED6254B7 
+ 1513      DA63886A 
+ 1514 074d 52BDD975 		.ascii	"R\275\331u\275]\006\350\363%\241\203\237\031\340\240"
+ 1514      BD5D06E8 
+ 1514      F325A183 
+ 1514      9F19E0A0 
+ 1515 075d 66F42ABB 		.ascii	"f\364*\273Q5\275\315\320k\240\306y\037\326m^\364\305"
+ 1515      5135BDCD 
+ 1515      D06BA0C6 
+ 1515      791FD66D 
+ 1515      5EF4C5
+ 1516 0770 F45B4457 		.ascii	"\364[DW{\305\000\363U\207\230\326\312R\256\265\335\000"
+ 1516      7BC500F3 
+ 1516      558798D6 
+ 1516      CA52AEB5 
+ 1516      DD00
+ 1517 0782 6F3E4AC3 		.ascii	"o>J\303\032]\264\323@\265F\214\365\253\255\3202x\030"
+ 1517      1A5DB4D3 
+ 1517      40B5468C 
+ 1517      F5ABADD0 
+ 1517      327818
+ 1518 0795 0E21A86D 		.ascii	"\016!\250m\366\333F,\245\272d\207IRo\305\272\277\027"
+ 1518      F6DB462C 
+ 1518      A5BA6487 
+ 1518      49526FC5 
+ 1518      BABF17
+ 1519 07a8 4C95E1E8 		.ascii	"L\225\341\350\230\216\2367e\220\243%\272\346\177\231"
+ 1519      988E9E37 
+ 1519      6590A325 
+ 1519      BAE67F99 
+ 1520 07b8 52C8D122 		.ascii	"R\310\321\"\035\3556\345P\363\270J\363\270\005\232@"
+ 1520      1DED36E5 
+ 1520      50F3B84A 
+ 1520      F3B8059A 
+ 1520      40
+ 1521 07c9 AFB9F609 		.ascii	"\257\271\366\011\3002\361"
+ 1521      C032F1
+ 1522 07d0 BE9E8983 		.ascii	"\276\236\211\203\246L\314\"\222\333\212\207\345\223"
+ 1522      A64CCC22 
+ 1522      92DB8A87 
+ 1522      E593
+ 1523 07de A69E2108 		.ascii	"\246\236!\0106o\313!\370\311\373R\204K\303\373\272\003"
+ 1523      366FCB21 
+ 1523      F8C9FB52 
+ 1523      844BC3FB 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 51
 
 
- 1529      36BBF2B4 
- 1529      ED
- 1530 092a 77336C4C 		.ascii	"w3lL\277=\177\336\314\314\354\031\177\317\316\235\235"
- 1530      BF3D7FDE 
- 1530      CCCCEC19 
- 1530      7FCFCE9D 
- 1530      9D
- 1531 093b 9793969E 		.ascii	"\227\223\226\236\221://#wF|\332\234\364\354\271\302"
- 1531      913A2F2F 
- 1531      2377467C 
- 1531      DA9CF4EC 
- 1531      B9C2
- 1532 094d EF1FE848 		.ascii	"\357\037\350HzvVV\366\334\310\214\371\371\350\203\217"
- 1532      7A765656 
- 1532      F6DCC88C 
- 1532      F9F9E883 
- 1532      8F
- 1533 095e 1B79F959 		.ascii	"\033y\371Y\321QoO\2340i\376\374\361\263\204\240\224"
- 1533      D1516F4F 
- 1533      9C3069FE 
- 1533      FCF1B384 
- 1533      A094
- 1534 0970 3F29A9D3 		.ascii	"?)\251\323\337\315\311\210\313x\333\317n\267%(\001\312"
- 1534      DFCDC988 
- 1534      CB78DBCF 
- 1534      6EB72528 
- 1534      01CA
- 1535 0982 54FB54E5 		.ascii	"T\373T\345\365\251q/I\261q\266{\323\027\003bRb\243\246"
- 1535      F5A9712F 
- 1535      49B171B6 
- 1535      7BD31703 
- 1535      625262A3 
- 1536 0997 A54C7D45 		.ascii	"\245L}Ea#\2536\322\321\211\0011\211\261\321\034M4\370"
- 1536      6123AB36 
- 1536      D2D18901 
- 1536      3189B1D1 
- 1536      1C4D34F8 
- 1537 09ab 1247F345 		.ascii	"\022G\363E\3733-\270\302\336V_$\312\237iP\221D\316\221"
- 1537      FB332DB8 
- 1537      C2DE565F 
- 1537      24CA9F69 
- 1537      509144CE 
- 1538 09c0 68E6B0CA 		.ascii	"h\346\260\312LV\261OW\330\300\312\006\0066Af\322\032"
- 1538      4C56B14F 
- 1538      57D8C0CA 
- 1538      06063641 
- 1538      66D21A
- 1539 09d3 96A83325 		.ascii	"\226\2503%jL\242-I\221l\361\011\212\177\312\264i\354"
- 1539      6A4CA22D 
- 1539      49916CF1 
- 1539      098A7FCA 
- 1539      B469EC
- 1540 09e6 1D88EFA4 		.ascii	"\035\210\357\244(;\033\006)6\233\036\277\205i\215\177"
- 1540      283B1B06 
- 1540      29369B1E 
- 1540      BF85698D 
- 1540      7F
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 52
+ 1523      BA03
+ 1524 07f0 8C7B7398 		.ascii	"\214{s\230\233\032a\307\252\334\212_\251H\225H\325H"
+ 1524      9B1A61C7 
+ 1524      AADC8A5F 
+ 1524      A9489548 
+ 1524      D548
+ 1525 0802 355676A4 		.ascii	"5Vv\244\236b'\212J\333\321\213 \367\372\321w\375|\276"
+ 1525      9E62278A 
+ 1525      4ADBD18B 
+ 1525      20F7FAD1 
+ 1525      77FD7CBE 
+ 1526 0816 4CF15F8A 		.ascii	"L\361_\212\346]\266*\274$0\3441(\020|\2679\313G\243"
+ 1526      E65DB62A 
+ 1526      BC2430E4 
+ 1526      3128107C 
+ 1526      B739CB47 
+ 1527 082b 9E0F97A0 		.ascii	"\236\017\227\240\203\346\177)r\204U\002!\005B#\315\027"
+ 1527      83E67F29 
+ 1527      72845502 
+ 1527      21054223 
+ 1527      CD17
+ 1528 083d 8A843CA1 		.ascii	"\212\204<\241Pp\013\253\205b\201\237\241\003\245F\013"
+ 1528      50700BAB 
+ 1528      8562819F 
+ 1528      A103A546 
+ 1528      0B
+ 1529 084e D2E51FED 		.ascii	"\322\345\037\355\346\026\035\0345Y\346\245h\322Q\305"
+ 1529      E6161D1C 
+ 1529      3559E6A5 
+ 1529      68D251C5 
+ 1530 085e D734073B 		.ascii	"\3274\007;t\360!\370\352\345h\247\216\346\032\242\332"
+ 1530      74F021F8 
+ 1530      EAE568A7 
+ 1530      8EE61AA2 
+ 1530      DA
+ 1531 086f 01933E65 		.ascii	"\001\223>e\2658\377\240\341\316\304`s\010%\302\017\306"
+ 1531      B538FFA0 
+ 1531      E1CEC460 
+ 1531      730825C2 
+ 1531      0FC6
+ 1532 0881 C0FEDB6C 		.ascii	"\300\376\333l\277\004F\276\327pu\245\014\024\354s\211"
+ 1532      BF0446BE 
+ 1532      D77075A5 
+ 1532      0C14EC73 
+ 1532      89
+ 1533 0892 7F4246EA 		.ascii	"\177BF\352\237\346%\275\220Jl\211i\031YI\331/\244\316"
+ 1533      9FE625BD 
+ 1533      904A6C89 
+ 1533      69195949 
+ 1533      D92FA4CE 
+ 1534 08a6 264F2C4F 		.ascii	"&O,OH\211OIY\026\377zB\342\233+\323\343\227\245\245"
+ 1534      48894F49 
+ 1534      5916FF7A 
+ 1534      42E29B2B 
+ 1534      D3E397A5 
+ 1535 08bb 2624AF88 		.ascii	"&$\257\210O^\221\2345\177\306\214\020\374K\\\236\374"
+ 1535      4F5E919C 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 52
 
 
- 1541 09f7 C3921467 		.ascii	"\303\222\024g{5n*\233E\305\277\361P\\lB\262\3555\235"
- 1541      7B356E2A 
- 1541      9B45C5BF 
- 1541      F1505C6C 
- 1541      42B2ED35 
- 1542 0a0c 474AB2C7 		.ascii	"GJ\262\307(Rrr\274\"\306\304)b\034\276S\342\025)&\336"
- 1542      28527272 
- 1542      BC22C6C4 
- 1542      29621CBE 
- 1542      53E21529 
- 1543 0a22 AE48B1F1 		.ascii	"\256H\261\3611\212\037B\310\020\307\346\211\354a\303"
- 1543      318A1F42 
- 1543      C810C7E6 
- 1543      89EC61C3 
- 1544 0a32 879F3D11 		.ascii	"\207\237=\021\213)\332\023S\374Yu'\263\342\332pnS\374"
- 1544      8B29DA13 
- 1544      53FC5975 
- 1544      27B3E2DA 
- 1544      706E53FC 
- 1545 0a46 6292149B 		.ascii	"b\222\024\233\"\275>\375UEJB\036?[\312kIq\370\214\261"
- 1545      22BD3EFD 
- 1545      55454A42 
- 1545      1E3F5BCA 
- 1545      6B4971F8 
- 1546 0a5c 29B1FFAD 		.ascii	")\261\377\255\2541Jr\244-\331\236d\217\264e\347fD&\315"
- 1546      AC314A72 
- 1546      A42DD99E 
- 1546      648FB465 
- 1546      E7664426 
- 1547 0a71 4D9F336F 		.ascii	"M\2373of\006r\344f\244\246gM\304\352\312v[\254\352\271"
- 1547      660672E4 
- 1547      66A4A667 
- 1547      4DC4EACA 
- 1547      765BACEA 
- 1548 0a86 DFAB29D3 		.ascii	"\337\253)\323m\012\330\025\177\034\374q\352\237\025"
- 1548      6D0AD815 
- 1548      7F1CFC71 
- 1548      EA9F15
- 1549 0a95 893D44B4 		.ascii	"\211=D\264bQ\021\353\230\370i1\366D=J\321\372\222\020"
- 1549      625111EB 
- 1549      98F86931 
- 1549      F6443D4A 
- 1549      D1FA9210 
- 1550 0aa9 90969BF5 		.ascii	"\220\226\233\365\267I\031/d\011\201\2501?c\376\013Y"
- 1550      B749192F 
- 1550      640981A8 
- 1550      313F63FE 
- 1550      0B59
- 1551 0abb 1385C778 		.ascii	"\023\205\307x\307\246\276\225\226>{^N\352\314\354\254"
- 1551      C7A6BE95 
- 1551      963E7B5E 
- 1551      4EEACCEC 
- 1551      AC
- 1552 0acc B4CCB9A9 		.ascii	"\264\314\271\251\231s3\363_\376_\267\203\020\254+ej"
- 1552      997333F3 
- 1552      5FFE5FB7 
- 1552      8310AC2B 
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 53
+ 1535      357FC68C 
+ 1535      10FC4B5C 
+ 1535      9EFC
+ 1536 08cd 7A725A66 		.ascii	"zrZf\250\335n\017I\313\014A\376\220t\024\317\014q.\211"
+ 1536      A8DD6E0F 
+ 1536      49CB0C41 
+ 1536      FE907414 
+ 1536      CF0C712E 
+ 1537 08e2 9D15AA3D 		.ascii	"\235\025\252=\243fgg\207pM3\022\245\205/\2772\325a\237"
+ 1537      A3666767 
+ 1537      87704D33 
+ 1537      12A5852F 
+ 1537      BF32D561 
+ 1538 08f7 47261B4B 		.ascii	"G&\033K3\022\346\275\361b\342\213\363\223\310\263\216"
+ 1538      3312E6BD 
+ 1538      F162E28B 
+ 1538      F393C8B3 
+ 1538      8E
+ 1539 0908 5F2F7530 		.ascii	"_/u0\225\316\254\225\313\222\323\226\276\235\226\361"
+ 1539      95CEAC95 
+ 1539      CB92D396 
+ 1539      BE9D96F1 
+ 1540 0918 66667A42 		.ascii	"ffzBbR\374\312\314\244\214\245Q\011)\211i+\310\213\377"
+ 1540      6252FCCA 
+ 1540      CCA48CA5 
+ 1540      51092989 
+ 1540      692BC88B 
+ 1541 092d AB6D12A0 		.ascii	"\253m\022\240\007\304B\010\312\314J\235\025\032\237"
+ 1541      07C44208 
+ 1541      CACC4A9D 
+ 1541      151A9F
+ 1542 093c 989296F8 		.ascii	"\230\222\226\370\246\272 \255L^\221\205+Y\201\316w2"
+ 1542      A6BA20AD 
+ 1542      4C5E9185 
+ 1542      2B5981CE 
+ 1542      7732
+ 1543 094e B392521D 		.ascii	"\263\222R\035i\031I\016\206Z\2233\336\212A\206\337\374"
+ 1543      6919490E 
+ 1543      865A9333 
+ 1543      DE8A4186 
+ 1543      DFFC
+ 1544 0960 44C39A81 		.ascii	"D\303\232\201\344\314\214\031\313\0118d\301\341\224"
+ 1544      E4CC8C19 
+ 1544      CB093864 
+ 1544      C1E194
+ 1545 096f 7F584562 		.ascii	"\177XEbZjj\332\212\220\244\354,\224\036\257\340\215"
+ 1545      5A6A6ADA 
+ 1545      8A90A4EC 
+ 1545      2C941EAF 
+ 1545      E08D
+ 1546 0981 D933E765 		.ascii	"\3313\347eg\243\212\011q\277\227\343\227\274\223\236"
+ 1546      67A38A09 
+ 1546      71BF97E3 
+ 1546      97BC939E 
+ 1547 0991 1491F486 		.ascii	"\024\221\364\206\237\323\351X(\373\313\221\316H\371"
+ 1547      9FD3E958 
+ 1547      28FBCB91 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 53
 
 
- 1552      656A
- 1553 0ade 42D5FE4C 		.ascii	"B\325\376LM\237\223\235>[]\010\261\277\233\227\237\221"
- 1553      4D9F939D 
- 1553      3E5B5D08 
- 1553      B1BF9B97 
- 1553      9F91
- 1554 0af0 C542B4B1 		.ascii	"\305B\264\261E\377\314\334w\222p\375\301]\377\323\366"
- 1554      45FFCCDC 
- 1554      779270FD 
- 1554      C15DFFD3 
- 1554      F6
- 1555 0b01 34BD9979 		.ascii	"4\275\231y\271\230\227\377\000k%\021M"
- 1555      B99897FF 
- 1555      006B2511 
- 1555      4D
- 1556              		.text
- 1557              		.section	.gnu.lto_.symtab.79e3ab27,"e",%progbits
- 1558 0000 68616C5F 		.ascii	"hal_lld_init\000"
- 1558      6C6C645F 
- 1558      696E6974 
- 1558      00
- 1559 000d 00       		.ascii	"\000"
- 1560 000e 00       		.ascii	"\000"
- 1561 000f 00       		.ascii	"\000"
- 1562 0010 00000000 		.ascii	"\000\000\000\000\000\000\000\000"
- 1562      00000000 
- 1563 0018 87010000 		.ascii	"\207\001\000\000"
- 1564 001c 73746D33 		.ascii	"stm32_clock_init\000"
- 1564      325F636C 
- 1564      6F636B5F 
- 1564      696E6974 
- 1564      00
- 1565 002d 00       		.ascii	"\000"
- 1566 002e 00       		.ascii	"\000"
- 1567 002f 00       		.ascii	"\000"
- 1568 0030 00000000 		.ascii	"\000\000\000\000\000\000\000\000"
- 1568      00000000 
- 1569 0038 89010000 		.ascii	"\211\001\000\000"
- 1570 003c 53797374 		.ascii	"SystemCoreClock\000"
- 1570      656D436F 
- 1570      7265436C 
- 1570      6F636B00 
- 1571 004c 00       		.ascii	"\000"
- 1572 004d 00       		.ascii	"\000"
- 1573 004e 00       		.ascii	"\000"
- 1574 004f 00000000 		.ascii	"\000\000\000\000\000\000\000\000"
- 1574      00000000 
- 1575 0057 8C010000 		.ascii	"\214\001\000\000"
- 1576 005b 69727149 		.ascii	"irqInit\000"
- 1576      6E697400 
- 1577 0063 00       		.ascii	"\000"
- 1578 0064 02       		.ascii	"\002"
- 1579 0065 00       		.ascii	"\000"
- 1580 0066 00000000 		.ascii	"\000\000\000\000\000\000\000\000"
- 1580      00000000 
- 1581 006e 8E010000 		.ascii	"\216\001\000\000"
- 1582              		.text
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 54
+ 1547      CE48F9
+ 1548 09a0 D5C888B9 		.ascii	"\325\310\210\271bx\204\343\321t\216\177X\\x\350\242"
+ 1548      627884E3 
+ 1548      D1748E7F 
+ 1548      585C78E8 
+ 1548      A2
+ 1549 09b1 B8C89765 		.ascii	"\270\310\227e6\262k#\035\235\355\037\026\035>\213\243"
+ 1549      36B26B23 
+ 1549      1D9DED1F 
+ 1549      161D3E8B 
+ 1549      A3
+ 1550 09c2 D1065FF4 		.ascii	"\321\006_\364x\276YV\246\005W\330\333\356\213\204Z\231"
+ 1550      78BE5956 
+ 1550      A60557D8 
+ 1550      DBEE8B84 
+ 1550      5A99
+ 1551 09d4 061589E6 		.ascii	"\006\025\211\346\034\321f\016\273\304de\347\022\231"
+ 1551      1CD1660E 
+ 1551      BBC46465 
+ 1551      E71299
+ 1552 09e3 0DEC6C60 		.ascii	"\015\354l``3%&\255a\321:S\264\306$8bd\321\021\265P\266"
+ 1552      60332526 
+ 1552      AD61D13A 
+ 1552      53B4C624 
+ 1552      386264D1 
+ 1553 09fb C62D5AC4 		.ascii	"\306-Z\304\3366|\307\204:\331p\202\354p\350\361[\230"
+ 1553      DE367CC7 
+ 1553      843AD970 
+ 1553      82EC70E8 
+ 1553      F15B98
+ 1554 0a0e D6A8D72C 		.ascii	"\326\250\327,1\021\216\305\021\221l\026\032\365\332"
+ 1554      31118EC5 
+ 1554      11916C16 
+ 1554      1AF5DA
+ 1555 0a1d 6311E10B 		.ascii	"c\021\341\013c\035\257\350<b\2143L\026cc\243d!,B\026"
+ 1555      631DAFE8 
+ 1555      3C628C33 
+ 1555      4C166363 
+ 1555      A364212C 
+ 1556 0a33 22F01D17 		.ascii	"\"\360\035\027%\213aQNY\014\217\012\223\375\020B\206"
+ 1556      258B6151 
+ 1556      4E590C8F 
+ 1556      0A93FD10 
+ 1556      4286
+ 1557 0a45 08368F66 		.ascii	"\0106\217f\017\007>\374\234\321X&\301\031\035ge\333"
+ 1557      0F073EFC 
+ 1557      9CD15826 
+ 1557      C1191D67 
+ 1557      65DB
+ 1558 0a57 617E7C96 		.ascii	"a~|\226\340\300\3229\035\262_X\214\354\220\305W\227"
+ 1558      E0C0D239 
+ 1558      1DB25F58 
+ 1558      8CEC90C5 
+ 1558      5797
+ 1559 0a69 2C96C518 		.ascii	",\226\305\030\344\361s\304\275\022\023\201\3170\207"
+ 1559      E4F173C4 
+ 1559      BD121381 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 54
 
 
- 1583              		.section	.gnu.lto_.ext_symtab.79e3ab27,"e",%progbits
- 1584 0000 01       		.ascii	"\001"
- 1585 0001 01       		.ascii	"\001"
- 1586 0002 00       		.ascii	"\000"
- 1587 0003 01       		.ascii	"\001"
- 1588 0004 00       		.ascii	"\000"
- 1589 0005 02       		.ascii	"\002"
- 1590 0006 00       		.ascii	"\000"
- 1591 0007 01       		.ascii	"\001"
- 1592 0008 00       		.ascii	"\000"
- 1593              		.text
- 1594              		.section	.gnu.lto_.opts,"e",%progbits
- 1595 0000 272D666E 		.ascii	"'-fno-openmp' '-fno-openacc' '-fno-pie' '-fcf-prote"
- 1595      6F2D6F70 
- 1595      656E6D70 
- 1595      2720272D 
- 1595      666E6F2D 
- 1596 0033 6374696F 		.ascii	"ction=none' '-g' '-mcpu=cortex-m4' '-mthumb' '-mflo"
- 1596      6E3D6E6F 
- 1596      6E652720 
- 1596      272D6727 
- 1596      20272D6D 
- 1597 0066 61742D61 		.ascii	"at-abi=soft' '-mlibarch=armv7e-m' '-march=armv7e-m'"
- 1597      62693D73 
- 1597      6F667427 
- 1597      20272D6D 
- 1597      6C696261 
- 1598 0099 20272D4F 		.ascii	" '-O2' '-fomit-frame-pointer' '-falign-functions=16"
- 1598      32272027 
- 1598      2D666F6D 
- 1598      69742D66 
- 1598      72616D65 
- 1599 00cc 2720272D 		.ascii	"' '-ffunction-sections' '-fdata-sections' '-fno-com"
- 1599      6666756E 
- 1599      6374696F 
- 1599      6E2D7365 
- 1599      6374696F 
- 1600 00ff 6D6F6E27 		.ascii	"mon' '-flto' '-Xassembler' '-alms=./build/lst/hal_l"
- 1600      20272D66 
- 1600      6C746F27 
- 1600      20272D58 
- 1600      61737365 
- 1601 0132 6C642E6C 		.ascii	"ld.lst'\000"
- 1601      73742700 
+ 1559      CF3087
+ 1560 0a78 1CFEDFCA 		.ascii	"\034\376\337\312\032&\307\2068b\2351\316\020\266\253"
+ 1560      1A26C786 
+ 1560      38629D31 
+ 1560      CE10B6AB 
+ 1561 0a88 42625624 		.ascii	"BbV$\246\254\\\226\204\034\031I\361\211\251\263\261"
+ 1561      A6AC5C96 
+ 1561      841C1949 
+ 1561      F189A9B3 
+ 1561      B1
+ 1562 0a99 BA92D311 		.ascii	"\272\222\323\021\256z\356\2678n\211C\006\247l\305\301"
+ 1562      AE7AEEB7 
+ 1562      386E8943 
+ 1562      06A76CC5 
+ 1562      C1
+ 1563 0aaa 4B917F90 		.ascii	"K\221\177\220E\366\020\320\212EE\354\023\243\026\205"
+ 1563      45F610D0 
+ 1563      8A4545EC 
+ 1563      13A31685 
+ 1564 0aba 39A3F528 		.ascii	"9\243\365(\377\003\354U\3744"
+ 1564      FF03EC55 
+ 1564      FC34
+ 1565              		.text
+ 1566              		.section	.gnu.lto_.symtab.98e560d9,"e",%progbits
+ 1567 0000 68616C5F 		.ascii	"hal_lld_init\000"
+ 1567      6C6C645F 
+ 1567      696E6974 
+ 1567      00
+ 1568 000d 00       		.ascii	"\000"
+ 1569 000e 00       		.ascii	"\000"
+ 1570 000f 00       		.ascii	"\000"
+ 1571 0010 00000000 		.ascii	"\000\000\000\000\000\000\000\000"
+ 1571      00000000 
+ 1572 0018 C0000000 		.ascii	"\300\000\000\000"
+ 1573 001c 73746D33 		.ascii	"stm32_clock_init\000"
+ 1573      325F636C 
+ 1573      6F636B5F 
+ 1573      696E6974 
+ 1573      00
+ 1574 002d 00       		.ascii	"\000"
+ 1575 002e 00       		.ascii	"\000"
+ 1576 002f 00       		.ascii	"\000"
+ 1577 0030 00000000 		.ascii	"\000\000\000\000\000\000\000\000"
+ 1577      00000000 
+ 1578 0038 C2000000 		.ascii	"\302\000\000\000"
+ 1579 003c 53797374 		.ascii	"SystemCoreClock\000"
+ 1579      656D436F 
+ 1579      7265436C 
+ 1579      6F636B00 
+ 1580 004c 00       		.ascii	"\000"
+ 1581 004d 00       		.ascii	"\000"
+ 1582 004e 00       		.ascii	"\000"
+ 1583 004f 00000000 		.ascii	"\000\000\000\000\000\000\000\000"
+ 1583      00000000 
+ 1584 0057 CB000000 		.ascii	"\313\000\000\000"
+ 1585 005b 69727149 		.ascii	"irqInit\000"
+ 1585      6E697400 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 55
+
+
+ 1586 0063 00       		.ascii	"\000"
+ 1587 0064 02       		.ascii	"\002"
+ 1588 0065 00       		.ascii	"\000"
+ 1589 0066 00000000 		.ascii	"\000\000\000\000\000\000\000\000"
+ 1589      00000000 
+ 1590 006e CD000000 		.ascii	"\315\000\000\000"
+ 1591              		.text
+ 1592              		.section	.gnu.lto_.ext_symtab.98e560d9,"e",%progbits
+ 1593 0000 01       		.ascii	"\001"
+ 1594 0001 01       		.ascii	"\001"
+ 1595 0002 00       		.ascii	"\000"
+ 1596 0003 01       		.ascii	"\001"
+ 1597 0004 00       		.ascii	"\000"
+ 1598 0005 02       		.ascii	"\002"
+ 1599 0006 00       		.ascii	"\000"
+ 1600 0007 01       		.ascii	"\001"
+ 1601 0008 00       		.ascii	"\000"
  1602              		.text
- 1603              		.comm	__gnu_lto_slim,1,1
- 1604              		.ident	"GCC: (Arm GNU Toolchain 11.3.Rel1) 11.3.1 20220712"
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s 			page 55
+ 1603              		.section	.gnu.lto_.opts,"e",%progbits
+ 1604 0000 272D666E 		.ascii	"'-fno-openmp' '-fno-openacc' '-fno-pie' '-fcf-prote"
+ 1604      6F2D6F70 
+ 1604      656E6D70 
+ 1604      2720272D 
+ 1604      666E6F2D 
+ 1605 0033 6374696F 		.ascii	"ction=none' '-g' '-mcpu=cortex-m4' '-mthumb' '-mflo"
+ 1605      6E3D6E6F 
+ 1605      6E652720 
+ 1605      272D6727 
+ 1605      20272D6D 
+ 1606 0066 61742D61 		.ascii	"at-abi=soft' '-mlibarch=armv7e-m' '-march=armv7e-m'"
+ 1606      62693D73 
+ 1606      6F667427 
+ 1606      20272D6D 
+ 1606      6C696261 
+ 1607 0099 20272D4F 		.ascii	" '-O0' '-fomit-frame-pointer' '-falign-functions=16"
+ 1607      30272027 
+ 1607      2D666F6D 
+ 1607      69742D66 
+ 1607      72616D65 
+ 1608 00cc 2720272D 		.ascii	"' '-ffunction-sections' '-fdata-sections' '-fno-com"
+ 1608      6666756E 
+ 1608      6374696F 
+ 1608      6E2D7365 
+ 1608      6374696F 
+ 1609 00ff 6D6F6E27 		.ascii	"mon' '-flto' '-Xassembler' '-alms=./build/lst/hal_l"
+ 1609      20272D66 
+ 1609      6C746F27 
+ 1609      20272D58 
+ 1609      61737365 
+ 1610 0132 6C642E6C 		.ascii	"ld.lst'\000"
+ 1610      73742700 
+ 1611              		.text
+ 1612              		.comm	__gnu_lto_slim,1,1
+ 1613              		.ident	"GCC: (Arm GNU Toolchain 11.3.Rel1) 11.3.1 20220712"
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s 			page 56
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 hal_lld.c
-C:\Users\Ridwane\AppData\Local\Temp\ccQ1iiE1.s:25     .gnu.debuglto_.debug_info:00000000 hal_lld.c.a7f9c98e
+C:\Users\Ridwane\AppData\Local\Temp\ccclg22g.s:25     .gnu.debuglto_.debug_info:00000000 hal_lld.c.a7f9c98e
                             *COM*:00000001 __gnu_lto_slim
 
 NO UNDEFINED SYMBOLS

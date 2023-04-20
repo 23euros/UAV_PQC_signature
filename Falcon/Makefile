@@ -5,7 +5,7 @@
 
 # Compiler options here.
 ifeq ($(USE_OPT),)
-  USE_OPT = -O2 -ggdb -fomit-frame-pointer -falign-functions=16 --specs=nosys.specs --specs=nano.specs
+  USE_OPT = -O0 -ggdb -fomit-frame-pointer -falign-functions=16 --specs=nosys.specs --specs=nano.specs
 endif
 
 # C specific options here (added to USE_OPT).
@@ -119,6 +119,7 @@ LDSCRIPT= $(STARTUPLD)/STM32F407xG.ld
 #LDFLAGS += -L$(CHIBIOS)/os/hal/platforms/STM32F4xx/ld \
            -T$(STARTUPLD)/STM32F407xG.ld \
            -lchibios_rt \
+           -Wl,-Map=output.map
 
 
 # C sources that can be compiled in ARM or THUMB mode depending on the global
