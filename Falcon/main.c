@@ -46,7 +46,8 @@ static THD_FUNCTION(Thread1, arg) {
 
     /* Create a buffer to hold the message to sign */
     uint8_t message[MESSAGE_SIZE_BYTES];
-    unsigned long long mlen=MESSAGE_SIZE_BYTES;
+    unsigned long long mlen = MESSAGE_SIZE_BYTES;
+    unsigned long long smlen = CRYPTO_BYTES;
     uint8_t signature[CRYPTO_BYTES];
     uint8_t public_key[CRYPTO_PUBLICKEYBYTES];
     uint8_t secret_key[CRYPTO_SECRETKEYBYTES];// = (const uint8_t*) "Y\004\0@\0041;üNÀ#ÑE\027Ñ>\v\236@\f\217\202ôo·ü\036» >ÃøOþÿÝ\201\027 ûð?ø\b\020Æ\0N|  @\004\037\003÷ÿ\177çï?$\237úð0\212$\017ÀÿÐ}+Ð\201÷ @óÐ@\003\220}\0\022ýïÐ\0\024@\004Ô^\002ûð}\003ÿý\024`\204\aß\202ü\0;\024nÿ\004!þ\aÿ¾\0oûàRC\030\016\210ð^¾\024oþóï½\0/D\003Ï?\eá~Ü Æë±Ãø\036\200\024\017|\eÏ¿\0\036E\003À\003\f\"\002\vð\211\eï¼\003ÿÃ\0!\177\020\0Ç\024\021¿ô\200ûìAFà\200F\003"...
@@ -71,16 +72,16 @@ static THD_FUNCTION(Thread1, arg) {
         }
 
         chnWrite(&SD1, message, MESSAGE_SIZE_BYTES);
-        memset(message, 0, sizeof(message));
+//        memset(message, 0, sizeof(message));
         /* Sign the message */
-        chnWrite(&SD1, secret_key, CRYPTO_SECRETKEYBYTES);
+//        chnWrite(&SD1, secret_key, CRYPTO_SECRETKEYBYTES);
 
-        crypto_sign(signature, NULL, message, MESSAGE_SIZE_BYTES, secret_key);
+        crypto_sign(signature, &smlen, message, MESSAGE_SIZE_BYTES, secret_key);
 
         /* Verify the signature (for testing purposes) */
-        chnWrite(&SD1, signature, CRYPTO_BYTES);
+//        chnWrite(&SD1, signature, CRYPTO_BYTES);
 
-        int signature_verified = crypto_sign_open(message, &mlen, signature, CRYPTO_BYTES, public_key);
+        int signature_verified = crypto_sign_open(message, &mlen, signature, smlen, public_key);
 
         /* Do something with the signature (e.g. send it over a network) */
         if (signature_verified==0){
