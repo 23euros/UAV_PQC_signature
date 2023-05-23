@@ -31,12 +31,13 @@
 #define FALCON_PARAM_SET CRYPTO_SECRETKEYBYTES
 
 /*Define the concurrent thread parameters*/
-#define MONOPOLIZE_WORKBUF_SIZE 256
+#define MONOPOLIZE_WORKBUF_SIZE 1024
 #define MONOPOLIZE_TIME_MS 10
-#define AVAILABLE_TIME_MS 20
+static int available_ms = 256;
 
-/* Create a mutex */
+/* Create a mutex and the interruptions counter */
 static MUTEX_DECL(mutex);
+static int counter = 0;
 
 /* Create the thread working areas */
 static THD_WORKING_AREA(waThread1, FALCON_SIG_WORKBUF_SIZE);
@@ -49,25 +50,33 @@ static THD_FUNCTION(Monopolize, arg) {
   (void)arg;
   uint32_t start;
   uint32_t elapsed;
-  uint32_t end;
-  uint16_t loop;
+//  uint32_t end;
+  counter = 0;
 
   while (!chThdShouldTerminateX()) {
+    counter ++;
     start = chVTGetSystemTimeX();
     palSetPad(GPIOD, GPIOD_LED4);
-    chMtxLock(&mutex);
+//    chMtxLock(&mutex);
 //    chprintf((BaseSequentialStream *)&SD2, "Time elapsed %lu - loops: %lu \r\n", start - end, loop);
-    chMtxUnlock(&mutex);
+//    chMtxUnlock(&mutex);
     elapsed = 0;
-    loop = 0;
+    uint32_t matrix[10][10];
+    for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                matrix[i][j] = rand();
+            }
+    }
+    chprintf((BaseSequentialStream *)&SD1,"%lu",matrix[rand() % 10][rand() % 10]);
+
+
     while ((elapsed < MS2RTC(CH_CFG_ST_FREQUENCY, MONOPOLIZE_TIME_MS)) & (!chThdShouldTerminateX())){
       elapsed = chVTGetSystemTimeX() - start;
-      loop ++;
     }
     palClearPad(GPIOD, GPIOD_LED4);
     if (chThdShouldTerminateX()) chThdExit(MSG_OK);
-    end = chVTGetSystemTimeX();
-    chThdSleepMilliseconds(AVAILABLE_TIME_MS);
+//    end = chVTGetSystemTimeX();
+    chThdSleepMilliseconds(available_ms);
   }
 }
 
@@ -88,15 +97,15 @@ static THD_FUNCTION(Thread1, arg) {
     uint32_t cycle_counter;
     uint32_t start_cycle;
     uint32_t end_cycle;
-    uint32_t min = -1;
-    uint32_t max = 0;
-    float avg;
+//    uint32_t min = -1;
+//    uint32_t max = 0;
+//    float avg;
     systime_t start_time;
     systime_t end_time;
     systime_t timer;
-    float avg_t;
-    systime_t min_t = -1;
-    systime_t max_t = 0;
+//    float avg_t;
+//    systime_t min_t = -1;
+//    systime_t max_t = 0;
     uint8_t loops = 0;
     DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
 
@@ -104,57 +113,69 @@ static THD_FUNCTION(Thread1, arg) {
     /* Generate key pair */
     crypto_sign_keypair(public_key, secret_key);
 
-    while (loops<100) {
-        DWT->CYCCNT = 0;
-        loops ++;
-        /* Generate a random message */
-        for (int i = 0; i < MESSAGE_SIZE_BYTES; i++) {
-            message[i] = rand() % 256;
-        }
+    while (true){
+      loops = 0;
+      while (loops<100) {
+          DWT->CYCCNT = 0;
+          loops ++;
+          /* Generate a random message */
+          for (int i = 0; i < MESSAGE_SIZE_BYTES; i++) {
+              message[i] = rand() % 256;
+          }
 
-        /* Sign the message */
-        palSetPad(GPIOD, GPIOD_LED3);       // Orange.
-        monopolize = chThdCreateStatic(monopolize_wa, sizeof(monopolize_wa), HIGHPRIO, Monopolize, NULL);
-        chSysLock();
-        start_time = chVTGetSystemTimeX();
-        start_cycle = DWT->CYCCNT;
-        chSysUnlock();
-        crypto_sign(signature, &smlen, message, MESSAGE_SIZE_BYTES, secret_key);
-        chSysLock();
-        end_cycle = DWT->CYCCNT;
-        end_time = chVTGetSystemTimeX();
-        chSysUnlock();
-        chThdTerminate(monopolize);
-        chThdWait(monopolize);
-        palClearPad(GPIOD, GPIOD_LED3);     // Orange.
-        cycle_counter = end_cycle - start_cycle;
-        timer = end_time - start_time;
-        if (timer <= min_t) min_t = timer;
-        if (timer >= max_t) max_t = timer;
-        avg_t = (avg_t / (float) loops * (float) (loops - 1) + (float) timer / (float) loops);
-        if (cycle_counter <= min) min = cycle_counter;
-        if (cycle_counter >= max) max = cycle_counter;
-        avg = (avg / (float) loops * (float) (loops - 1) + (float) cycle_counter / (float) loops);
-        if (avg==0) break;
+          /* Set the counters and launch concurrent thread */
+          palSetPad(GPIOD, GPIOD_LED3);       // Orange.
+          monopolize = chThdCreateStatic(monopolize_wa, sizeof(monopolize_wa), HIGHPRIO, Monopolize, NULL);
+          chSysLock();
+          start_time = chVTGetSystemTimeX();
+          start_cycle = DWT->CYCCNT;
+          chSysUnlock();
 
-        chMtxLock(&mutex);
-        chprintf((BaseSequentialStream *)&SD2,"Loop: %lu - Crypto_sign: Delta cycle count: %lu - Delta time: %lu\r\n", loops, cycle_counter, timer);
-        chMtxUnlock(&mutex);
+          /* Sign the message */
+          crypto_sign(signature, &smlen, message, MESSAGE_SIZE_BYTES, secret_key);
 
-        /* Verify the signature (for testing purposes) */
-        int signature_verified = crypto_sign_open(message, &mlen, signature, smlen, public_key);
+          /* Update the counter and metrics, stop the concurrent thread */
+          chSysLock();
+          end_cycle = DWT->CYCCNT;
+          end_time = chVTGetSystemTimeX();
+          chSysUnlock();
+          chThdTerminate(monopolize);
+          chThdWait(monopolize);
+          palClearPad(GPIOD, GPIOD_LED3);     // Orange.
+          cycle_counter = end_cycle - start_cycle;
+          timer = end_time - start_time;
+  //        if (timer <= min_t) min_t = timer;
+  //        if (timer >= max_t) max_t = timer;
+  //        avg_t = (avg_t / (float) loops * (float) (loops - 1) + (float) timer / (float) loops);
+  //        if (cycle_counter <= min) min = cycle_counter;
+  //        if (cycle_counter >= max) max = cycle_counter;
+  //        avg = (avg / (float) loops * (float) (loops - 1) + (float) cycle_counter / (float) loops);
+  //        if (avg==0) break;
 
-        /* Do something with the signature (e.g. send it over a network) */
-        if (signature_verified != 0) {
+          /* Display the current loop results */
           chMtxLock(&mutex);
-          chprintf((BaseSequentialStream *)&SD2, "Error - Signature non verified at loop %lu \r\n", loops);
+  //        chprintf((BaseSequentialStream *)&SD2,"Loop: %lu - Crypto_sign: Delta cycle count: %lu - Delta time: %lu\r\n", loops, cycle_counter, timer);
+          chprintf((BaseSequentialStream *)&SD2,"%lu,%lu,%lu,%lu,%lu\r\n", available_ms, loops, cycle_counter, timer, counter);
           chMtxUnlock(&mutex);
-          chThdExit(MSG_RESET);
-        }
+
+          /* Verify the signature (for testing purposes) */
+          int signature_verified = crypto_sign_open(message, &mlen, signature, smlen, public_key);
+
+          if (signature_verified != 0) {
+            chMtxLock(&mutex);
+            chprintf((BaseSequentialStream *)&SD2, "Error - Signature non verified at loop %lu \r\n", loops);
+            chMtxUnlock(&mutex);
+            chThdExit(MSG_RESET);
+          }
+
+      }
+    if (available_ms == 1) break;
+    available_ms = available_ms/2;
 
     }
+    /* Display Final Results */
     chMtxLock(&mutex);
-    chprintf((BaseSequentialStream *)&SD2, "Test finished - Final Results \r\n\r\n - Cycles - \r\nAverage: %lu \r\nMinimum: %lu \r\nMaximum %lu \r\n\r\n - Time - \r\nAverage: %lu ms \r\nMinimum: %lu ms \r\nMaximum: %lu ms", (uint32_t) avg, min, max, (systime_t) avg_t, min_t, max_t);
+//    chprintf((BaseSequentialStream *)&SD2, "Test finished - Final Results \r\n\r\n - Cycles - \r\nAverage: %lu \r\nMinimum: %lu \r\nMaximum %lu \r\n\r\n - Time - \r\nAverage: %lu ms \r\nMinimum: %lu ms \r\nMaximum: %lu ms", (uint32_t) avg, min, max, (systime_t) avg_t, min_t, max_t);
     chMtxUnlock(&mutex);
     chThdExit(MSG_OK);
 }
