@@ -2,8 +2,6 @@
 #define CONFIG_H
 
 #define DILITHIUM_MODE 2
-
-#define CRYPTO_ALGNAME "Dilithium2"
-#define DILITHIUM_NAMESPACE(s) pqcrystals_dilithium2_avx2##s
+// #define SIGN_STACKSTRATEGY 2
 
 #endif

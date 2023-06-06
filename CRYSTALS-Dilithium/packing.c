@@ -64,7 +64,7 @@ void unpack_pk(uint8_t rho[SEEDBYTES],
 **************************************************/
 void pack_sk(uint8_t sk[CRYPTO_SECRETKEYBYTES],
              const uint8_t rho[SEEDBYTES],
-             const uint8_t tr[CRHBYTES],
+             const uint8_t tr[SEEDBYTES],
              const uint8_t key[SEEDBYTES],
              const polyveck *t0,
              const polyvecl *s1,
@@ -80,9 +80,9 @@ void pack_sk(uint8_t sk[CRYPTO_SECRETKEYBYTES],
     sk[i] = key[i];
   sk += SEEDBYTES;
 
-  for(i = 0; i < CRHBYTES; ++i)
+  for(i = 0; i < SEEDBYTES; ++i)
     sk[i] = tr[i];
-  sk += CRHBYTES;
+  sk += SEEDBYTES;
 
   for(i = 0; i < L; ++i)
     polyeta_pack(sk + i*POLYETA_PACKEDBYTES, &s1->vec[i]);
@@ -110,11 +110,11 @@ void pack_sk(uint8_t sk[CRYPTO_SECRETKEYBYTES],
 *              - uint8_t sk[]: byte array containing bit-packed sk
 **************************************************/
 void unpack_sk(uint8_t rho[SEEDBYTES],
-               uint8_t tr[CRHBYTES],
+               uint8_t tr[SEEDBYTES],
                uint8_t key[SEEDBYTES],
                polyveck *t0,
-               polyvecl *s1,
-               polyveck *s2,
+               smallpoly s1[L],
+               smallpoly s2[K],
                const uint8_t sk[CRYPTO_SECRETKEYBYTES])
 {
   unsigned int i;
@@ -127,16 +127,16 @@ void unpack_sk(uint8_t rho[SEEDBYTES],
     key[i] = sk[i];
   sk += SEEDBYTES;
 
-  for(i = 0; i < CRHBYTES; ++i)
+  for(i = 0; i < SEEDBYTES; ++i)
     tr[i] = sk[i];
-  sk += CRHBYTES;
+  sk += SEEDBYTES;
 
   for(i=0; i < L; ++i)
-    polyeta_unpack(&s1->vec[i], sk + i*POLYETA_PACKEDBYTES);
+    small_polyeta_unpack(&s1[i], sk + i*POLYETA_PACKEDBYTES);
   sk += L*POLYETA_PACKEDBYTES;
 
   for(i=0; i < K; ++i)
-    polyeta_unpack(&s2->vec[i], sk + i*POLYETA_PACKEDBYTES);
+    small_polyeta_unpack(&s2[i], sk + i*POLYETA_PACKEDBYTES);
   sk += K*POLYETA_PACKEDBYTES;
 
   for(i=0; i < K; ++i)
@@ -180,6 +180,54 @@ void pack_sig(uint8_t sig[CRYPTO_BYTES],
 
     sig[OMEGA + i] = k;
   }
+}
+
+void pack_sig_c(uint8_t sig[CRYPTO_BYTES],
+              const uint8_t c[SEEDBYTES])
+{
+  unsigned int i;
+
+  for(i=0; i < SEEDBYTES; ++i)
+    sig[i] = c[i];
+  sig += SEEDBYTES;
+}
+
+void pack_sig_z(uint8_t sig[CRYPTO_BYTES],
+              const polyvecl *z)
+{
+  unsigned int i;
+  sig += SEEDBYTES;
+  for(i = 0; i < L; ++i)
+    polyz_pack(sig + i*POLYZ_PACKEDBYTES, &z->vec[i]);
+}
+
+
+void pack_sig_h(unsigned char sig[CRYPTO_BYTES],
+                const poly *h_elem,
+                const unsigned int idx,
+                unsigned int *hints_written)
+{
+  sig += SEEDBYTES;
+  sig += L*POLYZ_PACKEDBYTES;
+
+  // Encode h
+  for (unsigned int j = 0; j < N; j++) {
+      if (h_elem->coeffs[j] != 0) {
+          sig[*hints_written] = (uint8_t)j;
+          (*hints_written)++;
+      }
+  }
+  sig[OMEGA + idx] = (uint8_t)*hints_written;
+}
+
+void pack_sig_h_zero(unsigned char sig[CRYPTO_BYTES],
+                unsigned int *hints_written) {
+    sig += SEEDBYTES;
+    sig += L * POLYZ_PACKEDBYTES;
+    while (*hints_written < OMEGA) {
+        sig[*hints_written] = 0;
+        (*hints_written)++;
+    }
 }
 
 /*************************************************

@@ -3,8 +3,11 @@
 
 #include "config.h"
 
+#define DILITHIUM_NAMESPACE(s) pqcrystals_dilithium_##s
+
+
 #define SEEDBYTES 32
-#define CRHBYTES 48
+#define CRHBYTES 64
 #define N 256
 #define Q 8380417
 #define D 13
@@ -19,6 +22,7 @@
 #define GAMMA1 (1 << 17)
 #define GAMMA2 ((Q-1)/88)
 #define OMEGA 80
+#define CRYPTO_ALGNAME "Dilithium2"
 
 #elif DILITHIUM_MODE == 3
 #define K 6
@@ -29,6 +33,7 @@
 #define GAMMA1 (1 << 19)
 #define GAMMA2 ((Q-1)/32)
 #define OMEGA 55
+#define CRYPTO_ALGNAME "Dilithium3"
 
 #elif DILITHIUM_MODE == 5
 #define K 8
@@ -39,6 +44,7 @@
 #define GAMMA1 (1 << 19)
 #define GAMMA2 ((Q-1)/32)
 #define OMEGA 75
+#define CRYPTO_ALGNAME "Dilithium5"
 
 #endif
 
@@ -65,7 +71,7 @@
 #endif
 
 #define CRYPTO_PUBLICKEYBYTES (SEEDBYTES + K*POLYT1_PACKEDBYTES)
-#define CRYPTO_SECRETKEYBYTES (2*SEEDBYTES + CRHBYTES \
+#define CRYPTO_SECRETKEYBYTES (3*SEEDBYTES \
                                + L*POLYETA_PACKEDBYTES \
                                + K*POLYETA_PACKEDBYTES \
                                + K*POLYT0_PACKEDBYTES)

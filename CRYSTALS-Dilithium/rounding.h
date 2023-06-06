@@ -4,13 +4,16 @@
 #include <stdint.h>
 #include "params.h"
 
-#define power2round_avx DILITHIUM_NAMESPACE(_power2round_avx)
-void power2round_avx(int32_t a1[N], int32_t a0[N], const int32_t a[N]);
-#define decompose_avx DILITHIUM_NAMESPACE(_decompose_avx)
-void decompose_avx(int32_t a1[N], int32_t a0[N], const int32_t a[N]);
-#define make_hint_avx DILITHIUM_NAMESPACE(_make_hint_avx)
-unsigned int make_hint_avx(int32_t h[N], const int32_t a0[N], const int32_t a1[N]);
-#define use_hint_avx DILITHIUM_NAMESPACE(_use_hint_avx)
-void use_hint_avx(int32_t b[N], const int32_t a[N], const int32_t hint[N]);
+#define power2round DILITHIUM_NAMESPACE(power2round)
+int32_t power2round(int32_t *a0, int32_t a);
+
+#define decompose DILITHIUM_NAMESPACE(decompose)
+int32_t decompose(int32_t *a0, int32_t a);
+
+#define make_hint DILITHIUM_NAMESPACE(make_hint)
+unsigned int make_hint(int32_t a0, int32_t a1);
+
+#define use_hint DILITHIUM_NAMESPACE(use_hint)
+int32_t use_hint(int32_t a, unsigned int hint);
 
 #endif
