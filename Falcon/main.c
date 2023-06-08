@@ -33,7 +33,8 @@
 /*Define the concurrent thread parameters*/
 #define MONOPOLIZE_WORKBUF_SIZE 1024
 #define MONOPOLIZE_TIME_MS 10
-static int available_ms = 256;
+static uint8_t available_ms_table[] = {200, 100, 70, 50, 40, 30, 25, 20, 15, 10, 8, 6, 5, 4, 3, 2, 1};
+static uint8_t available_ms;
 
 /* Create a mutex and the interruptions counter */
 static MUTEX_DECL(mutex);
@@ -113,7 +114,9 @@ static THD_FUNCTION(Thread1, arg) {
     /* Generate key pair */
     crypto_sign_keypair(public_key, secret_key);
 
-    while (true){
+    uint8_t i;
+    for (i = 0; i < sizeof(available_ms_table); i++){
+      available_ms = available_ms_table[i];
       loops = 0;
       while (loops<100) {
           DWT->CYCCNT = 0;
@@ -169,8 +172,6 @@ static THD_FUNCTION(Thread1, arg) {
           }
 
       }
-    if (available_ms == 1) break;
-    available_ms = available_ms/2;
 
     }
     /* Display Final Results */

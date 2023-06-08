@@ -66,7 +66,7 @@ endif
 
 # Enables the use of FPU (no, softfp, hard).
 ifeq ($(USE_FPU),)
-  USE_FPU = no
+  USE_FPU = softfp
 endif
 
 # FPU-related options.
@@ -129,11 +129,15 @@ CSRC = $(ALLCSRC) \
        $(CHIBIOS)/os/hal/lib/streams/chprintf.c \
        main.c \
        sign.c \
-       consts.c \
-       fips202.c \
        packing.c \
+       poly.c \
        polyvec.c \
-       randombytes.c 
+       rounding.c \
+       smallpoly.c \
+       symmetric-shake.c \
+       fips202.c \
+       randombytes.c \
+       aes.c
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
@@ -142,10 +146,24 @@ CSRC = $(ALLCSRC) \
 CPPSRC = $(ALLCPPSRC)
 
 # List ASM source files here.
-ASMSRC = $(ALLASMSRC)
+ASMSRC = $(ALLASMSRC) \
+vectors.s \
+vector.s \
+crypto_hashblocks_sha512_inner32.s \
+pointwise_mont.s
 
 # List ASM with preprocessor source files here.
-ASMXSRC = $(ALLXASMSRC)
+ASMXSRC = $(ALLXASMSRC) \
+ntt.S \
+fnt_257.S \
+ifnt_257.S \
+smallntt.S \
+aes-encrypt.S \
+aes-keyschedule.S \
+aes-publicinputs.S \
+basemul_257.S \
+startup_MPS2.S \
+keccakf1600.S
 
 # Inclusion directories.
 INCDIR = $(CONFDIR) $(ALLINC) $(TESTINC) \

@@ -1,0 +1,298 @@
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQl11Fc.s 			page 1
+
+
+   1              	# 0 "vector.s"
+   2              	# 1 "C:\\ChibiStudio\\workspace_user\\CRYSTALS-Dilithium//"
+   0              	
+   0              	
+   0              	
+   1              	.syntax unified
+   2              	.thumb
+   3              	.macro redq a, tmp, q
+   4              	    add     \tmp, \a,  #4194304
+   5              	    asrs    \tmp, \tmp, #23
+   6              	    mls     \a, \tmp, \q, \a
+   7              	.endm
+   8              	
+   9              	// void asm_reduce32(int32_t a[N]);
+  10              	.global pqcrystals_dilithium_asm_reduce32
+  11              	.type pqcrystals_dilithium_asm_reduce32, %function
+  12              	.align 2
+  13              	pqcrystals_dilithium_asm_reduce32:
+  14 0000 2DE9F007 	    push {r4-r10}
+  15              	
+  16 0004 4EF2010C 	    movw r12,#:lower16:8380417
+  17 0008 C0F27F0C 	    movt r12,#:upper16:8380417
+  18 000c 40F2200A 	    movw r10, #32
+  19              	    1:
+  20 0010 D0F80010 	        ldr.w r1, [r0]
+  21 0014 D0F80420 	        ldr.w r2, [r0, #1*4]
+  22 0018 D0F80830 	        ldr.w r3, [r0, #2*4]
+  23 001c D0F80C40 	        ldr.w r4, [r0, #3*4]
+  24 0020 D0F81050 	        ldr.w r5, [r0, #4*4]
+  25 0024 D0F81460 	        ldr.w r6, [r0, #5*4]
+  26 0028 D0F81870 	        ldr.w r7, [r0, #6*4]
+  27 002c D0F81C80 	        ldr.w r8, [r0, #7*4]
+  28              	
+  29              	        redq r1, r9, r12
+  29 0030 01F58009 	>  add r9,r1,#4194304
+  29 0034 5FEAE959 	>  asrs r9,r9,#23
+  29 0038 09FB1C11 	>  mls r1,r9,r12,r1
+  30              	        redq r2, r9, r12
+  30 003c 02F58009 	>  add r9,r2,#4194304
+  30 0040 5FEAE959 	>  asrs r9,r9,#23
+  30 0044 09FB1C22 	>  mls r2,r9,r12,r2
+  31              	        redq r3, r9, r12
+  31 0048 03F58009 	>  add r9,r3,#4194304
+  31 004c 5FEAE959 	>  asrs r9,r9,#23
+  31 0050 09FB1C33 	>  mls r3,r9,r12,r3
+  32              	        redq r4, r9, r12
+  32 0054 04F58009 	>  add r9,r4,#4194304
+  32 0058 5FEAE959 	>  asrs r9,r9,#23
+  32 005c 09FB1C44 	>  mls r4,r9,r12,r4
+  33              	        redq r5, r9, r12
+  33 0060 05F58009 	>  add r9,r5,#4194304
+  33 0064 5FEAE959 	>  asrs r9,r9,#23
+  33 0068 09FB1C55 	>  mls r5,r9,r12,r5
+  34              	        redq r6, r9, r12
+  34 006c 06F58009 	>  add r9,r6,#4194304
+  34 0070 5FEAE959 	>  asrs r9,r9,#23
+  34 0074 09FB1C66 	>  mls r6,r9,r12,r6
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQl11Fc.s 			page 2
+
+
+  35              	        redq r7, r9, r12
+  35 0078 07F58009 	>  add r9,r7,#4194304
+  35 007c 5FEAE959 	>  asrs r9,r9,#23
+  35 0080 09FB1C77 	>  mls r7,r9,r12,r7
+  36              	        redq r8, r9, r12
+  36 0084 08F58009 	>  add r9,r8,#4194304
+  36 0088 5FEAE959 	>  asrs r9,r9,#23
+  36 008c 09FB1C88 	>  mls r8,r9,r12,r8
+  37              	
+  38 0090 C0F80420 	        str.w r2, [r0, #1*4]
+  39 0094 C0F80830 	        str.w r3, [r0, #2*4]
+  40 0098 C0F80C40 	        str.w r4, [r0, #3*4]
+  41 009c C0F81050 	        str.w r5, [r0, #4*4]
+  42 00a0 C0F81460 	        str.w r6, [r0, #5*4]
+  43 00a4 C0F81870 	        str.w r7, [r0, #6*4]
+  44 00a8 C0F81C80 	        str.w r8, [r0, #7*4]
+  45 00ac 40F8201B 	        str r1, [r0], #8*4
+  46 00b0 BAF1010A 	        subs r10, #1
+  47 00b4 7FF4ACAF 	        bne.w 1b
+  48              	
+  49 00b8 BDE8F007 	    pop {r4-r10}
+  50 00bc 7047     	    bx lr
+  51              	.size pqcrystals_dilithium_asm_reduce32, .-pqcrystals_dilithium_asm_reduce32
+  52              	
+  53              	.macro barrett_32 a, Qbar, Q, tmp
+  54              	    smmulr.w \tmp, \a, \Qbar
+  55              	    mls.w \a, \tmp, \Q, \a
+  56              	.endm
+  57              	
+  58              	// INPUT: target (signed), KYBER_Q (signed)
+  59              	// OUTPUT: target adjusted to be between -KYBER_Q/2 and KYBER_Q/2
+  60              	.macro central_reduce target, Q
+  61              	  cmp \target, \Q, lsr #1
+  62              	  it hi
+  63              	  subhi \target, \Q
+  64              	  cmn \target, \Q, lsr #1
+  65              	  it lt
+  66              	  addlt \target, \Q
+  67              	.endm
+  68              	
+  69              	// void asm_reduce32(int32_t a[N]);
+  70              	.global pqcrystals_dilithium_small_asm_reduce32_central
+  71              	.type pqcrystals_dilithium_small_asm_reduce32_central, %function
+  72 00be 00BF     	.align 2
+  73              	pqcrystals_dilithium_small_asm_reduce32_central:
+  74 00c0 2DE9F05F 	    push {r4-r12, lr}
+  75              	
+  76              	
+  77 00c4 43F6ED09 	    movw r9, #:lower16:5585133
+  78 00c8 C0F25509 	    movt r9, #:upper16:5585133
+  79 00cc 40F2013A 	    mov.w r10,#769
+  80              	
+  81 00d0 40F2200C 	    movw r12, #32
+  82              	    1:
+  83 00d4 D0F80010 	        ldr.w r1, [r0]
+  84 00d8 D0F80420 	        ldr.w r2, [r0, #1*4]
+  85 00dc D0F80830 	        ldr.w r3, [r0, #2*4]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQl11Fc.s 			page 3
+
+
+  86 00e0 D0F80C40 	        ldr.w r4, [r0, #3*4]
+  87 00e4 D0F81050 	        ldr.w r5, [r0, #4*4]
+  88 00e8 D0F81460 	        ldr.w r6, [r0, #5*4]
+  89 00ec D0F81870 	        ldr.w r7, [r0, #6*4]
+  90 00f0 D0F81C80 	        ldr.w r8, [r0, #7*4]
+  91              	
+  92              	        barrett_32 r1, r9, r10, r11
+  92 00f4 51FB19FB 	>  smmulr.w r11,r1,r9
+  92 00f8 0BFB1A11 	>  mls.w r1,r11,r10,r1
+  93              	        barrett_32 r2, r9, r10, r11
+  93 00fc 52FB19FB 	>  smmulr.w r11,r2,r9
+  93 0100 0BFB1A22 	>  mls.w r2,r11,r10,r2
+  94              	        barrett_32 r3, r9, r10, r11
+  94 0104 53FB19FB 	>  smmulr.w r11,r3,r9
+  94 0108 0BFB1A33 	>  mls.w r3,r11,r10,r3
+  95              	        barrett_32 r4, r9, r10, r11
+  95 010c 54FB19FB 	>  smmulr.w r11,r4,r9
+  95 0110 0BFB1A44 	>  mls.w r4,r11,r10,r4
+  96              	        barrett_32 r5, r9, r10, r11
+  96 0114 55FB19FB 	>  smmulr.w r11,r5,r9
+  96 0118 0BFB1A55 	>  mls.w r5,r11,r10,r5
+  97              	        barrett_32 r6, r9, r10, r11
+  97 011c 56FB19FB 	>  smmulr.w r11,r6,r9
+  97 0120 0BFB1A66 	>  mls.w r6,r11,r10,r6
+  98              	        barrett_32 r7, r9, r10, r11
+  98 0124 57FB19FB 	>  smmulr.w r11,r7,r9
+  98 0128 0BFB1A77 	>  mls.w r7,r11,r10,r7
+  99              	        barrett_32 r8, r9, r10, r11
+  99 012c 58FB19FB 	>  smmulr.w r11,r8,r9
+  99 0130 0BFB1A88 	>  mls.w r8,r11,r10,r8
+ 100              	
+ 101              	
+ 102 0134 C0F80420 	        str.w r2, [r0, #1*4]
+ 103 0138 C0F80830 	        str.w r3, [r0, #2*4]
+ 104 013c C0F80C40 	        str.w r4, [r0, #3*4]
+ 105 0140 C0F81050 	        str.w r5, [r0, #4*4]
+ 106 0144 C0F81460 	        str.w r6, [r0, #5*4]
+ 107 0148 C0F81870 	        str.w r7, [r0, #6*4]
+ 108 014c C0F81C80 	        str.w r8, [r0, #7*4]
+ 109 0150 40F8201B 	        str r1, [r0], #8*4
+ 110 0154 BCF1010C 	        subs r12, #1
+ 111 0158 7FF4BCAF 	        bne.w 1b
+ 112              	
+ 113 015c BDE8F09F 	    pop {r4-r12, pc}
+ 114              	
+ 115              	.size pqcrystals_dilithium_small_asm_reduce32_central, .-pqcrystals_dilithium_small_asm_reduce32_ce
+ 116              	
+ 117              	.macro caddq a, tmp, q
+ 118              	    and     \tmp, \q, \a, asr #31
+ 119              	    add     \a, \a, \tmp
+ 120              	.endm
+ 121              	
+ 122              	.macro freezeq a, tmp, q
+ 123              	    redq \a, \tmp, \q
+ 124              	    caddq \a, \tmp, \q
+ 125              	.endm
+ 126              	
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQl11Fc.s 			page 4
+
+
+ 127              	// void asm_caddq(int32_t a[N]);
+ 128              	.global pqcrystals_dilithium_asm_caddq
+ 129              	.type pqcrystals_dilithium_asm_caddq, %function
+ 130              	.align 2
+ 131              	pqcrystals_dilithium_asm_caddq:
+ 132 0160 2DE9F007 	    push {r4-r10}
+ 133              	
+ 134 0164 4EF2010C 	    movw r12,#:lower16:8380417
+ 135 0168 C0F27F0C 	    movt r12,#:upper16:8380417
+ 136              	
+ 137 016c 40F2200A 	    movw r10, #32
+ 138              	    1:
+ 139 0170 D0F80010 	        ldr.w r1, [r0]
+ 140 0174 D0F80420 	        ldr.w r2, [r0, #1*4]
+ 141 0178 D0F80830 	        ldr.w r3, [r0, #2*4]
+ 142 017c D0F80C40 	        ldr.w r4, [r0, #3*4]
+ 143 0180 D0F81050 	        ldr.w r5, [r0, #4*4]
+ 144 0184 D0F81460 	        ldr.w r6, [r0, #5*4]
+ 145 0188 D0F81870 	        ldr.w r7, [r0, #6*4]
+ 146 018c D0F81C80 	        ldr.w r8, [r0, #7*4]
+ 147              	
+ 148              	        caddq r1, r9, r12
+ 148 0190 0CEAE179 	>  and r9,r12,r1,asr#31
+ 148 0194 4944     	>  add r1,r1,r9
+ 149              	        caddq r2, r9, r12
+ 149 0196 0CEAE279 	>  and r9,r12,r2,asr#31
+ 149 019a 4A44     	>  add r2,r2,r9
+ 150              	        caddq r3, r9, r12
+ 150 019c 0CEAE379 	>  and r9,r12,r3,asr#31
+ 150 01a0 4B44     	>  add r3,r3,r9
+ 151              	        caddq r4, r9, r12
+ 151 01a2 0CEAE479 	>  and r9,r12,r4,asr#31
+ 151 01a6 4C44     	>  add r4,r4,r9
+ 152              	        caddq r5, r9, r12
+ 152 01a8 0CEAE579 	>  and r9,r12,r5,asr#31
+ 152 01ac 4D44     	>  add r5,r5,r9
+ 153              	        caddq r6, r9, r12
+ 153 01ae 0CEAE679 	>  and r9,r12,r6,asr#31
+ 153 01b2 4E44     	>  add r6,r6,r9
+ 154              	        caddq r7, r9, r12
+ 154 01b4 0CEAE779 	>  and r9,r12,r7,asr#31
+ 154 01b8 4F44     	>  add r7,r7,r9
+ 155              	        caddq r8, r9, r12
+ 155 01ba 0CEAE879 	>  and r9,r12,r8,asr#31
+ 155 01be C844     	>  add r8,r8,r9
+ 156              	
+ 157 01c0 C0F80420 	        str.w r2, [r0, #1*4]
+ 158 01c4 C0F80830 	        str.w r3, [r0, #2*4]
+ 159 01c8 C0F80C40 	        str.w r4, [r0, #3*4]
+ 160 01cc C0F81050 	        str.w r5, [r0, #4*4]
+ 161 01d0 C0F81460 	        str.w r6, [r0, #5*4]
+ 162 01d4 C0F81870 	        str.w r7, [r0, #6*4]
+ 163 01d8 C0F81C80 	        str.w r8, [r0, #7*4]
+ 164 01dc 40F8201B 	        str r1, [r0], #8*4
+ 165 01e0 BAF1010A 	        subs r10, #1
+ 166 01e4 7FF4C4AF 	        bne.w 1b
+ 167              	
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQl11Fc.s 			page 5
+
+
+ 168 01e8 BDE8F007 	    pop {r4-r10}
+ 169 01ec 7047     	    bx lr
+ 170              	.size pqcrystals_dilithium_asm_caddq, .-pqcrystals_dilithium_asm_caddq
+ 171              	
+ 172              	
+ 173              	// asm_rej_uniform(int32_t *a,unsigned int len,const unsigned char *buf, unsigned int buflen);
+ 174              	.global pqcrystals_dilithium_asm_rej_uniform
+ 175              	.type pqcrystals_dilithium_asm_rej_uniform, %function
+ 176 01ee 00BF     	.align 2
+ 177              	pqcrystals_dilithium_asm_rej_uniform:
+ 178 01f0 2DE97000 	    push.w {r4-r6}
+ 179 01f4 4DF8041D 	    push.w {r1}
+ 180              	    // Store Q-1 in r12.
+ 181 01f8 4EF2000C 	    movw r12,#:lower16:8380416
+ 182 01fc C0F27F0C 	    movt r12,#:upper16:8380416
+ 183              	
+ 184 0200 00EB8106 	    add.w r6, r0, r1, lsl #2
+ 185 0204 02EB0303 	    add.w r3, r2, r3
+ 186 0208 A3F10203 	    sub.w r3, r3, #2
+ 187              	
+ 188              	1:
+ 189              	    // If there are less than 3 bytes available, return.
+ 190 020c B3EB020F 	    cmp.w r3, r2
+ 191 0210 40F30A80 	    ble.w end
+ 192              	
+ 193 0214 52F8035B 	    ldr r5, [r2], #3
+ 194 0218 C5F31605 	    ubfx r5, r5, #0, #23
+ 195              	
+ 196 021c 6545     	    cmp.n r5, r12
+ 197 021e D8BF     	    it le
+ 198 0220 40F8045B 	    strle r5, [r0], #4
+ 199              	
+ 200 0224 B042     	    cmp.n r0, r6
+ 201 0226 F1D1     	    bne.n 1b
+ 202              	
+ 203              	end:
+ 204 0228 5DF8045B 	    pop.w {r5}
+ 205              	
+ 206 022c A6EB0000 	    sub.w r0, r6, r0
+ 207 0230 A5EB9000 	    sub.w r0, r5, r0, lsr #2
+ 208 0234 BDE87000 	    pop.w {r4-r6}
+ 209 0238 7047     	    bx lr
+ 210 023a 00BF     	.size pqcrystals_dilithium_asm_rej_uniform, .-pqcrystals_dilithium_asm_rej_uniform
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccQl11Fc.s 			page 6
+
+
+DEFINED SYMBOLS
+            vector.s:13     .text:00000000 pqcrystals_dilithium_asm_reduce32
+            vector.s:12     .text:00000000 $t
+            vector.s:73     .text:000000c0 pqcrystals_dilithium_small_asm_reduce32_central
+            vector.s:131    .text:00000160 pqcrystals_dilithium_asm_caddq
+            vector.s:177    .text:000001f0 pqcrystals_dilithium_asm_rej_uniform
+            vector.s:203    .text:00000228 end
+
+NO UNDEFINED SYMBOLS

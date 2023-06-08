@@ -1,0 +1,983 @@
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccfZ6TZT.s 			page 1
+
+
+   1              	# 0 "aes-keyschedule.S"
+   2              	# 1 "C:\\ChibiStudio\\workspace_user\\CRYSTALS-Dilithium//"
+   0              	
+   0              	
+   0              	
+   1              	/******************************************************************************
+   2              	* ARM assembly implemetnations of the AES-128 and AES-256 key schedule to
+   3              	* match fixslicing.
+   4              	* Note that those implementations are fully bitsliced and do not rely on any
+   5              	* Look-Up Table (LUT).
+   6              	*
+   7              	* See the paper at https://eprint.iacr.org/2020/1123.pdf for more details.
+   8              	*
+   9              	* @author   Alexandre Adomnicai, Nanyang Technological University, Singapore
+  10              	*           alexandre.adomnicai@ntu.edu.sg
+  11              	*
+  12              	* @date     October 2020
+  13              	******************************************************************************/
+  14              	
+  15              	.syntax unified
+  16              	.thumb
+  17              	
+  18              	/******************************************************************************
+  19              	* Macro to compute the SWAPMOVE technique: swap the bits in 'in1' masked by 'm'
+  20              	* by the bits in 'in0' masked by 'm << n' and put the results in 'out0', 'out1'
+  21              	******************************************************************************/
+  22              	.macro swpmv out0, out1, in0, in1, m, n, tmp
+  23              	    eor     \tmp, \in1, \in0, lsr \n
+  24              	    and     \tmp, \m
+  25              	    eor     \out1, \in1, \tmp
+  26              	    eor     \out0, \in0, \tmp, lsl \n
+  27              	.endm
+  28              	
+  29              	/******************************************************************************
+  30              	* Packing routine. Note that it is the same as the one used in the encryption
+  31              	* function so some code size could be saved by merging the two files.
+  32              	******************************************************************************/
+  33              	.align 2
+  34              	packing:
+  35 0000 40F60F73 	    movw    r3, #0x0f0f
+  36 0004 C0F60F73 	    movt    r3, #0x0f0f             // r3 <- 0x0f0f0f0f (mask for SWAPMOVE)
+  37 0008 83EA8302 	    eor     r2, r3, r3, lsl #2      // r2 <- 0x33333333 (mask for SWAPMOVE)
+  38 000c 82EA4201 	    eor     r1, r2, r2, lsl #1      // r1 <- 0x55555555 (mask for SWAPMOVE)
+  39              	    swpmv   r8, r4, r8, r4, r1, #1, r12
+  39 0010 84EA580C 	>  eor r12,r4,r8,lsr#1
+  39 0014 0CEA010C 	>  and r12,r1
+  39 0018 84EA0C04 	>  eor r4,r4,r12
+  39 001c 88EA4C08 	>  eor r8,r8,r12,lsl#1
+  40              	    swpmv   r9, r5, r9, r5, r1, #1, r12
+  40 0020 85EA590C 	>  eor r12,r5,r9,lsr#1
+  40 0024 0CEA010C 	>  and r12,r1
+  40 0028 85EA0C05 	>  eor r5,r5,r12
+  40 002c 89EA4C09 	>  eor r9,r9,r12,lsl#1
+  41              	    swpmv   r10, r6, r10, r6, r1, #1, r12
+  41 0030 86EA5A0C 	>  eor r12,r6,r10,lsr#1
+  41 0034 0CEA010C 	>  and r12,r1
+  41 0038 86EA0C06 	>  eor r6,r6,r12
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccfZ6TZT.s 			page 2
+
+
+  41 003c 8AEA4C0A 	>  eor r10,r10,r12,lsl#1
+  42              	    swpmv   r11, r7, r11, r7, r1, #1, r12
+  42 0040 87EA5B0C 	>  eor r12,r7,r11,lsr#1
+  42 0044 0CEA010C 	>  and r12,r1
+  42 0048 87EA0C07 	>  eor r7,r7,r12
+  42 004c 8BEA4C0B 	>  eor r11,r11,r12,lsl#1
+  43              	    swpmv   r0, r4, r5, r4, r2, #2, r12
+  43 0050 84EA950C 	>  eor r12,r4,r5,lsr#2
+  43 0054 0CEA020C 	>  and r12,r2
+  43 0058 84EA0C04 	>  eor r4,r4,r12
+  43 005c 85EA8C00 	>  eor r0,r5,r12,lsl#2
+  44              	    swpmv   r9, r5, r9, r8, r2, #2, r12
+  44 0060 88EA990C 	>  eor r12,r8,r9,lsr#2
+  44 0064 0CEA020C 	>  and r12,r2
+  44 0068 88EA0C05 	>  eor r5,r8,r12
+  44 006c 89EA8C09 	>  eor r9,r9,r12,lsl#2
+  45              	    swpmv   r7, r8, r7, r6, r2, #2, r12
+  45 0070 86EA970C 	>  eor r12,r6,r7,lsr#2
+  45 0074 0CEA020C 	>  and r12,r2
+  45 0078 86EA0C08 	>  eor r8,r6,r12
+  45 007c 87EA8C07 	>  eor r7,r7,r12,lsl#2
+  46              	    swpmv   r11, r2, r11, r10, r2, #2, r12
+  46 0080 8AEA9B0C 	>  eor r12,r10,r11,lsr#2
+  46 0084 0CEA020C 	>  and r12,r2
+  46 0088 8AEA0C02 	>  eor r2,r10,r12
+  46 008c 8BEA8C0B 	>  eor r11,r11,r12,lsl#2
+  47              	    swpmv   r8, r4, r8, r4, r3, #4, r12
+  47 0090 84EA181C 	>  eor r12,r4,r8,lsr#4
+  47 0094 0CEA030C 	>  and r12,r3
+  47 0098 84EA0C04 	>  eor r4,r4,r12
+  47 009c 88EA0C18 	>  eor r8,r8,r12,lsl#4
+  48              	    swpmv   r10, r6, r7, r0, r3, #4, r12
+  48 00a0 80EA171C 	>  eor r12,r0,r7,lsr#4
+  48 00a4 0CEA030C 	>  and r12,r3
+  48 00a8 80EA0C06 	>  eor r6,r0,r12
+  48 00ac 87EA0C1A 	>  eor r10,r7,r12,lsl#4
+  49              	    swpmv   r11, r7, r11, r9, r3, #4, r12
+  49 00b0 89EA1B1C 	>  eor r12,r9,r11,lsr#4
+  49 00b4 0CEA030C 	>  and r12,r3
+  49 00b8 89EA0C07 	>  eor r7,r9,r12
+  49 00bc 8BEA0C1B 	>  eor r11,r11,r12,lsl#4
+  50              	    swpmv   r9, r5, r2, r5, r3, #4, r12
+  50 00c0 85EA121C 	>  eor r12,r5,r2,lsr#4
+  50 00c4 0CEA030C 	>  and r12,r3
+  50 00c8 85EA0C05 	>  eor r5,r5,r12
+  50 00cc 82EA0C19 	>  eor r9,r2,r12,lsl#4
+  51 00d0 7047     	    bx      lr
+  52              	
+  53              	/******************************************************************************
+  54              	* Subroutine that computes S-box. Note that the same code is used in the
+  55              	* encryption function, so some code size could be saved by merging the 2 files.
+  56              	* Credits to https://github.com/Ko-/aes-armcortexm.
+  57              	******************************************************************************/
+  58 00d2 00BF     	.align 2
+  59              	sbox:
+  60 00d4 CDF834E0 	    str     r14, [sp, #52]
+  61 00d8 87EA0901 	    eor     r1, r7, r9              //Exec y14 = U3 ^ U5; into r1
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccfZ6TZT.s 			page 3
+
+
+  62 00dc 84EA0A03 	    eor     r3, r4, r10             //Exec y13 = U0 ^ U6; into r3
+  63 00e0 83EA0102 	    eor     r2, r3, r1              //Exec y12 = y13 ^ y14; into r2
+  64 00e4 88EA0200 	    eor     r0, r8, r2              //Exec t1 = U4 ^ y12; into r0
+  65 00e8 80EA090E 	    eor     r14, r0, r9             //Exec y15 = t1 ^ U5; into r14
+  66 00ec 02EA0E0C 	    and     r12, r2, r14            //Exec t2 = y12 & y15; into r12
+  67 00f0 8EEA0B08 	    eor     r8, r14, r11            //Exec y6 = y15 ^ U7; into r8
+  68 00f4 80EA0500 	    eor     r0, r0, r5              //Exec y20 = t1 ^ U1; into r0
+  69 00f8 CDF82C20 	    str.w   r2, [sp, #44]           //Store r2/y12 on stack
+  70 00fc 84EA0702 	    eor     r2, r4, r7              //Exec y9 = U0 ^ U3; into r2
+  71 0100 0A90     	    str     r0, [sp, #40]           //Store r0/y20 on stack
+  72 0102 80EA0200 	    eor     r0, r0, r2              //Exec y11 = y20 ^ y9; into r0
+  73 0106 0992     	    str     r2, [sp, #36]           //Store r2/y9 on stack
+  74 0108 02EA0002 	    and     r2, r2, r0              //Exec t12 = y9 & y11; into r2
+  75 010c CDF82080 	    str     r8, [sp, #32]           //Store r8/y6 on stack
+  76 0110 8BEA0008 	    eor     r8, r11, r0             //Exec y7 = U7 ^ y11; into r8
+  77 0114 84EA0909 	    eor     r9, r4, r9              //Exec y8 = U0 ^ U5; into r9
+  78 0118 85EA0606 	    eor     r6, r5, r6              //Exec t0 = U1 ^ U2; into r6
+  79 011c 8EEA0605 	    eor     r5, r14, r6             //Exec y10 = y15 ^ t0; into r5
+  80 0120 CDF81CE0 	    str     r14, [sp, #28]          //Store r14/y15 on stack
+  81 0124 85EA000E 	    eor     r14, r5, r0             //Exec y17 = y10 ^ y11; into r14
+  82 0128 CDF81810 	    str.w   r1, [sp, #24]           //Store r1/y14 on stack
+  83 012c 01EA0E01 	    and     r1, r1, r14             //Exec t13 = y14 & y17; into r1
+  84 0130 81EA0201 	    eor     r1, r1, r2              //Exec t14 = t13 ^ t12; into r1
+  85 0134 CDF814E0 	    str     r14, [sp, #20]          //Store r14/y17 on stack
+  86 0138 85EA090E 	    eor     r14, r5, r9             //Exec y19 = y10 ^ y8; into r14
+  87 013c CDF81050 	    str.w   r5, [sp, #16]           //Store r5/y10 on stack
+  88 0140 09EA0505 	    and     r5, r9, r5              //Exec t15 = y8 & y10; into r5
+  89 0144 85EA0202 	    eor     r2, r5, r2              //Exec t16 = t15 ^ t12; into r2
+  90 0148 86EA0005 	    eor     r5, r6, r0              //Exec y16 = t0 ^ y11; into r5
+  91 014c CDF80C00 	    str.w   r0, [sp, #12]           //Store r0/y11 on stack
+  92 0150 83EA0500 	    eor     r0, r3, r5              //Exec y21 = y13 ^ y16; into r0
+  93 0154 0293     	    str     r3, [sp, #8]            //Store r3/y13 on stack
+  94 0156 03EA0503 	    and     r3, r3, r5              //Exec t7 = y13 & y16; into r3
+  95 015a 0195     	    str     r5, [sp, #4]            //Store r5/y16 on stack
+  96 015c CDF800B0 	    str     r11, [sp, #0]           //Store r11/U7 on stack
+  97 0160 84EA0505 	    eor     r5, r4, r5              //Exec y18 = U0 ^ y16; into r5
+  98 0164 86EA0B06 	    eor     r6, r6, r11             //Exec y1 = t0 ^ U7; into r6
+  99 0168 86EA0707 	    eor     r7, r6, r7              //Exec y4 = y1 ^ U3; into r7
+ 100 016c 07EA0B0B 	    and     r11, r7, r11            //Exec t5 = y4 & U7; into r11
+ 101 0170 8BEA0C0B 	    eor     r11, r11, r12           //Exec t6 = t5 ^ t2; into r11
+ 102 0174 8BEA020B 	    eor     r11, r11, r2            //Exec t18 = t6 ^ t16; into r11
+ 103 0178 8BEA0E0E 	    eor     r14, r11, r14           //Exec t22 = t18 ^ y19; into r14
+ 104 017c 86EA0404 	    eor     r4, r6, r4              //Exec y2 = y1 ^ U0; into r4
+ 105 0180 04EA080B 	    and     r11, r4, r8             //Exec t10 = y2 & y7; into r11
+ 106 0184 8BEA030B 	    eor     r11, r11, r3            //Exec t11 = t10 ^ t7; into r11
+ 107 0188 8BEA0202 	    eor     r2, r11, r2             //Exec t20 = t11 ^ t16; into r2
+ 108 018c 82EA0502 	    eor     r2, r2, r5              //Exec t24 = t20 ^ y18; into r2
+ 109 0190 86EA0A0A 	    eor     r10, r6, r10            //Exec y5 = y1 ^ U6; into r10
+ 110 0194 0AEA060B 	    and     r11, r10, r6            //Exec t8 = y5 & y1; into r11
+ 111 0198 8BEA0303 	    eor     r3, r11, r3             //Exec t9 = t8 ^ t7; into r3
+ 112 019c 83EA0103 	    eor     r3, r3, r1              //Exec t19 = t9 ^ t14; into r3
+ 113 01a0 83EA0003 	    eor     r3, r3, r0              //Exec t23 = t19 ^ y21; into r3
+ 114 01a4 8AEA0900 	    eor     r0, r10, r9             //Exec y3 = y5 ^ y8; into r0
+ 115 01a8 DDF820B0 	    ldr     r11, [sp, #32]          //Load y6 into r11
+ 116 01ac 00EA0B05 	    and     r5, r0, r11             //Exec t3 = y3 & y6; into r5
+ 117 01b0 85EA0C0C 	    eor     r12, r5, r12            //Exec t4 = t3 ^ t2; into r12
+ 118 01b4 0A9D     	    ldr     r5, [sp, #40]           //Load y20 into r5
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccfZ6TZT.s 			page 4
+
+
+ 119 01b6 0897     	    str     r7, [sp, #32]           //Store r7/y4 on stack
+ 120 01b8 8CEA050C 	    eor     r12, r12, r5            //Exec t17 = t4 ^ y20; into r12
+ 121 01bc 8CEA0101 	    eor     r1, r12, r1             //Exec t21 = t17 ^ t14; into r1
+ 122 01c0 01EA030C 	    and     r12, r1, r3             //Exec t26 = t21 & t23; into r12
+ 123 01c4 82EA0C05 	    eor     r5, r2, r12             //Exec t27 = t24 ^ t26; into r5
+ 124 01c8 8EEA0C0C 	    eor     r12, r14, r12           //Exec t31 = t22 ^ t26; into r12
+ 125 01cc 81EA0E01 	    eor     r1, r1, r14             //Exec t25 = t21 ^ t22; into r1
+ 126 01d0 01EA0507 	    and     r7, r1, r5              //Exec t28 = t25 & t27; into r7
+ 127 01d4 87EA0E0E 	    eor     r14, r7, r14            //Exec t29 = t28 ^ t22; into r14
+ 128 01d8 0EEA0404 	    and     r4, r14, r4             //Exec z14 = t29 & y2; into r4
+ 129 01dc 0EEA0808 	    and     r8, r14, r8             //Exec z5 = t29 & y7; into r8
+ 130 01e0 83EA0207 	    eor     r7, r3, r2              //Exec t30 = t23 ^ t24; into r7
+ 131 01e4 0CEA070C 	    and     r12, r12, r7            //Exec t32 = t31 & t30; into r12
+ 132 01e8 8CEA020C 	    eor     r12, r12, r2            //Exec t33 = t32 ^ t24; into r12
+ 133 01ec 85EA0C07 	    eor     r7, r5, r12             //Exec t35 = t27 ^ t33; into r7
+ 134 01f0 02EA0702 	    and     r2, r2, r7              //Exec t36 = t24 & t35; into r2
+ 135 01f4 85EA0205 	    eor     r5, r5, r2              //Exec t38 = t27 ^ t36; into r5
+ 136 01f8 0EEA0505 	    and     r5, r14, r5             //Exec t39 = t29 & t38; into r5
+ 137 01fc 81EA0501 	    eor     r1, r1, r5              //Exec t40 = t25 ^ t39; into r1
+ 138 0200 8EEA0105 	    eor     r5, r14, r1             //Exec t43 = t29 ^ t40; into r5
+ 139 0204 DDF80470 	    ldr.w   r7, [sp, #4]            //Load y16 into r7
+ 140 0208 05EA0707 	    and     r7, r5, r7              //Exec z3 = t43 & y16; into r7
+ 141 020c 87EA0808 	    eor     r8, r7, r8              //Exec tc12 = z3 ^ z5; into r8
+ 142 0210 CDF82880 	    str     r8, [sp, #40]           //Store r8/tc12 on stack
+ 143 0214 DDF80880 	    ldr     r8, [sp, #8]            //Load y13 into r8
+ 144 0218 05EA0808 	    and     r8, r5, r8              //Exec z12 = t43 & y13; into r8
+ 145 021c 01EA0A0A 	    and     r10, r1, r10            //Exec z13 = t40 & y5; into r10
+ 146 0220 01EA0606 	    and     r6, r1, r6              //Exec z4 = t40 & y1; into r6
+ 147 0224 87EA0606 	    eor     r6, r7, r6              //Exec tc6 = z3 ^ z4; into r6
+ 148 0228 83EA0C03 	    eor     r3, r3, r12             //Exec t34 = t23 ^ t33; into r3
+ 149 022c 82EA0303 	    eor     r3, r2, r3              //Exec t37 = t36 ^ t34; into r3
+ 150 0230 81EA0301 	    eor     r1, r1, r3              //Exec t41 = t40 ^ t37; into r1
+ 151 0234 DDF81050 	    ldr.w   r5, [sp, #16]           //Load y10 into r5
+ 152 0238 01EA0502 	    and     r2, r1, r5              //Exec z8 = t41 & y10; into r2
+ 153 023c 01EA0909 	    and     r9, r1, r9              //Exec z17 = t41 & y8; into r9
+ 154 0240 CDF81090 	    str     r9, [sp, #16]           //Store r9/z17 on stack
+ 155 0244 8CEA0305 	    eor     r5, r12, r3             //Exec t44 = t33 ^ t37; into r5
+ 156 0248 DDF81C90 	    ldr     r9, [sp, #28]           //Load y15 into r9
+ 157 024c DDF82C70 	    ldr.w   r7, [sp, #44]           //Load y12 into r7
+ 158 0250 05EA0909 	    and     r9, r5, r9              //Exec z0 = t44 & y15; into r9
+ 159 0254 05EA0707 	    and     r7, r5, r7              //Exec z9 = t44 & y12; into r7
+ 160 0258 03EA0000 	    and     r0, r3, r0              //Exec z10 = t37 & y3; into r0
+ 161 025c 03EA0B03 	    and     r3, r3, r11             //Exec z1 = t37 & y6; into r3
+ 162 0260 83EA0903 	    eor     r3, r3, r9              //Exec tc5 = z1 ^ z0; into r3
+ 163 0264 86EA0303 	    eor     r3, r6, r3              //Exec tc11 = tc6 ^ tc5; into r3
+ 164 0268 DDF820B0 	    ldr     r11, [sp, #32]          //Load y4 into r11
+ 165 026c DDF81450 	    ldr.w   r5, [sp, #20]           //Load y17 into r5
+ 166 0270 0CEA0B0B 	    and     r11, r12, r11           //Exec z11 = t33 & y4; into r11
+ 167 0274 8EEA0C0E 	    eor     r14, r14, r12           //Exec t42 = t29 ^ t33; into r14
+ 168 0278 8EEA0101 	    eor     r1, r14, r1             //Exec t45 = t42 ^ t41; into r1
+ 169 027c 01EA0505 	    and     r5, r1, r5              //Exec z7 = t45 & y17; into r5
+ 170 0280 85EA0606 	    eor     r6, r5, r6              //Exec tc8 = z7 ^ tc6; into r6
+ 171 0284 069D     	    ldr     r5, [sp, #24]           //Load y14 into r5
+ 172 0286 0894     	    str     r4, [sp, #32]           //Store r4/z14 on stack
+ 173 0288 01EA0501 	    and     r1, r1, r5              //Exec z16 = t45 & y14; into r1
+ 174 028c 039D     	    ldr     r5, [sp, #12]           //Load y11 into r5
+ 175 028e 099C     	    ldr     r4, [sp, #36]           //Load y9 into r4
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccfZ6TZT.s 			page 5
+
+
+ 176 0290 0EEA0505 	    and     r5, r14, r5             //Exec z6 = t42 & y11; into r5
+ 177 0294 85EA0605 	    eor     r5, r5, r6              //Exec tc16 = z6 ^ tc8; into r5
+ 178 0298 0EEA0404 	    and     r4, r14, r4             //Exec z15 = t42 & y9; into r4
+ 179 029c 84EA050E 	    eor     r14, r4, r5             //Exec tc20 = z15 ^ tc16; into r14
+ 180 02a0 84EA0104 	    eor     r4, r4, r1              //Exec tc1 = z15 ^ z16; into r4
+ 181 02a4 80EA0401 	    eor     r1, r0, r4              //Exec tc2 = z10 ^ tc1; into r1
+ 182 02a8 81EA0B00 	    eor     r0, r1, r11             //Exec tc21 = tc2 ^ z11; into r0
+ 183 02ac 87EA0107 	    eor     r7, r7, r1              //Exec tc3 = z9 ^ tc2; into r7
+ 184 02b0 87EA0501 	    eor     r1, r7, r5              //Exec S0 = tc3 ^ tc16; into r1
+ 185 02b4 87EA0307 	    eor     r7, r7, r3              //Exec S3 = tc3 ^ tc11; into r7
+ 186 02b8 87EA0503 	    eor     r3, r7, r5              //Exec S1 = S3 ^ tc16 ^ 1; into r3
+ 187 02bc 8AEA040B 	    eor     r11, r10, r4            //Exec tc13 = z13 ^ tc1; into r11
+ 188 02c0 DDF80040 	    ldr.w   r4, [sp, #0]            //Load U7 into r4
+ 189 02c4 0CEA040C 	    and     r12, r12, r4            //Exec z2 = t33 & U7; into r12
+ 190 02c8 89EA0C09 	    eor     r9, r9, r12             //Exec tc4 = z0 ^ z2; into r9
+ 191 02cc 88EA090C 	    eor     r12, r8, r9             //Exec tc7 = z12 ^ tc4; into r12
+ 192 02d0 82EA0C02 	    eor     r2, r2, r12             //Exec tc9 = z8 ^ tc7; into r2
+ 193 02d4 86EA0202 	    eor     r2, r6, r2              //Exec tc10 = tc8 ^ tc9; into r2
+ 194 02d8 DDF82040 	    ldr.w   r4, [sp, #32]           //Load z14 into r4
+ 195 02dc 84EA020C 	    eor     r12, r4, r2             //Exec tc17 = z14 ^ tc10; into r12
+ 196 02e0 80EA0C00 	    eor     r0, r0, r12             //Exec S5 = tc21 ^ tc17; into r0
+ 197 02e4 8CEA0E06 	    eor     r6, r12, r14            //Exec tc26 = tc17 ^ tc20; into r6
+ 198 02e8 DDF81040 	    ldr.w   r4, [sp, #16]           //Load z17 into r4
+ 199 02ec DDF828C0 	    ldr     r12, [sp, #40]          //Load tc12 into r12
+ 200 02f0 86EA0406 	    eor     r6, r6, r4              //Exec S2 = tc26 ^ z17 ^ 1; into r6
+ 201 02f4 89EA0C0C 	    eor     r12, r9, r12            //Exec tc14 = tc4 ^ tc12; into r12
+ 202 02f8 8BEA0C0E 	    eor     r14, r11, r12           //Exec tc18 = tc13 ^ tc14; into r14
+ 203 02fc 82EA0E02 	    eor     r2, r2, r14             //Exec S6 = tc10 ^ tc18 ^ 1; into r2
+ 204 0300 88EA0E0B 	    eor     r11, r8, r14            //Exec S7 = z12 ^ tc18 ^ 1; into r11
+ 205 0304 DDF834E0 	    ldr     r14, [sp, #52]          // restore link register
+ 206 0308 8CEA0708 	    eor     r8, r12, r7             //Exec S4 = tc14 ^ S3; into r8
+ 207 030c 7047     	    bx      lr
+ 208              	    // [('r0', 'S5'), ('r1', 'S0'), ('r2', 'S6'), ('r3', 'S1'),
+ 209              	    // ('r6', 'S2'),('r7', 'S3'), ('r8', 'S4'), ('r11', 'S7')]
+ 210              	
+ 211              	/******************************************************************************
+ 212              	* Subroutine that XORs the columns after the S-box during the AES-128 key
+ 213              	* schedule round function, for rounds i such that (i % 4) == 0.
+ 214              	* Note that the code size could be reduced at the cost of some instructions
+ 215              	* since some redundant code is applied on different registers.
+ 216              	******************************************************************************/
+ 217 030e 00BF     	.align 2
+ 218              	aes128_xorcolumns_rotword:
+ 219 0310 DDF838C0 	    ldr     r12, [sp, #56]          // restore 'rkeys' address
+ 220 0314 DCF81C50 	    ldr.w   r5, [r12, #28]          // load rkey word of rkey from prev round
+ 221 0318 4CF2C004 	    movw    r4, #0xc0c0
+ 222 031c CCF2C004 	    movt    r4, #0xc0c0             // r4 <- 0xc0c0c0c0
+ 223 0320 85EABB0B 	    eor     r11, r5, r11, ror #2    // r11<- r5 ^ (r11 >>> 2)
+ 224 0324 24EA0B0B 	    bic     r11, r4, r11            // r11<- ~r11 & 0xc0c0c0c0 (NOT omitted in sbox)
+ 225 0328 85EABB09 	    eor     r9, r5, r11, ror #2     // r9 <- r5 ^ (r11 >>> 2)
+ 226 032c 09EAB409 	    and     r9, r9, r4, ror #2      // r9 <- r9 & 0x30303030
+ 227 0330 4BEA090B 	    orr     r11, r11, r9            // r11<- r11 | r9
+ 228 0334 85EABB09 	    eor     r9, r5, r11, ror #2     // r9 <- r5 ^ (r11 >>> 2)
+ 229 0338 09EA3419 	    and     r9, r9, r4, ror #4      // r9 <- r9 & 0x0c0c0c0c
+ 230 033c 4BEA090B 	    orr     r11, r11, r9            // r11<- r11 | r9
+ 231 0340 85EABB09 	    eor     r9, r5, r11, ror #2     // r9 <- r5 ^ (r11 >>> 2)
+ 232 0344 09EAB419 	    and     r9, r9, r4, ror #6      // r9 <- r9 & 0x03030303
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccfZ6TZT.s 			page 6
+
+
+ 233 0348 4BEA090B 	    orr     r11, r11, r9            // r11<- r11 | r9
+ 234 034c 6FEA0509 	    mvn     r9, r5                  // NOT omitted in sbox
+ 235 0350 DCF81850 	    ldr.w   r5, [r12, #24]          // load rkey word of rkey from prev round
+ 236 0354 CCF81C90 	    str     r9, [r12, #28]          // store new rkey word after NOT
+ 237 0358 CCF83CB0 	    str     r11, [r12, #60]         // store new rkey word in 'rkeys'
+ 238 035c 85EAB20A 	    eor     r10, r5, r2, ror #2     // r10<- r5 ^ (r2 >>> 2)
+ 239 0360 24EA0A0A 	    bic     r10, r4, r10            // r10<- ~r10 & 0xc0c0c0c0 (NOT omitted in sbox)
+ 240 0364 85EABA09 	    eor     r9, r5, r10, ror #2     // r9 <- r5 ^ (r10 >>> 2)
+ 241 0368 09EAB409 	    and     r9, r9, r4, ror #2      // r9 <- r9 & 0x30303030
+ 242 036c 4AEA090A 	    orr     r10, r10, r9            // r10<- r10 | r9
+ 243 0370 85EABA09 	    eor     r9, r5, r10, ror #2     // r9 <- r5 ^ (r10 >>> 2)
+ 244 0374 09EA3419 	    and     r9, r9, r4, ror #4      // r9 <- r9 & 0x0c0c0c0c
+ 245 0378 4AEA090A 	    orr     r10, r10, r9            // r10<- r10 | r9
+ 246 037c 85EABA09 	    eor     r9, r5, r10, ror #2     // r9 <- r5 ^ (r10 >>> 2)
+ 247 0380 09EAB419 	    and     r9, r9, r4, ror #6      // r9 <- r9 & 0x03030303
+ 248 0384 4AEA090A 	    orr     r10, r10, r9            // r10<- r10 | r9
+ 249 0388 6FEA0509 	    mvn     r9, r5                  // NOT omitted in sbox
+ 250 038c DCF81420 	    ldr.w   r2, [r12, #20]          // load rkey word of rkey from prev round
+ 251 0390 CCF81890 	    str     r9, [r12, #24]          // store new rkey word after NOT
+ 252 0394 CCF838A0 	    str     r10, [r12, #56]         // store new rkey word in 'rkeys'
+ 253 0398 82EAB009 	    eor     r9, r2, r0, ror #2      // r9 <- r2 ^ (r9 >>> 2)
+ 254 039c 04EA0909 	    and     r9, r4, r9              // r9 <- r9 & 0xc0c0c0c0
+ 255 03a0 82EAB900 	    eor     r0, r2, r9, ror #2      // r0 <- r2 ^ (r9 >>> 2)
+ 256 03a4 00EAB400 	    and     r0, r0, r4, ror #2      // r0 <- r0 & 0x30303030
+ 257 03a8 49EA0009 	    orr     r9, r9, r0              // r9 <- r9 | r0
+ 258 03ac 82EAB900 	    eor     r0, r2, r9, ror #2      // r0 <- r2 ^ (r9 >>> 2)
+ 259 03b0 00EA3410 	    and     r0, r0, r4, ror #4      // r0 <- r0 & 0x0c0c0c0c
+ 260 03b4 49EA0009 	    orr     r9, r9, r0              // r9 <- r9 | r0
+ 261 03b8 82EAB900 	    eor     r0, r2, r9, ror #2      // r0 <- r2 ^ (r9 >>> 2)
+ 262 03bc 00EAB410 	    and     r0, r0, r4, ror #6      // r0 <- r0 & 0x03030303
+ 263 03c0 49EA0009 	    orr     r9, r9, r0              // r9 <- r9 | r0
+ 264 03c4 DCF81020 	    ldr.w   r2, [r12, #16]          // load rkey word of rkey from prev round
+ 265 03c8 CCF83490 	    str.w   r9, [r12, #52]          // store new rkey word in 'rkeys'
+ 266 03cc 82EAB808 	    eor     r8, r2, r8, ror #2      // r8 <- r2 ^ (r8 >>> 2)
+ 267 03d0 04EA0808 	    and     r8, r4, r8              // r8 <- r8 & 0xc0c0c0c0
+ 268 03d4 82EAB800 	    eor     r0, r2, r8, ror #2      // r0 <- r2 ^ (r8 >>> 2)
+ 269 03d8 00EAB400 	    and     r0, r0, r4, ror #2      // r0 <- r0 & 0x30303030
+ 270 03dc 48EA0008 	    orr     r8, r8, r0              // r8 <- r8 | r0
+ 271 03e0 82EAB800 	    eor     r0, r2, r8, ror #2      // r0 <- r2 ^ (r8 >>> 2)
+ 272 03e4 00EA3410 	    and     r0, r0, r4, ror #4      // r0 <- r0 & 0x0c0c0c0c
+ 273 03e8 48EA0008 	    orr     r8, r8, r0              // r8 <- r8 | r0
+ 274 03ec 82EAB800 	    eor     r0, r2, r8, ror #2      // r0 <- r2 ^ (r8 >>> 2)
+ 275 03f0 00EAB410 	    and     r0, r0, r4, ror #6      // r0 <- r0 & 0x03030303
+ 276 03f4 48EA0008 	    orr     r8, r8, r0              // r8 <- r8 | r0
+ 277 03f8 DCF80C20 	    ldr.w   r2, [r12, #12]          // load rkey word of rkey from prev round
+ 278 03fc CCF83080 	    str.w   r8, [r12, #48]          // store new rkey word in 'rkeys'
+ 279 0400 82EAB707 	    eor     r7, r2, r7, ror #2      // r7 <- r2 ^ (r7 >>> 2)
+ 280 0404 04EA0707 	    and     r7, r4, r7              // r7 <- r7 & 0xc0c0c0c0
+ 281 0408 82EAB700 	    eor     r0, r2, r7, ror #2      // r0 <- r2 ^ (r7 >>> 2)
+ 282 040c 00EAB400 	    and     r0, r0, r4, ror #2      // r0 <- r0 & 0x30303030
+ 283 0410 47EA0007 	    orr     r7, r7, r0              // r7 <- r7 | r0
+ 284 0414 82EAB700 	    eor     r0, r2, r7, ror #2      // r0 <- r2 ^ (r7 >>> 2)
+ 285 0418 00EA3410 	    and     r0, r0, r4, ror #4      // r0 <- r0 & 0x0c0c0c0c
+ 286 041c 47EA0007 	    orr     r7, r7, r0              // r7 <- r7 | r0
+ 287 0420 82EAB700 	    eor     r0, r2, r7, ror #2      // r0 <- r2 ^ (r7 >>> 2)
+ 288 0424 00EAB410 	    and     r0, r0, r4, ror #6      // r0 <- r0 & 0x03030303
+ 289 0428 47EA0007 	    orr     r7, r7, r0              // r7 <- r7 | r0
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccfZ6TZT.s 			page 7
+
+
+ 290 042c DCF80820 	    ldr.w   r2, [r12, #8]           // load rkey word of rkey from prev round
+ 291 0430 CCF82C70 	    str.w   r7, [r12, #44]          // store new rkey word in 'rkeys'
+ 292 0434 82EAB606 	    eor     r6, r2, r6, ror #2      // r6 <- r2 ^ (r6 >>> 2)
+ 293 0438 24EA0606 	    bic     r6, r4, r6              // r6 <- ~r6 & 0xc0c0c0c0 (NOT omitted in sbox)
+ 294 043c 82EAB600 	    eor     r0, r2, r6, ror #2      // r0 <- r2 ^ (r6 >>> 2)
+ 295 0440 00EAB400 	    and     r0, r0, r4, ror #2      // r0 <- r0 & 0x30303030
+ 296 0444 46EA0006 	    orr     r6, r6, r0              // r6 <- r6 | r0
+ 297 0448 82EAB600 	    eor     r0, r2, r6, ror #2      // r0 <- r2 ^ (r6 >>> 2)
+ 298 044c 00EA3410 	    and     r0, r0, r4, ror #4      // r0 <- r0 & 0x0c0c0c0c
+ 299 0450 46EA0006 	    orr     r6, r6, r0              // r6 <- r6 | r0
+ 300 0454 82EAB600 	    eor     r0, r2, r6, ror #2      // r0 <- r2 ^ (r6 >>> 2)
+ 301 0458 00EAB410 	    and     r0, r0, r4, ror #6      // r0 <- r0 & 0x03030303
+ 302 045c 46EA0006 	    orr     r6, r6, r0              // r6 <- r6 | r0
+ 303 0460 6FEA0200 	    mvn     r0, r2                  // NOT omitted in sbox
+ 304 0464 DCF80420 	    ldr.w   r2, [r12, #4]           // load rkey word of rkey from prev round
+ 305 0468 CCF80800 	    str.w   r0, [r12, #8]           // store new rkey word after NOT
+ 306 046c CCF82860 	    str.w   r6, [r12, #40]          // store new rkey word in 'rkeys'
+ 307 0470 82EAB305 	    eor     r5, r2, r3, ror #2      // r5 <- r2 ^ (r3 >>> 2)
+ 308 0474 24EA0505 	    bic     r5, r4, r5              // r5 <- ~r5 & 0xc0c0c0c0 (NOT omitted in sbox)
+ 309 0478 82EAB500 	    eor     r0, r2, r5, ror #2      // r0 <- r2 ^ (r5 >>> 2)
+ 310 047c 00EAB400 	    and     r0, r0, r4, ror #2      // r0 <- r0 & 0x30303030
+ 311 0480 45EA0005 	    orr     r5, r5, r0              // r5 <- r5 | r0
+ 312 0484 82EAB500 	    eor     r0, r2, r5, ror #2      // r0 <- r2 ^ (r5 >>> 2)
+ 313 0488 00EA3410 	    and     r0, r0, r4, ror #4      // r0 <- r0 & 0x0c0c0c0c
+ 314 048c 45EA0005 	    orr     r5, r5, r0              // r5 <- r5 | r0
+ 315 0490 82EAB500 	    eor     r0, r2, r5, ror #2      // r0 <- r2 ^ (r5 >>> 2)
+ 316 0494 00EAB410 	    and     r0, r0, r4, ror #6      // r0 <- r0 & 0x03030303
+ 317 0498 45EA0005 	    orr     r5, r5, r0              // r5 <- r5 | r0
+ 318 049c 6FEA0200 	    mvn     r0, r2                  // NOT omitted in sbox
+ 319 04a0 5CF8202B 	    ldr.w   r2, [r12], #32          // load rkey word of rkey from prev round
+ 320 04a4 4CF81C0C 	    str.w   r0, [r12, #-28]         // store new rkey word after NOT
+ 321 04a8 CCF80450 	    str.w   r5, [r12, #4]           // store new rkey word in 'rkeys'
+ 322 04ac 82EAB103 	    eor     r3, r2, r1, ror #2      // r3 <- r2 ^ (r1 >>> 2)
+ 323 04b0 04EA0303 	    and     r3, r4, r3              // r3 <- r3 & 0xc0c0c0c0
+ 324 04b4 82EAB300 	    eor     r0, r2, r3, ror #2      // r0 <- r2 ^ (r3 >>> 2)
+ 325 04b8 00EAB400 	    and     r0, r0, r4, ror #2      // r0 <- r0 & 0x30303030
+ 326 04bc 43EA0003 	    orr     r3, r3, r0              // r3 <- r3 | r0
+ 327 04c0 82EAB300 	    eor     r0, r2, r3, ror #2      // r0 <- r2 ^ (r3 >>> 2)
+ 328 04c4 00EA3410 	    and     r0, r0, r4, ror #4      // r0 <- r0 & 0x0c0c0c0c
+ 329 04c8 43EA0003 	    orr     r3, r3, r0              // r3 <- r3 | r0
+ 330 04cc 82EAB300 	    eor     r0, r2, r3, ror #2      // r0 <- r2 ^ (r3 >>> 2)
+ 331 04d0 00EAB410 	    and     r0, r0, r4, ror #6      // r0 <- r0 & 0x03030303
+ 332 04d4 43EA0004 	    orr     r4, r3, r0              // r4 <- r3 | r0
+ 333 04d8 CCF80040 	    str.w   r4, [r12]
+ 334 04dc CDF838C0 	    str.w   r12, [sp, #56]          // store the new rkeys address on the stack
+ 335 04e0 7047     	    bx      lr
+ 336              	
+ 337              	/******************************************************************************
+ 338              	* Subroutine that XORs the columns after the S-box during the AES-256 key
+ 339              	* schedule round function, for rounds i such that (i % 4) == 0.
+ 340              	* Differs from 'aes128_xorcolumns_rotword' by the rkeys' indexes to be involved
+ 341              	* in XORs.
+ 342              	******************************************************************************/
+ 343 04e2 00BF     	.align 2
+ 344              	aes256_xorcolumns_rotword:
+ 345 04e4 DDF838C0 	    ldr     r12, [sp, #56]          // restore 'rkeys' address
+ 346 04e8 DCF81C50 	    ldr.w   r5, [r12, #28]          // load rkey word of rkey from prev round
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccfZ6TZT.s 			page 8
+
+
+ 347 04ec 4CF2C004 	    movw    r4, #0xc0c0
+ 348 04f0 CCF2C004 	    movt    r4, #0xc0c0             // r4 <- 0xc0c0c0c0
+ 349 04f4 85EABB0B 	    eor     r11, r5, r11, ror #2    // r11<- r5 ^ (r11 >>> 2)
+ 350 04f8 24EA0B0B 	    bic     r11, r4, r11            // r11<- ~r11 & 0xc0c0c0c0 (NOT omitted in sbox)
+ 351 04fc 85EABB09 	    eor     r9, r5, r11, ror #2     // r9 <- r5 ^ (r11 >>> 2)
+ 352 0500 09EAB409 	    and     r9, r9, r4, ror #2      // r9 <- r9 & 0x30303030
+ 353 0504 4BEA090B 	    orr     r11, r11, r9            // r11<- r11 | r9
+ 354 0508 85EABB09 	    eor     r9, r5, r11, ror #2     // r9 <- r5 ^ (r11 >>> 2)
+ 355 050c 09EA3419 	    and     r9, r9, r4, ror #4      // r9 <- r9 & 0x0c0c0c0c
+ 356 0510 4BEA090B 	    orr     r11, r11, r9            // r11<- r11 | r9
+ 357 0514 85EABB09 	    eor     r9, r5, r11, ror #2     // r9 <- r5 ^ (r11 >>> 2)
+ 358 0518 09EAB419 	    and     r9, r9, r4, ror #6      // r9 <- r9 & 0x03030303
+ 359 051c 4BEA090B 	    orr     r11, r11, r9            // r11<- r11 | r9
+ 360 0520 6FEA0509 	    mvn     r9, r5                  // NOT omitted in sbox
+ 361 0524 DCF81850 	    ldr.w   r5, [r12, #24]          // load rkey word of rkey from prev round
+ 362 0528 CCF81C90 	    str     r9, [r12, #28]          // store new rkey word after NOT
+ 363 052c CCF85CB0 	    str     r11, [r12, #92]         // store new rkey word in 'rkeys'
+ 364 0530 85EAB20A 	    eor     r10, r5, r2, ror #2     // r10<- r5 ^ (r2 >>> 2)
+ 365 0534 24EA0A0A 	    bic     r10, r4, r10            // r10<- ~r10 & 0xc0c0c0c0 (NOT omitted in sbox)
+ 366 0538 85EABA09 	    eor     r9, r5, r10, ror #2     // r9 <- r5 ^ (r10 >>> 2)
+ 367 053c 09EAB409 	    and     r9, r9, r4, ror #2      // r9 <- r9 & 0x30303030
+ 368 0540 4AEA090A 	    orr     r10, r10, r9            // r10<- r10 | r9
+ 369 0544 85EABA09 	    eor     r9, r5, r10, ror #2     // r9 <- r5 ^ (r10 >>> 2)
+ 370 0548 09EA3419 	    and     r9, r9, r4, ror #4      // r9 <- r9 & 0x0c0c0c0c
+ 371 054c 4AEA090A 	    orr     r10, r10, r9            // r10<- r10 | r9
+ 372 0550 85EABA09 	    eor     r9, r5, r10, ror #2     // r9 <- r5 ^ (r10 >>> 2)
+ 373 0554 09EAB419 	    and     r9, r9, r4, ror #6      // r9 <- r9 & 0x03030303
+ 374 0558 4AEA090A 	    orr     r10, r10, r9            // r10<- r10 | r9
+ 375 055c 6FEA0509 	    mvn     r9, r5                  // NOT omitted in sbox
+ 376 0560 DCF81420 	    ldr.w   r2, [r12, #20]          // load rkey word of rkey from prev round
+ 377 0564 CCF81890 	    str     r9, [r12, #24]          // store new rkey word after NOT
+ 378 0568 CCF858A0 	    str     r10, [r12, #88]         // store new rkey word in 'rkeys'
+ 379 056c 82EAB009 	    eor     r9, r2, r0, ror #2      // r9 <- r2 ^ (r9 >>> 2)
+ 380 0570 04EA0909 	    and     r9, r4, r9              // r9 <- r9 & 0xc0c0c0c0
+ 381 0574 82EAB900 	    eor     r0, r2, r9, ror #2      // r0 <- r2 ^ (r9 >>> 2)
+ 382 0578 00EAB400 	    and     r0, r0, r4, ror #2      // r0 <- r0 & 0x30303030
+ 383 057c 49EA0009 	    orr     r9, r9, r0              // r9 <- r9 | r0
+ 384 0580 82EAB900 	    eor     r0, r2, r9, ror #2      // r0 <- r2 ^ (r9 >>> 2)
+ 385 0584 00EA3410 	    and     r0, r0, r4, ror #4      // r0 <- r0 & 0x0c0c0c0c
+ 386 0588 49EA0009 	    orr     r9, r9, r0              // r9 <- r9 | r0
+ 387 058c 82EAB900 	    eor     r0, r2, r9, ror #2      // r0 <- r2 ^ (r9 >>> 2)
+ 388 0590 00EAB410 	    and     r0, r0, r4, ror #6      // r0 <- r0 & 0x03030303
+ 389 0594 49EA0009 	    orr     r9, r9, r0              // r9 <- r9 | r0
+ 390 0598 DCF81020 	    ldr.w   r2, [r12, #16]          // load rkey word of rkey from prev round
+ 391 059c CCF85490 	    str.w   r9, [r12, #84]          // store new rkey word in 'rkeys'
+ 392 05a0 82EAB808 	    eor     r8, r2, r8, ror #2      // r8 <- r2 ^ (r8 >>> 2)
+ 393 05a4 04EA0808 	    and     r8, r4, r8              // r8 <- r8 & 0xc0c0c0c0
+ 394 05a8 82EAB800 	    eor     r0, r2, r8, ror #2      // r0 <- r2 ^ (r8 >>> 2)
+ 395 05ac 00EAB400 	    and     r0, r0, r4, ror #2      // r0 <- r0 & 0x30303030
+ 396 05b0 48EA0008 	    orr     r8, r8, r0              // r8 <- r8 | r0
+ 397 05b4 82EAB800 	    eor     r0, r2, r8, ror #2      // r0 <- r2 ^ (r8 >>> 2)
+ 398 05b8 00EA3410 	    and     r0, r0, r4, ror #4      // r0 <- r0 & 0x0c0c0c0c
+ 399 05bc 48EA0008 	    orr     r8, r8, r0              // r8 <- r8 | r0
+ 400 05c0 82EAB800 	    eor     r0, r2, r8, ror #2      // r0 <- r2 ^ (r8 >>> 2)
+ 401 05c4 00EAB410 	    and     r0, r0, r4, ror #6      // r0 <- r0 & 0x03030303
+ 402 05c8 48EA0008 	    orr     r8, r8, r0              // r8 <- r8 | r0
+ 403 05cc DCF80C20 	    ldr.w   r2, [r12, #12]          // load rkey word of rkey from prev round
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccfZ6TZT.s 			page 9
+
+
+ 404 05d0 CCF85080 	    str.w   r8, [r12, #80]          // store new rkey word in 'rkeys'
+ 405 05d4 82EAB707 	    eor     r7, r2, r7, ror #2      // r7 <- r2 ^ (r7 >>> 2)
+ 406 05d8 04EA0707 	    and     r7, r4, r7              // r7 <- r7 & 0xc0c0c0c0
+ 407 05dc 82EAB700 	    eor     r0, r2, r7, ror #2      // r0 <- r2 ^ (r7 >>> 2)
+ 408 05e0 00EAB400 	    and     r0, r0, r4, ror #2      // r0 <- r0 & 0x30303030
+ 409 05e4 47EA0007 	    orr     r7, r7, r0              // r7 <- r7 | r0
+ 410 05e8 82EAB700 	    eor     r0, r2, r7, ror #2      // r0 <- r2 ^ (r7 >>> 2)
+ 411 05ec 00EA3410 	    and     r0, r0, r4, ror #4      // r0 <- r0 & 0x0c0c0c0c
+ 412 05f0 47EA0007 	    orr     r7, r7, r0              // r7 <- r7 | r0
+ 413 05f4 82EAB700 	    eor     r0, r2, r7, ror #2      // r0 <- r2 ^ (r7 >>> 2)
+ 414 05f8 00EAB410 	    and     r0, r0, r4, ror #6      // r0 <- r0 & 0x03030303
+ 415 05fc 47EA0007 	    orr     r7, r7, r0              // r7 <- r7 | r0
+ 416 0600 DCF80820 	    ldr.w   r2, [r12, #8]           // load rkey word of rkey from prev round
+ 417 0604 CCF84C70 	    str.w   r7, [r12, #76]          // store new rkey word in 'rkeys'
+ 418 0608 82EAB606 	    eor     r6, r2, r6, ror #2      // r6 <- r2 ^ (r6 >>> 2)
+ 419 060c 24EA0606 	    bic     r6, r4, r6              // r6 <- ~r6 & 0xc0c0c0c0 (NOT omitted in sbox)
+ 420 0610 82EAB600 	    eor     r0, r2, r6, ror #2      // r0 <- r2 ^ (r6 >>> 2)
+ 421 0614 00EAB400 	    and     r0, r0, r4, ror #2      // r0 <- r0 & 0x30303030
+ 422 0618 46EA0006 	    orr     r6, r6, r0              // r6 <- r6 | r0
+ 423 061c 82EAB600 	    eor     r0, r2, r6, ror #2      // r0 <- r2 ^ (r6 >>> 2)
+ 424 0620 00EA3410 	    and     r0, r0, r4, ror #4      // r0 <- r0 & 0x0c0c0c0c
+ 425 0624 46EA0006 	    orr     r6, r6, r0              // r6 <- r6 | r0
+ 426 0628 82EAB600 	    eor     r0, r2, r6, ror #2      // r0 <- r2 ^ (r6 >>> 2)
+ 427 062c 00EAB410 	    and     r0, r0, r4, ror #6      // r0 <- r0 & 0x03030303
+ 428 0630 46EA0006 	    orr     r6, r6, r0              // r6 <- r6 | r0
+ 429 0634 6FEA0200 	    mvn     r0, r2                  // NOT omitted in sbox
+ 430 0638 DCF80420 	    ldr.w   r2, [r12, #4]           // load rkey word of rkey from prev round
+ 431 063c CCF80800 	    str.w   r0, [r12, #8]           // store new rkey word after NOT
+ 432 0640 CCF84860 	    str.w   r6, [r12, #72]          // store new rkey word in 'rkeys'
+ 433 0644 82EAB305 	    eor     r5, r2, r3, ror #2      // r5 <- r2 ^ (r3 >>> 2)
+ 434 0648 24EA0505 	    bic     r5, r4, r5              // r5 <- ~r5 & 0xc0c0c0c0 (NOT omitted in sbox)
+ 435 064c 82EAB500 	    eor     r0, r2, r5, ror #2      // r0 <- r2 ^ (r5 >>> 2)
+ 436 0650 00EAB400 	    and     r0, r0, r4, ror #2      // r0 <- r0 & 0x30303030
+ 437 0654 45EA0005 	    orr     r5, r5, r0              // r5 <- r5 | r0
+ 438 0658 82EAB500 	    eor     r0, r2, r5, ror #2      // r0 <- r2 ^ (r5 >>> 2)
+ 439 065c 00EA3410 	    and     r0, r0, r4, ror #4      // r0 <- r0 & 0x0c0c0c0c
+ 440 0660 45EA0005 	    orr     r5, r5, r0              // r5 <- r5 | r0
+ 441 0664 82EAB500 	    eor     r0, r2, r5, ror #2      // r0 <- r2 ^ (r5 >>> 2)
+ 442 0668 00EAB410 	    and     r0, r0, r4, ror #6      // r0 <- r0 & 0x03030303
+ 443 066c 45EA0005 	    orr     r5, r5, r0              // r5 <- r5 | r0
+ 444 0670 6FEA0200 	    mvn     r0, r2                  // NOT omitted in sbox
+ 445 0674 5CF8202B 	    ldr.w   r2, [r12], #32          // load rkey word of rkey from prev round
+ 446 0678 4CF81C0C 	    str.w   r0, [r12, #-28]         // store new rkey word after NOT
+ 447 067c CCF82450 	    str.w   r5, [r12, #36]          // store new rkey word in 'rkeys'
+ 448 0680 82EAB103 	    eor     r3, r2, r1, ror #2      // r3 <- r2 ^ (r1 >>> 2)
+ 449 0684 04EA0303 	    and     r3, r4, r3              // r3 <- r3 & 0xc0c0c0c0
+ 450 0688 82EAB300 	    eor     r0, r2, r3, ror #2      // r0 <- r2 ^ (r3 >>> 2)
+ 451 068c 00EAB400 	    and     r0, r0, r4, ror #2      // r0 <- r0 & 0x30303030
+ 452 0690 43EA0003 	    orr     r3, r3, r0              // r3 <- r3 | r0
+ 453 0694 82EAB300 	    eor     r0, r2, r3, ror #2      // r0 <- r2 ^ (r3 >>> 2)
+ 454 0698 00EA3410 	    and     r0, r0, r4, ror #4      // r0 <- r0 & 0x0c0c0c0c
+ 455 069c 43EA0003 	    orr     r3, r3, r0              // r3 <- r3 | r0
+ 456 06a0 82EAB300 	    eor     r0, r2, r3, ror #2      // r0 <- r2 ^ (r3 >>> 2)
+ 457 06a4 00EAB410 	    and     r0, r0, r4, ror #6      // r0 <- r0 & 0x03030303
+ 458 06a8 43EA0004 	    orr     r4, r3, r0              // r4 <- r3 | r0
+ 459 06ac CCF82040 	    str.w   r4, [r12, #32]
+ 460 06b0 CDF838C0 	    str.w   r12, [sp, #56]          // store the new rkeys address on the stack
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccfZ6TZT.s 			page 10
+
+
+ 461 06b4 7047     	    bx      lr
+ 462              	
+ 463              	/******************************************************************************
+ 464              	* Subroutine that XORs the columns after the S-box during the AES-256 key
+ 465              	* schedule round function, for rounds i such that (i % 4) == 0.
+ 466              	* It differs from 'aes256_xorcolumns_rotword' by the omission of the rotword
+ 467              	* operation (i.e. 'ror #26' instead of 'ror #2').
+ 468              	******************************************************************************/
+ 469 06b6 00BF     	.align 2
+ 470              	aes256_xorcolumns:
+ 471 06b8 DDF838C0 	    ldr     r12, [sp, #56]          // restore 'rkeys' address
+ 472 06bc DCF81C50 	    ldr.w   r5, [r12, #28]          // load rkey word of rkey from prev round
+ 473 06c0 4CF2C004 	    movw    r4, #0xc0c0
+ 474 06c4 CCF2C004 	    movt    r4, #0xc0c0             // r4 <- 0xc0c0c0c0
+ 475 06c8 85EABB6B 	    eor     r11, r5, r11, ror #26   // r11<- r5 ^ (r11 >>> 26)
+ 476 06cc 24EA0B0B 	    bic     r11, r4, r11            // r11<- ~r11 & 0xc0c0c0c0 (NOT omitted in sbox)
+ 477 06d0 85EABB09 	    eor     r9, r5, r11, ror #2     // r9 <- r5 ^ (r11 >>> 2)
+ 478 06d4 09EAB409 	    and     r9, r9, r4, ror #2      // r9 <- r9 & 0x30303030
+ 479 06d8 4BEA090B 	    orr     r11, r11, r9            // r11<- r11 | r9
+ 480 06dc 85EABB09 	    eor     r9, r5, r11, ror #2     // r9 <- r5 ^ (r11 >>> 2)
+ 481 06e0 09EA3419 	    and     r9, r9, r4, ror #4      // r9 <- r9 & 0x0c0c0c0c
+ 482 06e4 4BEA090B 	    orr     r11, r11, r9            // r11<- r11 | r9
+ 483 06e8 85EABB09 	    eor     r9, r5, r11, ror #2     // r9 <- r5 ^ (r11 >>> 2)
+ 484 06ec 09EAB419 	    and     r9, r9, r4, ror #6      // r9 <- r9 & 0x03030303
+ 485 06f0 4BEA090B 	    orr     r11, r11, r9            // r11<- r11 | r9
+ 486 06f4 6FEA0509 	    mvn     r9, r5                  // NOT omitted in sbox
+ 487 06f8 DCF81850 	    ldr.w   r5, [r12, #24]          // load rkey word of rkey from prev round
+ 488 06fc CCF81C90 	    str     r9, [r12, #28]          // store new rkey word after NOT
+ 489 0700 CCF85CB0 	    str     r11, [r12, #92]         // store new rkey word in 'rkeys'
+ 490 0704 85EAB26A 	    eor     r10, r5, r2, ror #26    // r10<- r5 ^ (r2 >>> 2)
+ 491 0708 24EA0A0A 	    bic     r10, r4, r10            // r10<- ~r10 & 0xc0c0c0c0 (NOT omitted in sbox)
+ 492 070c 85EABA09 	    eor     r9, r5, r10, ror #2     // r9 <- r5 ^ (r10 >>> 2)
+ 493 0710 09EAB409 	    and     r9, r9, r4, ror #2      // r9 <- r9 & 0x30303030
+ 494 0714 4AEA090A 	    orr     r10, r10, r9            // r10<- r10 | r9
+ 495 0718 85EABA09 	    eor     r9, r5, r10, ror #2     // r9 <- r5 ^ (r10 >>> 2)
+ 496 071c 09EA3419 	    and     r9, r9, r4, ror #4      // r9 <- r9 & 0x0c0c0c0c
+ 497 0720 4AEA090A 	    orr     r10, r10, r9            // r10<- r10 | r9
+ 498 0724 85EABA09 	    eor     r9, r5, r10, ror #2     // r9 <- r5 ^ (r10 >>> 2)
+ 499 0728 09EAB419 	    and     r9, r9, r4, ror #6      // r9 <- r9 & 0x03030303
+ 500 072c 4AEA090A 	    orr     r10, r10, r9            // r10<- r10 | r9
+ 501 0730 6FEA0509 	    mvn     r9, r5                  // NOT omitted in sbox
+ 502 0734 DCF81420 	    ldr.w   r2, [r12, #20]          // load rkey word of rkey from prev round
+ 503 0738 CCF81890 	    str     r9, [r12, #24]          // store new rkey word after NOT
+ 504 073c CCF858A0 	    str     r10, [r12, #88]         // store new rkey word in 'rkeys'
+ 505 0740 82EAB069 	    eor     r9, r2, r0, ror #26     // r9 <- r2 ^ (r9 >>> 26)
+ 506 0744 04EA0909 	    and     r9, r4, r9              // r9 <- r9 & 0xc0c0c0c0
+ 507 0748 82EAB900 	    eor     r0, r2, r9, ror #2      // r0 <- r2 ^ (r9 >>> 2)
+ 508 074c 00EAB400 	    and     r0, r0, r4, ror #2      // r0 <- r0 & 0x30303030
+ 509 0750 49EA0009 	    orr     r9, r9, r0              // r9 <- r9 | r0
+ 510 0754 82EAB900 	    eor     r0, r2, r9, ror #2      // r0 <- r2 ^ (r9 >>> 2)
+ 511 0758 00EA3410 	    and     r0, r0, r4, ror #4      // r0 <- r0 & 0x0c0c0c0c
+ 512 075c 49EA0009 	    orr     r9, r9, r0              // r9 <- r9 | r0
+ 513 0760 82EAB900 	    eor     r0, r2, r9, ror #2      // r0 <- r2 ^ (r9 >>> 2)
+ 514 0764 00EAB410 	    and     r0, r0, r4, ror #6      // r0 <- r0 & 0x03030303
+ 515 0768 49EA0009 	    orr     r9, r9, r0              // r9 <- r9 | r0
+ 516 076c DCF81020 	    ldr.w   r2, [r12, #16]          // load rkey word of rkey from prev round
+ 517 0770 CCF85490 	    str.w   r9, [r12, #84]          // store new rkey word in 'rkeys'
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccfZ6TZT.s 			page 11
+
+
+ 518 0774 82EAB868 	    eor     r8, r2, r8, ror #26     // r8 <- r2 ^ (r8 >>> 26)
+ 519 0778 04EA0808 	    and     r8, r4, r8              // r8 <- r8 & 0xc0c0c0c0
+ 520 077c 82EAB800 	    eor     r0, r2, r8, ror #2      // r0 <- r2 ^ (r8 >>> 2)
+ 521 0780 00EAB400 	    and     r0, r0, r4, ror #2      // r0 <- r0 & 0x30303030
+ 522 0784 48EA0008 	    orr     r8, r8, r0              // r8 <- r8 | r0
+ 523 0788 82EAB800 	    eor     r0, r2, r8, ror #2      // r0 <- r2 ^ (r8 >>> 2)
+ 524 078c 00EA3410 	    and     r0, r0, r4, ror #4      // r0 <- r0 & 0x0c0c0c0c
+ 525 0790 48EA0008 	    orr     r8, r8, r0              // r8 <- r8 | r0
+ 526 0794 82EAB800 	    eor     r0, r2, r8, ror #2      // r0 <- r2 ^ (r8 >>> 2)
+ 527 0798 00EAB410 	    and     r0, r0, r4, ror #6      // r0 <- r0 & 0x03030303
+ 528 079c 48EA0008 	    orr     r8, r8, r0              // r8 <- r8 | r0
+ 529 07a0 DCF80C20 	    ldr.w   r2, [r12, #12]          // load rkey word of rkey from prev round
+ 530 07a4 CCF85080 	    str.w   r8, [r12, #80]          // store new rkey word in 'rkeys'
+ 531 07a8 82EAB767 	    eor     r7, r2, r7, ror #26     // r7 <- r2 ^ (r7 >>> 26)
+ 532 07ac 04EA0707 	    and     r7, r4, r7              // r7 <- r7 & 0xc0c0c0c0
+ 533 07b0 82EAB700 	    eor     r0, r2, r7, ror #2      // r0 <- r2 ^ (r7 >>> 2)
+ 534 07b4 00EAB400 	    and     r0, r0, r4, ror #2      // r0 <- r0 & 0x30303030
+ 535 07b8 47EA0007 	    orr     r7, r7, r0              // r7 <- r7 | r0
+ 536 07bc 82EAB700 	    eor     r0, r2, r7, ror #2      // r0 <- r2 ^ (r7 >>> 2)
+ 537 07c0 00EA3410 	    and     r0, r0, r4, ror #4      // r0 <- r0 & 0x0c0c0c0c
+ 538 07c4 47EA0007 	    orr     r7, r7, r0              // r7 <- r7 | r0
+ 539 07c8 82EAB700 	    eor     r0, r2, r7, ror #2      // r0 <- r2 ^ (r7 >>> 2)
+ 540 07cc 00EAB410 	    and     r0, r0, r4, ror #6      // r0 <- r0 & 0x03030303
+ 541 07d0 47EA0007 	    orr     r7, r7, r0              // r7 <- r7 | r0
+ 542 07d4 DCF80820 	    ldr.w   r2, [r12, #8]           // load rkey word of rkey from prev round
+ 543 07d8 CCF84C70 	    str.w   r7, [r12, #76]          // store new rkey word in 'rkeys'
+ 544 07dc 82EAB666 	    eor     r6, r2, r6, ror #26     // r6 <- r2 ^ (r6 >>> 26)
+ 545 07e0 24EA0606 	    bic     r6, r4, r6              // r6 <- ~r6 & 0xc0c0c0c0 (NOT omitted in sbox)
+ 546 07e4 82EAB600 	    eor     r0, r2, r6, ror #2      // r0 <- r2 ^ (r6 >>> 2)
+ 547 07e8 00EAB400 	    and     r0, r0, r4, ror #2      // r0 <- r0 & 0x30303030
+ 548 07ec 46EA0006 	    orr     r6, r6, r0              // r6 <- r6 | r0
+ 549 07f0 82EAB600 	    eor     r0, r2, r6, ror #2      // r0 <- r2 ^ (r6 >>> 2)
+ 550 07f4 00EA3410 	    and     r0, r0, r4, ror #4      // r0 <- r0 & 0x0c0c0c0c
+ 551 07f8 46EA0006 	    orr     r6, r6, r0              // r6 <- r6 | r0
+ 552 07fc 82EAB600 	    eor     r0, r2, r6, ror #2      // r0 <- r2 ^ (r6 >>> 2)
+ 553 0800 00EAB410 	    and     r0, r0, r4, ror #6      // r0 <- r0 & 0x03030303
+ 554 0804 46EA0006 	    orr     r6, r6, r0              // r6 <- r6 | r0
+ 555 0808 6FEA0200 	    mvn     r0, r2                  // NOT omitted in sbox
+ 556 080c DCF80420 	    ldr.w   r2, [r12, #4]           // load rkey word of rkey from prev round
+ 557 0810 CCF80800 	    str.w   r0, [r12, #8]           // store new rkey word after NOT
+ 558 0814 CCF84860 	    str.w   r6, [r12, #72]          // store new rkey word in 'rkeys'
+ 559 0818 82EAB365 	    eor     r5, r2, r3, ror #26     // r5 <- r2 ^ (r3 >>> 26)
+ 560 081c 24EA0505 	    bic     r5, r4, r5              // r5 <- ~r5 & 0xc0c0c0c0 (NOT omitted in sbox)
+ 561 0820 82EAB500 	    eor     r0, r2, r5, ror #2      // r0 <- r2 ^ (r5 >>> 2)
+ 562 0824 00EAB400 	    and     r0, r0, r4, ror #2      // r0 <- r0 & 0x30303030
+ 563 0828 45EA0005 	    orr     r5, r5, r0              // r5 <- r5 | r0
+ 564 082c 82EAB500 	    eor     r0, r2, r5, ror #2      // r0 <- r2 ^ (r5 >>> 2)
+ 565 0830 00EA3410 	    and     r0, r0, r4, ror #4      // r0 <- r0 & 0x0c0c0c0c
+ 566 0834 45EA0005 	    orr     r5, r5, r0              // r5 <- r5 | r0
+ 567 0838 82EAB500 	    eor     r0, r2, r5, ror #2      // r0 <- r2 ^ (r5 >>> 2)
+ 568 083c 00EAB410 	    and     r0, r0, r4, ror #6      // r0 <- r0 & 0x03030303
+ 569 0840 45EA0005 	    orr     r5, r5, r0              // r5 <- r5 | r0
+ 570 0844 6FEA0200 	    mvn     r0, r2                  // NOT omitted in sbox
+ 571 0848 5CF8202B 	    ldr.w   r2, [r12], #32          // load rkey word of rkey from prev round
+ 572 084c 4CF81C0C 	    str.w   r0, [r12, #-28]         // store new rkey word after NOT
+ 573 0850 CCF82450 	    str.w   r5, [r12, #36]          // store new rkey word in 'rkeys'
+ 574 0854 82EAB163 	    eor     r3, r2, r1, ror #26     // r3 <- r2 ^ (r1 >>> 26)
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccfZ6TZT.s 			page 12
+
+
+ 575 0858 04EA0303 	    and     r3, r4, r3              // r3 <- r3 & 0xc0c0c0c0
+ 576 085c 82EAB300 	    eor     r0, r2, r3, ror #2      // r0 <- r2 ^ (r3 >>> 2)
+ 577 0860 00EAB400 	    and     r0, r0, r4, ror #2      // r0 <- r0 & 0x30303030
+ 578 0864 43EA0003 	    orr     r3, r3, r0              // r3 <- r3 | r0
+ 579 0868 82EAB300 	    eor     r0, r2, r3, ror #2      // r0 <- r2 ^ (r3 >>> 2)
+ 580 086c 00EA3410 	    and     r0, r0, r4, ror #4      // r0 <- r0 & 0x0c0c0c0c
+ 581 0870 43EA0003 	    orr     r3, r3, r0              // r3 <- r3 | r0
+ 582 0874 82EAB300 	    eor     r0, r2, r3, ror #2      // r0 <- r2 ^ (r3 >>> 2)
+ 583 0878 00EAB410 	    and     r0, r0, r4, ror #6      // r0 <- r0 & 0x03030303
+ 584 087c 43EA0004 	    orr     r4, r3, r0              // r4 <- r3 | r0
+ 585 0880 CCF82040 	    str.w   r4, [r12, #32]
+ 586 0884 CDF838C0 	    str.w   r12, [sp, #56]          // store the new rkeys address on the stack
+ 587 0888 7047     	    bx      lr
+ 588              	
+ 589              	/******************************************************************************
+ 590              	* Applies ShiftRows^(-1) on a round key to match the fixsliced representation.
+ 591              	******************************************************************************/
+ 592 088a 00BF     	.align 2
+ 593              	inv_shiftrows_1:
+ 594 088c 5CF8202D 	    ldr.w   r2, [r12, #-32]!
+ 595 0890 CDF834E0 	    str     r14, [sp, #52]          // store link register
+ 596 0894 40F20801 	    movw    r1, #8
+ 597 0898 40F2003E 	    movw    r14, #0x0300
+ 598 089c C0F60F4E 	    movt    r14, #0x0c0f            // r14<- 0x0c0f0300 for ShiftRows^[-1]
+ 599              	loop_inv_sr_1:
+ 600 08a0 43F20033 	    movw    r3, #0x3300
+ 601 08a4 C3F20033 	    movt    r3, #0x3300             // r3 <- 0x33003300 for ShiftRows^[-1]
+ 602              	    swpmv   r2, r2, r2, r2, r14, 4, r0
+ 602 08a8 82EA1210 	>  eor r0,r2,r2,lsr 4
+ 602 08ac 00EA0E00 	>  and r0,r14
+ 602 08b0 82EA0002 	>  eor r2,r2,r0
+ 602 08b4 82EA0012 	>  eor r2,r2,r0,lsl 4
+ 603 08b8 82EA9200 	    eor     r0, r2, r2, lsr #2
+ 604 08bc 00EA0300 	    and     r0, r3
+ 605 08c0 82EA0002 	    eor     r2, r2, r0
+ 606 08c4 82EA8003 	    eor     r3, r2, r0, lsl #2
+ 607 08c8 5CF8042F 	    ldr.w   r2, [r12, #4]!
+ 608 08cc 4CF8043C 	    str.w   r3, [r12, #-4]
+ 609 08d0 0139     	    subs    r1, #1
+ 610 08d2 E5D1     	    bne     loop_inv_sr_1
+ 611 08d4 DDF834E0 	    ldr     r14, [sp, #52]          // restore link register
+ 612 08d8 7047     	    bx      lr
+ 613              	
+ 614              	/******************************************************************************
+ 615              	* Applies ShiftRows^(-2) on a round key to match the fixsliced representation.
+ 616              	* Only needed for the fully-fixsliced (ffs) representation.
+ 617              	******************************************************************************/
+ 618 08da 00BF     	.align 2
+ 619              	inv_shiftrows_2:
+ 620 08dc 5CF8202D 	    ldr.w   r2, [r12, #-32]!
+ 621 08e0 CDF834E0 	    str     r14, [sp, #52]          // store link register
+ 622 08e4 40F20801 	    movw    r1, #8
+ 623 08e8 40F6007E 	    movw    r14, #0x0f00
+ 624 08ec C0F6007E 	    movt    r14, #0x0f00            // r14<- 0x0f000f00 for ShiftRows^[-2]
+ 625              	loop_inv_sr_2:
+ 626 08f0 82EA1210 	    eor     r0, r2, r2, lsr #4
+ 627 08f4 00EA0E00 	    and     r0, r14
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccfZ6TZT.s 			page 13
+
+
+ 628 08f8 82EA0002 	    eor     r2, r2, r0
+ 629 08fc 82EA0013 	    eor     r3, r2, r0, lsl #4
+ 630 0900 5CF8042F 	    ldr.w   r2, [r12, #4]!
+ 631 0904 4CF8043C 	    str.w   r3, [r12, #-4]
+ 632 0908 0139     	    subs    r1, #1
+ 633 090a F1D1     	    bne     loop_inv_sr_2
+ 634 090c DDF834E0 	    ldr     r14, [sp, #52]          // restore link register
+ 635 0910 7047     	    bx      lr
+ 636              	
+ 637              	/******************************************************************************
+ 638              	* Applies ShiftRows^(-3) on a round key to match the fixsliced representation.
+ 639              	* Only needed for the fully-fixsliced (ffs) representation.
+ 640              	******************************************************************************/
+ 641 0912 00BF     	.align 2
+ 642              	inv_shiftrows_3:
+ 643 0914 5CF8202D 	    ldr.w   r2, [r12, #-32]!
+ 644 0918 CDF834E0 	    str     r14, [sp, #52]          // store link register
+ 645 091c 40F20801 	    movw    r1, #8
+ 646 0920 40F6004E 	    movw    r14, #0x0c00
+ 647 0924 C0F20F3E 	    movt    r14, #0x030f            // r14<- 0x030f0c00 for ShiftRows^[-3]
+ 648              	loop_inv_sr_3:
+ 649 0928 43F20033 	    movw    r3, #0x3300
+ 650 092c C3F20033 	    movt    r3, #0x3300             // r3 <- 0x33003300 for ShiftRows^[-3]
+ 651              	    swpmv   r2, r2, r2, r2, r14, 4, r0
+ 651 0930 82EA1210 	>  eor r0,r2,r2,lsr 4
+ 651 0934 00EA0E00 	>  and r0,r14
+ 651 0938 82EA0002 	>  eor r2,r2,r0
+ 651 093c 82EA0012 	>  eor r2,r2,r0,lsl 4
+ 652 0940 82EA9200 	    eor     r0, r2, r2, lsr #2
+ 653 0944 00EA0300 	    and     r0, r3
+ 654 0948 82EA0002 	    eor     r2, r2, r0
+ 655 094c 82EA8003 	    eor     r3, r2, r0, lsl #2
+ 656 0950 5CF8042F 	    ldr.w   r2, [r12, #4]!
+ 657 0954 4CF8043C 	    str.w   r3, [r12, #-4]
+ 658 0958 0139     	    subs    r1, #1
+ 659 095a E5D1     	    bne     loop_inv_sr_3
+ 660 095c DDF834E0 	    ldr     r14, [sp, #52]          // restore link register
+ 661 0960 7047     	    bx      lr
+ 662              	
+ 663              	/******************************************************************************
+ 664              	* Fully bitsliced AES-128 key schedule to match the fully-fixsliced (ffs)
+ 665              	* representation. Note that it is possible to pass two different keys as input
+ 666              	* parameters if one wants to encrypt 2 blocks in with two different keys.
+ 667              	******************************************************************************/
+ 668              	@ void aes128_keyschedule_ffs(u32* rkeys, const u8* key);
+ 669              	.global aes128_keyschedule_ffs
+ 670              	.type   aes128_keyschedule_ffs,%function
+ 671 0962 00BF     	.align 2
+ 672              	aes128_keyschedule_ffs:
+ 673 0964 2DE9FF5F 	    push    {r0-r12,r14}
+ 674 0968 ADF1380D 	    sub.w   sp, #56                 // allow space on the stack for tmp var
+ 675 096c D1F80040 	    ldr.w   r4, [r1]                // load the 128-bit key in r4-r7
+ 676 0970 4D68     	    ldr     r5, [r1, #4]
+ 677 0972 8E68     	    ldr     r6, [r1, #8]
+ 678 0974 CF68     	    ldr     r7, [r1, #12]
+ 679 0976 D1F80080 	    ldr.w   r8, [r1]                // load the 128-bit key in r8-r11
+ 680 097a D1F80490 	    ldr     r9, [r1, #4]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccfZ6TZT.s 			page 14
+
+
+ 681 097e D1F808A0 	    ldr     r10,[r1, #8]
+ 682 0982 D1F80CB0 	    ldr     r11,[r1, #12]
+ 683 0986 FFF73BFB 	    bl      packing                 // pack the master key
+ 684 098a DDF83800 	    ldr.w   r0, [sp, #56]           // restore 'rkeys' address
+ 685 098e 80E8F00F 	    stm     r0, {r4-r11}            // store the packed master key in 'rkeys'
+ 686 0992 FFF79FFB 	    bl      sbox                    // apply the sbox to the master key
+ 687 0996 8BF4407B 	    eor     r11, r11, #0x00000300   // add the 1st rconst
+ 688 099a FFF7B9FC 	    bl      aes128_xorcolumns_rotword
+ 689 099e FFF799FB 	    bl      sbox                    // apply the sbox to the master key
+ 690 09a2 82F44072 	    eor     r2, r2, #0x00000300     // add the 2nd rconst
+ 691 09a6 FFF7B3FC 	    bl      aes128_xorcolumns_rotword
+ 692 09aa FFF76FFF 	    bl      inv_shiftrows_1
+ 693 09ae FFF791FB 	    bl      sbox                    // apply the sbox to the master key
+ 694 09b2 80F44070 	    eor     r0, r0, #0x00000300     // add the 3rd rconst
+ 695 09b6 FFF7ABFC 	    bl      aes128_xorcolumns_rotword
+ 696 09ba FFF78FFF 	    bl      inv_shiftrows_2
+ 697 09be FFF789FB 	    bl      sbox                    // apply the sbox to the master key
+ 698 09c2 88F44078 	    eor     r8, r8, #0x00000300     // add the 4th rconst
+ 699 09c6 FFF7A3FC 	    bl      aes128_xorcolumns_rotword
+ 700 09ca FFF7A3FF 	    bl      inv_shiftrows_3
+ 701 09ce FFF781FB 	    bl      sbox                    // apply the sbox to the master key
+ 702 09d2 87F44077 	    eor     r7, r7, #0x00000300     // add the 5th rconst
+ 703 09d6 FFF79BFC 	    bl      aes128_xorcolumns_rotword
+ 704 09da FFF77BFB 	    bl      sbox                    // apply the sbox to the master key
+ 705 09de 86F44076 	    eor     r6, r6, #0x00000300     // add the 6th rconst
+ 706 09e2 FFF795FC 	    bl      aes128_xorcolumns_rotword
+ 707 09e6 FFF751FF 	    bl      inv_shiftrows_1
+ 708 09ea FFF773FB 	    bl      sbox                    // apply the sbox to the master key
+ 709 09ee 83F44073 	    eor     r3, r3, #0x00000300     // add the 7th rconst
+ 710 09f2 FFF78DFC 	    bl      aes128_xorcolumns_rotword
+ 711 09f6 FFF771FF 	    bl      inv_shiftrows_2
+ 712 09fa FFF76BFB 	    bl      sbox                    // apply the sbox to the master key
+ 713 09fe 81F44071 	    eor     r1, r1, #0x00000300     // add the 8th rconst
+ 714 0a02 FFF785FC 	    bl      aes128_xorcolumns_rotword
+ 715 0a06 FFF785FF 	    bl      inv_shiftrows_3
+ 716 0a0a FFF763FB 	    bl      sbox                    // apply the sbox to the master key
+ 717 0a0e 8BF4407B 	    eor     r11, r11, #0x00000300   // add the 9th rconst
+ 718 0a12 82F44072 	    eor     r2, r2, #0x00000300     // add the 9th rconst
+ 719 0a16 88F44078 	    eor     r8, r8, #0x00000300     // add the 9th rconst
+ 720 0a1a 87F44077 	    eor     r7, r7, #0x00000300     // add the 9th rconst
+ 721 0a1e FFF777FC 	    bl      aes128_xorcolumns_rotword
+ 722 0a22 FFF757FB 	    bl      sbox                    // apply the sbox to the master key
+ 723 0a26 82F44072 	    eor     r2, r2, #0x00000300     // add the 10th rconst
+ 724 0a2a 80F44070 	    eor     r0, r0, #0x00000300     // add the 10th rconst
+ 725 0a2e 87F44077 	    eor     r7, r7, #0x00000300     // add the 10th rconst
+ 726 0a32 86F44076 	    eor     r6, r6, #0x00000300     // add the 10th rconst
+ 727 0a36 FFF76BFC 	    bl      aes128_xorcolumns_rotword
+ 728 0a3a FFF727FF 	    bl      inv_shiftrows_1
+ 729 0a3e 6FEA0505 	    mvn     r5, r5                  // add the NOT for the last rkey
+ 730 0a42 6FEA0606 	    mvn     r6, r6                  // add the NOT for the last rkey
+ 731 0a46 6FEA0A0A 	    mvn     r10, r10                // add the NOT for the last rkey
+ 732 0a4a 6FEA0B0B 	    mvn     r11, r11                // add the NOT for the last rkey
+ 733 0a4e CCE90156 	    strd    r5, r6, [r12, #4]
+ 734 0a52 CCE906AB 	    strd    r10, r11, [r12, #24]
+ 735 0a56 5CE94F01 	    ldrd    r0, r1, [r12, #-316]
+ 736 0a5a 5CE94A23 	    ldrd    r2, r3, [r12, #-296]
+ 737 0a5e 6FEA0000 	    mvn     r0, r0                  // remove the NOT for the key whitening
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccfZ6TZT.s 			page 15
+
+
+ 738 0a62 6FEA0101 	    mvn     r1, r1                  // remove the NOT for the key whitening
+ 739 0a66 6FEA0202 	    mvn     r2, r2                  // remove the NOT for the key whitening
+ 740 0a6a 6FEA0303 	    mvn     r3, r3                  // remove the NOT for the key whitening
+ 741 0a6e 4CE94F01 	    strd    r0, r1, [r12, #-316]
+ 742 0a72 4CE94A23 	    strd    r2, r3, [r12, #-296]
+ 743 0a76 0DF1380D 	    add.w   sp, #56                 // restore stack
+ 744 0a7a BDE8FF5F 	    pop     {r0-r12, r14}           // restore context
+ 745 0a7e 7047     	    bx      lr
+ 746              	
+ 747              	/******************************************************************************
+ 748              	* Fully bitsliced AES-256 key schedule to match the fully-fixsliced (ffs)
+ 749              	* representation. Note that it is possible to pass 2 different keys as input
+ 750              	* parameters if one wants to encrypt 2 blocks in with 2 different keys.
+ 751              	******************************************************************************/
+ 752              	@ void aes256_keyschedule_ffs(u32* rkeys, const u8* key);
+ 753              	.global aes256_keyschedule_ffs
+ 754              	.type   aes256_keyschedule_ffs,%function
+ 755              	.align 2
+ 756              	aes256_keyschedule_ffs:
+ 757 0a80 2DE9FF5F 	    push    {r0-r12,r14}
+ 758 0a84 ADF1380D 	    sub.w   sp, #56                 // allow space on the stack for tmp var
+ 759 0a88 D1F80040 	    ldr.w   r4, [r1]                // load the 128 first key bits in r4-r7
+ 760 0a8c 4D68     	    ldr     r5, [r1, #4]
+ 761 0a8e 8E68     	    ldr     r6, [r1, #8]
+ 762 0a90 CF68     	    ldr     r7, [r1, #12]
+ 763 0a92 D1F80080 	    ldr.w   r8, [r1]                // load the 128 first key bits in r8-r11
+ 764 0a96 D1F80490 	    ldr     r9, [r1, #4]
+ 765 0a9a D1F808A0 	    ldr     r10,[r1, #8]
+ 766 0a9e D1F80CB0 	    ldr     r11,[r1, #12]
+ 767 0aa2 FFF7ADFA 	    bl      packing                 // pack the master key
+ 768 0aa6 DDE90E01 	    ldrd    r0,r1, [sp, #56]        // restore 'rkeys' and 'key' addresses
+ 769 0aaa 80E8F00F 	    stm     r0, {r4-r11}            // store the packed master key in 'rkeys'
+ 770 0aae 01F11001 	    add.w   r1, #16                 // points to the 128 last bits of the key
+ 771 0ab2 D1F80040 	    ldr.w   r4, [r1]                // load the 128 first key bits in r4-r7
+ 772 0ab6 4D68     	    ldr     r5, [r1, #4]
+ 773 0ab8 8E68     	    ldr     r6, [r1, #8]
+ 774 0aba CF68     	    ldr     r7, [r1, #12]
+ 775 0abc D1F80080 	    ldr.w   r8, [r1]                // load the 128 first key bits in r8-r11
+ 776 0ac0 D1F80490 	    ldr     r9, [r1, #4]
+ 777 0ac4 D1F808A0 	    ldr     r10,[r1, #8]
+ 778 0ac8 D1F80CB0 	    ldr     r11,[r1, #12]
+ 779 0acc FFF798FA 	    bl      packing                 // pack the master key
+ 780 0ad0 DDF83800 	    ldr.w   r0, [sp, #56]           // restore 'rkeys' address
+ 781 0ad4 00F12000 	    add.w   r0, #32                 // points to the 128 last bits of the key
+ 782 0ad8 80E8F00F 	    stm     r0, {r4-r11}            // store the packed master key in 'rkeys'
+ 783 0adc FFF7FAFA 	    bl      sbox                    // apply the sbox to the master key
+ 784 0ae0 8BF4407B 	    eor     r11, r11, #0x00000300   // add the 1st rconst
+ 785 0ae4 FFF7FEFC 	    bl      aes256_xorcolumns_rotword
+ 786 0ae8 FFF7F4FA 	    bl      sbox                    // apply the sbox to the master key
+ 787 0aec FFF7E4FD 	    bl      aes256_xorcolumns
+ 788 0af0 FFF7CCFE 	    bl      inv_shiftrows_1
+ 789 0af4 FFF7EEFA 	    bl      sbox                    // apply the sbox to the master key
+ 790 0af8 82F44072 	    eor     r2, r2, #0x00000300     // add the 2nd rconst
+ 791 0afc FFF7F2FC 	    bl      aes256_xorcolumns_rotword
+ 792 0b00 FFF7ECFE 	    bl      inv_shiftrows_2
+ 793 0b04 FFF7E6FA 	    bl      sbox                    // apply the sbox to the master key
+ 794 0b08 FFF7D6FD 	    bl      aes256_xorcolumns
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccfZ6TZT.s 			page 16
+
+
+ 795 0b0c FFF702FF 	    bl      inv_shiftrows_3
+ 796 0b10 FFF7E0FA 	    bl      sbox                    // apply the sbox to the master key
+ 797 0b14 80F44070 	    eor     r0, r0, #0x00000300     // add the 3rd rconst
+ 798 0b18 FFF7E4FC 	    bl      aes256_xorcolumns_rotword
+ 799 0b1c FFF7DAFA 	    bl      sbox                    // apply the sbox to the master key
+ 800 0b20 FFF7CAFD 	    bl      aes256_xorcolumns
+ 801 0b24 FFF7B2FE 	    bl      inv_shiftrows_1
+ 802 0b28 FFF7D4FA 	    bl      sbox                    // apply the sbox to the master key
+ 803 0b2c 88F44078 	    eor     r8, r8, #0x00000300     // add the 4th rconst
+ 804 0b30 FFF7D8FC 	    bl      aes256_xorcolumns_rotword
+ 805 0b34 FFF7D2FE 	    bl      inv_shiftrows_2
+ 806 0b38 FFF7CCFA 	    bl      sbox                    // apply the sbox to the master key
+ 807 0b3c FFF7BCFD 	    bl      aes256_xorcolumns
+ 808 0b40 FFF7E8FE 	    bl      inv_shiftrows_3
+ 809 0b44 FFF7C6FA 	    bl      sbox                    // apply the sbox to the master key
+ 810 0b48 87F44077 	    eor     r7, r7, #0x00000300     // add the 5th rconst
+ 811 0b4c FFF7CAFC 	    bl      aes256_xorcolumns_rotword
+ 812 0b50 FFF7C0FA 	    bl      sbox                    // apply the sbox to the master key
+ 813 0b54 FFF7B0FD 	    bl      aes256_xorcolumns
+ 814 0b58 FFF798FE 	    bl      inv_shiftrows_1
+ 815 0b5c FFF7BAFA 	    bl      sbox                    // apply the sbox to the master key
+ 816 0b60 86F44076 	    eor     r6, r6, #0x00000300     // add the 6th rconst
+ 817 0b64 FFF7BEFC 	    bl      aes256_xorcolumns_rotword
+ 818 0b68 FFF7B8FE 	    bl      inv_shiftrows_2
+ 819 0b6c FFF7B2FA 	    bl      sbox                    // apply the sbox to the master key
+ 820 0b70 FFF7A2FD 	    bl      aes256_xorcolumns
+ 821 0b74 FFF7CEFE 	    bl      inv_shiftrows_3
+ 822 0b78 FFF7ACFA 	    bl      sbox                    // apply the sbox to the master key
+ 823 0b7c 83F44073 	    eor     r3, r3, #0x00000300     // add the 6th rconst
+ 824 0b80 FFF7B0FC 	    bl      aes256_xorcolumns_rotword
+ 825 0b84 0CF1200C 	    add     r12, #32
+ 826 0b88 FFF780FE 	    bl      inv_shiftrows_1
+ 827 0b8c 6FEA0505 	    mvn     r5, r5                  // add the NOT for the last rkey
+ 828 0b90 6FEA0606 	    mvn     r6, r6                  // add the NOT for the last rkey
+ 829 0b94 6FEA0A0A 	    mvn     r10, r10                // add the NOT for the last rkey
+ 830 0b98 6FEA0B0B 	    mvn     r11, r11                // add the NOT for the last rkey
+ 831 0b9c 5CE90701 	    ldrd    r0, r1, [r12, #-28]
+ 832 0ba0 5CE90223 	    ldrd    r2, r3, [r12, #-8]
+ 833 0ba4 CCE90156 	    strd    r5, r6, [r12, #4]
+ 834 0ba8 CCE906AB 	    strd    r10, r11, [r12, #24]
+ 835 0bac 6FEA0000 	    mvn     r0, r0                  // add the NOT for the penultimate rkey
+ 836 0bb0 6FEA0101 	    mvn     r1, r1                  // add the NOT for the penultimate rkey
+ 837 0bb4 6FEA0202 	    mvn     r2, r2                  // add the NOT for the penultimate rkey
+ 838 0bb8 6FEA0303 	    mvn     r3, r3                  // add the NOT for the penultimate rkey
+ 839 0bbc 5CE96F56 	    ldrd    r5, r6, [r12, #-444]
+ 840 0bc0 5CE96AAB 	    ldrd    r10, r11, [r12, #-424]
+ 841 0bc4 4CE90701 	    strd    r0, r1, [r12, #-28]
+ 842 0bc8 4CE90223 	    strd    r2, r3, [r12, #-8]
+ 843 0bcc 6FEA0505 	    mvn     r5, r5                  // remove the NOT for the key whitening
+ 844 0bd0 6FEA0606 	    mvn     r6, r6                  // remove the NOT for the key whitening
+ 845 0bd4 6FEA0A0A 	    mvn     r10, r10                // remove the NOT for the key whitening
+ 846 0bd8 6FEA0B0B 	    mvn     r11, r11                // remove the NOT for the key whitening
+ 847 0bdc 4CE96F56 	    strd    r5, r6, [r12, #-444]
+ 848 0be0 4CE96AAB 	    strd    r10, r11, [r12, #-424]
+ 849 0be4 0DF1380D 	    add.w   sp, #56                 // restore stack
+ 850 0be8 BDE8FF5F 	    pop     {r0-r12, r14}           // restore context
+ 851 0bec 704700BF 	    bx      lr...
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccfZ6TZT.s 			page 17
+
+
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccfZ6TZT.s 			page 18
+
+
+DEFINED SYMBOLS
+   aes-keyschedule.S:33     .text:00000000 $t
+   aes-keyschedule.S:34     .text:00000000 packing
+   aes-keyschedule.S:59     .text:000000d4 sbox
+   aes-keyschedule.S:218    .text:00000310 aes128_xorcolumns_rotword
+   aes-keyschedule.S:344    .text:000004e4 aes256_xorcolumns_rotword
+   aes-keyschedule.S:470    .text:000006b8 aes256_xorcolumns
+   aes-keyschedule.S:593    .text:0000088c inv_shiftrows_1
+   aes-keyschedule.S:599    .text:000008a0 loop_inv_sr_1
+   aes-keyschedule.S:619    .text:000008dc inv_shiftrows_2
+   aes-keyschedule.S:625    .text:000008f0 loop_inv_sr_2
+   aes-keyschedule.S:642    .text:00000914 inv_shiftrows_3
+   aes-keyschedule.S:648    .text:00000928 loop_inv_sr_3
+   aes-keyschedule.S:672    .text:00000964 aes128_keyschedule_ffs
+   aes-keyschedule.S:756    .text:00000a80 aes256_keyschedule_ffs
+
+NO UNDEFINED SYMBOLS

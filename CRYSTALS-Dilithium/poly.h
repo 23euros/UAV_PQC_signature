@@ -5,7 +5,7 @@
 #include "params.h"
 
 typedef struct {
-  int32_t coeffs[N];
+  int32_t coeffs[N1];
 } poly;
 
 #define poly_reduce DILITHIUM_NAMESPACE(poly_reduce)

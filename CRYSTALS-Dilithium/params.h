@@ -8,8 +8,8 @@
 
 #define SEEDBYTES 32
 #define CRHBYTES 64
-#define N 256
-#define Q 8380417
+#define N1 256
+#define Q1 8380417
 #define D 13
 #define ROOT_OF_UNITY 1753
 
@@ -20,7 +20,7 @@
 #define TAU 39
 #define BETA 78
 #define GAMMA1 (1 << 17)
-#define GAMMA2 ((Q-1)/88)
+#define GAMMA2 ((Q1-1)/88)
 #define OMEGA 80
 #define CRYPTO_ALGNAME "Dilithium2"
 
@@ -58,7 +58,7 @@
 #define POLYZ_PACKEDBYTES   640
 #endif
 
-#if GAMMA2 == (Q-1)/88
+#if GAMMA2 == (Q1-1)/88
 #define POLYW1_PACKEDBYTES  192
 #elif GAMMA2 == (Q-1)/32
 #define POLYW1_PACKEDBYTES  128

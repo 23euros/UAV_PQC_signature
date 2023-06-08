@@ -9,7 +9,7 @@
 #if DILITHIUM_MODE == 3 // use q=769
 #define SMALL_POLY_16_BIT
 typedef struct {
-    int16_t coeffs[N];
+    int16_t coeffs[N1];
 } smallpoly;
 
 typedef smallpoly smallhalfpoly;
@@ -17,11 +17,11 @@ typedef smallpoly smallhalfpoly;
 #else // use q=257
 #define SMALL_POLY_32_BIT
 typedef struct {
-    int32_t coeffs[N];
+    int32_t coeffs[N1];
 } smallpoly;
 
 typedef struct {
-    int16_t coeffs[N];
+    int16_t coeffs[N1];
 } smallhalfpoly;
 #endif
 

@@ -1,0 +1,996 @@
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccFMI6PG.s 			page 1
+
+
+   1              	# 0 "ifnt_257.S"
+   2              	# 1 "C:\\ChibiStudio\\workspace_user\\CRYSTALS-Dilithium//"
+   0              	
+   0              	
+   0              	
+   1              	#include "macros_fnt.i"
+   1              	// 2
+   2              	.macro ldrstr2 ldrstr, target, c0, c1, mem0, mem1
+   3              	    \ldrstr \c0, [\target, \mem0]
+   4              	    \ldrstr \c1, [\target, \mem1]
+   5              	.endm
+   6              	
+   7              	// 2
+   8              	.macro ldrstr2jump ldrstr, target, c0, c1, mem1, jump
+   9              	    \ldrstr \c1, [\target, \mem1]
+  10              	    \ldrstr \c0, [\target], \jump
+  11              	.endm
+  12              	
+  13              	// 4
+  14              	.macro ldrstr4 ldrstr, target, c0, c1, c2, c3, mem0, mem1, mem2, mem3
+  15              	    \ldrstr \c0, [\target, \mem0]
+  16              	    \ldrstr \c1, [\target, \mem1]
+  17              	    \ldrstr \c2, [\target, \mem2]
+  18              	    \ldrstr \c3, [\target, \mem3]
+  19              	.endm
+  20              	
+  21              	// 4
+  22              	.macro ldrstr4jump ldrstr, target, c0, c1, c2, c3, mem1, mem2, mem3, jump
+  23              	    \ldrstr \c1, [\target, \mem1]
+  24              	    \ldrstr \c2, [\target, \mem2]
+  25              	    \ldrstr \c3, [\target, \mem3]
+  26              	    \ldrstr \c0, [\target], \jump
+  27              	.endm
+  28              	
+  29              	// 8
+  30              	.macro ldrstrvec ldrstr, target, c0, c1, c2, c3, c4, c5, c6, c7, mem0, mem1, mem2, mem3, mem4, mem5
+  31              	    ldrstr4 \ldrstr, \target, \c0, \c1, \c2, \c3, \mem0, \mem1, \mem2, \mem3
+  32              	    ldrstr4 \ldrstr, \target, \c4, \c5, \c6, \c7, \mem4, \mem5, \mem6, \mem7
+  33              	.endm
+  34              	
+  35              	// 8
+  36              	.macro ldrstrvecjump ldrstr, target, c0, c1, c2, c3, c4, c5, c6, c7, mem1, mem2, mem3, mem4, mem5, 
+  37              	    ldrstr4 \ldrstr, \target, \c4, \c5, \c6, \c7, \mem4, \mem5, \mem6, \mem7
+  38              	    ldrstr4jump \ldrstr, \target, \c0, \c1, \c2, \c3, \mem1, \mem2, \mem3, \jump
+  39              	.endm
+  40              	
+  41              	
+  42              	
+  43              	.macro addSub1 c0, c1
+  44              	    add.w \c0, \c1
+  45              	    sub.w \c1, \c0, \c1, lsl #1
+  46              	.endm
+  47              	
+  48              	.macro addSub2 c0, c1, c2, c3
+  49              	    add \c0, \c1
+  50              	    add \c2, \c3
+  51              	    sub.w \c1, \c0, \c1, lsl #1
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccFMI6PG.s 			page 2
+
+
+  52              	    sub.w \c3, \c2, \c3, lsl #1
+  53              	.endm
+  54              	
+  55              	.macro addSub4 c0, c1, c2, c3, c4, c5, c6, c7
+  56              	    add \c0, \c1
+  57              	    add \c2, \c3
+  58              	    add \c4, \c5
+  59              	    add \c6, \c7
+  60              	    sub.w \c1, \c0, \c1, lsl #1
+  61              	    sub.w \c3, \c2, \c3, lsl #1
+  62              	    sub.w \c5, \c4, \c5, lsl #1
+  63              	    sub.w \c7, \c6, \c7, lsl #1
+  64              	.endm
+  65              	
+  66              	// 2
+  67              	.macro barrett_32 a, Qbar, Q, tmp
+  68              	    smmulr.w \tmp, \a, \Qbar
+  69              	    mls.w \a, \tmp, \Q, \a
+  70              	.endm
+  71              	
+  72              	.macro FNT_CT_butterfly c0, c1, logW
+  73              	    add.w \c0, \c0, \c1, lsl #\logW
+  74              	    sub.w \c1, \c0, \c1, lsl #(\logW+1)
+  75              	.endm
+  76              	
+  77              	.macro shift_subAdd c0, c1, shlv
+  78              	    sub.w \c0, \c0, \c1, lsl #(\shlv)
+  79              	    add.w \c1, \c0, \c1, lsl #(\shlv+1)
+  80              	.endm
+  81              	
+  82              	.macro FNT_CT_ibutterfly c0, c1, shlv
+  83              	    shift_subAdd \c0, \c1, \shlv
+  84              	.endm
+  85              	
+  86              	// 46
+  87              	.macro _3_layer_CT_32_FNT c0, c1, c2, c3, c4, c5, c6, c7, xi0, xi1, xi2, xi3, xi4, xi5, xi6, twiddl
+  88              	    vmov.w \twiddle, \xi0
+  89              	
+  90              	    // c0, c1, c2, c3, c4, c5, c6, c7, c8
+  91              	    // 0,4
+  92              	    mla \tmp, \c4, \twiddle, \c0
+  93              	    mls \c4, \c4, \twiddle, \c0
+  94              	
+  95              	    // 1,5
+  96              	    mla \c0, \c5, \twiddle, \c1
+  97              	    mls \c5, \c5, \twiddle, \c1
+  98              	
+  99              	    // 2,6
+ 100              	    mla \c1, \c6, \twiddle, \c2
+ 101              	    mls \c6, \c6, \twiddle, \c2
+ 102              	
+ 103              	    // 3,7
+ 104              	    mla \c2, \c7, \twiddle, \c3
+ 105              	    mls \c7, \c7, \twiddle, \c3
+ 106              	
+ 107              	    // tmp, c0, c1, c2, c4, c5, c6, c7
+ 108              	
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccFMI6PG.s 			page 3
+
+
+ 109              	    barrett_32 \tmp, \Qprime, \Q, \c3
+ 110              	    barrett_32 \c0, \Qprime, \Q, \c3
+ 111              	    barrett_32 \c1, \Qprime, \Q, \c3
+ 112              	    barrett_32 \c2, \Qprime, \Q, \c3
+ 113              	    barrett_32 \c4, \Qprime, \Q, \c3
+ 114              	    barrett_32 \c5, \Qprime, \Q, \c3
+ 115              	    barrett_32 \c6, \Qprime, \Q, \c3
+ 116              	    barrett_32 \c7, \Qprime, \Q, \c3
+ 117              	
+ 118              	    vmov.w \twiddle, \xi1
+ 119              	    // 0,2
+ 120              	    mla \tmp2, \c1, \twiddle, \tmp
+ 121              	    mls \c3, \c1, \twiddle, \tmp
+ 122              	
+ 123              	    // 1,3
+ 124              	    mla \tmp, \c2, \twiddle, \c0
+ 125              	    mls \c0, \c2, \twiddle, \c0
+ 126              	
+ 127              	    vmov.w \twiddle, \xi2
+ 128              	
+ 129              	    // 4,6
+ 130              	    mla \c2, \c6, \twiddle, \c4
+ 131              	    mls \c1, \c6, \twiddle, \c4
+ 132              	
+ 133              	    // 5,7
+ 134              	    mla \c6, \c7, \twiddle, \c5
+ 135              	    mls \c7, \c7, \twiddle, \c5
+ 136              	
+ 137              	    // tmp2, tmp, c3, c0 | c2, c6, c1, c7
+ 138              	
+ 139              	    // 4,5
+ 140              	    vmov.w \twiddle, \xi5
+ 141              	    mla \c4, \c6, \twiddle, \c2
+ 142              	    mls \c5, \c6, \twiddle, \c2
+ 143              	
+ 144              	    // 6,7
+ 145              	    vmov.w \twiddle, \xi6
+ 146              	    mla \c6, \c7, \twiddle, \c1
+ 147              	    mls \c7, \c7, \twiddle, \c1
+ 148              	
+ 149              	    // 2,3
+ 150              	    vmov.w \twiddle, \xi4
+ 151              	    mla \c2, \c0, \twiddle, \c3
+ 152              	    mls \c3, \c0, \twiddle, \c3
+ 153              	
+ 154              	    // 0,1
+ 155              	    vmov.w \twiddle, \xi3
+ 156              	    mla \c0, \tmp, \twiddle, \tmp2
+ 157              	    mls \c1, \tmp, \twiddle, \tmp2
+ 158              	.endm...
+   2              	.macro final_butterfly c0, c1, c1f, twiddle
+   3              	    vmov.w \c1, \c1f
+   4              	    add.w \c0, \c1
+   5              	    sub.w \c1, \c0, \c1, lsl#1
+   6              	    mul.w \c1, \twiddle
+   7              	.endm
+   8              	
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccFMI6PG.s 			page 4
+
+
+   9              	.macro final_butterfly2 c0, c0out, c1, c1f, twiddle, twiddle2
+  10              	    vmov.w \c1, \c1f
+  11              	    mla.w \c0out, \twiddle2, \c1, \c0
+  12              	    mls.w \c1, \twiddle2, \c1, \c0
+  13              	    mul.w \c1, \twiddle
+  14              	.endm
+  15              	
+  16              	.syntax unified
+  17              	.cpu cortex-m4
+  18              	.align 2
+  19              	.global __asm_ifnt_257
+  20              	.type __asm_ifnt_257, %function
+  21              	__asm_ifnt_257:
+  22 0000 2DE9F04F 	    push.w {r4-r11, lr}
+  23 0004 2DED098A 	    vpush.w {s16-s24}
+  24              	
+  25              	    .equ width, 4
+  26              	
+  27 0008 00F5806C 	    add.w r12, r0, #256*width
+  28 000c 00EE90CA 	    vmov.w s1, r12
+  29              	    _ifnt_7_6_5_4:
+  30              	
+  31 0010 B1EC0F1A 	        vldm.w r1!, {s2-s16}
+  32              	
+  33              	// ================
+  34              	
+  35              	            ldrstrvec ldr.w, r0, r4, r5, r6, r7, r8, r9, r10, r11, #(2*8*width), #(2*9*width), #(2*
+  35              	>  ldrstr4 ldr.w,r0,r4,r5,r6,r7,#(2*8*width),#(2*9*width),#(2*10*width),#(2*11*width)
+  35 0014 D0F84040 	>>  ldr.w r4,[r0,#(2*8*width)]
+  35 0018 D0F84850 	>>  ldr.w r5,[r0,#(2*9*width)]
+  35 001c D0F85060 	>>  ldr.w r6,[r0,#(2*10*width)]
+  35 0020 D0F85870 	>>  ldr.w r7,[r0,#(2*11*width)]
+  35              	>  ldrstr4 ldr.w,r0,r8,r9,r10,r11,#(2*12*width),#(2*13*width),#(2*14*width),#(2*15*width)
+  35 0024 D0F86080 	>>  ldr.w r8,[r0,#(2*12*width)]
+  35 0028 D0F86890 	>>  ldr.w r9,[r0,#(2*13*width)]
+  35 002c D0F870A0 	>>  ldr.w r10,[r0,#(2*14*width)]
+  35 0030 D0F878B0 	>>  ldr.w r11,[r0,#(2*15*width)]
+  36              	
+  37              	            addSub4 r4, r5, r6, r7, r8, r9, r10, r11
+  37 0034 2C44     	>  add r4,r5
+  37 0036 3E44     	>  add r6,r7
+  37 0038 C844     	>  add r8,r9
+  37 003a DA44     	>  add r10,r11
+  37 003c A4EB4505 	>  sub.w r5,r4,r5,lsl#1
+  37 0040 A6EB4707 	>  sub.w r7,r6,r7,lsl#1
+  37 0044 A8EB4909 	>  sub.w r9,r8,r9,lsl#1
+  37 0048 AAEB4B0B 	>  sub.w r11,r10,r11,lsl#1
+  38 004c 13EE10EA 	            vmov.w r14, s6
+  39 0050 05FB0EF5 	            mul.w r5, r5, r14
+  40 0054 14EE10EA 	            vmov.w r14, s8
+  41 0058 09FB0EF9 	            mul.w r9, r9, r14
+  42              	            addSub2 r4, r6, r8, r10
+  42 005c 3444     	>  add r4,r6
+  42 005e D044     	>  add r8,r10
+  42 0060 A4EB4606 	>  sub.w r6,r4,r6,lsl#1
+  42 0064 A8EB4A0A 	>  sub.w r10,r8,r10,lsl#1
+  43 0068 13EE90EA 	            vmov.w r14, s7
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccFMI6PG.s 			page 5
+
+
+  44 006c 07FB0E5C 	            mla.w r12, r7, r14, r5
+  45 0070 07FB1E57 	            mls.w r7, r7, r14, r5
+  46 0074 14EE90EA 	            vmov.w r14, s9
+  47 0078 0BFB0E95 	            mla.w r5, r11, r14, r9
+  48 007c 0BFB1E9B 	            mls.w r11, r11, r14, r9
+  49              	
+  50              	            // r4, r12, r6, r7, r8, r5, r10, r11
+  51              	
+  52 0080 16EE10EA 	            vmov.w r14, s12
+  53 0084 06FB0EF6 	            mul.w r6, r6, r14
+  54 0088 07FB0EF7 	            mul.w r7, r7, r14
+  55 008c 16EE90EA 	            vmov.w r14, s13
+  56 0090 0AFB0EFA 	            mul.w r10, r10, r14
+  57 0094 0BFB0EFB 	            mul.w r11, r11, r14
+  58              	
+  59              	    barrett_32 r4, r2, r3, r14
+  59 0098 54FB12FE 	>  smmulr.w r14,r4,r2
+  59 009c 0EFB1344 	>  mls.w r4,r14,r3,r4
+  60              	    barrett_32 r12, r2, r3, r14
+  60 00a0 5CFB12FE 	>  smmulr.w r14,r12,r2
+  60 00a4 0EFB13CC 	>  mls.w r12,r14,r3,r12
+  61              	    barrett_32 r6, r2, r3, r14
+  61 00a8 56FB12FE 	>  smmulr.w r14,r6,r2
+  61 00ac 0EFB1366 	>  mls.w r6,r14,r3,r6
+  62              	    barrett_32 r7, r2, r3, r14
+  62 00b0 57FB12FE 	>  smmulr.w r14,r7,r2
+  62 00b4 0EFB1377 	>  mls.w r7,r14,r3,r7
+  63              	    barrett_32 r8, r2, r3, r14
+  63 00b8 58FB12FE 	>  smmulr.w r14,r8,r2
+  63 00bc 0EFB1388 	>  mls.w r8,r14,r3,r8
+  64              	    barrett_32 r5, r2, r3, r14
+  64 00c0 55FB12FE 	>  smmulr.w r14,r5,r2
+  64 00c4 0EFB1355 	>  mls.w r5,r14,r3,r5
+  65              	    barrett_32 r10, r2, r3, r14
+  65 00c8 5AFB12FE 	>  smmulr.w r14,r10,r2
+  65 00cc 0EFB13AA 	>  mls.w r10,r14,r3,r10
+  66              	    barrett_32 r11, r2, r3, r14
+  66 00d0 5BFB12FE 	>  smmulr.w r14,r11,r2
+  66 00d4 0EFB13BB 	>  mls.w r11,r14,r3,r11
+  67              	
+  68              	            addSub4 r4, r8, r6, r10, r12, r5, r7, r11
+  68 00d8 4444     	>  add r4,r8
+  68 00da 5644     	>  add r6,r10
+  68 00dc AC44     	>  add r12,r5
+  68 00de 5F44     	>  add r7,r11
+  68 00e0 A4EB4808 	>  sub.w r8,r4,r8,lsl#1
+  68 00e4 A6EB4A0A 	>  sub.w r10,r6,r10,lsl#1
+  68 00e8 ACEB4505 	>  sub.w r5,r12,r5,lsl#1
+  68 00ec A7EB4B0B 	>  sub.w r11,r7,r11,lsl#1
+  69              	
+  70 00f0 4CEC384A 	            vmov.w s17, s18, r4, r12
+  71 00f4 47EC396A 	            vmov.w s19, s20, r6, r7
+  72 00f8 45EC3A8A 	            vmov.w s21, s22, r8, r5
+  73 00fc 4BEC3BAA 	            vmov.w s23, s24, r10, r11
+  74              	
+  75              	            ldrstrvec ldr.w, r0, r4, r5, r6, r7, r8, r9, r10, r11, #(2*0*width), #(2*1*width), #(2*
+  75              	>  ldrstr4 ldr.w,r0,r4,r5,r6,r7,#(2*0*width),#(2*1*width),#(2*2*width),#(2*3*width)
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccFMI6PG.s 			page 6
+
+
+  75 0100 D0F80040 	>>  ldr.w r4,[r0,#(2*0*width)]
+  75 0104 D0F80850 	>>  ldr.w r5,[r0,#(2*1*width)]
+  75 0108 D0F81060 	>>  ldr.w r6,[r0,#(2*2*width)]
+  75 010c D0F81870 	>>  ldr.w r7,[r0,#(2*3*width)]
+  75              	>  ldrstr4 ldr.w,r0,r8,r9,r10,r11,#(2*4*width),#(2*5*width),#(2*6*width),#(2*7*width)
+  75 0110 D0F82080 	>>  ldr.w r8,[r0,#(2*4*width)]
+  75 0114 D0F82890 	>>  ldr.w r9,[r0,#(2*5*width)]
+  75 0118 D0F830A0 	>>  ldr.w r10,[r0,#(2*6*width)]
+  75 011c D0F838B0 	>>  ldr.w r11,[r0,#(2*7*width)]
+  76              	
+  77              	            addSub4 r4, r5, r6, r7, r8, r9, r10, r11
+  77 0120 2C44     	>  add r4,r5
+  77 0122 3E44     	>  add r6,r7
+  77 0124 C844     	>  add r8,r9
+  77 0126 DA44     	>  add r10,r11
+  77 0128 A4EB4505 	>  sub.w r5,r4,r5,lsl#1
+  77 012c A6EB4707 	>  sub.w r7,r6,r7,lsl#1
+  77 0130 A8EB4909 	>  sub.w r9,r8,r9,lsl#1
+  77 0134 AAEB4B0B 	>  sub.w r11,r10,r11,lsl#1
+  78 0138 11EE10EA 	            vmov.w r14, s2
+  79 013c 05FB0EF5 	            mul.w r5, r5, r14
+  80 0140 12EE10EA 	            vmov.w r14, s4
+  81 0144 09FB0EF9 	            mul.w r9, r9, r14
+  82              	            addSub2 r4, r6, r8, r10
+  82 0148 3444     	>  add r4,r6
+  82 014a D044     	>  add r8,r10
+  82 014c A4EB4606 	>  sub.w r6,r4,r6,lsl#1
+  82 0150 A8EB4A0A 	>  sub.w r10,r8,r10,lsl#1
+  83 0154 11EE90EA 	            vmov.w r14, s3
+  84 0158 07FB0E5C 	            mla.w r12, r7, r14, r5
+  85 015c 07FB1E57 	            mls.w r7, r7, r14, r5
+  86 0160 12EE90EA 	            vmov.w r14, s5
+  87 0164 0BFB0E95 	            mla.w r5, r11, r14, r9
+  88 0168 0BFB1E9B 	            mls.w r11, r11, r14, r9
+  89              	
+  90              	            // r4, r12, r6, r7, r8, r5, r10, r11
+  91              	
+  92 016c 15EE10EA 	            vmov.w r14, s10
+  93 0170 06FB0EF6 	            mul.w r6, r6, r14
+  94 0174 07FB0EF7 	            mul.w r7, r7, r14
+  95 0178 15EE90EA 	            vmov.w r14, s11
+  96 017c 0AFB0EFA 	            mul.w r10, r10, r14
+  97 0180 0BFB0EFB 	            mul.w r11, r11, r14
+  98              	
+  99              	    barrett_32 r4, r2, r3, r14
+  99 0184 54FB12FE 	>  smmulr.w r14,r4,r2
+  99 0188 0EFB1344 	>  mls.w r4,r14,r3,r4
+ 100              	    barrett_32 r12, r2, r3, r14
+ 100 018c 5CFB12FE 	>  smmulr.w r14,r12,r2
+ 100 0190 0EFB13CC 	>  mls.w r12,r14,r3,r12
+ 101              	    barrett_32 r6, r2, r3, r14
+ 101 0194 56FB12FE 	>  smmulr.w r14,r6,r2
+ 101 0198 0EFB1366 	>  mls.w r6,r14,r3,r6
+ 102              	    barrett_32 r7, r2, r3, r14
+ 102 019c 57FB12FE 	>  smmulr.w r14,r7,r2
+ 102 01a0 0EFB1377 	>  mls.w r7,r14,r3,r7
+ 103              	    barrett_32 r8, r2, r3, r14
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccFMI6PG.s 			page 7
+
+
+ 103 01a4 58FB12FE 	>  smmulr.w r14,r8,r2
+ 103 01a8 0EFB1388 	>  mls.w r8,r14,r3,r8
+ 104              	    barrett_32 r5, r2, r3, r14
+ 104 01ac 55FB12FE 	>  smmulr.w r14,r5,r2
+ 104 01b0 0EFB1355 	>  mls.w r5,r14,r3,r5
+ 105              	    barrett_32 r10, r2, r3, r14
+ 105 01b4 5AFB12FE 	>  smmulr.w r14,r10,r2
+ 105 01b8 0EFB13AA 	>  mls.w r10,r14,r3,r10
+ 106              	    barrett_32 r11, r2, r3, r14
+ 106 01bc 5BFB12FE 	>  smmulr.w r14,r11,r2
+ 106 01c0 0EFB13BB 	>  mls.w r11,r14,r3,r11
+ 107              	
+ 108              	            addSub4 r4, r8, r6, r10, r12, r5, r7, r11
+ 108 01c4 4444     	>  add r4,r8
+ 108 01c6 5644     	>  add r6,r10
+ 108 01c8 AC44     	>  add r12,r5
+ 108 01ca 5F44     	>  add r7,r11
+ 108 01cc A4EB4808 	>  sub.w r8,r4,r8,lsl#1
+ 108 01d0 A6EB4A0A 	>  sub.w r10,r6,r10,lsl#1
+ 108 01d4 ACEB4505 	>  sub.w r5,r12,r5,lsl#1
+ 108 01d8 A7EB4B0B 	>  sub.w r11,r7,r11,lsl#1
+ 109 01dc 17EE10EA 	            vmov.w r14, s14
+ 110 01e0 08FB0EF8 	            mul.w r8, r8, r14
+ 111 01e4 05FB0EF5 	            mul.w r5, r5, r14
+ 112 01e8 0AFB0EFA 	            mul.w r10, r10, r14
+ 113 01ec 0BFB0EFB 	            mul.w r11, r11, r14
+ 114 01f0 18EE10EA 	            vmov.w r14, s16
+ 115              	            final_butterfly r12, r9, s18, r14
+ 115 01f4 19EE109A 	>  vmov.w r9,s18
+ 115 01f8 0CEB090C 	>  add.w r12,r9
+ 115 01fc ACEB4909 	>  sub.w r9,r12,r9,lsl#1
+ 115 0200 0EFB09F9 	>  mul.w r9,r14
+ 116 0204 C0F808C0 	            str.w r12, [r0, #(2*1*width)]
+ 117 0208 C0F84890 	            str.w r9, [r0, #(2*9*width)]
+ 118              	            final_butterfly r6, r9, s19, r14
+ 118 020c 19EE909A 	>  vmov.w r9,s19
+ 118 0210 06EB0906 	>  add.w r6,r9
+ 118 0214 A6EB4909 	>  sub.w r9,r6,r9,lsl#1
+ 118 0218 0EFB09F9 	>  mul.w r9,r14
+ 119 021c C0F81060 	            str.w r6, [r0, #(2*2*width)]
+ 120 0220 C0F85090 	            str.w r9, [r0, #(2*10*width)]
+ 121              	            final_butterfly r7, r9, s20, r14
+ 121 0224 1AEE109A 	>  vmov.w r9,s20
+ 121 0228 07EB0907 	>  add.w r7,r9
+ 121 022c A7EB4909 	>  sub.w r9,r7,r9,lsl#1
+ 121 0230 0EFB09F9 	>  mul.w r9,r14
+ 122 0234 C0F81870 	            str.w r7, [r0, #(2*3*width)]
+ 123 0238 C0F85890 	            str.w r9, [r0, #(2*11*width)]
+ 124 023c 17EE90CA 	            vmov.w r12, s15
+ 125              	            final_butterfly2 r8, r6, r9, s21, r14, r12
+ 125 0240 1AEE909A 	>  vmov.w r9,s21
+ 125 0244 0CFB0986 	>  mla.w r6,r12,r9,r8
+ 125 0248 0CFB1989 	>  mls.w r9,r12,r9,r8
+ 125 024c 0EFB09F9 	>  mul.w r9,r14
+ 126 0250 C0F82060 	            str.w r6, [r0, #(2*4*width)]
+ 127 0254 C0F86090 	            str.w r9, [r0, #(2*12*width)]
+ 128              	            final_butterfly2 r5, r6, r9, s22, r14, r12
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccFMI6PG.s 			page 8
+
+
+ 128 0258 1BEE109A 	>  vmov.w r9,s22
+ 128 025c 0CFB0956 	>  mla.w r6,r12,r9,r5
+ 128 0260 0CFB1959 	>  mls.w r9,r12,r9,r5
+ 128 0264 0EFB09F9 	>  mul.w r9,r14
+ 129 0268 C0F82860 	            str.w r6, [r0, #(2*5*width)]
+ 130 026c C0F86890 	            str.w r9, [r0, #(2*13*width)]
+ 131              	            final_butterfly2 r10, r6, r9, s23, r14, r12
+ 131 0270 1BEE909A 	>  vmov.w r9,s23
+ 131 0274 0CFB09A6 	>  mla.w r6,r12,r9,r10
+ 131 0278 0CFB19A9 	>  mls.w r9,r12,r9,r10
+ 131 027c 0EFB09F9 	>  mul.w r9,r14
+ 132 0280 C0F83060 	            str.w r6, [r0, #(2*6*width)]
+ 133 0284 C0F87090 	            str.w r9, [r0, #(2*14*width)]
+ 134              	            final_butterfly2 r11, r6, r9, s24, r14, r12
+ 134 0288 1CEE109A 	>  vmov.w r9,s24
+ 134 028c 0CFB09B6 	>  mla.w r6,r12,r9,r11
+ 134 0290 0CFB19B9 	>  mls.w r9,r12,r9,r11
+ 134 0294 0EFB09F9 	>  mul.w r9,r14
+ 135 0298 C0F83860 	            str.w r6, [r0, #(2*7*width)]
+ 136 029c C0F87890 	            str.w r9, [r0, #(2*15*width)]
+ 137              	            final_butterfly r4, r9, s17, r14
+ 137 02a0 18EE909A 	>  vmov.w r9,s17
+ 137 02a4 04EB0904 	>  add.w r4,r9
+ 137 02a8 A4EB4909 	>  sub.w r9,r4,r9,lsl#1
+ 137 02ac 0EFB09F9 	>  mul.w r9,r14
+ 138 02b0 C0F84090 	            str.w r9, [r0, #(2*8*width)]
+ 139 02b4 40F8044B 	            str.w r4, [r0], #width
+ 140              	
+ 141              	// ================
+ 142              	
+ 143              	            ldrstrvec ldr.w, r0, r4, r5, r6, r7, r8, r9, r10, r11, #(2*8*width), #(2*9*width), #(2*
+ 143              	>  ldrstr4 ldr.w,r0,r4,r5,r6,r7,#(2*8*width),#(2*9*width),#(2*10*width),#(2*11*width)
+ 143 02b8 D0F84040 	>>  ldr.w r4,[r0,#(2*8*width)]
+ 143 02bc D0F84850 	>>  ldr.w r5,[r0,#(2*9*width)]
+ 143 02c0 D0F85060 	>>  ldr.w r6,[r0,#(2*10*width)]
+ 143 02c4 D0F85870 	>>  ldr.w r7,[r0,#(2*11*width)]
+ 143              	>  ldrstr4 ldr.w,r0,r8,r9,r10,r11,#(2*12*width),#(2*13*width),#(2*14*width),#(2*15*width)
+ 143 02c8 D0F86080 	>>  ldr.w r8,[r0,#(2*12*width)]
+ 143 02cc D0F86890 	>>  ldr.w r9,[r0,#(2*13*width)]
+ 143 02d0 D0F870A0 	>>  ldr.w r10,[r0,#(2*14*width)]
+ 143 02d4 D0F878B0 	>>  ldr.w r11,[r0,#(2*15*width)]
+ 144              	
+ 145              	            addSub4 r4, r5, r6, r7, r8, r9, r10, r11
+ 145 02d8 2C44     	>  add r4,r5
+ 145 02da 3E44     	>  add r6,r7
+ 145 02dc C844     	>  add r8,r9
+ 145 02de DA44     	>  add r10,r11
+ 145 02e0 A4EB4505 	>  sub.w r5,r4,r5,lsl#1
+ 145 02e4 A6EB4707 	>  sub.w r7,r6,r7,lsl#1
+ 145 02e8 A8EB4909 	>  sub.w r9,r8,r9,lsl#1
+ 145 02ec AAEB4B0B 	>  sub.w r11,r10,r11,lsl#1
+ 146 02f0 13EE10EA 	            vmov.w r14, s6
+ 147 02f4 05FB0EF5 	            mul.w r5, r5, r14
+ 148 02f8 14EE10EA 	            vmov.w r14, s8
+ 149 02fc 09FB0EF9 	            mul.w r9, r9, r14
+ 150              	            addSub2 r4, r6, r8, r10
+ 150 0300 3444     	>  add r4,r6
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccFMI6PG.s 			page 9
+
+
+ 150 0302 D044     	>  add r8,r10
+ 150 0304 A4EB4606 	>  sub.w r6,r4,r6,lsl#1
+ 150 0308 A8EB4A0A 	>  sub.w r10,r8,r10,lsl#1
+ 151 030c 13EE90EA 	            vmov.w r14, s7
+ 152 0310 07FB0E5C 	            mla.w r12, r7, r14, r5
+ 153 0314 07FB1E57 	            mls.w r7, r7, r14, r5
+ 154 0318 14EE90EA 	            vmov.w r14, s9
+ 155 031c 0BFB0E95 	            mla.w r5, r11, r14, r9
+ 156 0320 0BFB1E9B 	            mls.w r11, r11, r14, r9
+ 157              	
+ 158              	            // r4, r12, r6, r7, r8, r5, r10, r11
+ 159              	
+ 160 0324 16EE10EA 	            vmov.w r14, s12
+ 161 0328 06FB0EF6 	            mul.w r6, r6, r14
+ 162 032c 07FB0EF7 	            mul.w r7, r7, r14
+ 163 0330 16EE90EA 	            vmov.w r14, s13
+ 164 0334 0AFB0EFA 	            mul.w r10, r10, r14
+ 165 0338 0BFB0EFB 	            mul.w r11, r11, r14
+ 166              	
+ 167              	    barrett_32 r4, r2, r3, r14
+ 167 033c 54FB12FE 	>  smmulr.w r14,r4,r2
+ 167 0340 0EFB1344 	>  mls.w r4,r14,r3,r4
+ 168              	    barrett_32 r12, r2, r3, r14
+ 168 0344 5CFB12FE 	>  smmulr.w r14,r12,r2
+ 168 0348 0EFB13CC 	>  mls.w r12,r14,r3,r12
+ 169              	    barrett_32 r6, r2, r3, r14
+ 169 034c 56FB12FE 	>  smmulr.w r14,r6,r2
+ 169 0350 0EFB1366 	>  mls.w r6,r14,r3,r6
+ 170              	    barrett_32 r7, r2, r3, r14
+ 170 0354 57FB12FE 	>  smmulr.w r14,r7,r2
+ 170 0358 0EFB1377 	>  mls.w r7,r14,r3,r7
+ 171              	    barrett_32 r8, r2, r3, r14
+ 171 035c 58FB12FE 	>  smmulr.w r14,r8,r2
+ 171 0360 0EFB1388 	>  mls.w r8,r14,r3,r8
+ 172              	    barrett_32 r5, r2, r3, r14
+ 172 0364 55FB12FE 	>  smmulr.w r14,r5,r2
+ 172 0368 0EFB1355 	>  mls.w r5,r14,r3,r5
+ 173              	    barrett_32 r10, r2, r3, r14
+ 173 036c 5AFB12FE 	>  smmulr.w r14,r10,r2
+ 173 0370 0EFB13AA 	>  mls.w r10,r14,r3,r10
+ 174              	    barrett_32 r11, r2, r3, r14
+ 174 0374 5BFB12FE 	>  smmulr.w r14,r11,r2
+ 174 0378 0EFB13BB 	>  mls.w r11,r14,r3,r11
+ 175              	
+ 176              	            addSub4 r4, r8, r6, r10, r12, r5, r7, r11
+ 176 037c 4444     	>  add r4,r8
+ 176 037e 5644     	>  add r6,r10
+ 176 0380 AC44     	>  add r12,r5
+ 176 0382 5F44     	>  add r7,r11
+ 176 0384 A4EB4808 	>  sub.w r8,r4,r8,lsl#1
+ 176 0388 A6EB4A0A 	>  sub.w r10,r6,r10,lsl#1
+ 176 038c ACEB4505 	>  sub.w r5,r12,r5,lsl#1
+ 176 0390 A7EB4B0B 	>  sub.w r11,r7,r11,lsl#1
+ 177              	
+ 178 0394 4CEC384A 	            vmov.w s17, s18, r4, r12
+ 179 0398 47EC396A 	            vmov.w s19, s20, r6, r7
+ 180 039c 45EC3A8A 	            vmov.w s21, s22, r8, r5
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccFMI6PG.s 			page 10
+
+
+ 181 03a0 4BEC3BAA 	            vmov.w s23, s24, r10, r11
+ 182              	
+ 183              	            ldrstrvec ldr.w, r0, r4, r5, r6, r7, r8, r9, r10, r11, #(2*0*width), #(2*1*width), #(2*
+ 183              	>  ldrstr4 ldr.w,r0,r4,r5,r6,r7,#(2*0*width),#(2*1*width),#(2*2*width),#(2*3*width)
+ 183 03a4 D0F80040 	>>  ldr.w r4,[r0,#(2*0*width)]
+ 183 03a8 D0F80850 	>>  ldr.w r5,[r0,#(2*1*width)]
+ 183 03ac D0F81060 	>>  ldr.w r6,[r0,#(2*2*width)]
+ 183 03b0 D0F81870 	>>  ldr.w r7,[r0,#(2*3*width)]
+ 183              	>  ldrstr4 ldr.w,r0,r8,r9,r10,r11,#(2*4*width),#(2*5*width),#(2*6*width),#(2*7*width)
+ 183 03b4 D0F82080 	>>  ldr.w r8,[r0,#(2*4*width)]
+ 183 03b8 D0F82890 	>>  ldr.w r9,[r0,#(2*5*width)]
+ 183 03bc D0F830A0 	>>  ldr.w r10,[r0,#(2*6*width)]
+ 183 03c0 D0F838B0 	>>  ldr.w r11,[r0,#(2*7*width)]
+ 184              	
+ 185              	            addSub4 r4, r5, r6, r7, r8, r9, r10, r11
+ 185 03c4 2C44     	>  add r4,r5
+ 185 03c6 3E44     	>  add r6,r7
+ 185 03c8 C844     	>  add r8,r9
+ 185 03ca DA44     	>  add r10,r11
+ 185 03cc A4EB4505 	>  sub.w r5,r4,r5,lsl#1
+ 185 03d0 A6EB4707 	>  sub.w r7,r6,r7,lsl#1
+ 185 03d4 A8EB4909 	>  sub.w r9,r8,r9,lsl#1
+ 185 03d8 AAEB4B0B 	>  sub.w r11,r10,r11,lsl#1
+ 186 03dc 11EE10EA 	            vmov.w r14, s2
+ 187 03e0 05FB0EF5 	            mul.w r5, r5, r14
+ 188 03e4 12EE10EA 	            vmov.w r14, s4
+ 189 03e8 09FB0EF9 	            mul.w r9, r9, r14
+ 190              	            addSub2 r4, r6, r8, r10
+ 190 03ec 3444     	>  add r4,r6
+ 190 03ee D044     	>  add r8,r10
+ 190 03f0 A4EB4606 	>  sub.w r6,r4,r6,lsl#1
+ 190 03f4 A8EB4A0A 	>  sub.w r10,r8,r10,lsl#1
+ 191 03f8 11EE90EA 	            vmov.w r14, s3
+ 192 03fc 07FB0E5C 	            mla.w r12, r7, r14, r5
+ 193 0400 07FB1E57 	            mls.w r7, r7, r14, r5
+ 194 0404 12EE90EA 	            vmov.w r14, s5
+ 195 0408 0BFB0E95 	            mla.w r5, r11, r14, r9
+ 196 040c 0BFB1E9B 	            mls.w r11, r11, r14, r9
+ 197              	
+ 198              	            // r4, r12, r6, r7, r8, r5, r10, r11
+ 199              	
+ 200 0410 15EE10EA 	            vmov.w r14, s10
+ 201 0414 06FB0EF6 	            mul.w r6, r6, r14
+ 202 0418 07FB0EF7 	            mul.w r7, r7, r14
+ 203 041c 15EE90EA 	            vmov.w r14, s11
+ 204 0420 0AFB0EFA 	            mul.w r10, r10, r14
+ 205 0424 0BFB0EFB 	            mul.w r11, r11, r14
+ 206              	
+ 207              	    barrett_32 r4, r2, r3, r14
+ 207 0428 54FB12FE 	>  smmulr.w r14,r4,r2
+ 207 042c 0EFB1344 	>  mls.w r4,r14,r3,r4
+ 208              	    barrett_32 r12, r2, r3, r14
+ 208 0430 5CFB12FE 	>  smmulr.w r14,r12,r2
+ 208 0434 0EFB13CC 	>  mls.w r12,r14,r3,r12
+ 209              	    barrett_32 r6, r2, r3, r14
+ 209 0438 56FB12FE 	>  smmulr.w r14,r6,r2
+ 209 043c 0EFB1366 	>  mls.w r6,r14,r3,r6
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccFMI6PG.s 			page 11
+
+
+ 210              	    barrett_32 r7, r2, r3, r14
+ 210 0440 57FB12FE 	>  smmulr.w r14,r7,r2
+ 210 0444 0EFB1377 	>  mls.w r7,r14,r3,r7
+ 211              	    barrett_32 r8, r2, r3, r14
+ 211 0448 58FB12FE 	>  smmulr.w r14,r8,r2
+ 211 044c 0EFB1388 	>  mls.w r8,r14,r3,r8
+ 212              	    barrett_32 r5, r2, r3, r14
+ 212 0450 55FB12FE 	>  smmulr.w r14,r5,r2
+ 212 0454 0EFB1355 	>  mls.w r5,r14,r3,r5
+ 213              	    barrett_32 r10, r2, r3, r14
+ 213 0458 5AFB12FE 	>  smmulr.w r14,r10,r2
+ 213 045c 0EFB13AA 	>  mls.w r10,r14,r3,r10
+ 214              	    barrett_32 r11, r2, r3, r14
+ 214 0460 5BFB12FE 	>  smmulr.w r14,r11,r2
+ 214 0464 0EFB13BB 	>  mls.w r11,r14,r3,r11
+ 215              	
+ 216              	            addSub4 r4, r8, r6, r10, r12, r5, r7, r11
+ 216 0468 4444     	>  add r4,r8
+ 216 046a 5644     	>  add r6,r10
+ 216 046c AC44     	>  add r12,r5
+ 216 046e 5F44     	>  add r7,r11
+ 216 0470 A4EB4808 	>  sub.w r8,r4,r8,lsl#1
+ 216 0474 A6EB4A0A 	>  sub.w r10,r6,r10,lsl#1
+ 216 0478 ACEB4505 	>  sub.w r5,r12,r5,lsl#1
+ 216 047c A7EB4B0B 	>  sub.w r11,r7,r11,lsl#1
+ 217 0480 17EE10EA 	            vmov.w r14, s14
+ 218 0484 08FB0EF8 	            mul.w r8, r8, r14
+ 219 0488 05FB0EF5 	            mul.w r5, r5, r14
+ 220 048c 0AFB0EFA 	            mul.w r10, r10, r14
+ 221 0490 0BFB0EFB 	            mul.w r11, r11, r14
+ 222 0494 18EE10EA 	            vmov.w r14, s16
+ 223              	
+ 224              	            final_butterfly r12, r9, s18, r14
+ 224 0498 19EE109A 	>  vmov.w r9,s18
+ 224 049c 0CEB090C 	>  add.w r12,r9
+ 224 04a0 ACEB4909 	>  sub.w r9,r12,r9,lsl#1
+ 224 04a4 0EFB09F9 	>  mul.w r9,r14
+ 225 04a8 C0F808C0 	            str.w r12, [r0, #(2*1*width)]
+ 226 04ac C0F84890 	            str.w r9, [r0, #(2*9*width)]
+ 227              	            final_butterfly r6, r9, s19, r14
+ 227 04b0 19EE909A 	>  vmov.w r9,s19
+ 227 04b4 06EB0906 	>  add.w r6,r9
+ 227 04b8 A6EB4909 	>  sub.w r9,r6,r9,lsl#1
+ 227 04bc 0EFB09F9 	>  mul.w r9,r14
+ 228 04c0 C0F81060 	            str.w r6, [r0, #(2*2*width)]
+ 229 04c4 C0F85090 	            str.w r9, [r0, #(2*10*width)]
+ 230              	            final_butterfly r7, r9, s20, r14
+ 230 04c8 1AEE109A 	>  vmov.w r9,s20
+ 230 04cc 07EB0907 	>  add.w r7,r9
+ 230 04d0 A7EB4909 	>  sub.w r9,r7,r9,lsl#1
+ 230 04d4 0EFB09F9 	>  mul.w r9,r14
+ 231 04d8 C0F81870 	            str.w r7, [r0, #(2*3*width)]
+ 232 04dc C0F85890 	            str.w r9, [r0, #(2*11*width)]
+ 233 04e0 17EE90CA 	            vmov.w r12, s15
+ 234              	            final_butterfly2 r8, r6, r9, s21, r14, r12
+ 234 04e4 1AEE909A 	>  vmov.w r9,s21
+ 234 04e8 0CFB0986 	>  mla.w r6,r12,r9,r8
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccFMI6PG.s 			page 12
+
+
+ 234 04ec 0CFB1989 	>  mls.w r9,r12,r9,r8
+ 234 04f0 0EFB09F9 	>  mul.w r9,r14
+ 235 04f4 C0F82060 	            str.w r6, [r0, #(2*4*width)]
+ 236 04f8 C0F86090 	            str.w r9, [r0, #(2*12*width)]
+ 237              	            final_butterfly2 r5, r6, r9, s22, r14, r12
+ 237 04fc 1BEE109A 	>  vmov.w r9,s22
+ 237 0500 0CFB0956 	>  mla.w r6,r12,r9,r5
+ 237 0504 0CFB1959 	>  mls.w r9,r12,r9,r5
+ 237 0508 0EFB09F9 	>  mul.w r9,r14
+ 238 050c C0F82860 	            str.w r6, [r0, #(2*5*width)]
+ 239 0510 C0F86890 	            str.w r9, [r0, #(2*13*width)]
+ 240              	            final_butterfly2 r10, r6, r9, s23, r14, r12
+ 240 0514 1BEE909A 	>  vmov.w r9,s23
+ 240 0518 0CFB09A6 	>  mla.w r6,r12,r9,r10
+ 240 051c 0CFB19A9 	>  mls.w r9,r12,r9,r10
+ 240 0520 0EFB09F9 	>  mul.w r9,r14
+ 241 0524 C0F83060 	            str.w r6, [r0, #(2*6*width)]
+ 242 0528 C0F87090 	            str.w r9, [r0, #(2*14*width)]
+ 243              	            final_butterfly2 r11, r6, r9, s24, r14, r12
+ 243 052c 1CEE109A 	>  vmov.w r9,s24
+ 243 0530 0CFB09B6 	>  mla.w r6,r12,r9,r11
+ 243 0534 0CFB19B9 	>  mls.w r9,r12,r9,r11
+ 243 0538 0EFB09F9 	>  mul.w r9,r14
+ 244 053c C0F83860 	            str.w r6, [r0, #(2*7*width)]
+ 245 0540 C0F87890 	            str.w r9, [r0, #(2*15*width)]
+ 246              	            final_butterfly r4, r9, s17, r14
+ 246 0544 18EE909A 	>  vmov.w r9,s17
+ 246 0548 04EB0904 	>  add.w r4,r9
+ 246 054c A4EB4909 	>  sub.w r9,r4,r9,lsl#1
+ 246 0550 0EFB09F9 	>  mul.w r9,r14
+ 247 0554 C0F84090 	            str.w r9, [r0, #(2*8*width)]
+ 248 0558 40F87C4B 	            str.w r4, [r0], #31*width
+ 249              	
+ 250              	// ================
+ 251              	
+ 252 055c 10EE90CA 	    vmov.w r12, s1
+ 253 0560 B0EB0C0F 	    cmp.w r0, r12
+ 254 0564 7FF454AD 	    bne.w _ifnt_7_6_5_4
+ 255              	
+ 256 0568 A0F58060 	    sub.w r0, r0, #256*width
+ 257              	
+ 258 056c 4FF0000E 	    mov.w r14, #0
+ 259              	
+ 260 0570 00F18001 	    add.w r1, r0, #32*width
+ 261              	    _ifnt_0_1_2:
+ 262              	
+ 263              	.rept 2
+ 263              	> 
+ 263              	>  ldrstrvec ldr.w,r0,r4,r5,r6,r7,r8,r9,r10,r11,#(32*0*width),#(32*1*width),#(32*2*width),#(32*3*width),#(32*4*width),#(32*5*width),#(32*6*width),#(32*7*width)
+ 263              	>>  ldrstr4 ldr.w,r0,r4,r5,r6,r7,#(32*0*width),#(32*1*width),#(32*2*width),#(32*3*width)
+ 263 0574 D0F80040 	>>>  ldr.w r4,[r0,#(32*0*width)]
+ 263 0578 D0F88050 	>>>  ldr.w r5,[r0,#(32*1*width)]
+ 263 057c D0F80061 	>>>  ldr.w r6,[r0,#(32*2*width)]
+ 263 0580 D0F88071 	>>>  ldr.w r7,[r0,#(32*3*width)]
+ 263              	>>  ldrstr4 ldr.w,r0,r8,r9,r10,r11,#(32*4*width),#(32*5*width),#(32*6*width),#(32*7*width)
+ 263 0584 D0F80082 	>>>  ldr.w r8,[r0,#(32*4*width)]
+ 263 0588 D0F88092 	>>>  ldr.w r9,[r0,#(32*5*width)]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccFMI6PG.s 			page 13
+
+
+ 263 058c D0F800A3 	>>>  ldr.w r10,[r0,#(32*6*width)]
+ 263 0590 D0F880B3 	>>>  ldr.w r11,[r0,#(32*7*width)]
+ 263              	> 
+ 263              	>  addSub4 r4,r5,r6,r7,r8,r9,r10,r11
+ 263 0594 2C44     	>>  add r4,r5
+ 263 0596 3E44     	>>  add r6,r7
+ 263 0598 C844     	>>  add r8,r9
+ 263 059a DA44     	>>  add r10,r11
+ 263 059c A4EB4505 	>>  sub.w r5,r4,r5,lsl#1
+ 263 05a0 A6EB4707 	>>  sub.w r7,r6,r7,lsl#1
+ 263 05a4 A8EB4909 	>>  sub.w r9,r8,r9,lsl#1
+ 263 05a8 AAEB4B0B 	>>  sub.w r11,r10,r11,lsl#1
+ 263              	> 
+ 263              	>  addSub2 r4,r6,r8,r10
+ 263 05ac 3444     	>>  add r4,r6
+ 263 05ae D044     	>>  add r8,r10
+ 263 05b0 A4EB4606 	>>  sub.w r6,r4,r6,lsl#1
+ 263 05b4 A8EB4A0A 	>>  sub.w r10,r8,r10,lsl#1
+ 263              	>  FNT_CT_ibutterfly r5,r7,4
+ 263              	>>  shift_subAdd r5,r7,4
+ 263 05b8 A5EB0715 	>>>  sub.w r5,r5,r7,lsl#(4)
+ 263 05bc 05EB4717 	>>>  add.w r7,r5,r7,lsl#(4+1)
+ 263              	>  FNT_CT_ibutterfly r9,r11,4
+ 263              	>>  shift_subAdd r9,r11,4
+ 263 05c0 A9EB0B19 	>>>  sub.w r9,r9,r11,lsl#(4)
+ 263 05c4 09EB4B1B 	>>>  add.w r11,r9,r11,lsl#(4+1)
+ 263              	> 
+ 263              	>  addSub1 r4,r8
+ 263 05c8 04EB0804 	>>  add.w r4,r8
+ 263 05cc A4EB4808 	>>  sub.w r8,r4,r8,lsl#1
+ 263              	>  barrett_32 r9,r2,r3,r12
+ 263 05d0 59FB12FC 	>>  smmulr.w r12,r9,r2
+ 263 05d4 0CFB1399 	>>  mls.w r9,r12,r3,r9
+ 263              	>  FNT_CT_ibutterfly r5,r9,6
+ 263              	>>  shift_subAdd r5,r9,6
+ 263 05d8 A5EB8915 	>>>  sub.w r5,r5,r9,lsl#(6)
+ 263 05dc 05EBC919 	>>>  add.w r9,r5,r9,lsl#(6+1)
+ 263              	>  FNT_CT_ibutterfly r6,r10,4
+ 263              	>>  shift_subAdd r6,r10,4
+ 263 05e0 A6EB0A16 	>>>  sub.w r6,r6,r10,lsl#(4)
+ 263 05e4 06EB4A1A 	>>>  add.w r10,r6,r10,lsl#(4+1)
+ 263              	>  FNT_CT_ibutterfly r7,r11,2
+ 263              	>>  shift_subAdd r7,r11,2
+ 263 05e8 A7EB8B07 	>>>  sub.w r7,r7,r11,lsl#(2)
+ 263 05ec 07EBCB0B 	>>>  add.w r11,r7,r11,lsl#(2+1)
+ 263              	> 
+ 263              	>  barrett_32 r6,r2,r3,r12
+ 263 05f0 56FB12FC 	>>  smmulr.w r12,r6,r2
+ 263 05f4 0CFB1366 	>>  mls.w r6,r12,r3,r6
+ 263              	>  barrett_32 r7,r2,r3,r12
+ 263 05f8 57FB12FC 	>>  smmulr.w r12,r7,r2
+ 263 05fc 0CFB1377 	>>  mls.w r7,r12,r3,r7
+ 263 0600 AEEB4404 	>  sub.w r4,r14,r4,lsl#1
+ 263 0604 C5F10005 	>  neg.w r5,r5
+ 263 0608 4FEAC616 	>  lsl.w r6,r6,#7
+ 263 060c 4FEA8717 	>  lsl.w r7,r7,#6
+ 263 0610 4FEA4818 	>  lsl.w r8,r8,#5
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccFMI6PG.s 			page 14
+
+
+ 263 0614 4FEA0919 	>  lsl.w r9,r9,#4
+ 263 0618 4FEACA0A 	>  lsl.w r10,r10,#3
+ 263 061c 4FEA8B0B 	>  lsl.w r11,r11,#2
+ 263              	> 
+ 263              	>  barrett_32 r4,r2,r3,r12
+ 263 0620 54FB12FC 	>>  smmulr.w r12,r4,r2
+ 263 0624 0CFB1344 	>>  mls.w r4,r12,r3,r4
+ 263              	>  barrett_32 r5,r2,r3,r12
+ 263 0628 55FB12FC 	>>  smmulr.w r12,r5,r2
+ 263 062c 0CFB1355 	>>  mls.w r5,r12,r3,r5
+ 263              	>  barrett_32 r6,r2,r3,r12
+ 263 0630 56FB12FC 	>>  smmulr.w r12,r6,r2
+ 263 0634 0CFB1366 	>>  mls.w r6,r12,r3,r6
+ 263              	>  barrett_32 r7,r2,r3,r12
+ 263 0638 57FB12FC 	>>  smmulr.w r12,r7,r2
+ 263 063c 0CFB1377 	>>  mls.w r7,r12,r3,r7
+ 263              	>  barrett_32 r8,r2,r3,r12
+ 263 0640 58FB12FC 	>>  smmulr.w r12,r8,r2
+ 263 0644 0CFB1388 	>>  mls.w r8,r12,r3,r8
+ 263              	>  barrett_32 r9,r2,r3,r12
+ 263 0648 59FB12FC 	>>  smmulr.w r12,r9,r2
+ 263 064c 0CFB1399 	>>  mls.w r9,r12,r3,r9
+ 263              	>  barrett_32 r10,r2,r3,r12
+ 263 0650 5AFB12FC 	>>  smmulr.w r12,r10,r2
+ 263 0654 0CFB13AA 	>>  mls.w r10,r12,r3,r10
+ 263              	>  barrett_32 r11,r2,r3,r12
+ 263 0658 5BFB12FC 	>>  smmulr.w r12,r11,r2
+ 263 065c 0CFB13BB 	>>  mls.w r11,r12,r3,r11
+ 263              	> 
+ 263              	>  ldrstrvecjump str.w,r0,r4,r5,r6,r7,r8,r9,r10,r11,#(32*1*width),#(32*2*width),#(32*3*width),#(32*4*width),#(32*5*width),#(32*6*width),#(32*7*width),#width
+ 263              	>>  ldrstr4 str.w,r0,r8,r9,r10,r11,#(32*4*width),#(32*5*width),#(32*6*width),#(32*7*width)
+ 263 0660 C0F80082 	>>>  str.w r8,[r0,#(32*4*width)]
+ 263 0664 C0F88092 	>>>  str.w r9,[r0,#(32*5*width)]
+ 263 0668 C0F800A3 	>>>  str.w r10,[r0,#(32*6*width)]
+ 263 066c C0F880B3 	>>>  str.w r11,[r0,#(32*7*width)]
+ 263              	>>  ldrstr4jump str.w,r0,r4,r5,r6,r7,#(32*1*width),#(32*2*width),#(32*3*width),#width
+ 263 0670 C0F88050 	>>>  str.w r5,[r0,#(32*1*width)]
+ 263 0674 C0F80061 	>>>  str.w r6,[r0,#(32*2*width)]
+ 263 0678 C0F88071 	>>>  str.w r7,[r0,#(32*3*width)]
+ 263 067c 40F8044B 	>>>  str.w r4,[r0],#width
+ 263              	> 
+ 263              	> 
+ 263              	> 
+ 263              	>  ldrstrvec ldr.w,r0,r4,r5,r6,r7,r8,r9,r10,r11,#(32*0*width),#(32*1*width),#(32*2*width),#(32*3*width),#(32*4*width),#(32*5*width),#(32*6*width),#(32*7*width)
+ 263              	>>  ldrstr4 ldr.w,r0,r4,r5,r6,r7,#(32*0*width),#(32*1*width),#(32*2*width),#(32*3*width)
+ 263 0680 D0F80040 	>>>  ldr.w r4,[r0,#(32*0*width)]
+ 263 0684 D0F88050 	>>>  ldr.w r5,[r0,#(32*1*width)]
+ 263 0688 D0F80061 	>>>  ldr.w r6,[r0,#(32*2*width)]
+ 263 068c D0F88071 	>>>  ldr.w r7,[r0,#(32*3*width)]
+ 263              	>>  ldrstr4 ldr.w,r0,r8,r9,r10,r11,#(32*4*width),#(32*5*width),#(32*6*width),#(32*7*width)
+ 263 0690 D0F80082 	>>>  ldr.w r8,[r0,#(32*4*width)]
+ 263 0694 D0F88092 	>>>  ldr.w r9,[r0,#(32*5*width)]
+ 263 0698 D0F800A3 	>>>  ldr.w r10,[r0,#(32*6*width)]
+ 263 069c D0F880B3 	>>>  ldr.w r11,[r0,#(32*7*width)]
+ 263              	> 
+ 263              	>  addSub4 r4,r5,r6,r7,r8,r9,r10,r11
+ 263 06a0 2C44     	>>  add r4,r5
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccFMI6PG.s 			page 15
+
+
+ 263 06a2 3E44     	>>  add r6,r7
+ 263 06a4 C844     	>>  add r8,r9
+ 263 06a6 DA44     	>>  add r10,r11
+ 263 06a8 A4EB4505 	>>  sub.w r5,r4,r5,lsl#1
+ 263 06ac A6EB4707 	>>  sub.w r7,r6,r7,lsl#1
+ 263 06b0 A8EB4909 	>>  sub.w r9,r8,r9,lsl#1
+ 263 06b4 AAEB4B0B 	>>  sub.w r11,r10,r11,lsl#1
+ 263              	> 
+ 263              	>  addSub2 r4,r6,r8,r10
+ 263 06b8 3444     	>>  add r4,r6
+ 263 06ba D044     	>>  add r8,r10
+ 263 06bc A4EB4606 	>>  sub.w r6,r4,r6,lsl#1
+ 263 06c0 A8EB4A0A 	>>  sub.w r10,r8,r10,lsl#1
+ 263              	>  FNT_CT_ibutterfly r5,r7,4
+ 263              	>>  shift_subAdd r5,r7,4
+ 263 06c4 A5EB0715 	>>>  sub.w r5,r5,r7,lsl#(4)
+ 263 06c8 05EB4717 	>>>  add.w r7,r5,r7,lsl#(4+1)
+ 263              	>  FNT_CT_ibutterfly r9,r11,4
+ 263              	>>  shift_subAdd r9,r11,4
+ 263 06cc A9EB0B19 	>>>  sub.w r9,r9,r11,lsl#(4)
+ 263 06d0 09EB4B1B 	>>>  add.w r11,r9,r11,lsl#(4+1)
+ 263              	> 
+ 263              	>  addSub1 r4,r8
+ 263 06d4 04EB0804 	>>  add.w r4,r8
+ 263 06d8 A4EB4808 	>>  sub.w r8,r4,r8,lsl#1
+ 263              	>  barrett_32 r9,r2,r3,r12
+ 263 06dc 59FB12FC 	>>  smmulr.w r12,r9,r2
+ 263 06e0 0CFB1399 	>>  mls.w r9,r12,r3,r9
+ 263              	>  FNT_CT_ibutterfly r5,r9,6
+ 263              	>>  shift_subAdd r5,r9,6
+ 263 06e4 A5EB8915 	>>>  sub.w r5,r5,r9,lsl#(6)
+ 263 06e8 05EBC919 	>>>  add.w r9,r5,r9,lsl#(6+1)
+ 263              	>  FNT_CT_ibutterfly r6,r10,4
+ 263              	>>  shift_subAdd r6,r10,4
+ 263 06ec A6EB0A16 	>>>  sub.w r6,r6,r10,lsl#(4)
+ 263 06f0 06EB4A1A 	>>>  add.w r10,r6,r10,lsl#(4+1)
+ 263              	>  FNT_CT_ibutterfly r7,r11,2
+ 263              	>>  shift_subAdd r7,r11,2
+ 263 06f4 A7EB8B07 	>>>  sub.w r7,r7,r11,lsl#(2)
+ 263 06f8 07EBCB0B 	>>>  add.w r11,r7,r11,lsl#(2+1)
+ 263              	> 
+ 263              	>  barrett_32 r6,r2,r3,r12
+ 263 06fc 56FB12FC 	>>  smmulr.w r12,r6,r2
+ 263 0700 0CFB1366 	>>  mls.w r6,r12,r3,r6
+ 263              	>  barrett_32 r7,r2,r3,r12
+ 263 0704 57FB12FC 	>>  smmulr.w r12,r7,r2
+ 263 0708 0CFB1377 	>>  mls.w r7,r12,r3,r7
+ 263 070c AEEB4404 	>  sub.w r4,r14,r4,lsl#1
+ 263 0710 C5F10005 	>  neg.w r5,r5
+ 263 0714 4FEAC616 	>  lsl.w r6,r6,#7
+ 263 0718 4FEA8717 	>  lsl.w r7,r7,#6
+ 263 071c 4FEA4818 	>  lsl.w r8,r8,#5
+ 263 0720 4FEA0919 	>  lsl.w r9,r9,#4
+ 263 0724 4FEACA0A 	>  lsl.w r10,r10,#3
+ 263 0728 4FEA8B0B 	>  lsl.w r11,r11,#2
+ 263              	> 
+ 263              	>  barrett_32 r4,r2,r3,r12
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccFMI6PG.s 			page 16
+
+
+ 263 072c 54FB12FC 	>>  smmulr.w r12,r4,r2
+ 263 0730 0CFB1344 	>>  mls.w r4,r12,r3,r4
+ 263              	>  barrett_32 r5,r2,r3,r12
+ 263 0734 55FB12FC 	>>  smmulr.w r12,r5,r2
+ 263 0738 0CFB1355 	>>  mls.w r5,r12,r3,r5
+ 263              	>  barrett_32 r6,r2,r3,r12
+ 263 073c 56FB12FC 	>>  smmulr.w r12,r6,r2
+ 263 0740 0CFB1366 	>>  mls.w r6,r12,r3,r6
+ 263              	>  barrett_32 r7,r2,r3,r12
+ 263 0744 57FB12FC 	>>  smmulr.w r12,r7,r2
+ 263 0748 0CFB1377 	>>  mls.w r7,r12,r3,r7
+ 263              	>  barrett_32 r8,r2,r3,r12
+ 263 074c 58FB12FC 	>>  smmulr.w r12,r8,r2
+ 263 0750 0CFB1388 	>>  mls.w r8,r12,r3,r8
+ 263              	>  barrett_32 r9,r2,r3,r12
+ 263 0754 59FB12FC 	>>  smmulr.w r12,r9,r2
+ 263 0758 0CFB1399 	>>  mls.w r9,r12,r3,r9
+ 263              	>  barrett_32 r10,r2,r3,r12
+ 263 075c 5AFB12FC 	>>  smmulr.w r12,r10,r2
+ 263 0760 0CFB13AA 	>>  mls.w r10,r12,r3,r10
+ 263              	>  barrett_32 r11,r2,r3,r12
+ 263 0764 5BFB12FC 	>>  smmulr.w r12,r11,r2
+ 263 0768 0CFB13BB 	>>  mls.w r11,r12,r3,r11
+ 263              	> 
+ 263              	>  ldrstrvecjump str.w,r0,r4,r5,r6,r7,r8,r9,r10,r11,#(32*1*width),#(32*2*width),#(32*3*width),#(32*4*width),#(32*5*width),#(32*6*width),#(32*7*width),#width
+ 263              	>>  ldrstr4 str.w,r0,r8,r9,r10,r11,#(32*4*width),#(32*5*width),#(32*6*width),#(32*7*width)
+ 263 076c C0F80082 	>>>  str.w r8,[r0,#(32*4*width)]
+ 263 0770 C0F88092 	>>>  str.w r9,[r0,#(32*5*width)]
+ 263 0774 C0F800A3 	>>>  str.w r10,[r0,#(32*6*width)]
+ 263 0778 C0F880B3 	>>>  str.w r11,[r0,#(32*7*width)]
+ 263              	>>  ldrstr4jump str.w,r0,r4,r5,r6,r7,#(32*1*width),#(32*2*width),#(32*3*width),#width
+ 263 077c C0F88050 	>>>  str.w r5,[r0,#(32*1*width)]
+ 263 0780 C0F80061 	>>>  str.w r6,[r0,#(32*2*width)]
+ 263 0784 C0F88071 	>>>  str.w r7,[r0,#(32*3*width)]
+ 263 0788 40F8044B 	>>>  str.w r4,[r0],#width
+ 263              	> 
+ 264              	
+ 265              	    ldrstrvec ldr.w, r0, r4, r5, r6, r7, r8, r9, r10, r11, #(32*0*width), #(32*1*width), #(32*2*wid
+ 266              	
+ 267              	    addSub4 r4, r5, r6, r7, r8, r9, r10, r11
+ 268              	
+ 269              	    addSub2 r4, r6, r8, r10
+ 270              	    FNT_CT_ibutterfly r5, r7, 4
+ 271              	    FNT_CT_ibutterfly r9, r11, 4
+ 272              	
+ 273              	    addSub1 r4, r8
+ 274              	    barrett_32 r9, r2, r3, r12
+ 275              	    FNT_CT_ibutterfly r5, r9, 6
+ 276              	    FNT_CT_ibutterfly r6, r10, 4
+ 277              	    FNT_CT_ibutterfly r7, r11, 2
+ 278              	
+ 279              	    barrett_32 r6, r2, r3, r12
+ 280              	    barrett_32 r7, r2, r3, r12
+ 281              	    sub.w r4, r14, r4, lsl #1
+ 282              	    neg.w r5, r5
+ 283              	    lsl.w r6, r6, #7
+ 284              	    lsl.w r7, r7, #6
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccFMI6PG.s 			page 17
+
+
+ 285              	    lsl.w r8, r8, #5
+ 286              	    lsl.w r9, r9, #4
+ 287              	    lsl.w r10, r10, #3
+ 288              	    lsl.w r11, r11, #2
+ 289              	
+ 290              	    barrett_32 r4, r2, r3, r12
+ 291              	    barrett_32 r5, r2, r3, r12
+ 292              	    barrett_32 r6, r2, r3, r12
+ 293              	    barrett_32 r7, r2, r3, r12
+ 294              	    barrett_32 r8, r2, r3, r12
+ 295              	    barrett_32 r9, r2, r3, r12
+ 296              	    barrett_32 r10, r2, r3, r12
+ 297              	    barrett_32 r11, r2, r3, r12
+ 298              	
+ 299              	    ldrstrvecjump str.w, r0, r4, r5, r6, r7, r8, r9, r10, r11, #(32*1*width), #(32*2*width), #(32*3
+ 300              	
+ 301              	.endr
+ 302              	
+ 303 078c B0EB010F 	    cmp.w r0, r1
+ 304 0790 7FF4F0AE 	    bne.w _ifnt_0_1_2
+ 305 0794 BDEC098A 	    vpop.w {s16-s24}
+ 306 0798 BDE8F08F 	    pop.w {r4-r11, pc}
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccFMI6PG.s 			page 18
+
+
+DEFINED SYMBOLS
+          ifnt_257.S:18     .text:00000000 $t
+          ifnt_257.S:21     .text:00000000 __asm_ifnt_257
+          ifnt_257.S:25     *ABS*:00000004 width
+          ifnt_257.S:29     .text:00000010 _ifnt_7_6_5_4
+          ifnt_257.S:261    .text:00000574 _ifnt_0_1_2
+
+NO UNDEFINED SYMBOLS

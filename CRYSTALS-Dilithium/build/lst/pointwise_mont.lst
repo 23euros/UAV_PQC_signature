@@ -1,0 +1,175 @@
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccSM3gUp.s 			page 1
+
+
+   1              	# 0 "pointwise_mont.s"
+   2              	# 1 "C:\\ChibiStudio\\workspace_user\\CRYSTALS-Dilithium//"
+   0              	
+   0              	
+   0              	
+   1              	.syntax unified
+   2              	.thumb
+   3              	
+   4              	.macro montgomery_multiplication res, pa, pb, q, qinv
+   5              	    smull \pa, \res, \pa, \pb
+   6              	    mul \pb, \pa, \qinv
+   7              	    smlal \pa, \res, \pb, \q
+   8              	.endm
+   9              	
+  10              	
+  11              	// void asm_pointwise_montgomery(int32_t c[N], const int32_t a[N], const int32_t b[N]);
+  12              	.global pqcrystals_dilithium_asm_pointwise_montgomery
+  13              	.type pqcrystals_dilithium_asm_pointwise_montgomery,%function
+  14              	.align 2
+  15              	pqcrystals_dilithium_asm_pointwise_montgomery:
+  16 0000 2DE9F04F 	    push.w {r4-r11, r14}
+  17              	    c_ptr .req r0
+  18              	    a_ptr .req r1
+  19              	    b_ptr .req r2
+  20              	    qinv  .req r3
+  21              	    q     .req r4
+  22              	    pa0   .req r5
+  23              	    pa1   .req r6
+  24              	    pa2   .req r7
+  25              	    pb0   .req r8
+  26              	    pb1   .req r9
+  27              	    pb2   .req r10
+  28              	    tmp0  .req r11
+  29              	    ctr   .req r12
+  30              	    res   .req r14
+  31              	
+  32 0004 4DF6FF73 	    movw qinv, #:lower16:0xfc7fdfff
+  33 0008 CFF67F43 	    movt qinv, #:upper16:0xfc7fdfff
+  34 000c 4EF20104 	    movw q, #0xE001
+  35 0010 C0F27F04 	    movt q, #0x7F
+  36              	
+  37              	
+  38              	    // 85x3 = 255 coefficients
+  39 0014 40F2550C 	    movw ctr, #85
+  40              	    1:
+  41 0018 D1F80460 	        ldr.w pa1, [a_ptr, #4]
+  42 001c D1F80870 	        ldr.w pa2, [a_ptr, #8]
+  43 0020 51F80C5B 	        ldr pa0, [a_ptr], #12
+  44 0024 D2F80490 	        ldr.w pb1, [b_ptr, #4]
+  45 0028 D2F808A0 	        ldr.w pb2, [b_ptr, #8]
+  46 002c 52F80C8B 	        ldr pb0, [b_ptr], #12
+  47              	
+  48              	        montgomery_multiplication res, pa0, pb0, q, qinv
+  48 0030 85FB085E 	>  smull pa0,res,pa0,pb0
+  48 0034 05FB03F8 	>  mul pb0,pa0,qinv
+  48 0038 C8FB045E 	>  smlal pa0,res,pb0,q
+  49 003c 40F804EB 	        str res, [c_ptr], #4
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccSM3gUp.s 			page 2
+
+
+  50              	        montgomery_multiplication res, pa1, pb1, q, qinv
+  50 0040 86FB096E 	>  smull pa1,res,pa1,pb1
+  50 0044 06FB03F9 	>  mul pb1,pa1,qinv
+  50 0048 C9FB046E 	>  smlal pa1,res,pb1,q
+  51 004c 40F804EB 	        str res, [c_ptr], #4
+  52              	        montgomery_multiplication res, pa2, pb2, q, qinv
+  52 0050 87FB0A7E 	>  smull pa2,res,pa2,pb2
+  52 0054 07FB03FA 	>  mul pb2,pa2,qinv
+  52 0058 CAFB047E 	>  smlal pa2,res,pb2,q
+  53 005c 40F804EB 	        str res, [c_ptr], #4
+  54 0060 BCF1010C 	    subs ctr, #1
+  55 0064 7FF4D8AF 	    bne.w 1b
+  56              	
+  57              	    // final coefficient
+  58 0068 D1F80050 	    ldr.w pa0, [a_ptr]
+  59 006c D2F80080 	    ldr.w pb0, [b_ptr]
+  60              	    montgomery_multiplication res, pa0, pb0, q, qinv
+  60 0070 85FB085E 	>  smull pa0,res,pa0,pb0
+  60 0074 05FB03F8 	>  mul pb0,pa0,qinv
+  60 0078 C8FB045E 	>  smlal pa0,res,pb0,q
+  61 007c C0F800E0 	    str.w res, [c_ptr]
+  62              	
+  63 0080 BDE8F08F 	    pop.w {r4-r11, pc}
+  64              	.size pqcrystals_dilithium_asm_pointwise_montgomery, .-pqcrystals_dilithium_asm_pointwise_montgomer
+  65              	
+  66              	// void asm_pointwise_acc_montgomery(int32_t c[N], const int32_t a[N], const int32_t b[N]);
+  67              	.global pqcrystals_dilithium_asm_pointwise_acc_montgomery
+  68              	.type pqcrystals_dilithium_asm_pointwise_acc_montgomery,%function
+  69              	.align 2
+  70              	pqcrystals_dilithium_asm_pointwise_acc_montgomery:
+  71 0084 2DE9F04F 	    push.w {r4-r11, r14}
+  72              	    c_ptr .req r0
+  73              	    a_ptr .req r1
+  74              	    b_ptr .req r2
+  75              	    qinv  .req r3
+  76              	    q     .req r4
+  77              	    pa0   .req r5
+  78              	    pa1   .req r6
+  79              	    pa2   .req r7
+  80              	    pb0   .req r8
+  81              	    pb1   .req r9
+  82              	    pb2   .req r10
+  83              	    tmp0  .req r11
+  84              	    ctr   .req r12
+  85              	    res   .req r14
+  86              	
+  87 0088 4DF6FF73 	    movw qinv, #:lower16:0xfc7fdfff
+  88 008c CFF67F43 	    movt qinv, #:upper16:0xfc7fdfff
+  89 0090 4EF20104 	    movw q, #0xE001
+  90 0094 C0F27F04 	    movt q, #0x7F
+  91              	
+  92              	
+  93              	    // 85x3 = 255 coefficients
+  94 0098 40F2550C 	    movw ctr, #85
+  95              	    1:
+  96 009c D1F80460 	        ldr.w pa1, [a_ptr, #4]
+  97 00a0 D1F80870 	        ldr.w pa2, [a_ptr, #8]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccSM3gUp.s 			page 3
+
+
+  98 00a4 51F80C5B 	        ldr pa0, [a_ptr], #12
+  99 00a8 D2F80490 	        ldr.w pb1, [b_ptr, #4]
+ 100 00ac D2F808A0 	        ldr.w pb2, [b_ptr, #8]
+ 101 00b0 52F80C8B 	        ldr pb0, [b_ptr], #12
+ 102              	
+ 103              	        montgomery_multiplication res, pa0, pb0, q, qinv
+ 103 00b4 85FB085E 	>  smull pa0,res,pa0,pb0
+ 103 00b8 05FB03F8 	>  mul pb0,pa0,qinv
+ 103 00bc C8FB045E 	>  smlal pa0,res,pb0,q
+ 104              	        montgomery_multiplication pa0, pa1, pb1, q, qinv
+ 104 00c0 86FB0965 	>  smull pa1,pa0,pa1,pb1
+ 104 00c4 06FB03F9 	>  mul pb1,pa1,qinv
+ 104 00c8 C9FB0465 	>  smlal pa1,pa0,pb1,q
+ 105              	        montgomery_multiplication pa1, pa2, pb2, q, qinv
+ 105 00cc 87FB0A76 	>  smull pa2,pa1,pa2,pb2
+ 105 00d0 07FB03FA 	>  mul pb2,pa2,qinv
+ 105 00d4 CAFB0476 	>  smlal pa2,pa1,pb2,q
+ 106              	
+ 107 00d8 D0F80080 	        ldr.w pb0, [c_ptr]
+ 108 00dc D0F80490 	        ldr.w pb1, [c_ptr, #4]
+ 109 00e0 D0F808A0 	        ldr.w pb2, [c_ptr, #8]
+ 110 00e4 0EEB080E 	        add.w res, res, pb0
+ 111 00e8 40F80CEB 	        str res, [c_ptr], #12
+ 112 00ec 05EB0905 	        add.w pa0, pa0, pb1
+ 113 00f0 40F8085C 	        str pa0, [c_ptr, #-8]
+ 114 00f4 06EB0A06 	        add.w pa1, pa1, pb2
+ 115 00f8 40F8046C 	        str pa1, [c_ptr, #-4]
+ 116 00fc BCF1010C 	    subs ctr, #1
+ 117 0100 7FF4CCAF 	    bne.w 1b
+ 118              	
+ 119              	    // final coefficient
+ 120 0104 D1F80050 	    ldr.w pa0, [a_ptr]
+ 121 0108 D2F80080 	    ldr.w pb0, [b_ptr]
+ 122 010c D0F80060 	    ldr.w pa1, [c_ptr]
+ 123              	    montgomery_multiplication res, pa0, pb0, q, qinv
+ 123 0110 85FB085E 	>  smull pa0,res,pa0,pb0
+ 123 0114 05FB03F8 	>  mul pb0,pa0,qinv
+ 123 0118 C8FB045E 	>  smlal pa0,res,pb0,q
+ 124 011c 0EEB060E 	    add.w res, res, pa1
+ 125 0120 C0F800E0 	    str.w res, [c_ptr]
+ 126              	
+ 127 0124 BDE8F08F 	    pop.w {r4-r11, pc}
+ 128              	.size pqcrystals_dilithium_asm_pointwise_acc_montgomery, .-pqcrystals_dilithium_asm_pointwise_acc_m
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccSM3gUp.s 			page 4
+
+
+DEFINED SYMBOLS
+    pointwise_mont.s:15     .text:00000000 pqcrystals_dilithium_asm_pointwise_montgomery
+    pointwise_mont.s:14     .text:00000000 $t
+    pointwise_mont.s:70     .text:00000084 pqcrystals_dilithium_asm_pointwise_acc_montgomery
+
+NO UNDEFINED SYMBOLS

@@ -1,0 +1,3770 @@
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 1
+
+
+   1              	# 0 "aes-publicinputs.S"
+   2              	# 1 "C:\\ChibiStudio\\workspace_user\\CRYSTALS-Dilithium//"
+   0              	
+   0              	
+   0              	
+   1              	.syntax unified
+   2              	.thumb
+   3              	
+   4              	.section .data.aestable
+   5              	.global AES_Te0
+   6              	.type AES_Te0,%object
+   7              	.align 2
+   8              	AES_Te0:
+   9 0000 63A5C663 	.word 0x63c6a563, 0x7cf8847c, 0x77ee9977, 0x7bf68d7b
+   9      7C84F87C 
+   9      7799EE77 
+   9      7B8DF67B 
+  10 0010 F20DFFF2 	.word 0xf2ff0df2, 0x6bd6bd6b, 0x6fdeb16f, 0xc59154c5
+  10      6BBDD66B 
+  10      6FB1DE6F 
+  10      C55491C5 
+  11 0020 30506030 	.word 0x30605030, 0x01020301, 0x67cea967, 0x2b567d2b
+  11      01030201 
+  11      67A9CE67 
+  11      2B7D562B 
+  12 0030 FE19E7FE 	.word 0xfee719fe, 0xd7b562d7, 0xab4de6ab, 0x76ec9a76
+  12      D762B5D7 
+  12      ABE64DAB 
+  12      769AEC76 
+  13 0040 CA458FCA 	.word 0xca8f45ca, 0x821f9d82, 0xc98940c9, 0x7dfa877d
+  13      829D1F82 
+  13      C94089C9 
+  13      7D87FA7D 
+  14 0050 FA15EFFA 	.word 0xfaef15fa, 0x59b2eb59, 0x478ec947, 0xf0fb0bf0
+  14      59EBB259 
+  14      47C98E47 
+  14      F00BFBF0 
+  15 0060 ADEC41AD 	.word 0xad41ecad, 0xd4b367d4, 0xa25ffda2, 0xaf45eaaf
+  15      D467B3D4 
+  15      A2FD5FA2 
+  15      AFEA45AF 
+  16 0070 9CBF239C 	.word 0x9c23bf9c, 0xa453f7a4, 0x72e49672, 0xc09b5bc0
+  16      A4F753A4 
+  16      7296E472 
+  16      C05B9BC0 
+  17 0080 B7C275B7 	.word 0xb775c2b7, 0xfde11cfd, 0x933dae93, 0x264c6a26
+  17      FD1CE1FD 
+  17      93AE3D93 
+  17      266A4C26 
+  18 0090 365A6C36 	.word 0x366c5a36, 0x3f7e413f, 0xf7f502f7, 0xcc834fcc
+  18      3F417E3F 
+  18      F702F5F7 
+  18      CC4F83CC 
+  19 00a0 345C6834 	.word 0x34685c34, 0xa551f4a5, 0xe5d134e5, 0xf1f908f1
+  19      A5F451A5 
+  19      E534D1E5 
+  19      F108F9F1 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 2
+
+
+  20 00b0 7193E271 	.word 0x71e29371, 0xd8ab73d8, 0x31625331, 0x152a3f15
+  20      D873ABD8 
+  20      31536231 
+  20      153F2A15 
+  21 00c0 040C0804 	.word 0x04080c04, 0xc79552c7, 0x23466523, 0xc39d5ec3
+  21      C75295C7 
+  21      23654623 
+  21      C35E9DC3 
+  22 00d0 18283018 	.word 0x18302818, 0x9637a196, 0x050a0f05, 0x9a2fb59a
+  22      96A13796 
+  22      050F0A05 
+  22      9AB52F9A 
+  23 00e0 07090E07 	.word 0x070e0907, 0x12243612, 0x801b9b80, 0xe2df3de2
+  23      12362412 
+  23      809B1B80 
+  23      E23DDFE2 
+  24 00f0 EB26CDEB 	.word 0xebcd26eb, 0x274e6927, 0xb27fcdb2, 0x75ea9f75
+  24      27694E27 
+  24      B2CD7FB2 
+  24      759FEA75 
+  25 0100 091B1209 	.word 0x09121b09, 0x831d9e83, 0x2c58742c, 0x1a342e1a
+  25      839E1D83 
+  25      2C74582C 
+  25      1A2E341A 
+  26 0110 1B2D361B 	.word 0x1b362d1b, 0x6edcb26e, 0x5ab4ee5a, 0xa05bfba0
+  26      6EB2DC6E 
+  26      5AEEB45A 
+  26      A0FB5BA0 
+  27 0120 52F6A452 	.word 0x52a4f652, 0x3b764d3b, 0xd6b761d6, 0xb37dceb3
+  27      3B4D763B 
+  27      D661B7D6 
+  27      B3CE7DB3 
+  28 0130 297B5229 	.word 0x29527b29, 0xe3dd3ee3, 0x2f5e712f, 0x84139784
+  28      E33EDDE3 
+  28      2F715E2F 
+  28      84971384 
+  29 0140 53F5A653 	.word 0x53a6f553, 0xd1b968d1, 0x00000000, 0xedc12ced
+  29      D168B9D1 
+  29      00000000 
+  29      ED2CC1ED 
+  30 0150 20604020 	.word 0x20406020, 0xfce31ffc, 0xb179c8b1, 0x5bb6ed5b
+  30      FC1FE3FC 
+  30      B1C879B1 
+  30      5BEDB65B 
+  31 0160 6ABED46A 	.word 0x6ad4be6a, 0xcb8d46cb, 0xbe67d9be, 0x39724b39
+  31      CB468DCB 
+  31      BED967BE 
+  31      394B7239 
+  32 0170 4ADE944A 	.word 0x4a94de4a, 0x4c98d44c, 0x58b0e858, 0xcf854acf
+  32      4CD4984C 
+  32      58E8B058 
+  32      CF4A85CF 
+  33 0180 D06BBBD0 	.word 0xd0bb6bd0, 0xefc52aef, 0xaa4fe5aa, 0xfbed16fb
+  33      EF2AC5EF 
+  33      AAE54FAA 
+  33      FB16EDFB 
+  34 0190 43C58643 	.word 0x4386c543, 0x4d9ad74d, 0x33665533, 0x85119485
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 3
+
+
+  34      4DD79A4D 
+  34      33556633 
+  34      85941185 
+  35 01a0 45CF8A45 	.word 0x458acf45, 0xf9e910f9, 0x02040602, 0x7ffe817f
+  35      F910E9F9 
+  35      02060402 
+  35      7F81FE7F 
+  36 01b0 50F0A050 	.word 0x50a0f050, 0x3c78443c, 0x9f25ba9f, 0xa84be3a8
+  36      3C44783C 
+  36      9FBA259F 
+  36      A8E34BA8 
+  37 01c0 51F3A251 	.word 0x51a2f351, 0xa35dfea3, 0x4080c040, 0x8f058a8f
+  37      A3FE5DA3 
+  37      40C08040 
+  37      8F8A058F 
+  38 01d0 92AD3F92 	.word 0x923fad92, 0x9d21bc9d, 0x38704838, 0xf5f104f5
+  38      9DBC219D 
+  38      38487038 
+  38      F504F1F5 
+  39 01e0 BCDF63BC 	.word 0xbc63dfbc, 0xb677c1b6, 0xdaaf75da, 0x21426321
+  39      B6C177B6 
+  39      DA75AFDA 
+  39      21634221 
+  40 01f0 10302010 	.word 0x10203010, 0xffe51aff, 0xf3fd0ef3, 0xd2bf6dd2
+  40      FF1AE5FF 
+  40      F30EFDF3 
+  40      D26DBFD2 
+  41 0200 CD4C81CD 	.word 0xcd814ccd, 0x0c18140c, 0x13263513, 0xecc32fec
+  41      0C14180C 
+  41      13352613 
+  41      EC2FC3EC 
+  42 0210 5FE1BE5F 	.word 0x5fbee15f, 0x9735a297, 0x4488cc44, 0x172e3917
+  42      97A23597 
+  42      44CC8844 
+  42      17392E17 
+  43 0220 C45793C4 	.word 0xc49357c4, 0xa755f2a7, 0x7efc827e, 0x3d7a473d
+  43      A7F255A7 
+  43      7E82FC7E 
+  43      3D477A3D 
+  44 0230 64ACC864 	.word 0x64c8ac64, 0x5dbae75d, 0x19322b19, 0x73e69573
+  44      5DE7BA5D 
+  44      192B3219 
+  44      7395E673 
+  45 0240 60A0C060 	.word 0x60c0a060, 0x81199881, 0x4f9ed14f, 0xdca37fdc
+  45      81981981 
+  45      4FD19E4F 
+  45      DC7FA3DC 
+  46 0250 22664422 	.word 0x22446622, 0x2a547e2a, 0x903bab90, 0x880b8388
+  46      2A7E542A 
+  46      90AB3B90 
+  46      88830B88 
+  47 0260 46CA8C46 	.word 0x468cca46, 0xeec729ee, 0xb86bd3b8, 0x14283c14
+  47      EE29C7EE 
+  47      B8D36BB8 
+  47      143C2814 
+  48 0270 DE79A7DE 	.word 0xdea779de, 0x5ebce25e, 0x0b161d0b, 0xdbad76db
+  48      5EE2BC5E 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 4
+
+
+  48      0B1D160B 
+  48      DB76ADDB 
+  49 0280 E03BDBE0 	.word 0xe0db3be0, 0x32645632, 0x3a744e3a, 0x0a141e0a
+  49      32566432 
+  49      3A4E743A 
+  49      0A1E140A 
+  50 0290 49DB9249 	.word 0x4992db49, 0x060c0a06, 0x24486c24, 0x5cb8e45c
+  50      060A0C06 
+  50      246C4824 
+  50      5CE4B85C 
+  51 02a0 C25D9FC2 	.word 0xc29f5dc2, 0xd3bd6ed3, 0xac43efac, 0x62c4a662
+  51      D36EBDD3 
+  51      ACEF43AC 
+  51      62A6C462 
+  52 02b0 91A83991 	.word 0x9139a891, 0x9531a495, 0xe4d337e4, 0x79f28b79
+  52      95A43195 
+  52      E437D3E4 
+  52      798BF279 
+  53 02c0 E732D5E7 	.word 0xe7d532e7, 0xc88b43c8, 0x376e5937, 0x6ddab76d
+  53      C8438BC8 
+  53      37596E37 
+  53      6DB7DA6D 
+  54 02d0 8D8C018D 	.word 0x8d018c8d, 0xd5b164d5, 0x4e9cd24e, 0xa949e0a9
+  54      D564B1D5 
+  54      4ED29C4E 
+  54      A9E049A9 
+  55 02e0 6CB4D86C 	.word 0x6cd8b46c, 0x56acfa56, 0xf4f307f4, 0xeacf25ea
+  55      56FAAC56 
+  55      F407F3F4 
+  55      EA25CFEA 
+  56 02f0 65AFCA65 	.word 0x65caaf65, 0x7af48e7a, 0xae47e9ae, 0x08101808
+  56      7A8EF47A 
+  56      AEE947AE 
+  56      08181008 
+  57 0300 BAD56FBA 	.word 0xba6fd5ba, 0x78f08878, 0x254a6f25, 0x2e5c722e
+  57      7888F078 
+  57      256F4A25 
+  57      2E725C2E 
+  58 0310 1C24381C 	.word 0x1c38241c, 0xa657f1a6, 0xb473c7b4, 0xc69751c6
+  58      A6F157A6 
+  58      B4C773B4 
+  58      C65197C6 
+  59 0320 E823CBE8 	.word 0xe8cb23e8, 0xdda17cdd, 0x74e89c74, 0x1f3e211f
+  59      DD7CA1DD 
+  59      749CE874 
+  59      1F213E1F 
+  60 0330 4BDD964B 	.word 0x4b96dd4b, 0xbd61dcbd, 0x8b0d868b, 0x8a0f858a
+  60      BDDC61BD 
+  60      8B860D8B 
+  60      8A850F8A 
+  61 0340 7090E070 	.word 0x70e09070, 0x3e7c423e, 0xb571c4b5, 0x66ccaa66
+  61      3E427C3E 
+  61      B5C471B5 
+  61      66AACC66 
+  62 0350 48D89048 	.word 0x4890d848, 0x03060503, 0xf6f701f6, 0x0e1c120e
+  62      03050603 
+  62      F601F7F6 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 5
+
+
+  62      0E121C0E 
+  63 0360 61A3C261 	.word 0x61c2a361, 0x356a5f35, 0x57aef957, 0xb969d0b9
+  63      355F6A35 
+  63      57F9AE57 
+  63      B9D069B9 
+  64 0370 86911786 	.word 0x86179186, 0xc19958c1, 0x1d3a271d, 0x9e27b99e
+  64      C15899C1 
+  64      1D273A1D 
+  64      9EB9279E 
+  65 0380 E138D9E1 	.word 0xe1d938e1, 0xf8eb13f8, 0x982bb398, 0x11223311
+  65      F813EBF8 
+  65      98B32B98 
+  65      11332211 
+  66 0390 69BBD269 	.word 0x69d2bb69, 0xd9a970d9, 0x8e07898e, 0x9433a794
+  66      D970A9D9 
+  66      8E89078E 
+  66      94A73394 
+  67 03a0 9BB62D9B 	.word 0x9b2db69b, 0x1e3c221e, 0x87159287, 0xe9c920e9
+  67      1E223C1E 
+  67      87921587 
+  67      E920C9E9 
+  68 03b0 CE4987CE 	.word 0xce8749ce, 0x55aaff55, 0x28507828, 0xdfa57adf
+  68      55FFAA55 
+  68      28785028 
+  68      DF7AA5DF 
+  69 03c0 8C8F038C 	.word 0x8c038f8c, 0xa159f8a1, 0x89098089, 0x0d1a170d
+  69      A1F859A1 
+  69      89800989 
+  69      0D171A0D 
+  70 03d0 BFDA65BF 	.word 0xbf65dabf, 0xe6d731e6, 0x4284c642, 0x68d0b868
+  70      E631D7E6 
+  70      42C68442 
+  70      68B8D068 
+  71 03e0 41C38241 	.word 0x4182c341, 0x9929b099, 0x2d5a772d, 0x0f1e110f
+  71      99B02999 
+  71      2D775A2D 
+  71      0F111E0F 
+  72 03f0 B0CB7BB0 	.word 0xb07bcbb0, 0x54a8fc54, 0xbb6dd6bb, 0x162c3a16
+  72      54FCA854 
+  72      BBD66DBB 
+  72      163A2C16 
+  73              	.size AES_Te0,.-AES_Te0
+  74              	
+  75              	.section .text.aes128
+  76              	@ void aes128_keyexp_publicinputs_asm(const uint8_t *key,
+  77              	@       uint8_t *rk) {
+  78              	.global aes128_keyexp_publicinputs_asm
+  79              	.type   aes128_keyexp_publicinputs_asm,%function
+  80              	.align 2
+  81              	aes128_keyexp_publicinputs_asm:
+  82              	
+  83              	    //function prologue, preserve registers
+  84 0000 2DE9F00F 	    push {r4-r11}
+  85              	
+  86              	    //load key
+  87              	    //pointer may be non-aligned, so avoid using ldm/stm
+  88 0004 0468     	    ldr r4, [r0, #0]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 6
+
+
+  89 0006 4568     	    ldr r5, [r0, #4]
+  90 0008 8668     	    ldr r6, [r0, #8]
+  91 000a C768     	    ldr r7, [r0, #12]
+  92              	
+  93              	    //load table address once
+  94 000c DFF81C3B 	    ldr r3, =AES_Te0
+  95              	
+  96              	    //round 1
+  97 0010 5FFA97F8 	    uxtb r8, r7, ror #8
+  98 0014 5FFAA7F9 	    uxtb r9, r7, ror #16
+  99 0018 5FFAB7FA 	    uxtb r10, r7, ror #24
+ 100 001c 5FFA87FB 	    uxtb r11, r7
+ 101              	
+ 102 0020 13F82880 	    ldrb r8, [r3, r8, lsl #2]
+ 103 0024 13F82990 	    ldrb r9, [r3, r9, lsl #2]
+ 104 0028 13F82AA0 	    ldrb r10, [r3, r10, lsl #2]
+ 105 002c 13F82BB0 	    ldrb r11, [r3, r11, lsl #2]
+ 106              	
+ 107 0030 84F00104 	    eor r4, #0x00000001 //rcon
+ 108 0034 84EA0804 	    eor r4, r4, r8
+ 109 0038 84EA0924 	    eor r4, r4, r9, lsl #8
+ 110 003c 84EA0A44 	    eor r4, r4, r10, lsl #16
+ 111 0040 84EA0B64 	    eor r4, r4, r11, lsl #24 //rk[4]
+ 112 0044 85EA0405 	    eor r5, r4 //rk[5]
+ 113 0048 86EA0506 	    eor r6, r5 //rk[6]
+ 114 004c 87EA0607 	    eor r7, r6 //rk[7]
+ 115              	
+ 116              	    //write to memory
+ 117 0050 0C60     	    str r4, [r1, #0]
+ 118 0052 4D60     	    str r5, [r1, #4]
+ 119 0054 8E60     	    str r6, [r1, #8]
+ 120 0056 CF60     	    str r7, [r1, #12]
+ 121              	
+ 122              	    //round 2
+ 123 0058 5FFA97F8 	    uxtb r8, r7, ror #8
+ 124 005c 5FFAA7F9 	    uxtb r9, r7, ror #16
+ 125 0060 5FFAB7FA 	    uxtb r10, r7, ror #24
+ 126 0064 5FFA87FB 	    uxtb r11, r7
+ 127              	
+ 128 0068 13F82880 	    ldrb r8, [r3, r8, lsl #2]
+ 129 006c 13F82990 	    ldrb r9, [r3, r9, lsl #2]
+ 130 0070 13F82AA0 	    ldrb r10, [r3, r10, lsl #2]
+ 131 0074 13F82BB0 	    ldrb r11, [r3, r11, lsl #2]
+ 132              	
+ 133 0078 84F00204 	    eor r4, #0x00000002 //rcon
+ 134 007c 84EA0804 	    eor r4, r4, r8
+ 135 0080 84EA0924 	    eor r4, r4, r9, lsl #8
+ 136 0084 84EA0A44 	    eor r4, r4, r10, lsl #16
+ 137 0088 84EA0B64 	    eor r4, r4, r11, lsl #24 //rk[8]
+ 138 008c 85EA0405 	    eor r5, r4 //rk[9]
+ 139 0090 86EA0506 	    eor r6, r5 //rk[10]
+ 140 0094 87EA0607 	    eor r7, r6 //rk[11]
+ 141              	
+ 142              	    //write to memory
+ 143 0098 0C61     	    str r4, [r1, #16]
+ 144 009a 4D61     	    str r5, [r1, #20]
+ 145 009c 8E61     	    str r6, [r1, #24]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 7
+
+
+ 146 009e CF61     	    str r7, [r1, #28]
+ 147              	
+ 148              	    //round 3
+ 149 00a0 5FFA97F8 	    uxtb r8, r7, ror #8
+ 150 00a4 5FFAA7F9 	    uxtb r9, r7, ror #16
+ 151 00a8 5FFAB7FA 	    uxtb r10, r7, ror #24
+ 152 00ac 5FFA87FB 	    uxtb r11, r7
+ 153              	
+ 154 00b0 13F82880 	    ldrb r8, [r3, r8, lsl #2]
+ 155 00b4 13F82990 	    ldrb r9, [r3, r9, lsl #2]
+ 156 00b8 13F82AA0 	    ldrb r10, [r3, r10, lsl #2]
+ 157 00bc 13F82BB0 	    ldrb r11, [r3, r11, lsl #2]
+ 158              	
+ 159 00c0 84F00404 	    eor r4, #0x00000004 //rcon
+ 160 00c4 84EA0804 	    eor r4, r4, r8
+ 161 00c8 84EA0924 	    eor r4, r4, r9, lsl #8
+ 162 00cc 84EA0A44 	    eor r4, r4, r10, lsl #16
+ 163 00d0 84EA0B64 	    eor r4, r4, r11, lsl #24 //rk[12]
+ 164 00d4 85EA0405 	    eor r5, r4 //rk[13]
+ 165 00d8 86EA0506 	    eor r6, r5 //rk[14]
+ 166 00dc 87EA0607 	    eor r7, r6 //rk[15]
+ 167              	
+ 168              	    //write to memory
+ 169 00e0 0C62     	    str r4, [r1, #32]
+ 170 00e2 4D62     	    str r5, [r1, #36]
+ 171 00e4 8E62     	    str r6, [r1, #40]
+ 172 00e6 CF62     	    str r7, [r1, #44]
+ 173              	
+ 174              	    //round 4
+ 175 00e8 5FFA97F8 	    uxtb r8, r7, ror #8
+ 176 00ec 5FFAA7F9 	    uxtb r9, r7, ror #16
+ 177 00f0 5FFAB7FA 	    uxtb r10, r7, ror #24
+ 178 00f4 5FFA87FB 	    uxtb r11, r7
+ 179              	
+ 180 00f8 13F82880 	    ldrb r8, [r3, r8, lsl #2]
+ 181 00fc 13F82990 	    ldrb r9, [r3, r9, lsl #2]
+ 182 0100 13F82AA0 	    ldrb r10, [r3, r10, lsl #2]
+ 183 0104 13F82BB0 	    ldrb r11, [r3, r11, lsl #2]
+ 184              	
+ 185 0108 84F00804 	    eor r4, #0x00000008 //rcon
+ 186 010c 84EA0804 	    eor r4, r4, r8
+ 187 0110 84EA0924 	    eor r4, r4, r9, lsl #8
+ 188 0114 84EA0A44 	    eor r4, r4, r10, lsl #16
+ 189 0118 84EA0B64 	    eor r4, r4, r11, lsl #24 //rk[16]
+ 190 011c 85EA0405 	    eor r5, r4 //rk[17]
+ 191 0120 86EA0506 	    eor r6, r5 //rk[18]
+ 192 0124 87EA0607 	    eor r7, r6 //rk[19]
+ 193              	
+ 194              	    //write to memory
+ 195 0128 0C63     	    str r4, [r1, #48]
+ 196 012a 4D63     	    str r5, [r1, #52]
+ 197 012c 8E63     	    str r6, [r1, #56]
+ 198 012e CF63     	    str r7, [r1, #60]
+ 199              	
+ 200              	    //round 5
+ 201 0130 5FFA97F8 	    uxtb r8, r7, ror #8
+ 202 0134 5FFAA7F9 	    uxtb r9, r7, ror #16
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 8
+
+
+ 203 0138 5FFAB7FA 	    uxtb r10, r7, ror #24
+ 204 013c 5FFA87FB 	    uxtb r11, r7
+ 205              	
+ 206 0140 13F82880 	    ldrb r8, [r3, r8, lsl #2]
+ 207 0144 13F82990 	    ldrb r9, [r3, r9, lsl #2]
+ 208 0148 13F82AA0 	    ldrb r10, [r3, r10, lsl #2]
+ 209 014c 13F82BB0 	    ldrb r11, [r3, r11, lsl #2]
+ 210              	
+ 211 0150 84F01004 	    eor r4, #0x00000010 //rcon
+ 212 0154 84EA0804 	    eor r4, r4, r8
+ 213 0158 84EA0924 	    eor r4, r4, r9, lsl #8
+ 214 015c 84EA0A44 	    eor r4, r4, r10, lsl #16
+ 215 0160 84EA0B64 	    eor r4, r4, r11, lsl #24 //rk[20]
+ 216 0164 85EA0405 	    eor r5, r4 //rk[21]
+ 217 0168 86EA0506 	    eor r6, r5 //rk[22]
+ 218 016c 87EA0607 	    eor r7, r6 //rk[23]
+ 219              	
+ 220              	    //write to memory
+ 221 0170 0C64     	    str r4, [r1, #64]
+ 222 0172 4D64     	    str r5, [r1, #68]
+ 223 0174 8E64     	    str r6, [r1, #72]
+ 224 0176 CF64     	    str r7, [r1, #76]
+ 225              	
+ 226              	    //round 6
+ 227 0178 5FFA97F8 	    uxtb r8, r7, ror #8
+ 228 017c 5FFAA7F9 	    uxtb r9, r7, ror #16
+ 229 0180 5FFAB7FA 	    uxtb r10, r7, ror #24
+ 230 0184 5FFA87FB 	    uxtb r11, r7
+ 231              	
+ 232 0188 13F82880 	    ldrb r8, [r3, r8, lsl #2]
+ 233 018c 13F82990 	    ldrb r9, [r3, r9, lsl #2]
+ 234 0190 13F82AA0 	    ldrb r10, [r3, r10, lsl #2]
+ 235 0194 13F82BB0 	    ldrb r11, [r3, r11, lsl #2]
+ 236              	
+ 237 0198 84F02004 	    eor r4, #0x00000020 //rcon
+ 238 019c 84EA0804 	    eor r4, r4, r8
+ 239 01a0 84EA0924 	    eor r4, r4, r9, lsl #8
+ 240 01a4 84EA0A44 	    eor r4, r4, r10, lsl #16
+ 241 01a8 84EA0B64 	    eor r4, r4, r11, lsl #24 //rk[24]
+ 242 01ac 85EA0405 	    eor r5, r4 //rk[25]
+ 243 01b0 86EA0506 	    eor r6, r5 //rk[26]
+ 244 01b4 87EA0607 	    eor r7, r6 //rk[27]
+ 245              	
+ 246              	    //write to memory
+ 247 01b8 0C65     	    str r4, [r1, #80]
+ 248 01ba 4D65     	    str r5, [r1, #84]
+ 249 01bc 8E65     	    str r6, [r1, #88]
+ 250 01be CF65     	    str r7, [r1, #92]
+ 251              	
+ 252              	    //round 7
+ 253 01c0 5FFA97F8 	    uxtb r8, r7, ror #8
+ 254 01c4 5FFAA7F9 	    uxtb r9, r7, ror #16
+ 255 01c8 5FFAB7FA 	    uxtb r10, r7, ror #24
+ 256 01cc 5FFA87FB 	    uxtb r11, r7
+ 257              	
+ 258 01d0 13F82880 	    ldrb r8, [r3, r8, lsl #2]
+ 259 01d4 13F82990 	    ldrb r9, [r3, r9, lsl #2]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 9
+
+
+ 260 01d8 13F82AA0 	    ldrb r10, [r3, r10, lsl #2]
+ 261 01dc 13F82BB0 	    ldrb r11, [r3, r11, lsl #2]
+ 262              	
+ 263 01e0 84F04004 	    eor r4, #0x00000040 //rcon
+ 264 01e4 84EA0804 	    eor r4, r4, r8
+ 265 01e8 84EA0924 	    eor r4, r4, r9, lsl #8
+ 266 01ec 84EA0A44 	    eor r4, r4, r10, lsl #16
+ 267 01f0 84EA0B64 	    eor r4, r4, r11, lsl #24 //rk[28]
+ 268 01f4 85EA0405 	    eor r5, r4 //rk[29]
+ 269 01f8 86EA0506 	    eor r6, r5 //rk[30]
+ 270 01fc 87EA0607 	    eor r7, r6 //rk[31]
+ 271              	
+ 272              	    //write to memory
+ 273 0200 0C66     	    str r4, [r1, #96]
+ 274 0202 4D66     	    str r5, [r1, #100]
+ 275 0204 8E66     	    str r6, [r1, #104]
+ 276 0206 CF66     	    str r7, [r1, #108]
+ 277              	
+ 278              	    //round 8
+ 279 0208 5FFA97F8 	    uxtb r8, r7, ror #8
+ 280 020c 5FFAA7F9 	    uxtb r9, r7, ror #16
+ 281 0210 5FFAB7FA 	    uxtb r10, r7, ror #24
+ 282 0214 5FFA87FB 	    uxtb r11, r7
+ 283              	
+ 284 0218 13F82880 	    ldrb r8, [r3, r8, lsl #2]
+ 285 021c 13F82990 	    ldrb r9, [r3, r9, lsl #2]
+ 286 0220 13F82AA0 	    ldrb r10, [r3, r10, lsl #2]
+ 287 0224 13F82BB0 	    ldrb r11, [r3, r11, lsl #2]
+ 288              	
+ 289 0228 84F08004 	    eor r4, #0x00000080 //rcon
+ 290 022c 84EA0804 	    eor r4, r4, r8
+ 291 0230 84EA0924 	    eor r4, r4, r9, lsl #8
+ 292 0234 84EA0A44 	    eor r4, r4, r10, lsl #16
+ 293 0238 84EA0B64 	    eor r4, r4, r11, lsl #24 //rk[32]
+ 294 023c 85EA0405 	    eor r5, r4 //rk[33]
+ 295 0240 86EA0506 	    eor r6, r5 //rk[34]
+ 296 0244 87EA0607 	    eor r7, r6 //rk[35]
+ 297              	
+ 298              	    //write to memory
+ 299 0248 0C67     	    str r4, [r1, #112]
+ 300 024a 4D67     	    str r5, [r1, #116]
+ 301 024c 8E67     	    str r6, [r1, #120]
+ 302 024e CF67     	    str r7, [r1, #124]
+ 303              	
+ 304 0250 01F18001 	    add r1, #128
+ 305              	
+ 306              	    //round 9
+ 307 0254 5FFA97F8 	    uxtb r8, r7, ror #8
+ 308 0258 5FFAA7F9 	    uxtb r9, r7, ror #16
+ 309 025c 5FFAB7FA 	    uxtb r10, r7, ror #24
+ 310 0260 5FFA87FB 	    uxtb r11, r7
+ 311              	
+ 312 0264 13F82880 	    ldrb r8, [r3, r8, lsl #2]
+ 313 0268 13F82990 	    ldrb r9, [r3, r9, lsl #2]
+ 314 026c 13F82AA0 	    ldrb r10, [r3, r10, lsl #2]
+ 315 0270 13F82BB0 	    ldrb r11, [r3, r11, lsl #2]
+ 316              	
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 10
+
+
+ 317 0274 84F01B04 	    eor r4, #0x0000001B //rcon
+ 318 0278 84EA0804 	    eor r4, r4, r8
+ 319 027c 84EA0924 	    eor r4, r4, r9, lsl #8
+ 320 0280 84EA0A44 	    eor r4, r4, r10, lsl #16
+ 321 0284 84EA0B64 	    eor r4, r4, r11, lsl #24 //rk[36]
+ 322 0288 85EA0405 	    eor r5, r4 //rk[37]
+ 323 028c 86EA0506 	    eor r6, r5 //rk[38]
+ 324 0290 87EA0607 	    eor r7, r6 //rk[39]
+ 325              	
+ 326              	    //write to memory
+ 327 0294 0C60     	    str r4, [r1, #0]
+ 328 0296 4D60     	    str r5, [r1, #4]
+ 329 0298 8E60     	    str r6, [r1, #8]
+ 330 029a CF60     	    str r7, [r1, #12]
+ 331              	
+ 332              	    //round 10
+ 333 029c 5FFA97F8 	    uxtb r8, r7, ror #8
+ 334 02a0 5FFAA7F9 	    uxtb r9, r7, ror #16
+ 335 02a4 5FFAB7FA 	    uxtb r10, r7, ror #24
+ 336 02a8 5FFA87FB 	    uxtb r11, r7
+ 337              	
+ 338 02ac 13F82880 	    ldrb r8, [r3, r8, lsl #2]
+ 339 02b0 13F82990 	    ldrb r9, [r3, r9, lsl #2]
+ 340 02b4 13F82AA0 	    ldrb r10, [r3, r10, lsl #2]
+ 341 02b8 13F82BB0 	    ldrb r11, [r3, r11, lsl #2]
+ 342              	
+ 343 02bc 84F03604 	    eor r4, #0x00000036 //rcon
+ 344 02c0 84EA0804 	    eor r4, r4, r8
+ 345 02c4 84EA0924 	    eor r4, r4, r9, lsl #8
+ 346 02c8 84EA0A44 	    eor r4, r4, r10, lsl #16
+ 347 02cc 84EA0B64 	    eor r4, r4, r11, lsl #24 //rk[40]
+ 348 02d0 85EA0405 	    eor r5, r4 //rk[41]
+ 349 02d4 86EA0506 	    eor r6, r5 //rk[42]
+ 350 02d8 87EA0607 	    eor r7, r6 //rk[43]
+ 351              	
+ 352              	    //write to memory
+ 353 02dc 0C61     	    str r4, [r1, #16]
+ 354 02de 4D61     	    str r5, [r1, #20]
+ 355 02e0 8E61     	    str r6, [r1, #24]
+ 356 02e2 CF61     	    str r7, [r1, #28]
+ 357              	
+ 358              	    //function epilogue, restore state
+ 359 02e4 BDE8F00F 	    pop {r4-r11}
+ 360 02e8 7047     	    bx lr
+ 361              	.size aes128_keyexp_publicinputs_asm,.-aes128_keyexp_publicinputs_asm
+ 362              	
+ 363              	.macro aesencrypt_oddround
+ 364              	    ldr r8, [r14], #4
+ 365              	    ldr r9, [r14], #4
+ 366              	    ldr r10, [r14], #4
+ 367              	    ldr r11, [r14], #4
+ 368              	
+ 369              	    uxtb r0, r4
+ 370              	    uxtb r1, r5
+ 371              	    uxtb r2, r6
+ 372              	    uxtb r3, r7
+ 373              	    ldr r0, [r12, r0, lsl #2]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 11
+
+
+ 374              	    ldr r1, [r12, r1, lsl #2]
+ 375              	    ldr r2, [r12, r2, lsl #2]
+ 376              	    ldr r3, [r12, r3, lsl #2]
+ 377              	    eor r8, r8, r0, ror #16
+ 378              	    eor r9, r9, r1, ror #16
+ 379              	    eor r10, r10, r2, ror #16
+ 380              	    eor r11, r11, r3, ror #16
+ 381              	
+ 382              	    uxtb r0, r5, ror #8
+ 383              	    uxtb r1, r6, ror #8
+ 384              	    uxtb r2, r7, ror #8
+ 385              	    uxtb r3, r4, ror #8
+ 386              	    ldr r0, [r12, r0, lsl #2]
+ 387              	    ldr r1, [r12, r1, lsl #2]
+ 388              	    ldr r2, [r12, r2, lsl #2]
+ 389              	    ldr r3, [r12, r3, lsl #2]
+ 390              	    eor r8, r8, r0, ror #8
+ 391              	    eor r9, r9, r1, ror #8
+ 392              	    eor r10, r10, r2, ror #8
+ 393              	    eor r11, r11, r3, ror #8
+ 394              	
+ 395              	    uxtb r0, r6, ror #16
+ 396              	    uxtb r1, r7, ror #16
+ 397              	    uxtb r2, r4, ror #16
+ 398              	    uxtb r3, r5, ror #16
+ 399              	    ldr r0, [r12, r0, lsl #2]
+ 400              	    ldr r1, [r12, r1, lsl #2]
+ 401              	    ldr r2, [r12, r2, lsl #2]
+ 402              	    ldr r3, [r12, r3, lsl #2]
+ 403              	    eor r8, r0
+ 404              	    eor r9, r1
+ 405              	    eor r10, r2
+ 406              	    eor r11, r3
+ 407              	
+ 408              	    uxtb r0, r7, ror #24
+ 409              	    uxtb r1, r4, ror #24
+ 410              	    uxtb r2, r5, ror #24
+ 411              	    uxtb r3, r6, ror #24
+ 412              	    ldr r0, [r12, r0, lsl #2]
+ 413              	    ldr r1, [r12, r1, lsl #2]
+ 414              	    ldr r2, [r12, r2, lsl #2]
+ 415              	    ldr r3, [r12, r3, lsl #2]
+ 416              	    eor r8, r8, r0, ror #24
+ 417              	    eor r9, r9, r1, ror #24
+ 418              	    eor r10, r10, r2, ror #24
+ 419              	    eor r11, r11, r3, ror #24
+ 420              	.endm
+ 421              	
+ 422              	.macro aesencrypt_evenround
+ 423              	    ldr r4, [r14], #4
+ 424              	    ldr r5, [r14], #4
+ 425              	    ldr r6, [r14], #4
+ 426              	    ldr r7, [r14], #4
+ 427              	
+ 428              	    uxtb r0, r8
+ 429              	    uxtb r1, r9
+ 430              	    uxtb r2, r10
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 12
+
+
+ 431              	    uxtb r3, r11
+ 432              	    ldr r0, [r12, r0, lsl #2]
+ 433              	    ldr r1, [r12, r1, lsl #2]
+ 434              	    ldr r2, [r12, r2, lsl #2]
+ 435              	    ldr r3, [r12, r3, lsl #2]
+ 436              	    eor r4, r4, r0, ror #16
+ 437              	    eor r5, r5, r1, ror #16
+ 438              	    eor r6, r6, r2, ror #16
+ 439              	    eor r7, r7, r3, ror #16
+ 440              	
+ 441              	    uxtb r0, r9, ror #8
+ 442              	    uxtb r1, r10, ror #8
+ 443              	    uxtb r2, r11, ror #8
+ 444              	    uxtb r3, r8, ror #8
+ 445              	    ldr r0, [r12, r0, lsl #2]
+ 446              	    ldr r1, [r12, r1, lsl #2]
+ 447              	    ldr r2, [r12, r2, lsl #2]
+ 448              	    ldr r3, [r12, r3, lsl #2]
+ 449              	    eor r4, r4, r0, ror #8
+ 450              	    eor r5, r5, r1, ror #8
+ 451              	    eor r6, r6, r2, ror #8
+ 452              	    eor r7, r7, r3, ror #8
+ 453              	
+ 454              	    uxtb r0, r10, ror #16
+ 455              	    uxtb r1, r11, ror #16
+ 456              	    uxtb r2, r8, ror #16
+ 457              	    uxtb r3, r9, ror #16
+ 458              	    ldr r0, [r12, r0, lsl #2]
+ 459              	    ldr r1, [r12, r1, lsl #2]
+ 460              	    ldr r2, [r12, r2, lsl #2]
+ 461              	    ldr r3, [r12, r3, lsl #2]
+ 462              	    eor r4, r0
+ 463              	    eor r5, r1
+ 464              	    eor r6, r2
+ 465              	    eor r7, r3
+ 466              	
+ 467              	    uxtb r0, r11, ror #24
+ 468              	    uxtb r1, r8, ror #24
+ 469              	    uxtb r2, r9, ror #24
+ 470              	    uxtb r3, r10, ror #24
+ 471              	    ldr r0, [r12, r0, lsl #2]
+ 472              	    ldr r1, [r12, r1, lsl #2]
+ 473              	    ldr r2, [r12, r2, lsl #2]
+ 474              	    ldr r3, [r12, r3, lsl #2]
+ 475              	    eor r4, r4, r0, ror #24
+ 476              	    eor r5, r5, r1, ror #24
+ 477              	    eor r6, r6, r2, ror #24
+ 478              	    eor r7, r7, r3, ror #24
+ 479              	.endm
+ 480              	
+ 481              	.macro aesencrypt_finalround
+ 482              	    uxtb r0, r11, ror #24
+ 483              	    uxtb r1, r8, ror #24
+ 484              	    uxtb r2, r9, ror #24
+ 485              	    uxtb r3, r10, ror #24
+ 486              	    ldr r4, [r12, r0, lsl #2]
+ 487              	    ldr r5, [r12, r1, lsl #2]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 13
+
+
+ 488              	    ldr r6, [r12, r2, lsl #2]
+ 489              	    ldr r7, [r12, r3, lsl #2]
+ 490              	
+ 491              	    uxtb r0, r10, ror #16
+ 492              	    uxtb r1, r11, ror #16
+ 493              	    uxtb r2, r8, ror #16
+ 494              	    uxtb r3, r9, ror #16
+ 495              	    ldr r0, [r12, r0, lsl #2]
+ 496              	    ldr r1, [r12, r1, lsl #2]
+ 497              	    ldr r2, [r12, r2, lsl #2]
+ 498              	    ldr r3, [r12, r3, lsl #2]
+ 499              	    bfi r4, r0, #24, #8
+ 500              	    bfi r5, r1, #24, #8
+ 501              	    bfi r6, r2, #24, #8
+ 502              	    bfi r7, r3, #24, #8
+ 503              	
+ 504              	    uxtb r0, r8
+ 505              	    uxtb r1, r9
+ 506              	    uxtb r2, r10
+ 507              	    uxtb r3, r11
+ 508              	    ldr r0, [r12, r0, lsl #2]
+ 509              	    ldr r1, [r12, r1, lsl #2]
+ 510              	    ldr r2, [r12, r2, lsl #2]
+ 511              	    ldr r3, [r12, r3, lsl #2]
+ 512              	    bfi r4, r0, #8, #8
+ 513              	    bfi r5, r1, #8, #8
+ 514              	    bfi r6, r2, #8, #8
+ 515              	    bfi r7, r3, #8, #8
+ 516              	
+ 517              	    uxtb r0, r9, ror #8
+ 518              	    uxtb r1, r10, ror #8
+ 519              	    uxtb r2, r11, ror #8
+ 520              	    uxtb r3, r8, ror #8
+ 521              	    ldr r0, [r12, r0, lsl #2]
+ 522              	    ldr r1, [r12, r1, lsl #2]
+ 523              	    ldr r2, [r12, r2, lsl #2]
+ 524              	    ldr r3, [r12, r3, lsl #2]
+ 525              	    bfi r4, r0, #16, #8
+ 526              	    bfi r5, r1, #16, #8
+ 527              	    bfi r6, r2, #16, #8
+ 528              	    bfi r7, r3, #16, #8
+ 529              	.endm
+ 530              	
+ 531              	@ void aes128_encrypt_publicinputs_asm(const uint8_t *rk,
+ 532              	@       const uint8_t *in, uint8_t *out) {
+ 533              	.global aes128_encrypt_publicinputs_asm
+ 534              	.type   aes128_encrypt_publicinputs_asm,%function
+ 535 02ea 00BF     	.align 2
+ 536              	aes128_encrypt_publicinputs_asm:
+ 537              	
+ 538              	    //function prologue, preserve registers and free r2
+ 539 02ec 2DE9F45F 	    push {r2,r4-r12,r14}
+ 540              	
+ 541              	    //load input
+ 542 02f0 0C68     	    ldr r4, [r1, #0]
+ 543 02f2 4D68     	    ldr r5, [r1, #4]
+ 544 02f4 8E68     	    ldr r6, [r1, #8]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 14
+
+
+ 545 02f6 CF68     	    ldr r7, [r1, #12]
+ 546              	    //r1 now free to overwrite
+ 547              	    //load key
+ 548 02f8 50F8048B 	    ldr r8, [r0], #4
+ 549 02fc 50F8049B 	    ldr r9, [r0], #4
+ 550 0300 50F804AB 	    ldr r10, [r0], #4
+ 551 0304 50F804BB 	    ldr r11, [r0], #4
+ 552 0308 4FEA000E 	    mov.w r14, r0
+ 553              	
+ 554              	    //load table address once
+ 555 030c DFF81CC8 	    ldr r12, =AES_Te0
+ 556              	
+ 557              	    //initial addroundkey
+ 558 0310 84EA0804 	    eor r4, r8
+ 559 0314 85EA0905 	    eor r5, r9
+ 560 0318 86EA0A06 	    eor r6, r10
+ 561 031c 87EA0B07 	    eor r7, r11
+ 562              	
+ 563              	.rept 4
+ 563              	>  aesencrypt_oddround
+ 563 0320 5EF8048B 	>>  ldr r8,[r14],#4
+ 563 0324 5EF8049B 	>>  ldr r9,[r14],#4
+ 563 0328 5EF804AB 	>>  ldr r10,[r14],#4
+ 563 032c 5EF804BB 	>>  ldr r11,[r14],#4
+ 563              	>> 
+ 563 0330 E0B2     	>>  uxtb r0,r4
+ 563 0332 E9B2     	>>  uxtb r1,r5
+ 563 0334 F2B2     	>>  uxtb r2,r6
+ 563 0336 FBB2     	>>  uxtb r3,r7
+ 563 0338 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 033c 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 0340 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 0344 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 0348 88EA3048 	>>  eor r8,r8,r0,ror#16
+ 563 034c 89EA3149 	>>  eor r9,r9,r1,ror#16
+ 563 0350 8AEA324A 	>>  eor r10,r10,r2,ror#16
+ 563 0354 8BEA334B 	>>  eor r11,r11,r3,ror#16
+ 563              	>> 
+ 563 0358 5FFA95F0 	>>  uxtb r0,r5,ror#8
+ 563 035c 5FFA96F1 	>>  uxtb r1,r6,ror#8
+ 563 0360 5FFA97F2 	>>  uxtb r2,r7,ror#8
+ 563 0364 5FFA94F3 	>>  uxtb r3,r4,ror#8
+ 563 0368 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 036c 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 0370 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 0374 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 0378 88EA3028 	>>  eor r8,r8,r0,ror#8
+ 563 037c 89EA3129 	>>  eor r9,r9,r1,ror#8
+ 563 0380 8AEA322A 	>>  eor r10,r10,r2,ror#8
+ 563 0384 8BEA332B 	>>  eor r11,r11,r3,ror#8
+ 563              	>> 
+ 563 0388 5FFAA6F0 	>>  uxtb r0,r6,ror#16
+ 563 038c 5FFAA7F1 	>>  uxtb r1,r7,ror#16
+ 563 0390 5FFAA4F2 	>>  uxtb r2,r4,ror#16
+ 563 0394 5FFAA5F3 	>>  uxtb r3,r5,ror#16
+ 563 0398 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 039c 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 15
+
+
+ 563 03a0 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 03a4 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 03a8 88EA0008 	>>  eor r8,r0
+ 563 03ac 89EA0109 	>>  eor r9,r1
+ 563 03b0 8AEA020A 	>>  eor r10,r2
+ 563 03b4 8BEA030B 	>>  eor r11,r3
+ 563              	>> 
+ 563 03b8 5FFAB7F0 	>>  uxtb r0,r7,ror#24
+ 563 03bc 5FFAB4F1 	>>  uxtb r1,r4,ror#24
+ 563 03c0 5FFAB5F2 	>>  uxtb r2,r5,ror#24
+ 563 03c4 5FFAB6F3 	>>  uxtb r3,r6,ror#24
+ 563 03c8 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 03cc 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 03d0 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 03d4 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 03d8 88EA3068 	>>  eor r8,r8,r0,ror#24
+ 563 03dc 89EA3169 	>>  eor r9,r9,r1,ror#24
+ 563 03e0 8AEA326A 	>>  eor r10,r10,r2,ror#24
+ 563 03e4 8BEA336B 	>>  eor r11,r11,r3,ror#24
+ 563              	>  aesencrypt_evenround
+ 563 03e8 5EF8044B 	>>  ldr r4,[r14],#4
+ 563 03ec 5EF8045B 	>>  ldr r5,[r14],#4
+ 563 03f0 5EF8046B 	>>  ldr r6,[r14],#4
+ 563 03f4 5EF8047B 	>>  ldr r7,[r14],#4
+ 563              	>> 
+ 563 03f8 5FFA88F0 	>>  uxtb r0,r8
+ 563 03fc 5FFA89F1 	>>  uxtb r1,r9
+ 563 0400 5FFA8AF2 	>>  uxtb r2,r10
+ 563 0404 5FFA8BF3 	>>  uxtb r3,r11
+ 563 0408 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 040c 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 0410 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 0414 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 0418 84EA3044 	>>  eor r4,r4,r0,ror#16
+ 563 041c 85EA3145 	>>  eor r5,r5,r1,ror#16
+ 563 0420 86EA3246 	>>  eor r6,r6,r2,ror#16
+ 563 0424 87EA3347 	>>  eor r7,r7,r3,ror#16
+ 563              	>> 
+ 563 0428 5FFA99F0 	>>  uxtb r0,r9,ror#8
+ 563 042c 5FFA9AF1 	>>  uxtb r1,r10,ror#8
+ 563 0430 5FFA9BF2 	>>  uxtb r2,r11,ror#8
+ 563 0434 5FFA98F3 	>>  uxtb r3,r8,ror#8
+ 563 0438 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 043c 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 0440 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 0444 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 0448 84EA3024 	>>  eor r4,r4,r0,ror#8
+ 563 044c 85EA3125 	>>  eor r5,r5,r1,ror#8
+ 563 0450 86EA3226 	>>  eor r6,r6,r2,ror#8
+ 563 0454 87EA3327 	>>  eor r7,r7,r3,ror#8
+ 563              	>> 
+ 563 0458 5FFAAAF0 	>>  uxtb r0,r10,ror#16
+ 563 045c 5FFAABF1 	>>  uxtb r1,r11,ror#16
+ 563 0460 5FFAA8F2 	>>  uxtb r2,r8,ror#16
+ 563 0464 5FFAA9F3 	>>  uxtb r3,r9,ror#16
+ 563 0468 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 046c 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 16
+
+
+ 563 0470 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 0474 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 0478 84EA0004 	>>  eor r4,r0
+ 563 047c 85EA0105 	>>  eor r5,r1
+ 563 0480 86EA0206 	>>  eor r6,r2
+ 563 0484 87EA0307 	>>  eor r7,r3
+ 563              	>> 
+ 563 0488 5FFABBF0 	>>  uxtb r0,r11,ror#24
+ 563 048c 5FFAB8F1 	>>  uxtb r1,r8,ror#24
+ 563 0490 5FFAB9F2 	>>  uxtb r2,r9,ror#24
+ 563 0494 5FFABAF3 	>>  uxtb r3,r10,ror#24
+ 563 0498 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 049c 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 04a0 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 04a4 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 04a8 84EA3064 	>>  eor r4,r4,r0,ror#24
+ 563 04ac 85EA3165 	>>  eor r5,r5,r1,ror#24
+ 563 04b0 86EA3266 	>>  eor r6,r6,r2,ror#24
+ 563 04b4 87EA3367 	>>  eor r7,r7,r3,ror#24
+ 563              	> 
+ 563              	>  aesencrypt_oddround
+ 563 04b8 5EF8048B 	>>  ldr r8,[r14],#4
+ 563 04bc 5EF8049B 	>>  ldr r9,[r14],#4
+ 563 04c0 5EF804AB 	>>  ldr r10,[r14],#4
+ 563 04c4 5EF804BB 	>>  ldr r11,[r14],#4
+ 563              	>> 
+ 563 04c8 E0B2     	>>  uxtb r0,r4
+ 563 04ca E9B2     	>>  uxtb r1,r5
+ 563 04cc F2B2     	>>  uxtb r2,r6
+ 563 04ce FBB2     	>>  uxtb r3,r7
+ 563 04d0 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 04d4 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 04d8 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 04dc 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 04e0 88EA3048 	>>  eor r8,r8,r0,ror#16
+ 563 04e4 89EA3149 	>>  eor r9,r9,r1,ror#16
+ 563 04e8 8AEA324A 	>>  eor r10,r10,r2,ror#16
+ 563 04ec 8BEA334B 	>>  eor r11,r11,r3,ror#16
+ 563              	>> 
+ 563 04f0 5FFA95F0 	>>  uxtb r0,r5,ror#8
+ 563 04f4 5FFA96F1 	>>  uxtb r1,r6,ror#8
+ 563 04f8 5FFA97F2 	>>  uxtb r2,r7,ror#8
+ 563 04fc 5FFA94F3 	>>  uxtb r3,r4,ror#8
+ 563 0500 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 0504 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 0508 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 050c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 0510 88EA3028 	>>  eor r8,r8,r0,ror#8
+ 563 0514 89EA3129 	>>  eor r9,r9,r1,ror#8
+ 563 0518 8AEA322A 	>>  eor r10,r10,r2,ror#8
+ 563 051c 8BEA332B 	>>  eor r11,r11,r3,ror#8
+ 563              	>> 
+ 563 0520 5FFAA6F0 	>>  uxtb r0,r6,ror#16
+ 563 0524 5FFAA7F1 	>>  uxtb r1,r7,ror#16
+ 563 0528 5FFAA4F2 	>>  uxtb r2,r4,ror#16
+ 563 052c 5FFAA5F3 	>>  uxtb r3,r5,ror#16
+ 563 0530 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 17
+
+
+ 563 0534 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 0538 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 053c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 0540 88EA0008 	>>  eor r8,r0
+ 563 0544 89EA0109 	>>  eor r9,r1
+ 563 0548 8AEA020A 	>>  eor r10,r2
+ 563 054c 8BEA030B 	>>  eor r11,r3
+ 563              	>> 
+ 563 0550 5FFAB7F0 	>>  uxtb r0,r7,ror#24
+ 563 0554 5FFAB4F1 	>>  uxtb r1,r4,ror#24
+ 563 0558 5FFAB5F2 	>>  uxtb r2,r5,ror#24
+ 563 055c 5FFAB6F3 	>>  uxtb r3,r6,ror#24
+ 563 0560 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 0564 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 0568 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 056c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 0570 88EA3068 	>>  eor r8,r8,r0,ror#24
+ 563 0574 89EA3169 	>>  eor r9,r9,r1,ror#24
+ 563 0578 8AEA326A 	>>  eor r10,r10,r2,ror#24
+ 563 057c 8BEA336B 	>>  eor r11,r11,r3,ror#24
+ 563              	>  aesencrypt_evenround
+ 563 0580 5EF8044B 	>>  ldr r4,[r14],#4
+ 563 0584 5EF8045B 	>>  ldr r5,[r14],#4
+ 563 0588 5EF8046B 	>>  ldr r6,[r14],#4
+ 563 058c 5EF8047B 	>>  ldr r7,[r14],#4
+ 563              	>> 
+ 563 0590 5FFA88F0 	>>  uxtb r0,r8
+ 563 0594 5FFA89F1 	>>  uxtb r1,r9
+ 563 0598 5FFA8AF2 	>>  uxtb r2,r10
+ 563 059c 5FFA8BF3 	>>  uxtb r3,r11
+ 563 05a0 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 05a4 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 05a8 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 05ac 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 05b0 84EA3044 	>>  eor r4,r4,r0,ror#16
+ 563 05b4 85EA3145 	>>  eor r5,r5,r1,ror#16
+ 563 05b8 86EA3246 	>>  eor r6,r6,r2,ror#16
+ 563 05bc 87EA3347 	>>  eor r7,r7,r3,ror#16
+ 563              	>> 
+ 563 05c0 5FFA99F0 	>>  uxtb r0,r9,ror#8
+ 563 05c4 5FFA9AF1 	>>  uxtb r1,r10,ror#8
+ 563 05c8 5FFA9BF2 	>>  uxtb r2,r11,ror#8
+ 563 05cc 5FFA98F3 	>>  uxtb r3,r8,ror#8
+ 563 05d0 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 05d4 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 05d8 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 05dc 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 05e0 84EA3024 	>>  eor r4,r4,r0,ror#8
+ 563 05e4 85EA3125 	>>  eor r5,r5,r1,ror#8
+ 563 05e8 86EA3226 	>>  eor r6,r6,r2,ror#8
+ 563 05ec 87EA3327 	>>  eor r7,r7,r3,ror#8
+ 563              	>> 
+ 563 05f0 5FFAAAF0 	>>  uxtb r0,r10,ror#16
+ 563 05f4 5FFAABF1 	>>  uxtb r1,r11,ror#16
+ 563 05f8 5FFAA8F2 	>>  uxtb r2,r8,ror#16
+ 563 05fc 5FFAA9F3 	>>  uxtb r3,r9,ror#16
+ 563 0600 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 18
+
+
+ 563 0604 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 0608 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 060c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 0610 84EA0004 	>>  eor r4,r0
+ 563 0614 85EA0105 	>>  eor r5,r1
+ 563 0618 86EA0206 	>>  eor r6,r2
+ 563 061c 87EA0307 	>>  eor r7,r3
+ 563              	>> 
+ 563 0620 5FFABBF0 	>>  uxtb r0,r11,ror#24
+ 563 0624 5FFAB8F1 	>>  uxtb r1,r8,ror#24
+ 563 0628 5FFAB9F2 	>>  uxtb r2,r9,ror#24
+ 563 062c 5FFABAF3 	>>  uxtb r3,r10,ror#24
+ 563 0630 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 0634 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 0638 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 063c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 0640 84EA3064 	>>  eor r4,r4,r0,ror#24
+ 563 0644 85EA3165 	>>  eor r5,r5,r1,ror#24
+ 563 0648 86EA3266 	>>  eor r6,r6,r2,ror#24
+ 563 064c 87EA3367 	>>  eor r7,r7,r3,ror#24
+ 563              	> 
+ 563              	>  aesencrypt_oddround
+ 563 0650 5EF8048B 	>>  ldr r8,[r14],#4
+ 563 0654 5EF8049B 	>>  ldr r9,[r14],#4
+ 563 0658 5EF804AB 	>>  ldr r10,[r14],#4
+ 563 065c 5EF804BB 	>>  ldr r11,[r14],#4
+ 563              	>> 
+ 563 0660 E0B2     	>>  uxtb r0,r4
+ 563 0662 E9B2     	>>  uxtb r1,r5
+ 563 0664 F2B2     	>>  uxtb r2,r6
+ 563 0666 FBB2     	>>  uxtb r3,r7
+ 563 0668 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 066c 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 0670 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 0674 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 0678 88EA3048 	>>  eor r8,r8,r0,ror#16
+ 563 067c 89EA3149 	>>  eor r9,r9,r1,ror#16
+ 563 0680 8AEA324A 	>>  eor r10,r10,r2,ror#16
+ 563 0684 8BEA334B 	>>  eor r11,r11,r3,ror#16
+ 563              	>> 
+ 563 0688 5FFA95F0 	>>  uxtb r0,r5,ror#8
+ 563 068c 5FFA96F1 	>>  uxtb r1,r6,ror#8
+ 563 0690 5FFA97F2 	>>  uxtb r2,r7,ror#8
+ 563 0694 5FFA94F3 	>>  uxtb r3,r4,ror#8
+ 563 0698 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 069c 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 06a0 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 06a4 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 06a8 88EA3028 	>>  eor r8,r8,r0,ror#8
+ 563 06ac 89EA3129 	>>  eor r9,r9,r1,ror#8
+ 563 06b0 8AEA322A 	>>  eor r10,r10,r2,ror#8
+ 563 06b4 8BEA332B 	>>  eor r11,r11,r3,ror#8
+ 563              	>> 
+ 563 06b8 5FFAA6F0 	>>  uxtb r0,r6,ror#16
+ 563 06bc 5FFAA7F1 	>>  uxtb r1,r7,ror#16
+ 563 06c0 5FFAA4F2 	>>  uxtb r2,r4,ror#16
+ 563 06c4 5FFAA5F3 	>>  uxtb r3,r5,ror#16
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 19
+
+
+ 563 06c8 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 06cc 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 06d0 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 06d4 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 06d8 88EA0008 	>>  eor r8,r0
+ 563 06dc 89EA0109 	>>  eor r9,r1
+ 563 06e0 8AEA020A 	>>  eor r10,r2
+ 563 06e4 8BEA030B 	>>  eor r11,r3
+ 563              	>> 
+ 563 06e8 5FFAB7F0 	>>  uxtb r0,r7,ror#24
+ 563 06ec 5FFAB4F1 	>>  uxtb r1,r4,ror#24
+ 563 06f0 5FFAB5F2 	>>  uxtb r2,r5,ror#24
+ 563 06f4 5FFAB6F3 	>>  uxtb r3,r6,ror#24
+ 563 06f8 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 06fc 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 0700 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 0704 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 0708 88EA3068 	>>  eor r8,r8,r0,ror#24
+ 563 070c 89EA3169 	>>  eor r9,r9,r1,ror#24
+ 563 0710 8AEA326A 	>>  eor r10,r10,r2,ror#24
+ 563 0714 8BEA336B 	>>  eor r11,r11,r3,ror#24
+ 563              	>  aesencrypt_evenround
+ 563 0718 5EF8044B 	>>  ldr r4,[r14],#4
+ 563 071c 5EF8045B 	>>  ldr r5,[r14],#4
+ 563 0720 5EF8046B 	>>  ldr r6,[r14],#4
+ 563 0724 5EF8047B 	>>  ldr r7,[r14],#4
+ 563              	>> 
+ 563 0728 5FFA88F0 	>>  uxtb r0,r8
+ 563 072c 5FFA89F1 	>>  uxtb r1,r9
+ 563 0730 5FFA8AF2 	>>  uxtb r2,r10
+ 563 0734 5FFA8BF3 	>>  uxtb r3,r11
+ 563 0738 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 073c 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 0740 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 0744 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 0748 84EA3044 	>>  eor r4,r4,r0,ror#16
+ 563 074c 85EA3145 	>>  eor r5,r5,r1,ror#16
+ 563 0750 86EA3246 	>>  eor r6,r6,r2,ror#16
+ 563 0754 87EA3347 	>>  eor r7,r7,r3,ror#16
+ 563              	>> 
+ 563 0758 5FFA99F0 	>>  uxtb r0,r9,ror#8
+ 563 075c 5FFA9AF1 	>>  uxtb r1,r10,ror#8
+ 563 0760 5FFA9BF2 	>>  uxtb r2,r11,ror#8
+ 563 0764 5FFA98F3 	>>  uxtb r3,r8,ror#8
+ 563 0768 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 076c 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 0770 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 0774 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 0778 84EA3024 	>>  eor r4,r4,r0,ror#8
+ 563 077c 85EA3125 	>>  eor r5,r5,r1,ror#8
+ 563 0780 86EA3226 	>>  eor r6,r6,r2,ror#8
+ 563 0784 87EA3327 	>>  eor r7,r7,r3,ror#8
+ 563              	>> 
+ 563 0788 5FFAAAF0 	>>  uxtb r0,r10,ror#16
+ 563 078c 5FFAABF1 	>>  uxtb r1,r11,ror#16
+ 563 0790 5FFAA8F2 	>>  uxtb r2,r8,ror#16
+ 563 0794 5FFAA9F3 	>>  uxtb r3,r9,ror#16
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 20
+
+
+ 563 0798 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 079c 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 07a0 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 07a4 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 07a8 84EA0004 	>>  eor r4,r0
+ 563 07ac 85EA0105 	>>  eor r5,r1
+ 563 07b0 86EA0206 	>>  eor r6,r2
+ 563 07b4 87EA0307 	>>  eor r7,r3
+ 563              	>> 
+ 563 07b8 5FFABBF0 	>>  uxtb r0,r11,ror#24
+ 563 07bc 5FFAB8F1 	>>  uxtb r1,r8,ror#24
+ 563 07c0 5FFAB9F2 	>>  uxtb r2,r9,ror#24
+ 563 07c4 5FFABAF3 	>>  uxtb r3,r10,ror#24
+ 563 07c8 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 07cc 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 07d0 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 07d4 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 07d8 84EA3064 	>>  eor r4,r4,r0,ror#24
+ 563 07dc 85EA3165 	>>  eor r5,r5,r1,ror#24
+ 563 07e0 86EA3266 	>>  eor r6,r6,r2,ror#24
+ 563 07e4 87EA3367 	>>  eor r7,r7,r3,ror#24
+ 563              	> 
+ 563              	>  aesencrypt_oddround
+ 563 07e8 5EF8048B 	>>  ldr r8,[r14],#4
+ 563 07ec 5EF8049B 	>>  ldr r9,[r14],#4
+ 563 07f0 5EF804AB 	>>  ldr r10,[r14],#4
+ 563 07f4 5EF804BB 	>>  ldr r11,[r14],#4
+ 563              	>> 
+ 563 07f8 E0B2     	>>  uxtb r0,r4
+ 563 07fa E9B2     	>>  uxtb r1,r5
+ 563 07fc F2B2     	>>  uxtb r2,r6
+ 563 07fe FBB2     	>>  uxtb r3,r7
+ 563 0800 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 0804 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 0808 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 080c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 0810 88EA3048 	>>  eor r8,r8,r0,ror#16
+ 563 0814 89EA3149 	>>  eor r9,r9,r1,ror#16
+ 563 0818 8AEA324A 	>>  eor r10,r10,r2,ror#16
+ 563 081c 8BEA334B 	>>  eor r11,r11,r3,ror#16
+ 563              	>> 
+ 563 0820 5FFA95F0 	>>  uxtb r0,r5,ror#8
+ 563 0824 5FFA96F1 	>>  uxtb r1,r6,ror#8
+ 563 0828 5FFA97F2 	>>  uxtb r2,r7,ror#8
+ 563 082c 5FFA94F3 	>>  uxtb r3,r4,ror#8
+ 563 0830 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 0834 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 0838 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 083c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 0840 88EA3028 	>>  eor r8,r8,r0,ror#8
+ 563 0844 89EA3129 	>>  eor r9,r9,r1,ror#8
+ 563 0848 8AEA322A 	>>  eor r10,r10,r2,ror#8
+ 563 084c 8BEA332B 	>>  eor r11,r11,r3,ror#8
+ 563              	>> 
+ 563 0850 5FFAA6F0 	>>  uxtb r0,r6,ror#16
+ 563 0854 5FFAA7F1 	>>  uxtb r1,r7,ror#16
+ 563 0858 5FFAA4F2 	>>  uxtb r2,r4,ror#16
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 21
+
+
+ 563 085c 5FFAA5F3 	>>  uxtb r3,r5,ror#16
+ 563 0860 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 0864 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 0868 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 086c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 0870 88EA0008 	>>  eor r8,r0
+ 563 0874 89EA0109 	>>  eor r9,r1
+ 563 0878 8AEA020A 	>>  eor r10,r2
+ 563 087c 8BEA030B 	>>  eor r11,r3
+ 563              	>> 
+ 563 0880 5FFAB7F0 	>>  uxtb r0,r7,ror#24
+ 563 0884 5FFAB4F1 	>>  uxtb r1,r4,ror#24
+ 563 0888 5FFAB5F2 	>>  uxtb r2,r5,ror#24
+ 563 088c 5FFAB6F3 	>>  uxtb r3,r6,ror#24
+ 563 0890 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 0894 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 0898 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 089c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 08a0 88EA3068 	>>  eor r8,r8,r0,ror#24
+ 563 08a4 89EA3169 	>>  eor r9,r9,r1,ror#24
+ 563 08a8 8AEA326A 	>>  eor r10,r10,r2,ror#24
+ 563 08ac 8BEA336B 	>>  eor r11,r11,r3,ror#24
+ 563              	>  aesencrypt_evenround
+ 563 08b0 5EF8044B 	>>  ldr r4,[r14],#4
+ 563 08b4 5EF8045B 	>>  ldr r5,[r14],#4
+ 563 08b8 5EF8046B 	>>  ldr r6,[r14],#4
+ 563 08bc 5EF8047B 	>>  ldr r7,[r14],#4
+ 563              	>> 
+ 563 08c0 5FFA88F0 	>>  uxtb r0,r8
+ 563 08c4 5FFA89F1 	>>  uxtb r1,r9
+ 563 08c8 5FFA8AF2 	>>  uxtb r2,r10
+ 563 08cc 5FFA8BF3 	>>  uxtb r3,r11
+ 563 08d0 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 08d4 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 08d8 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 08dc 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 08e0 84EA3044 	>>  eor r4,r4,r0,ror#16
+ 563 08e4 85EA3145 	>>  eor r5,r5,r1,ror#16
+ 563 08e8 86EA3246 	>>  eor r6,r6,r2,ror#16
+ 563 08ec 87EA3347 	>>  eor r7,r7,r3,ror#16
+ 563              	>> 
+ 563 08f0 5FFA99F0 	>>  uxtb r0,r9,ror#8
+ 563 08f4 5FFA9AF1 	>>  uxtb r1,r10,ror#8
+ 563 08f8 5FFA9BF2 	>>  uxtb r2,r11,ror#8
+ 563 08fc 5FFA98F3 	>>  uxtb r3,r8,ror#8
+ 563 0900 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 0904 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 0908 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 090c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 0910 84EA3024 	>>  eor r4,r4,r0,ror#8
+ 563 0914 85EA3125 	>>  eor r5,r5,r1,ror#8
+ 563 0918 86EA3226 	>>  eor r6,r6,r2,ror#8
+ 563 091c 87EA3327 	>>  eor r7,r7,r3,ror#8
+ 563              	>> 
+ 563 0920 5FFAAAF0 	>>  uxtb r0,r10,ror#16
+ 563 0924 5FFAABF1 	>>  uxtb r1,r11,ror#16
+ 563 0928 5FFAA8F2 	>>  uxtb r2,r8,ror#16
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 22
+
+
+ 563 092c 5FFAA9F3 	>>  uxtb r3,r9,ror#16
+ 563 0930 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 0934 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 0938 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 093c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 0940 84EA0004 	>>  eor r4,r0
+ 563 0944 85EA0105 	>>  eor r5,r1
+ 563 0948 86EA0206 	>>  eor r6,r2
+ 563 094c 87EA0307 	>>  eor r7,r3
+ 563              	>> 
+ 563 0950 5FFABBF0 	>>  uxtb r0,r11,ror#24
+ 563 0954 5FFAB8F1 	>>  uxtb r1,r8,ror#24
+ 563 0958 5FFAB9F2 	>>  uxtb r2,r9,ror#24
+ 563 095c 5FFABAF3 	>>  uxtb r3,r10,ror#24
+ 563 0960 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 563 0964 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 563 0968 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 563 096c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 563 0970 84EA3064 	>>  eor r4,r4,r0,ror#24
+ 563 0974 85EA3165 	>>  eor r5,r5,r1,ror#24
+ 563 0978 86EA3266 	>>  eor r6,r6,r2,ror#24
+ 563 097c 87EA3367 	>>  eor r7,r7,r3,ror#24
+ 564              	    aesencrypt_oddround
+ 565              	    aesencrypt_evenround
+ 566              	.endr
+ 567              	    aesencrypt_oddround
+ 567 0980 5EF8048B 	>  ldr r8,[r14],#4
+ 567 0984 5EF8049B 	>  ldr r9,[r14],#4
+ 567 0988 5EF804AB 	>  ldr r10,[r14],#4
+ 567 098c 5EF804BB 	>  ldr r11,[r14],#4
+ 567              	> 
+ 567 0990 E0B2     	>  uxtb r0,r4
+ 567 0992 E9B2     	>  uxtb r1,r5
+ 567 0994 F2B2     	>  uxtb r2,r6
+ 567 0996 FBB2     	>  uxtb r3,r7
+ 567 0998 5CF82000 	>  ldr r0,[r12,r0,lsl#2]
+ 567 099c 5CF82110 	>  ldr r1,[r12,r1,lsl#2]
+ 567 09a0 5CF82220 	>  ldr r2,[r12,r2,lsl#2]
+ 567 09a4 5CF82330 	>  ldr r3,[r12,r3,lsl#2]
+ 567 09a8 88EA3048 	>  eor r8,r8,r0,ror#16
+ 567 09ac 89EA3149 	>  eor r9,r9,r1,ror#16
+ 567 09b0 8AEA324A 	>  eor r10,r10,r2,ror#16
+ 567 09b4 8BEA334B 	>  eor r11,r11,r3,ror#16
+ 567              	> 
+ 567 09b8 5FFA95F0 	>  uxtb r0,r5,ror#8
+ 567 09bc 5FFA96F1 	>  uxtb r1,r6,ror#8
+ 567 09c0 5FFA97F2 	>  uxtb r2,r7,ror#8
+ 567 09c4 5FFA94F3 	>  uxtb r3,r4,ror#8
+ 567 09c8 5CF82000 	>  ldr r0,[r12,r0,lsl#2]
+ 567 09cc 5CF82110 	>  ldr r1,[r12,r1,lsl#2]
+ 567 09d0 5CF82220 	>  ldr r2,[r12,r2,lsl#2]
+ 567 09d4 5CF82330 	>  ldr r3,[r12,r3,lsl#2]
+ 567 09d8 88EA3028 	>  eor r8,r8,r0,ror#8
+ 567 09dc 89EA3129 	>  eor r9,r9,r1,ror#8
+ 567 09e0 8AEA322A 	>  eor r10,r10,r2,ror#8
+ 567 09e4 8BEA332B 	>  eor r11,r11,r3,ror#8
+ 567              	> 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 23
+
+
+ 567 09e8 5FFAA6F0 	>  uxtb r0,r6,ror#16
+ 567 09ec 5FFAA7F1 	>  uxtb r1,r7,ror#16
+ 567 09f0 5FFAA4F2 	>  uxtb r2,r4,ror#16
+ 567 09f4 5FFAA5F3 	>  uxtb r3,r5,ror#16
+ 567 09f8 5CF82000 	>  ldr r0,[r12,r0,lsl#2]
+ 567 09fc 5CF82110 	>  ldr r1,[r12,r1,lsl#2]
+ 567 0a00 5CF82220 	>  ldr r2,[r12,r2,lsl#2]
+ 567 0a04 5CF82330 	>  ldr r3,[r12,r3,lsl#2]
+ 567 0a08 88EA0008 	>  eor r8,r0
+ 567 0a0c 89EA0109 	>  eor r9,r1
+ 567 0a10 8AEA020A 	>  eor r10,r2
+ 567 0a14 8BEA030B 	>  eor r11,r3
+ 567              	> 
+ 567 0a18 5FFAB7F0 	>  uxtb r0,r7,ror#24
+ 567 0a1c 5FFAB4F1 	>  uxtb r1,r4,ror#24
+ 567 0a20 5FFAB5F2 	>  uxtb r2,r5,ror#24
+ 567 0a24 5FFAB6F3 	>  uxtb r3,r6,ror#24
+ 567 0a28 5CF82000 	>  ldr r0,[r12,r0,lsl#2]
+ 567 0a2c 5CF82110 	>  ldr r1,[r12,r1,lsl#2]
+ 567 0a30 5CF82220 	>  ldr r2,[r12,r2,lsl#2]
+ 567 0a34 5CF82330 	>  ldr r3,[r12,r3,lsl#2]
+ 567 0a38 88EA3068 	>  eor r8,r8,r0,ror#24
+ 567 0a3c 89EA3169 	>  eor r9,r9,r1,ror#24
+ 567 0a40 8AEA326A 	>  eor r10,r10,r2,ror#24
+ 567 0a44 8BEA336B 	>  eor r11,r11,r3,ror#24
+ 568              	    aesencrypt_finalround
+ 568 0a48 5FFABBF0 	>  uxtb r0,r11,ror#24
+ 568 0a4c 5FFAB8F1 	>  uxtb r1,r8,ror#24
+ 568 0a50 5FFAB9F2 	>  uxtb r2,r9,ror#24
+ 568 0a54 5FFABAF3 	>  uxtb r3,r10,ror#24
+ 568 0a58 5CF82040 	>  ldr r4,[r12,r0,lsl#2]
+ 568 0a5c 5CF82150 	>  ldr r5,[r12,r1,lsl#2]
+ 568 0a60 5CF82260 	>  ldr r6,[r12,r2,lsl#2]
+ 568 0a64 5CF82370 	>  ldr r7,[r12,r3,lsl#2]
+ 568              	> 
+ 568 0a68 5FFAAAF0 	>  uxtb r0,r10,ror#16
+ 568 0a6c 5FFAABF1 	>  uxtb r1,r11,ror#16
+ 568 0a70 5FFAA8F2 	>  uxtb r2,r8,ror#16
+ 568 0a74 5FFAA9F3 	>  uxtb r3,r9,ror#16
+ 568 0a78 5CF82000 	>  ldr r0,[r12,r0,lsl#2]
+ 568 0a7c 5CF82110 	>  ldr r1,[r12,r1,lsl#2]
+ 568 0a80 5CF82220 	>  ldr r2,[r12,r2,lsl#2]
+ 568 0a84 5CF82330 	>  ldr r3,[r12,r3,lsl#2]
+ 568 0a88 60F31F64 	>  bfi r4,r0,#24,#8
+ 568 0a8c 61F31F65 	>  bfi r5,r1,#24,#8
+ 568 0a90 62F31F66 	>  bfi r6,r2,#24,#8
+ 568 0a94 63F31F67 	>  bfi r7,r3,#24,#8
+ 568              	> 
+ 568 0a98 5FFA88F0 	>  uxtb r0,r8
+ 568 0a9c 5FFA89F1 	>  uxtb r1,r9
+ 568 0aa0 5FFA8AF2 	>  uxtb r2,r10
+ 568 0aa4 5FFA8BF3 	>  uxtb r3,r11
+ 568 0aa8 5CF82000 	>  ldr r0,[r12,r0,lsl#2]
+ 568 0aac 5CF82110 	>  ldr r1,[r12,r1,lsl#2]
+ 568 0ab0 5CF82220 	>  ldr r2,[r12,r2,lsl#2]
+ 568 0ab4 5CF82330 	>  ldr r3,[r12,r3,lsl#2]
+ 568 0ab8 60F30F24 	>  bfi r4,r0,#8,#8
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 24
+
+
+ 568 0abc 61F30F25 	>  bfi r5,r1,#8,#8
+ 568 0ac0 62F30F26 	>  bfi r6,r2,#8,#8
+ 568 0ac4 63F30F27 	>  bfi r7,r3,#8,#8
+ 568              	> 
+ 568 0ac8 5FFA99F0 	>  uxtb r0,r9,ror#8
+ 568 0acc 5FFA9AF1 	>  uxtb r1,r10,ror#8
+ 568 0ad0 5FFA9BF2 	>  uxtb r2,r11,ror#8
+ 568 0ad4 5FFA98F3 	>  uxtb r3,r8,ror#8
+ 568 0ad8 5CF82000 	>  ldr r0,[r12,r0,lsl#2]
+ 568 0adc 5CF82110 	>  ldr r1,[r12,r1,lsl#2]
+ 568 0ae0 5CF82220 	>  ldr r2,[r12,r2,lsl#2]
+ 568 0ae4 5CF82330 	>  ldr r3,[r12,r3,lsl#2]
+ 568 0ae8 60F31744 	>  bfi r4,r0,#16,#8
+ 568 0aec 61F31745 	>  bfi r5,r1,#16,#8
+ 568 0af0 62F31746 	>  bfi r6,r2,#16,#8
+ 568 0af4 63F31747 	>  bfi r7,r3,#16,#8
+ 569              	
+ 570              	    //rk[40]-rk[43]
+ 571 0af8 DEF80000 	    ldr r0, [r14, #0]
+ 572 0afc DEF80410 	    ldr r1, [r14, #4]
+ 573 0b00 DEF80820 	    ldr r2, [r14, #8]
+ 574 0b04 DEF80C30 	    ldr r3, [r14, #12]
+ 575              	
+ 576 0b08 80EA3420 	    eor r0, r0, r4, ror #8
+ 577 0b0c 81EA3521 	    eor r1, r1, r5, ror #8
+ 578 0b10 82EA3622 	    eor r2, r2, r6, ror #8
+ 579 0b14 5DF8044B 	    pop.w {r4}
+ 580 0b18 83EA3723 	    eor r3, r3, r7, ror #8
+ 581              	
+ 582              	    //write output
+ 583 0b1c 2060     	    str r0, [r4, #0]
+ 584 0b1e 6160     	    str r1, [r4, #4]
+ 585 0b20 A260     	    str r2, [r4, #8]
+ 586 0b22 E360     	    str r3, [r4, #12]
+ 587              	
+ 588              	    //function epilogue, restore state
+ 589 0b24 BDE8F05F 	    pop {r4-r12,r14}
+ 590 0b28 7047     	    bx lr
+ 591              	.size aes128_encrypt_publicinputs_asm,.-aes128_encrypt_publicinputs_asm
+ 592              	
+ 593 0b2a 0000     	.section .text.aes192
+ 594              	@ void aes192_keyexp_publicinputs_asm(const uint8_t *key,
+ 595              	@       uint8_t *rk) {
+ 596              	.global aes192_keyexp_publicinputs_asm
+ 597              	.type   aes192_keyexp_publicinputs_asm,%function
+ 598              	.align 2
+ 599              	aes192_keyexp_publicinputs_asm:
+ 600              	
+ 601              	    //function prologue, preserve registers
+ 602 0000 2DE9F00F 	    push {r4-r11}
+ 603              	
+ 604              	    //load key
+ 605 0004 0268     	    ldr r2, [r0, #0]
+ 606 0006 4368     	    ldr r3, [r0, #4]
+ 607 0008 8468     	    ldr r4, [r0, #8]
+ 608 000a C568     	    ldr r5, [r0, #12]
+ 609 000c 0669     	    ldr r6, [r0, #16]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 25
+
+
+ 610 000e 4769     	    ldr r7, [r0, #20]
+ 611              	
+ 612              	    //load table address once
+ 613 0010 DFF8780C 	    ldr r0, =AES_Te0
+ 614              	
+ 615              	    //round 1
+ 616 0014 5FFA97F8 	    uxtb r8, r7, ror #8
+ 617 0018 5FFAA7F9 	    uxtb r9, r7, ror #16
+ 618 001c 5FFAB7FA 	    uxtb r10, r7, ror #24
+ 619 0020 5FFA87FB 	    uxtb r11, r7
+ 620              	
+ 621 0024 10F82880 	    ldrb r8, [r0, r8, lsl #2]
+ 622 0028 10F82990 	    ldrb r9, [r0, r9, lsl #2]
+ 623 002c 10F82AA0 	    ldrb r10, [r0, r10, lsl #2]
+ 624 0030 10F82BB0 	    ldrb r11, [r0, r11, lsl #2]
+ 625              	
+ 626 0034 82F00102 	    eor r2, #0x00000001 //rcon
+ 627 0038 82EA0802 	    eor r2, r2, r8
+ 628 003c 82EA0922 	    eor r2, r2, r9, lsl #8
+ 629 0040 82EA0A42 	    eor r2, r2, r10, lsl #16
+ 630 0044 82EA0B62 	    eor r2, r2, r11, lsl #24 //rk[6]
+ 631 0048 83EA0203 	    eor r3, r2 //rk[7]
+ 632 004c 84EA0304 	    eor r4, r3 //rk[8]
+ 633 0050 85EA0405 	    eor r5, r4 //rk[9]
+ 634 0054 86EA0506 	    eor r6, r5 //rk[10]
+ 635 0058 87EA0607 	    eor r7, r6 //rk[11]
+ 636              	
+ 637              	    //write to memory
+ 638 005c 0A60     	    str r2, [r1, #0]
+ 639 005e 4B60     	    str r3, [r1, #4]
+ 640 0060 8C60     	    str r4, [r1, #8]
+ 641 0062 CD60     	    str r5, [r1, #12]
+ 642 0064 0E61     	    str r6, [r1, #16]
+ 643 0066 4F61     	    str r7, [r1, #20]
+ 644              	
+ 645              	    //round 2
+ 646 0068 5FFA97F8 	    uxtb r8, r7, ror #8
+ 647 006c 5FFAA7F9 	    uxtb r9, r7, ror #16
+ 648 0070 5FFAB7FA 	    uxtb r10, r7, ror #24
+ 649 0074 5FFA87FB 	    uxtb r11, r7
+ 650              	
+ 651 0078 10F82880 	    ldrb r8, [r0, r8, lsl #2]
+ 652 007c 10F82990 	    ldrb r9, [r0, r9, lsl #2]
+ 653 0080 10F82AA0 	    ldrb r10, [r0, r10, lsl #2]
+ 654 0084 10F82BB0 	    ldrb r11, [r0, r11, lsl #2]
+ 655              	
+ 656 0088 82F00202 	    eor r2, #0x00000002 //rcon
+ 657 008c 82EA0802 	    eor r2, r2, r8
+ 658 0090 82EA0922 	    eor r2, r2, r9, lsl #8
+ 659 0094 82EA0A42 	    eor r2, r2, r10, lsl #16
+ 660 0098 82EA0B62 	    eor r2, r2, r11, lsl #24 //rk[12]
+ 661 009c 83EA0203 	    eor r3, r2 //rk[13]
+ 662 00a0 84EA0304 	    eor r4, r3 //rk[14]
+ 663 00a4 85EA0405 	    eor r5, r4 //rk[15]
+ 664 00a8 86EA0506 	    eor r6, r5 //rk[16]
+ 665 00ac 87EA0607 	    eor r7, r6 //rk[17]
+ 666              	
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 26
+
+
+ 667              	    //write to memory
+ 668 00b0 8A61     	    str r2, [r1, #24]
+ 669 00b2 CB61     	    str r3, [r1, #28]
+ 670 00b4 0C62     	    str r4, [r1, #32]
+ 671 00b6 4D62     	    str r5, [r1, #36]
+ 672 00b8 8E62     	    str r6, [r1, #40]
+ 673 00ba CF62     	    str r7, [r1, #44]
+ 674              	
+ 675              	    //round 3
+ 676 00bc 5FFA97F8 	    uxtb r8, r7, ror #8
+ 677 00c0 5FFAA7F9 	    uxtb r9, r7, ror #16
+ 678 00c4 5FFAB7FA 	    uxtb r10, r7, ror #24
+ 679 00c8 5FFA87FB 	    uxtb r11, r7
+ 680              	
+ 681 00cc 10F82880 	    ldrb r8, [r0, r8, lsl #2]
+ 682 00d0 10F82990 	    ldrb r9, [r0, r9, lsl #2]
+ 683 00d4 10F82AA0 	    ldrb r10, [r0, r10, lsl #2]
+ 684 00d8 10F82BB0 	    ldrb r11, [r0, r11, lsl #2]
+ 685              	
+ 686 00dc 82F00402 	    eor r2, #0x00000004 //rcon
+ 687 00e0 82EA0802 	    eor r2, r2, r8
+ 688 00e4 82EA0922 	    eor r2, r2, r9, lsl #8
+ 689 00e8 82EA0A42 	    eor r2, r2, r10, lsl #16
+ 690 00ec 82EA0B62 	    eor r2, r2, r11, lsl #24 //rk[18]
+ 691 00f0 83EA0203 	    eor r3, r2 //rk[19]
+ 692 00f4 84EA0304 	    eor r4, r3 //rk[20]
+ 693 00f8 85EA0405 	    eor r5, r4 //rk[21]
+ 694 00fc 86EA0506 	    eor r6, r5 //rk[22]
+ 695 0100 87EA0607 	    eor r7, r6 //rk[23]
+ 696              	
+ 697              	    //write to memory
+ 698 0104 0A63     	    str r2, [r1, #48]
+ 699 0106 4B63     	    str r3, [r1, #52]
+ 700 0108 8C63     	    str r4, [r1, #56]
+ 701 010a CD63     	    str r5, [r1, #60]
+ 702 010c 0E64     	    str r6, [r1, #64]
+ 703 010e 4F64     	    str r7, [r1, #68]
+ 704              	
+ 705              	    //round 4
+ 706 0110 5FFA97F8 	    uxtb r8, r7, ror #8
+ 707 0114 5FFAA7F9 	    uxtb r9, r7, ror #16
+ 708 0118 5FFAB7FA 	    uxtb r10, r7, ror #24
+ 709 011c 5FFA87FB 	    uxtb r11, r7
+ 710              	
+ 711 0120 10F82880 	    ldrb r8, [r0, r8, lsl #2]
+ 712 0124 10F82990 	    ldrb r9, [r0, r9, lsl #2]
+ 713 0128 10F82AA0 	    ldrb r10, [r0, r10, lsl #2]
+ 714 012c 10F82BB0 	    ldrb r11, [r0, r11, lsl #2]
+ 715              	
+ 716 0130 82F00802 	    eor r2, #0x00000008 //rcon
+ 717 0134 82EA0802 	    eor r2, r2, r8
+ 718 0138 82EA0922 	    eor r2, r2, r9, lsl #8
+ 719 013c 82EA0A42 	    eor r2, r2, r10, lsl #16
+ 720 0140 82EA0B62 	    eor r2, r2, r11, lsl #24 //rk[24]
+ 721 0144 83EA0203 	    eor r3, r2 //rk[25]
+ 722 0148 84EA0304 	    eor r4, r3 //rk[26]
+ 723 014c 85EA0405 	    eor r5, r4 //rk[27]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 27
+
+
+ 724 0150 86EA0506 	    eor r6, r5 //rk[28]
+ 725 0154 87EA0607 	    eor r7, r6 //rk[29]
+ 726              	
+ 727              	    //write to memory
+ 728 0158 8A64     	    str r2, [r1, #72]
+ 729 015a CB64     	    str r3, [r1, #76]
+ 730 015c 0C65     	    str r4, [r1, #80]
+ 731 015e 4D65     	    str r5, [r1, #84]
+ 732 0160 8E65     	    str r6, [r1, #88]
+ 733 0162 CF65     	    str r7, [r1, #92]
+ 734              	
+ 735              	    //round 5
+ 736 0164 5FFA97F8 	    uxtb r8, r7, ror #8
+ 737 0168 5FFAA7F9 	    uxtb r9, r7, ror #16
+ 738 016c 5FFAB7FA 	    uxtb r10, r7, ror #24
+ 739 0170 5FFA87FB 	    uxtb r11, r7
+ 740              	
+ 741 0174 10F82880 	    ldrb r8, [r0, r8, lsl #2]
+ 742 0178 10F82990 	    ldrb r9, [r0, r9, lsl #2]
+ 743 017c 10F82AA0 	    ldrb r10, [r0, r10, lsl #2]
+ 744 0180 10F82BB0 	    ldrb r11, [r0, r11, lsl #2]
+ 745              	
+ 746 0184 82F01002 	    eor r2, #0x00000010 //rcon
+ 747 0188 82EA0802 	    eor r2, r2, r8
+ 748 018c 82EA0922 	    eor r2, r2, r9, lsl #8
+ 749 0190 82EA0A42 	    eor r2, r2, r10, lsl #16
+ 750 0194 82EA0B62 	    eor r2, r2, r11, lsl #24 //rk[30]
+ 751 0198 83EA0203 	    eor r3, r2 //rk[31]
+ 752 019c 84EA0304 	    eor r4, r3 //rk[32]
+ 753 01a0 85EA0405 	    eor r5, r4 //rk[33]
+ 754 01a4 86EA0506 	    eor r6, r5 //rk[34]
+ 755 01a8 87EA0607 	    eor r7, r6 //rk[35]
+ 756              	
+ 757              	    //write to memory
+ 758 01ac 0A66     	    str r2, [r1, #96]
+ 759 01ae 4B66     	    str r3, [r1, #100]
+ 760 01b0 8C66     	    str r4, [r1, #104]
+ 761 01b2 CD66     	    str r5, [r1, #108]
+ 762 01b4 0E67     	    str r6, [r1, #112]
+ 763 01b6 4F67     	    str r7, [r1, #116]
+ 764              	
+ 765 01b8 01F17801 	    add r1, #120
+ 766              	
+ 767              	    //round 6
+ 768 01bc 5FFA97F8 	    uxtb r8, r7, ror #8
+ 769 01c0 5FFAA7F9 	    uxtb r9, r7, ror #16
+ 770 01c4 5FFAB7FA 	    uxtb r10, r7, ror #24
+ 771 01c8 5FFA87FB 	    uxtb r11, r7
+ 772              	
+ 773 01cc 10F82880 	    ldrb r8, [r0, r8, lsl #2]
+ 774 01d0 10F82990 	    ldrb r9, [r0, r9, lsl #2]
+ 775 01d4 10F82AA0 	    ldrb r10, [r0, r10, lsl #2]
+ 776 01d8 10F82BB0 	    ldrb r11, [r0, r11, lsl #2]
+ 777              	
+ 778 01dc 82F02002 	    eor r2, #0x00000020 //rcon
+ 779 01e0 82EA0802 	    eor r2, r2, r8
+ 780 01e4 82EA0922 	    eor r2, r2, r9, lsl #8
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 28
+
+
+ 781 01e8 82EA0A42 	    eor r2, r2, r10, lsl #16
+ 782 01ec 82EA0B62 	    eor r2, r2, r11, lsl #24 //rk[36]
+ 783 01f0 83EA0203 	    eor r3, r2 //rk[37]
+ 784 01f4 84EA0304 	    eor r4, r3 //rk[38]
+ 785 01f8 85EA0405 	    eor r5, r4 //rk[39]
+ 786 01fc 86EA0506 	    eor r6, r5 //rk[40]
+ 787 0200 87EA0607 	    eor r7, r6 //rk[41]
+ 788              	
+ 789              	    //write to memory
+ 790 0204 0A60     	    str r2, [r1, #0]
+ 791 0206 4B60     	    str r3, [r1, #4]
+ 792 0208 8C60     	    str r4, [r1, #8]
+ 793 020a CD60     	    str r5, [r1, #12]
+ 794 020c 0E61     	    str r6, [r1, #16]
+ 795 020e 4F61     	    str r7, [r1, #20]
+ 796              	
+ 797              	    //round 7
+ 798 0210 5FFA97F8 	    uxtb r8, r7, ror #8
+ 799 0214 5FFAA7F9 	    uxtb r9, r7, ror #16
+ 800 0218 5FFAB7FA 	    uxtb r10, r7, ror #24
+ 801 021c 5FFA87FB 	    uxtb r11, r7
+ 802              	
+ 803 0220 10F82880 	    ldrb r8, [r0, r8, lsl #2]
+ 804 0224 10F82990 	    ldrb r9, [r0, r9, lsl #2]
+ 805 0228 10F82AA0 	    ldrb r10, [r0, r10, lsl #2]
+ 806 022c 10F82BB0 	    ldrb r11, [r0, r11, lsl #2]
+ 807              	
+ 808 0230 82F04002 	    eor r2, #0x00000040 //rcon
+ 809 0234 82EA0802 	    eor r2, r2, r8
+ 810 0238 82EA0922 	    eor r2, r2, r9, lsl #8
+ 811 023c 82EA0A42 	    eor r2, r2, r10, lsl #16
+ 812 0240 82EA0B62 	    eor r2, r2, r11, lsl #24 //rk[42]
+ 813 0244 83EA0203 	    eor r3, r2 //rk[43]
+ 814 0248 84EA0304 	    eor r4, r3 //rk[44]
+ 815 024c 85EA0405 	    eor r5, r4 //rk[45]
+ 816 0250 86EA0506 	    eor r6, r5 //rk[46]
+ 817 0254 87EA0607 	    eor r7, r6 //rk[47]
+ 818              	
+ 819              	    //write to memory
+ 820 0258 8A61     	    str r2, [r1, #24]
+ 821 025a CB61     	    str r3, [r1, #28]
+ 822 025c 0C62     	    str r4, [r1, #32]
+ 823 025e 4D62     	    str r5, [r1, #36]
+ 824 0260 8E62     	    str r6, [r1, #40]
+ 825 0262 CF62     	    str r7, [r1, #44]
+ 826              	
+ 827              	    //round 8
+ 828 0264 5FFA97F8 	    uxtb r8, r7, ror #8
+ 829 0268 5FFAA7F9 	    uxtb r9, r7, ror #16
+ 830 026c 5FFAB7FA 	    uxtb r10, r7, ror #24
+ 831 0270 5FFA87FB 	    uxtb r11, r7
+ 832              	
+ 833 0274 10F82880 	    ldrb r8, [r0, r8, lsl #2]
+ 834 0278 10F82990 	    ldrb r9, [r0, r9, lsl #2]
+ 835 027c 10F82AA0 	    ldrb r10, [r0, r10, lsl #2]
+ 836 0280 10F82BB0 	    ldrb r11, [r0, r11, lsl #2]
+ 837              	
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 29
+
+
+ 838 0284 82F08002 	    eor r2, #0x00000080 //rcon
+ 839 0288 82EA0802 	    eor r2, r2, r8
+ 840 028c 82EA0922 	    eor r2, r2, r9, lsl #8
+ 841 0290 82EA0A42 	    eor r2, r2, r10, lsl #16
+ 842 0294 82EA0B62 	    eor r2, r2, r11, lsl #24 //rk[48]
+ 843 0298 83EA0203 	    eor r3, r2 //rk[49]
+ 844 029c 84EA0304 	    eor r4, r3 //rk[50]
+ 845 02a0 85EA0405 	    eor r5, r4 //rk[51]
+ 846              	    //write to memory
+ 847 02a4 0A63     	    str r2, [r1, #48]
+ 848 02a6 4B63     	    str r3, [r1, #52]
+ 849 02a8 8C63     	    str r4, [r1, #56]
+ 850 02aa CD63     	    str r5, [r1, #60]
+ 851              	
+ 852              	    //function epilogue, restore state
+ 853 02ac BDE8F00F 	    pop {r4-r11}
+ 854 02b0 7047     	    bx lr
+ 855              	.size aes192_keyexp_publicinputs_asm,.-aes192_keyexp_publicinputs_asm
+ 856              	
+ 857              	@ void aes192_encrypt_publicinputs_asm(const uint8_t *rk,
+ 858              	@       const uint8_t *in, uint8_t *out) {
+ 859              	.global aes192_encrypt_publicinputs_asm
+ 860              	.type   aes192_encrypt_publicinputs_asm,%function
+ 861 02b2 00BF     	.align 2
+ 862              	aes192_encrypt_publicinputs_asm:
+ 863              	
+ 864              	    //function prologue, preserve registers and free r2
+ 865 02b4 2DE9F45F 	    push {r2,r4-r12,r14}
+ 866              	
+ 867              	    //load input
+ 868 02b8 0C68     	    ldr r4, [r1, #0]
+ 869 02ba 4D68     	    ldr r5, [r1, #4]
+ 870 02bc 8E68     	    ldr r6, [r1, #8]
+ 871 02be CF68     	    ldr r7, [r1, #12]
+ 872              	    //r1 now free to overwrite
+ 873              	    //load key
+ 874 02c0 50F8048B 	    ldr r8, [r0], #4
+ 875 02c4 50F8049B 	    ldr r9, [r0], #4
+ 876 02c8 50F804AB 	    ldr r10, [r0], #4
+ 877 02cc 50F804BB 	    ldr r11, [r0], #4
+ 878 02d0 4FEA000E 	    mov.w r14, r0
+ 879              	
+ 880              	    //load table address once
+ 881 02d4 DFF8B4C9 	    ldr r12, =AES_Te0
+ 882              	
+ 883              	    //initial addroundkey
+ 884 02d8 84EA0804 	    eor r4, r8
+ 885 02dc 85EA0905 	    eor r5, r9
+ 886 02e0 86EA0A06 	    eor r6, r10
+ 887 02e4 87EA0B07 	    eor r7, r11
+ 888              	
+ 889              	.rept 5
+ 889              	>  aesencrypt_oddround
+ 889 02e8 5EF8048B 	>>  ldr r8,[r14],#4
+ 889 02ec 5EF8049B 	>>  ldr r9,[r14],#4
+ 889 02f0 5EF804AB 	>>  ldr r10,[r14],#4
+ 889 02f4 5EF804BB 	>>  ldr r11,[r14],#4
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 30
+
+
+ 889              	>> 
+ 889 02f8 E0B2     	>>  uxtb r0,r4
+ 889 02fa E9B2     	>>  uxtb r1,r5
+ 889 02fc F2B2     	>>  uxtb r2,r6
+ 889 02fe FBB2     	>>  uxtb r3,r7
+ 889 0300 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 0304 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0308 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 030c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0310 88EA3048 	>>  eor r8,r8,r0,ror#16
+ 889 0314 89EA3149 	>>  eor r9,r9,r1,ror#16
+ 889 0318 8AEA324A 	>>  eor r10,r10,r2,ror#16
+ 889 031c 8BEA334B 	>>  eor r11,r11,r3,ror#16
+ 889              	>> 
+ 889 0320 5FFA95F0 	>>  uxtb r0,r5,ror#8
+ 889 0324 5FFA96F1 	>>  uxtb r1,r6,ror#8
+ 889 0328 5FFA97F2 	>>  uxtb r2,r7,ror#8
+ 889 032c 5FFA94F3 	>>  uxtb r3,r4,ror#8
+ 889 0330 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 0334 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0338 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 033c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0340 88EA3028 	>>  eor r8,r8,r0,ror#8
+ 889 0344 89EA3129 	>>  eor r9,r9,r1,ror#8
+ 889 0348 8AEA322A 	>>  eor r10,r10,r2,ror#8
+ 889 034c 8BEA332B 	>>  eor r11,r11,r3,ror#8
+ 889              	>> 
+ 889 0350 5FFAA6F0 	>>  uxtb r0,r6,ror#16
+ 889 0354 5FFAA7F1 	>>  uxtb r1,r7,ror#16
+ 889 0358 5FFAA4F2 	>>  uxtb r2,r4,ror#16
+ 889 035c 5FFAA5F3 	>>  uxtb r3,r5,ror#16
+ 889 0360 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 0364 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0368 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 036c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0370 88EA0008 	>>  eor r8,r0
+ 889 0374 89EA0109 	>>  eor r9,r1
+ 889 0378 8AEA020A 	>>  eor r10,r2
+ 889 037c 8BEA030B 	>>  eor r11,r3
+ 889              	>> 
+ 889 0380 5FFAB7F0 	>>  uxtb r0,r7,ror#24
+ 889 0384 5FFAB4F1 	>>  uxtb r1,r4,ror#24
+ 889 0388 5FFAB5F2 	>>  uxtb r2,r5,ror#24
+ 889 038c 5FFAB6F3 	>>  uxtb r3,r6,ror#24
+ 889 0390 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 0394 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0398 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 039c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 03a0 88EA3068 	>>  eor r8,r8,r0,ror#24
+ 889 03a4 89EA3169 	>>  eor r9,r9,r1,ror#24
+ 889 03a8 8AEA326A 	>>  eor r10,r10,r2,ror#24
+ 889 03ac 8BEA336B 	>>  eor r11,r11,r3,ror#24
+ 889              	>  aesencrypt_evenround
+ 889 03b0 5EF8044B 	>>  ldr r4,[r14],#4
+ 889 03b4 5EF8045B 	>>  ldr r5,[r14],#4
+ 889 03b8 5EF8046B 	>>  ldr r6,[r14],#4
+ 889 03bc 5EF8047B 	>>  ldr r7,[r14],#4
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 31
+
+
+ 889              	>> 
+ 889 03c0 5FFA88F0 	>>  uxtb r0,r8
+ 889 03c4 5FFA89F1 	>>  uxtb r1,r9
+ 889 03c8 5FFA8AF2 	>>  uxtb r2,r10
+ 889 03cc 5FFA8BF3 	>>  uxtb r3,r11
+ 889 03d0 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 03d4 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 03d8 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 03dc 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 03e0 84EA3044 	>>  eor r4,r4,r0,ror#16
+ 889 03e4 85EA3145 	>>  eor r5,r5,r1,ror#16
+ 889 03e8 86EA3246 	>>  eor r6,r6,r2,ror#16
+ 889 03ec 87EA3347 	>>  eor r7,r7,r3,ror#16
+ 889              	>> 
+ 889 03f0 5FFA99F0 	>>  uxtb r0,r9,ror#8
+ 889 03f4 5FFA9AF1 	>>  uxtb r1,r10,ror#8
+ 889 03f8 5FFA9BF2 	>>  uxtb r2,r11,ror#8
+ 889 03fc 5FFA98F3 	>>  uxtb r3,r8,ror#8
+ 889 0400 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 0404 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0408 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 040c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0410 84EA3024 	>>  eor r4,r4,r0,ror#8
+ 889 0414 85EA3125 	>>  eor r5,r5,r1,ror#8
+ 889 0418 86EA3226 	>>  eor r6,r6,r2,ror#8
+ 889 041c 87EA3327 	>>  eor r7,r7,r3,ror#8
+ 889              	>> 
+ 889 0420 5FFAAAF0 	>>  uxtb r0,r10,ror#16
+ 889 0424 5FFAABF1 	>>  uxtb r1,r11,ror#16
+ 889 0428 5FFAA8F2 	>>  uxtb r2,r8,ror#16
+ 889 042c 5FFAA9F3 	>>  uxtb r3,r9,ror#16
+ 889 0430 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 0434 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0438 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 043c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0440 84EA0004 	>>  eor r4,r0
+ 889 0444 85EA0105 	>>  eor r5,r1
+ 889 0448 86EA0206 	>>  eor r6,r2
+ 889 044c 87EA0307 	>>  eor r7,r3
+ 889              	>> 
+ 889 0450 5FFABBF0 	>>  uxtb r0,r11,ror#24
+ 889 0454 5FFAB8F1 	>>  uxtb r1,r8,ror#24
+ 889 0458 5FFAB9F2 	>>  uxtb r2,r9,ror#24
+ 889 045c 5FFABAF3 	>>  uxtb r3,r10,ror#24
+ 889 0460 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 0464 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0468 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 046c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0470 84EA3064 	>>  eor r4,r4,r0,ror#24
+ 889 0474 85EA3165 	>>  eor r5,r5,r1,ror#24
+ 889 0478 86EA3266 	>>  eor r6,r6,r2,ror#24
+ 889 047c 87EA3367 	>>  eor r7,r7,r3,ror#24
+ 889              	> 
+ 889              	>  aesencrypt_oddround
+ 889 0480 5EF8048B 	>>  ldr r8,[r14],#4
+ 889 0484 5EF8049B 	>>  ldr r9,[r14],#4
+ 889 0488 5EF804AB 	>>  ldr r10,[r14],#4
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 32
+
+
+ 889 048c 5EF804BB 	>>  ldr r11,[r14],#4
+ 889              	>> 
+ 889 0490 E0B2     	>>  uxtb r0,r4
+ 889 0492 E9B2     	>>  uxtb r1,r5
+ 889 0494 F2B2     	>>  uxtb r2,r6
+ 889 0496 FBB2     	>>  uxtb r3,r7
+ 889 0498 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 049c 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 04a0 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 04a4 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 04a8 88EA3048 	>>  eor r8,r8,r0,ror#16
+ 889 04ac 89EA3149 	>>  eor r9,r9,r1,ror#16
+ 889 04b0 8AEA324A 	>>  eor r10,r10,r2,ror#16
+ 889 04b4 8BEA334B 	>>  eor r11,r11,r3,ror#16
+ 889              	>> 
+ 889 04b8 5FFA95F0 	>>  uxtb r0,r5,ror#8
+ 889 04bc 5FFA96F1 	>>  uxtb r1,r6,ror#8
+ 889 04c0 5FFA97F2 	>>  uxtb r2,r7,ror#8
+ 889 04c4 5FFA94F3 	>>  uxtb r3,r4,ror#8
+ 889 04c8 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 04cc 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 04d0 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 04d4 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 04d8 88EA3028 	>>  eor r8,r8,r0,ror#8
+ 889 04dc 89EA3129 	>>  eor r9,r9,r1,ror#8
+ 889 04e0 8AEA322A 	>>  eor r10,r10,r2,ror#8
+ 889 04e4 8BEA332B 	>>  eor r11,r11,r3,ror#8
+ 889              	>> 
+ 889 04e8 5FFAA6F0 	>>  uxtb r0,r6,ror#16
+ 889 04ec 5FFAA7F1 	>>  uxtb r1,r7,ror#16
+ 889 04f0 5FFAA4F2 	>>  uxtb r2,r4,ror#16
+ 889 04f4 5FFAA5F3 	>>  uxtb r3,r5,ror#16
+ 889 04f8 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 04fc 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0500 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 0504 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0508 88EA0008 	>>  eor r8,r0
+ 889 050c 89EA0109 	>>  eor r9,r1
+ 889 0510 8AEA020A 	>>  eor r10,r2
+ 889 0514 8BEA030B 	>>  eor r11,r3
+ 889              	>> 
+ 889 0518 5FFAB7F0 	>>  uxtb r0,r7,ror#24
+ 889 051c 5FFAB4F1 	>>  uxtb r1,r4,ror#24
+ 889 0520 5FFAB5F2 	>>  uxtb r2,r5,ror#24
+ 889 0524 5FFAB6F3 	>>  uxtb r3,r6,ror#24
+ 889 0528 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 052c 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0530 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 0534 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0538 88EA3068 	>>  eor r8,r8,r0,ror#24
+ 889 053c 89EA3169 	>>  eor r9,r9,r1,ror#24
+ 889 0540 8AEA326A 	>>  eor r10,r10,r2,ror#24
+ 889 0544 8BEA336B 	>>  eor r11,r11,r3,ror#24
+ 889              	>  aesencrypt_evenround
+ 889 0548 5EF8044B 	>>  ldr r4,[r14],#4
+ 889 054c 5EF8045B 	>>  ldr r5,[r14],#4
+ 889 0550 5EF8046B 	>>  ldr r6,[r14],#4
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 33
+
+
+ 889 0554 5EF8047B 	>>  ldr r7,[r14],#4
+ 889              	>> 
+ 889 0558 5FFA88F0 	>>  uxtb r0,r8
+ 889 055c 5FFA89F1 	>>  uxtb r1,r9
+ 889 0560 5FFA8AF2 	>>  uxtb r2,r10
+ 889 0564 5FFA8BF3 	>>  uxtb r3,r11
+ 889 0568 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 056c 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0570 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 0574 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0578 84EA3044 	>>  eor r4,r4,r0,ror#16
+ 889 057c 85EA3145 	>>  eor r5,r5,r1,ror#16
+ 889 0580 86EA3246 	>>  eor r6,r6,r2,ror#16
+ 889 0584 87EA3347 	>>  eor r7,r7,r3,ror#16
+ 889              	>> 
+ 889 0588 5FFA99F0 	>>  uxtb r0,r9,ror#8
+ 889 058c 5FFA9AF1 	>>  uxtb r1,r10,ror#8
+ 889 0590 5FFA9BF2 	>>  uxtb r2,r11,ror#8
+ 889 0594 5FFA98F3 	>>  uxtb r3,r8,ror#8
+ 889 0598 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 059c 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 05a0 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 05a4 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 05a8 84EA3024 	>>  eor r4,r4,r0,ror#8
+ 889 05ac 85EA3125 	>>  eor r5,r5,r1,ror#8
+ 889 05b0 86EA3226 	>>  eor r6,r6,r2,ror#8
+ 889 05b4 87EA3327 	>>  eor r7,r7,r3,ror#8
+ 889              	>> 
+ 889 05b8 5FFAAAF0 	>>  uxtb r0,r10,ror#16
+ 889 05bc 5FFAABF1 	>>  uxtb r1,r11,ror#16
+ 889 05c0 5FFAA8F2 	>>  uxtb r2,r8,ror#16
+ 889 05c4 5FFAA9F3 	>>  uxtb r3,r9,ror#16
+ 889 05c8 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 05cc 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 05d0 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 05d4 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 05d8 84EA0004 	>>  eor r4,r0
+ 889 05dc 85EA0105 	>>  eor r5,r1
+ 889 05e0 86EA0206 	>>  eor r6,r2
+ 889 05e4 87EA0307 	>>  eor r7,r3
+ 889              	>> 
+ 889 05e8 5FFABBF0 	>>  uxtb r0,r11,ror#24
+ 889 05ec 5FFAB8F1 	>>  uxtb r1,r8,ror#24
+ 889 05f0 5FFAB9F2 	>>  uxtb r2,r9,ror#24
+ 889 05f4 5FFABAF3 	>>  uxtb r3,r10,ror#24
+ 889 05f8 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 05fc 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0600 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 0604 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0608 84EA3064 	>>  eor r4,r4,r0,ror#24
+ 889 060c 85EA3165 	>>  eor r5,r5,r1,ror#24
+ 889 0610 86EA3266 	>>  eor r6,r6,r2,ror#24
+ 889 0614 87EA3367 	>>  eor r7,r7,r3,ror#24
+ 889              	> 
+ 889              	>  aesencrypt_oddround
+ 889 0618 5EF8048B 	>>  ldr r8,[r14],#4
+ 889 061c 5EF8049B 	>>  ldr r9,[r14],#4
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 34
+
+
+ 889 0620 5EF804AB 	>>  ldr r10,[r14],#4
+ 889 0624 5EF804BB 	>>  ldr r11,[r14],#4
+ 889              	>> 
+ 889 0628 E0B2     	>>  uxtb r0,r4
+ 889 062a E9B2     	>>  uxtb r1,r5
+ 889 062c F2B2     	>>  uxtb r2,r6
+ 889 062e FBB2     	>>  uxtb r3,r7
+ 889 0630 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 0634 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0638 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 063c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0640 88EA3048 	>>  eor r8,r8,r0,ror#16
+ 889 0644 89EA3149 	>>  eor r9,r9,r1,ror#16
+ 889 0648 8AEA324A 	>>  eor r10,r10,r2,ror#16
+ 889 064c 8BEA334B 	>>  eor r11,r11,r3,ror#16
+ 889              	>> 
+ 889 0650 5FFA95F0 	>>  uxtb r0,r5,ror#8
+ 889 0654 5FFA96F1 	>>  uxtb r1,r6,ror#8
+ 889 0658 5FFA97F2 	>>  uxtb r2,r7,ror#8
+ 889 065c 5FFA94F3 	>>  uxtb r3,r4,ror#8
+ 889 0660 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 0664 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0668 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 066c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0670 88EA3028 	>>  eor r8,r8,r0,ror#8
+ 889 0674 89EA3129 	>>  eor r9,r9,r1,ror#8
+ 889 0678 8AEA322A 	>>  eor r10,r10,r2,ror#8
+ 889 067c 8BEA332B 	>>  eor r11,r11,r3,ror#8
+ 889              	>> 
+ 889 0680 5FFAA6F0 	>>  uxtb r0,r6,ror#16
+ 889 0684 5FFAA7F1 	>>  uxtb r1,r7,ror#16
+ 889 0688 5FFAA4F2 	>>  uxtb r2,r4,ror#16
+ 889 068c 5FFAA5F3 	>>  uxtb r3,r5,ror#16
+ 889 0690 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 0694 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0698 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 069c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 06a0 88EA0008 	>>  eor r8,r0
+ 889 06a4 89EA0109 	>>  eor r9,r1
+ 889 06a8 8AEA020A 	>>  eor r10,r2
+ 889 06ac 8BEA030B 	>>  eor r11,r3
+ 889              	>> 
+ 889 06b0 5FFAB7F0 	>>  uxtb r0,r7,ror#24
+ 889 06b4 5FFAB4F1 	>>  uxtb r1,r4,ror#24
+ 889 06b8 5FFAB5F2 	>>  uxtb r2,r5,ror#24
+ 889 06bc 5FFAB6F3 	>>  uxtb r3,r6,ror#24
+ 889 06c0 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 06c4 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 06c8 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 06cc 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 06d0 88EA3068 	>>  eor r8,r8,r0,ror#24
+ 889 06d4 89EA3169 	>>  eor r9,r9,r1,ror#24
+ 889 06d8 8AEA326A 	>>  eor r10,r10,r2,ror#24
+ 889 06dc 8BEA336B 	>>  eor r11,r11,r3,ror#24
+ 889              	>  aesencrypt_evenround
+ 889 06e0 5EF8044B 	>>  ldr r4,[r14],#4
+ 889 06e4 5EF8045B 	>>  ldr r5,[r14],#4
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 35
+
+
+ 889 06e8 5EF8046B 	>>  ldr r6,[r14],#4
+ 889 06ec 5EF8047B 	>>  ldr r7,[r14],#4
+ 889              	>> 
+ 889 06f0 5FFA88F0 	>>  uxtb r0,r8
+ 889 06f4 5FFA89F1 	>>  uxtb r1,r9
+ 889 06f8 5FFA8AF2 	>>  uxtb r2,r10
+ 889 06fc 5FFA8BF3 	>>  uxtb r3,r11
+ 889 0700 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 0704 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0708 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 070c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0710 84EA3044 	>>  eor r4,r4,r0,ror#16
+ 889 0714 85EA3145 	>>  eor r5,r5,r1,ror#16
+ 889 0718 86EA3246 	>>  eor r6,r6,r2,ror#16
+ 889 071c 87EA3347 	>>  eor r7,r7,r3,ror#16
+ 889              	>> 
+ 889 0720 5FFA99F0 	>>  uxtb r0,r9,ror#8
+ 889 0724 5FFA9AF1 	>>  uxtb r1,r10,ror#8
+ 889 0728 5FFA9BF2 	>>  uxtb r2,r11,ror#8
+ 889 072c 5FFA98F3 	>>  uxtb r3,r8,ror#8
+ 889 0730 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 0734 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0738 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 073c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0740 84EA3024 	>>  eor r4,r4,r0,ror#8
+ 889 0744 85EA3125 	>>  eor r5,r5,r1,ror#8
+ 889 0748 86EA3226 	>>  eor r6,r6,r2,ror#8
+ 889 074c 87EA3327 	>>  eor r7,r7,r3,ror#8
+ 889              	>> 
+ 889 0750 5FFAAAF0 	>>  uxtb r0,r10,ror#16
+ 889 0754 5FFAABF1 	>>  uxtb r1,r11,ror#16
+ 889 0758 5FFAA8F2 	>>  uxtb r2,r8,ror#16
+ 889 075c 5FFAA9F3 	>>  uxtb r3,r9,ror#16
+ 889 0760 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 0764 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0768 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 076c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0770 84EA0004 	>>  eor r4,r0
+ 889 0774 85EA0105 	>>  eor r5,r1
+ 889 0778 86EA0206 	>>  eor r6,r2
+ 889 077c 87EA0307 	>>  eor r7,r3
+ 889              	>> 
+ 889 0780 5FFABBF0 	>>  uxtb r0,r11,ror#24
+ 889 0784 5FFAB8F1 	>>  uxtb r1,r8,ror#24
+ 889 0788 5FFAB9F2 	>>  uxtb r2,r9,ror#24
+ 889 078c 5FFABAF3 	>>  uxtb r3,r10,ror#24
+ 889 0790 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 0794 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0798 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 079c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 07a0 84EA3064 	>>  eor r4,r4,r0,ror#24
+ 889 07a4 85EA3165 	>>  eor r5,r5,r1,ror#24
+ 889 07a8 86EA3266 	>>  eor r6,r6,r2,ror#24
+ 889 07ac 87EA3367 	>>  eor r7,r7,r3,ror#24
+ 889              	> 
+ 889              	>  aesencrypt_oddround
+ 889 07b0 5EF8048B 	>>  ldr r8,[r14],#4
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 36
+
+
+ 889 07b4 5EF8049B 	>>  ldr r9,[r14],#4
+ 889 07b8 5EF804AB 	>>  ldr r10,[r14],#4
+ 889 07bc 5EF804BB 	>>  ldr r11,[r14],#4
+ 889              	>> 
+ 889 07c0 E0B2     	>>  uxtb r0,r4
+ 889 07c2 E9B2     	>>  uxtb r1,r5
+ 889 07c4 F2B2     	>>  uxtb r2,r6
+ 889 07c6 FBB2     	>>  uxtb r3,r7
+ 889 07c8 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 07cc 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 07d0 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 07d4 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 07d8 88EA3048 	>>  eor r8,r8,r0,ror#16
+ 889 07dc 89EA3149 	>>  eor r9,r9,r1,ror#16
+ 889 07e0 8AEA324A 	>>  eor r10,r10,r2,ror#16
+ 889 07e4 8BEA334B 	>>  eor r11,r11,r3,ror#16
+ 889              	>> 
+ 889 07e8 5FFA95F0 	>>  uxtb r0,r5,ror#8
+ 889 07ec 5FFA96F1 	>>  uxtb r1,r6,ror#8
+ 889 07f0 5FFA97F2 	>>  uxtb r2,r7,ror#8
+ 889 07f4 5FFA94F3 	>>  uxtb r3,r4,ror#8
+ 889 07f8 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 07fc 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0800 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 0804 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0808 88EA3028 	>>  eor r8,r8,r0,ror#8
+ 889 080c 89EA3129 	>>  eor r9,r9,r1,ror#8
+ 889 0810 8AEA322A 	>>  eor r10,r10,r2,ror#8
+ 889 0814 8BEA332B 	>>  eor r11,r11,r3,ror#8
+ 889              	>> 
+ 889 0818 5FFAA6F0 	>>  uxtb r0,r6,ror#16
+ 889 081c 5FFAA7F1 	>>  uxtb r1,r7,ror#16
+ 889 0820 5FFAA4F2 	>>  uxtb r2,r4,ror#16
+ 889 0824 5FFAA5F3 	>>  uxtb r3,r5,ror#16
+ 889 0828 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 082c 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0830 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 0834 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0838 88EA0008 	>>  eor r8,r0
+ 889 083c 89EA0109 	>>  eor r9,r1
+ 889 0840 8AEA020A 	>>  eor r10,r2
+ 889 0844 8BEA030B 	>>  eor r11,r3
+ 889              	>> 
+ 889 0848 5FFAB7F0 	>>  uxtb r0,r7,ror#24
+ 889 084c 5FFAB4F1 	>>  uxtb r1,r4,ror#24
+ 889 0850 5FFAB5F2 	>>  uxtb r2,r5,ror#24
+ 889 0854 5FFAB6F3 	>>  uxtb r3,r6,ror#24
+ 889 0858 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 085c 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0860 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 0864 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0868 88EA3068 	>>  eor r8,r8,r0,ror#24
+ 889 086c 89EA3169 	>>  eor r9,r9,r1,ror#24
+ 889 0870 8AEA326A 	>>  eor r10,r10,r2,ror#24
+ 889 0874 8BEA336B 	>>  eor r11,r11,r3,ror#24
+ 889              	>  aesencrypt_evenround
+ 889 0878 5EF8044B 	>>  ldr r4,[r14],#4
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 37
+
+
+ 889 087c 5EF8045B 	>>  ldr r5,[r14],#4
+ 889 0880 5EF8046B 	>>  ldr r6,[r14],#4
+ 889 0884 5EF8047B 	>>  ldr r7,[r14],#4
+ 889              	>> 
+ 889 0888 5FFA88F0 	>>  uxtb r0,r8
+ 889 088c 5FFA89F1 	>>  uxtb r1,r9
+ 889 0890 5FFA8AF2 	>>  uxtb r2,r10
+ 889 0894 5FFA8BF3 	>>  uxtb r3,r11
+ 889 0898 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 089c 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 08a0 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 08a4 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 08a8 84EA3044 	>>  eor r4,r4,r0,ror#16
+ 889 08ac 85EA3145 	>>  eor r5,r5,r1,ror#16
+ 889 08b0 86EA3246 	>>  eor r6,r6,r2,ror#16
+ 889 08b4 87EA3347 	>>  eor r7,r7,r3,ror#16
+ 889              	>> 
+ 889 08b8 5FFA99F0 	>>  uxtb r0,r9,ror#8
+ 889 08bc 5FFA9AF1 	>>  uxtb r1,r10,ror#8
+ 889 08c0 5FFA9BF2 	>>  uxtb r2,r11,ror#8
+ 889 08c4 5FFA98F3 	>>  uxtb r3,r8,ror#8
+ 889 08c8 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 08cc 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 08d0 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 08d4 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 08d8 84EA3024 	>>  eor r4,r4,r0,ror#8
+ 889 08dc 85EA3125 	>>  eor r5,r5,r1,ror#8
+ 889 08e0 86EA3226 	>>  eor r6,r6,r2,ror#8
+ 889 08e4 87EA3327 	>>  eor r7,r7,r3,ror#8
+ 889              	>> 
+ 889 08e8 5FFAAAF0 	>>  uxtb r0,r10,ror#16
+ 889 08ec 5FFAABF1 	>>  uxtb r1,r11,ror#16
+ 889 08f0 5FFAA8F2 	>>  uxtb r2,r8,ror#16
+ 889 08f4 5FFAA9F3 	>>  uxtb r3,r9,ror#16
+ 889 08f8 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 08fc 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0900 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 0904 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0908 84EA0004 	>>  eor r4,r0
+ 889 090c 85EA0105 	>>  eor r5,r1
+ 889 0910 86EA0206 	>>  eor r6,r2
+ 889 0914 87EA0307 	>>  eor r7,r3
+ 889              	>> 
+ 889 0918 5FFABBF0 	>>  uxtb r0,r11,ror#24
+ 889 091c 5FFAB8F1 	>>  uxtb r1,r8,ror#24
+ 889 0920 5FFAB9F2 	>>  uxtb r2,r9,ror#24
+ 889 0924 5FFABAF3 	>>  uxtb r3,r10,ror#24
+ 889 0928 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 092c 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0930 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 0934 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0938 84EA3064 	>>  eor r4,r4,r0,ror#24
+ 889 093c 85EA3165 	>>  eor r5,r5,r1,ror#24
+ 889 0940 86EA3266 	>>  eor r6,r6,r2,ror#24
+ 889 0944 87EA3367 	>>  eor r7,r7,r3,ror#24
+ 889              	> 
+ 889              	>  aesencrypt_oddround
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 38
+
+
+ 889 0948 5EF8048B 	>>  ldr r8,[r14],#4
+ 889 094c 5EF8049B 	>>  ldr r9,[r14],#4
+ 889 0950 5EF804AB 	>>  ldr r10,[r14],#4
+ 889 0954 5EF804BB 	>>  ldr r11,[r14],#4
+ 889              	>> 
+ 889 0958 E0B2     	>>  uxtb r0,r4
+ 889 095a E9B2     	>>  uxtb r1,r5
+ 889 095c F2B2     	>>  uxtb r2,r6
+ 889 095e FBB2     	>>  uxtb r3,r7
+ 889 0960 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 0964 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0968 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 096c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0970 88EA3048 	>>  eor r8,r8,r0,ror#16
+ 889 0974 89EA3149 	>>  eor r9,r9,r1,ror#16
+ 889 0978 8AEA324A 	>>  eor r10,r10,r2,ror#16
+ 889 097c 8BEA334B 	>>  eor r11,r11,r3,ror#16
+ 889              	>> 
+ 889 0980 5FFA95F0 	>>  uxtb r0,r5,ror#8
+ 889 0984 5FFA96F1 	>>  uxtb r1,r6,ror#8
+ 889 0988 5FFA97F2 	>>  uxtb r2,r7,ror#8
+ 889 098c 5FFA94F3 	>>  uxtb r3,r4,ror#8
+ 889 0990 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 0994 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0998 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 099c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 09a0 88EA3028 	>>  eor r8,r8,r0,ror#8
+ 889 09a4 89EA3129 	>>  eor r9,r9,r1,ror#8
+ 889 09a8 8AEA322A 	>>  eor r10,r10,r2,ror#8
+ 889 09ac 8BEA332B 	>>  eor r11,r11,r3,ror#8
+ 889              	>> 
+ 889 09b0 5FFAA6F0 	>>  uxtb r0,r6,ror#16
+ 889 09b4 5FFAA7F1 	>>  uxtb r1,r7,ror#16
+ 889 09b8 5FFAA4F2 	>>  uxtb r2,r4,ror#16
+ 889 09bc 5FFAA5F3 	>>  uxtb r3,r5,ror#16
+ 889 09c0 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 09c4 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 09c8 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 09cc 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 09d0 88EA0008 	>>  eor r8,r0
+ 889 09d4 89EA0109 	>>  eor r9,r1
+ 889 09d8 8AEA020A 	>>  eor r10,r2
+ 889 09dc 8BEA030B 	>>  eor r11,r3
+ 889              	>> 
+ 889 09e0 5FFAB7F0 	>>  uxtb r0,r7,ror#24
+ 889 09e4 5FFAB4F1 	>>  uxtb r1,r4,ror#24
+ 889 09e8 5FFAB5F2 	>>  uxtb r2,r5,ror#24
+ 889 09ec 5FFAB6F3 	>>  uxtb r3,r6,ror#24
+ 889 09f0 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 09f4 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 09f8 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 09fc 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0a00 88EA3068 	>>  eor r8,r8,r0,ror#24
+ 889 0a04 89EA3169 	>>  eor r9,r9,r1,ror#24
+ 889 0a08 8AEA326A 	>>  eor r10,r10,r2,ror#24
+ 889 0a0c 8BEA336B 	>>  eor r11,r11,r3,ror#24
+ 889              	>  aesencrypt_evenround
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 39
+
+
+ 889 0a10 5EF8044B 	>>  ldr r4,[r14],#4
+ 889 0a14 5EF8045B 	>>  ldr r5,[r14],#4
+ 889 0a18 5EF8046B 	>>  ldr r6,[r14],#4
+ 889 0a1c 5EF8047B 	>>  ldr r7,[r14],#4
+ 889              	>> 
+ 889 0a20 5FFA88F0 	>>  uxtb r0,r8
+ 889 0a24 5FFA89F1 	>>  uxtb r1,r9
+ 889 0a28 5FFA8AF2 	>>  uxtb r2,r10
+ 889 0a2c 5FFA8BF3 	>>  uxtb r3,r11
+ 889 0a30 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 0a34 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0a38 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 0a3c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0a40 84EA3044 	>>  eor r4,r4,r0,ror#16
+ 889 0a44 85EA3145 	>>  eor r5,r5,r1,ror#16
+ 889 0a48 86EA3246 	>>  eor r6,r6,r2,ror#16
+ 889 0a4c 87EA3347 	>>  eor r7,r7,r3,ror#16
+ 889              	>> 
+ 889 0a50 5FFA99F0 	>>  uxtb r0,r9,ror#8
+ 889 0a54 5FFA9AF1 	>>  uxtb r1,r10,ror#8
+ 889 0a58 5FFA9BF2 	>>  uxtb r2,r11,ror#8
+ 889 0a5c 5FFA98F3 	>>  uxtb r3,r8,ror#8
+ 889 0a60 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 0a64 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0a68 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 0a6c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0a70 84EA3024 	>>  eor r4,r4,r0,ror#8
+ 889 0a74 85EA3125 	>>  eor r5,r5,r1,ror#8
+ 889 0a78 86EA3226 	>>  eor r6,r6,r2,ror#8
+ 889 0a7c 87EA3327 	>>  eor r7,r7,r3,ror#8
+ 889              	>> 
+ 889 0a80 5FFAAAF0 	>>  uxtb r0,r10,ror#16
+ 889 0a84 5FFAABF1 	>>  uxtb r1,r11,ror#16
+ 889 0a88 5FFAA8F2 	>>  uxtb r2,r8,ror#16
+ 889 0a8c 5FFAA9F3 	>>  uxtb r3,r9,ror#16
+ 889 0a90 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 0a94 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0a98 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 0a9c 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0aa0 84EA0004 	>>  eor r4,r0
+ 889 0aa4 85EA0105 	>>  eor r5,r1
+ 889 0aa8 86EA0206 	>>  eor r6,r2
+ 889 0aac 87EA0307 	>>  eor r7,r3
+ 889              	>> 
+ 889 0ab0 5FFABBF0 	>>  uxtb r0,r11,ror#24
+ 889 0ab4 5FFAB8F1 	>>  uxtb r1,r8,ror#24
+ 889 0ab8 5FFAB9F2 	>>  uxtb r2,r9,ror#24
+ 889 0abc 5FFABAF3 	>>  uxtb r3,r10,ror#24
+ 889 0ac0 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 889 0ac4 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 889 0ac8 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 889 0acc 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 889 0ad0 84EA3064 	>>  eor r4,r4,r0,ror#24
+ 889 0ad4 85EA3165 	>>  eor r5,r5,r1,ror#24
+ 889 0ad8 86EA3266 	>>  eor r6,r6,r2,ror#24
+ 889 0adc 87EA3367 	>>  eor r7,r7,r3,ror#24
+ 890              	    aesencrypt_oddround
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 40
+
+
+ 891              	    aesencrypt_evenround
+ 892              	.endr
+ 893              	    aesencrypt_oddround
+ 893 0ae0 5EF8048B 	>  ldr r8,[r14],#4
+ 893 0ae4 5EF8049B 	>  ldr r9,[r14],#4
+ 893 0ae8 5EF804AB 	>  ldr r10,[r14],#4
+ 893 0aec 5EF804BB 	>  ldr r11,[r14],#4
+ 893              	> 
+ 893 0af0 E0B2     	>  uxtb r0,r4
+ 893 0af2 E9B2     	>  uxtb r1,r5
+ 893 0af4 F2B2     	>  uxtb r2,r6
+ 893 0af6 FBB2     	>  uxtb r3,r7
+ 893 0af8 5CF82000 	>  ldr r0,[r12,r0,lsl#2]
+ 893 0afc 5CF82110 	>  ldr r1,[r12,r1,lsl#2]
+ 893 0b00 5CF82220 	>  ldr r2,[r12,r2,lsl#2]
+ 893 0b04 5CF82330 	>  ldr r3,[r12,r3,lsl#2]
+ 893 0b08 88EA3048 	>  eor r8,r8,r0,ror#16
+ 893 0b0c 89EA3149 	>  eor r9,r9,r1,ror#16
+ 893 0b10 8AEA324A 	>  eor r10,r10,r2,ror#16
+ 893 0b14 8BEA334B 	>  eor r11,r11,r3,ror#16
+ 893              	> 
+ 893 0b18 5FFA95F0 	>  uxtb r0,r5,ror#8
+ 893 0b1c 5FFA96F1 	>  uxtb r1,r6,ror#8
+ 893 0b20 5FFA97F2 	>  uxtb r2,r7,ror#8
+ 893 0b24 5FFA94F3 	>  uxtb r3,r4,ror#8
+ 893 0b28 5CF82000 	>  ldr r0,[r12,r0,lsl#2]
+ 893 0b2c 5CF82110 	>  ldr r1,[r12,r1,lsl#2]
+ 893 0b30 5CF82220 	>  ldr r2,[r12,r2,lsl#2]
+ 893 0b34 5CF82330 	>  ldr r3,[r12,r3,lsl#2]
+ 893 0b38 88EA3028 	>  eor r8,r8,r0,ror#8
+ 893 0b3c 89EA3129 	>  eor r9,r9,r1,ror#8
+ 893 0b40 8AEA322A 	>  eor r10,r10,r2,ror#8
+ 893 0b44 8BEA332B 	>  eor r11,r11,r3,ror#8
+ 893              	> 
+ 893 0b48 5FFAA6F0 	>  uxtb r0,r6,ror#16
+ 893 0b4c 5FFAA7F1 	>  uxtb r1,r7,ror#16
+ 893 0b50 5FFAA4F2 	>  uxtb r2,r4,ror#16
+ 893 0b54 5FFAA5F3 	>  uxtb r3,r5,ror#16
+ 893 0b58 5CF82000 	>  ldr r0,[r12,r0,lsl#2]
+ 893 0b5c 5CF82110 	>  ldr r1,[r12,r1,lsl#2]
+ 893 0b60 5CF82220 	>  ldr r2,[r12,r2,lsl#2]
+ 893 0b64 5CF82330 	>  ldr r3,[r12,r3,lsl#2]
+ 893 0b68 88EA0008 	>  eor r8,r0
+ 893 0b6c 89EA0109 	>  eor r9,r1
+ 893 0b70 8AEA020A 	>  eor r10,r2
+ 893 0b74 8BEA030B 	>  eor r11,r3
+ 893              	> 
+ 893 0b78 5FFAB7F0 	>  uxtb r0,r7,ror#24
+ 893 0b7c 5FFAB4F1 	>  uxtb r1,r4,ror#24
+ 893 0b80 5FFAB5F2 	>  uxtb r2,r5,ror#24
+ 893 0b84 5FFAB6F3 	>  uxtb r3,r6,ror#24
+ 893 0b88 5CF82000 	>  ldr r0,[r12,r0,lsl#2]
+ 893 0b8c 5CF82110 	>  ldr r1,[r12,r1,lsl#2]
+ 893 0b90 5CF82220 	>  ldr r2,[r12,r2,lsl#2]
+ 893 0b94 5CF82330 	>  ldr r3,[r12,r3,lsl#2]
+ 893 0b98 88EA3068 	>  eor r8,r8,r0,ror#24
+ 893 0b9c 89EA3169 	>  eor r9,r9,r1,ror#24
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 41
+
+
+ 893 0ba0 8AEA326A 	>  eor r10,r10,r2,ror#24
+ 893 0ba4 8BEA336B 	>  eor r11,r11,r3,ror#24
+ 894              	    aesencrypt_finalround
+ 894 0ba8 5FFABBF0 	>  uxtb r0,r11,ror#24
+ 894 0bac 5FFAB8F1 	>  uxtb r1,r8,ror#24
+ 894 0bb0 5FFAB9F2 	>  uxtb r2,r9,ror#24
+ 894 0bb4 5FFABAF3 	>  uxtb r3,r10,ror#24
+ 894 0bb8 5CF82040 	>  ldr r4,[r12,r0,lsl#2]
+ 894 0bbc 5CF82150 	>  ldr r5,[r12,r1,lsl#2]
+ 894 0bc0 5CF82260 	>  ldr r6,[r12,r2,lsl#2]
+ 894 0bc4 5CF82370 	>  ldr r7,[r12,r3,lsl#2]
+ 894              	> 
+ 894 0bc8 5FFAAAF0 	>  uxtb r0,r10,ror#16
+ 894 0bcc 5FFAABF1 	>  uxtb r1,r11,ror#16
+ 894 0bd0 5FFAA8F2 	>  uxtb r2,r8,ror#16
+ 894 0bd4 5FFAA9F3 	>  uxtb r3,r9,ror#16
+ 894 0bd8 5CF82000 	>  ldr r0,[r12,r0,lsl#2]
+ 894 0bdc 5CF82110 	>  ldr r1,[r12,r1,lsl#2]
+ 894 0be0 5CF82220 	>  ldr r2,[r12,r2,lsl#2]
+ 894 0be4 5CF82330 	>  ldr r3,[r12,r3,lsl#2]
+ 894 0be8 60F31F64 	>  bfi r4,r0,#24,#8
+ 894 0bec 61F31F65 	>  bfi r5,r1,#24,#8
+ 894 0bf0 62F31F66 	>  bfi r6,r2,#24,#8
+ 894 0bf4 63F31F67 	>  bfi r7,r3,#24,#8
+ 894              	> 
+ 894 0bf8 5FFA88F0 	>  uxtb r0,r8
+ 894 0bfc 5FFA89F1 	>  uxtb r1,r9
+ 894 0c00 5FFA8AF2 	>  uxtb r2,r10
+ 894 0c04 5FFA8BF3 	>  uxtb r3,r11
+ 894 0c08 5CF82000 	>  ldr r0,[r12,r0,lsl#2]
+ 894 0c0c 5CF82110 	>  ldr r1,[r12,r1,lsl#2]
+ 894 0c10 5CF82220 	>  ldr r2,[r12,r2,lsl#2]
+ 894 0c14 5CF82330 	>  ldr r3,[r12,r3,lsl#2]
+ 894 0c18 60F30F24 	>  bfi r4,r0,#8,#8
+ 894 0c1c 61F30F25 	>  bfi r5,r1,#8,#8
+ 894 0c20 62F30F26 	>  bfi r6,r2,#8,#8
+ 894 0c24 63F30F27 	>  bfi r7,r3,#8,#8
+ 894              	> 
+ 894 0c28 5FFA99F0 	>  uxtb r0,r9,ror#8
+ 894 0c2c 5FFA9AF1 	>  uxtb r1,r10,ror#8
+ 894 0c30 5FFA9BF2 	>  uxtb r2,r11,ror#8
+ 894 0c34 5FFA98F3 	>  uxtb r3,r8,ror#8
+ 894 0c38 5CF82000 	>  ldr r0,[r12,r0,lsl#2]
+ 894 0c3c 5CF82110 	>  ldr r1,[r12,r1,lsl#2]
+ 894 0c40 5CF82220 	>  ldr r2,[r12,r2,lsl#2]
+ 894 0c44 5CF82330 	>  ldr r3,[r12,r3,lsl#2]
+ 894 0c48 60F31744 	>  bfi r4,r0,#16,#8
+ 894 0c4c 61F31745 	>  bfi r5,r1,#16,#8
+ 894 0c50 62F31746 	>  bfi r6,r2,#16,#8
+ 894 0c54 63F31747 	>  bfi r7,r3,#16,#8
+ 895              	
+ 896              	    //rk[48]-rk[51]
+ 897 0c58 DEF80000 	    ldr r0, [r14, #0]
+ 898 0c5c DEF80410 	    ldr r1, [r14, #4]
+ 899 0c60 DEF80820 	    ldr r2, [r14, #8]
+ 900 0c64 DEF80C30 	    ldr r3, [r14, #12]
+ 901              	
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 42
+
+
+ 902 0c68 80EA3420 	    eor r0, r0, r4, ror #8
+ 903 0c6c 81EA3521 	    eor r1, r1, r5, ror #8
+ 904 0c70 82EA3622 	    eor r2, r2, r6, ror #8
+ 905 0c74 5DF8044B 	    pop.w {r4}
+ 906 0c78 83EA3723 	    eor r3, r3, r7, ror #8
+ 907              	
+ 908              	    //write output
+ 909 0c7c 2060     	    str r0, [r4, #0]
+ 910 0c7e 6160     	    str r1, [r4, #4]
+ 911 0c80 A260     	    str r2, [r4, #8]
+ 912 0c82 E360     	    str r3, [r4, #12]
+ 913              	
+ 914              	    //function epilogue, restore state
+ 915 0c84 BDE8F05F 	    pop {r4-r12,r14}
+ 916 0c88 7047     	    bx lr
+ 917              	.size aes192_encrypt_publicinputs_asm,.-aes192_encrypt_publicinputs_asm
+ 918              	
+ 919 0c8a 0000     	.section .text.aes256
+ 920              	@ void aes256_keyexp_publicinputs_asm(const uint8_t *key,
+ 921              	@       uint8_t *rk) {
+ 922              	.global aes256_keyexp_publicinputs_asm
+ 923              	.type   aes256_keyexp_publicinputs_asm,%function
+ 924              	.align 2
+ 925              	aes256_keyexp_publicinputs_asm:
+ 926              	
+ 927              	    //function prologue, preserve registers
+ 928 0000 2DE9F05F 	    push {r4-r12,r14}
+ 929              	
+ 930              	    //load key
+ 931 0004 0268     	    ldr r2, [r0, #0]
+ 932 0006 4368     	    ldr r3, [r0, #4]
+ 933 0008 8468     	    ldr r4, [r0, #8]
+ 934 000a C568     	    ldr r5, [r0, #12]
+ 935 000c 0669     	    ldr r6, [r0, #16]
+ 936 000e 4769     	    ldr r7, [r0, #20]
+ 937 0010 D0F81880 	    ldr r8, [r0, #24]
+ 938 0014 D0F81C90 	    ldr r9, [r0, #28]
+ 939              	
+ 940              	    //load table address once
+ 941 0018 EC48     	    ldr r0, =AES_Te0
+ 942              	
+ 943              	    //round 1
+ 944 001a 5FFA99FA 	    uxtb r10, r9, ror #8
+ 945 001e 5FFAA9FB 	    uxtb r11, r9, ror #16
+ 946 0022 5FFAB9FC 	    uxtb r12, r9, ror #24
+ 947 0026 5FFA89FE 	    uxtb r14, r9
+ 948              	
+ 949 002a 10F82AA0 	    ldrb r10, [r0, r10, lsl #2]
+ 950 002e 10F82BB0 	    ldrb r11, [r0, r11, lsl #2]
+ 951 0032 10F82CC0 	    ldrb r12, [r0, r12, lsl #2]
+ 952 0036 10F82EE0 	    ldrb r14, [r0, r14, lsl #2]
+ 953              	
+ 954 003a 82F00102 	    eor r2, #0x00000001 //rcon
+ 955 003e 82EA0A02 	    eor r2, r2, r10
+ 956 0042 82EA0B22 	    eor r2, r2, r11, lsl #8
+ 957 0046 82EA0C42 	    eor r2, r2, r12, lsl #16
+ 958 004a 82EA0E62 	    eor r2, r2, r14, lsl #24 //rk[8]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 43
+
+
+ 959 004e 83EA0203 	    eor r3, r2 //rk[9]
+ 960 0052 84EA0304 	    eor r4, r3 //rk[10]
+ 961 0056 85EA0405 	    eor r5, r4 //rk[11]
+ 962              	
+ 963 005a 5FFAA5FA 	    uxtb r10, r5, ror #16
+ 964 005e 5FFA95FB 	    uxtb r11, r5, ror #8
+ 965 0062 5FFA85FC 	    uxtb r12, r5
+ 966 0066 5FFAB5FE 	    uxtb r14, r5, ror #24
+ 967              	
+ 968 006a 10F82AA0 	    ldrb r10, [r0, r10, lsl #2]
+ 969 006e 10F82BB0 	    ldrb r11, [r0, r11, lsl #2]
+ 970 0072 10F82CC0 	    ldrb r12, [r0, r12, lsl #2]
+ 971 0076 10F82EE0 	    ldrb r14, [r0, r14, lsl #2]
+ 972              	
+ 973 007a 86EA0A46 	    eor r6, r6, r10, lsl #16
+ 974 007e 86EA0B26 	    eor r6, r6, r11, lsl #8
+ 975 0082 86EA0C06 	    eor r6, r12
+ 976 0086 86EA0E66 	    eor r6, r6, r14, lsl #24 //rk[12]
+ 977 008a 87EA0607 	    eor r7, r6 //rk[13]
+ 978 008e 88EA0708 	    eor r8, r7 //rk[14]
+ 979 0092 89EA0809 	    eor r9, r8 //rk[15]
+ 980              	
+ 981              	    //write to memory
+ 982 0096 0A60     	    str r2, [r1, #0]
+ 983 0098 4B60     	    str r3, [r1, #4]
+ 984 009a 8C60     	    str r4, [r1, #8]
+ 985 009c CD60     	    str r5, [r1, #12]
+ 986 009e 0E61     	    str r6, [r1, #16]
+ 987 00a0 4F61     	    str r7, [r1, #20]
+ 988 00a2 C1F81880 	    str r8, [r1, #24]
+ 989 00a6 C1F81C90 	    str r9, [r1, #28]
+ 990              	
+ 991              	    //round 2
+ 992 00aa 5FFA99FA 	    uxtb r10, r9, ror #8
+ 993 00ae 5FFAA9FB 	    uxtb r11, r9, ror #16
+ 994 00b2 5FFAB9FC 	    uxtb r12, r9, ror #24
+ 995 00b6 5FFA89FE 	    uxtb r14, r9
+ 996              	
+ 997 00ba 10F82AA0 	    ldrb r10, [r0, r10, lsl #2]
+ 998 00be 10F82BB0 	    ldrb r11, [r0, r11, lsl #2]
+ 999 00c2 10F82CC0 	    ldrb r12, [r0, r12, lsl #2]
+ 1000 00c6 10F82EE0 	    ldrb r14, [r0, r14, lsl #2]
+ 1001              	
+ 1002 00ca 82F00202 	    eor r2, #0x00000002 //rcon
+ 1003 00ce 82EA0A02 	    eor r2, r2, r10
+ 1004 00d2 82EA0B22 	    eor r2, r2, r11, lsl #8
+ 1005 00d6 82EA0C42 	    eor r2, r2, r12, lsl #16
+ 1006 00da 82EA0E62 	    eor r2, r2, r14, lsl #24 //rk[16]
+ 1007 00de 83EA0203 	    eor r3, r2 //rk[17]
+ 1008 00e2 84EA0304 	    eor r4, r3 //rk[18]
+ 1009 00e6 85EA0405 	    eor r5, r4 //rk[19]
+ 1010              	
+ 1011 00ea 5FFAA5FA 	    uxtb r10, r5, ror #16
+ 1012 00ee 5FFA95FB 	    uxtb r11, r5, ror #8
+ 1013 00f2 5FFA85FC 	    uxtb r12, r5
+ 1014 00f6 5FFAB5FE 	    uxtb r14, r5, ror #24
+ 1015              	
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 44
+
+
+ 1016 00fa 10F82AA0 	    ldrb r10, [r0, r10, lsl #2]
+ 1017 00fe 10F82BB0 	    ldrb r11, [r0, r11, lsl #2]
+ 1018 0102 10F82CC0 	    ldrb r12, [r0, r12, lsl #2]
+ 1019 0106 10F82EE0 	    ldrb r14, [r0, r14, lsl #2]
+ 1020              	
+ 1021 010a 86EA0A46 	    eor r6, r6, r10, lsl #16
+ 1022 010e 86EA0B26 	    eor r6, r6, r11, lsl #8
+ 1023 0112 86EA0C06 	    eor r6, r12
+ 1024 0116 86EA0E66 	    eor r6, r6, r14, lsl #24 //rk[20]
+ 1025 011a 87EA0607 	    eor r7, r6 //rk[21]
+ 1026 011e 88EA0708 	    eor r8, r7 //rk[22]
+ 1027 0122 89EA0809 	    eor r9, r8 //rk[23]
+ 1028              	
+ 1029              	    //write to memory
+ 1030 0126 0A62     	    str r2, [r1, #32]
+ 1031 0128 4B62     	    str r3, [r1, #36]
+ 1032 012a 8C62     	    str r4, [r1, #40]
+ 1033 012c CD62     	    str r5, [r1, #44]
+ 1034 012e 0E63     	    str r6, [r1, #48]
+ 1035 0130 4F63     	    str r7, [r1, #52]
+ 1036 0132 C1F83880 	    str r8, [r1, #56]
+ 1037 0136 C1F83C90 	    str r9, [r1, #60]
+ 1038              	
+ 1039              	    //round 3
+ 1040 013a 5FFA99FA 	    uxtb r10, r9, ror #8
+ 1041 013e 5FFAA9FB 	    uxtb r11, r9, ror #16
+ 1042 0142 5FFAB9FC 	    uxtb r12, r9, ror #24
+ 1043 0146 5FFA89FE 	    uxtb r14, r9
+ 1044              	
+ 1045 014a 10F82AA0 	    ldrb r10, [r0, r10, lsl #2]
+ 1046 014e 10F82BB0 	    ldrb r11, [r0, r11, lsl #2]
+ 1047 0152 10F82CC0 	    ldrb r12, [r0, r12, lsl #2]
+ 1048 0156 10F82EE0 	    ldrb r14, [r0, r14, lsl #2]
+ 1049              	
+ 1050 015a 82F00402 	    eor r2, #0x00000004 //rcon
+ 1051 015e 82EA0A02 	    eor r2, r2, r10
+ 1052 0162 82EA0B22 	    eor r2, r2, r11, lsl #8
+ 1053 0166 82EA0C42 	    eor r2, r2, r12, lsl #16
+ 1054 016a 82EA0E62 	    eor r2, r2, r14, lsl #24 //rk[24]
+ 1055 016e 83EA0203 	    eor r3, r2 //rk[25]
+ 1056 0172 84EA0304 	    eor r4, r3 //rk[26]
+ 1057 0176 85EA0405 	    eor r5, r4 //rk[27]
+ 1058              	
+ 1059 017a 5FFAA5FA 	    uxtb r10, r5, ror #16
+ 1060 017e 5FFA95FB 	    uxtb r11, r5, ror #8
+ 1061 0182 5FFA85FC 	    uxtb r12, r5
+ 1062 0186 5FFAB5FE 	    uxtb r14, r5, ror #24
+ 1063              	
+ 1064 018a 10F82AA0 	    ldrb r10, [r0, r10, lsl #2]
+ 1065 018e 10F82BB0 	    ldrb r11, [r0, r11, lsl #2]
+ 1066 0192 10F82CC0 	    ldrb r12, [r0, r12, lsl #2]
+ 1067 0196 10F82EE0 	    ldrb r14, [r0, r14, lsl #2]
+ 1068              	
+ 1069 019a 86EA0A46 	    eor r6, r6, r10, lsl #16
+ 1070 019e 86EA0B26 	    eor r6, r6, r11, lsl #8
+ 1071 01a2 86EA0C06 	    eor r6, r12
+ 1072 01a6 86EA0E66 	    eor r6, r6, r14, lsl #24 //rk[28]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 45
+
+
+ 1073 01aa 87EA0607 	    eor r7, r6 //rk[29]
+ 1074 01ae 88EA0708 	    eor r8, r7 //rk[30]
+ 1075 01b2 89EA0809 	    eor r9, r8 //rk[31]
+ 1076              	
+ 1077              	    //write to memory
+ 1078 01b6 0A64     	    str r2, [r1, #64]
+ 1079 01b8 4B64     	    str r3, [r1, #68]
+ 1080 01ba 8C64     	    str r4, [r1, #72]
+ 1081 01bc CD64     	    str r5, [r1, #76]
+ 1082 01be 0E65     	    str r6, [r1, #80]
+ 1083 01c0 4F65     	    str r7, [r1, #84]
+ 1084 01c2 C1F85880 	    str r8, [r1, #88]
+ 1085 01c6 C1F85C90 	    str r9, [r1, #92]
+ 1086              	
+ 1087              	    //round 4
+ 1088 01ca 5FFA99FA 	    uxtb r10, r9, ror #8
+ 1089 01ce 5FFAA9FB 	    uxtb r11, r9, ror #16
+ 1090 01d2 5FFAB9FC 	    uxtb r12, r9, ror #24
+ 1091 01d6 5FFA89FE 	    uxtb r14, r9
+ 1092              	
+ 1093 01da 10F82AA0 	    ldrb r10, [r0, r10, lsl #2]
+ 1094 01de 10F82BB0 	    ldrb r11, [r0, r11, lsl #2]
+ 1095 01e2 10F82CC0 	    ldrb r12, [r0, r12, lsl #2]
+ 1096 01e6 10F82EE0 	    ldrb r14, [r0, r14, lsl #2]
+ 1097              	
+ 1098 01ea 82F00802 	    eor r2, #0x00000008 //rcon
+ 1099 01ee 82EA0A02 	    eor r2, r2, r10
+ 1100 01f2 82EA0B22 	    eor r2, r2, r11, lsl #8
+ 1101 01f6 82EA0C42 	    eor r2, r2, r12, lsl #16
+ 1102 01fa 82EA0E62 	    eor r2, r2, r14, lsl #24 //rk[32]
+ 1103 01fe 83EA0203 	    eor r3, r2 //rk[33]
+ 1104 0202 84EA0304 	    eor r4, r3 //rk[34]
+ 1105 0206 85EA0405 	    eor r5, r4 //rk[35]
+ 1106              	
+ 1107 020a 5FFAA5FA 	    uxtb r10, r5, ror #16
+ 1108 020e 5FFA95FB 	    uxtb r11, r5, ror #8
+ 1109 0212 5FFA85FC 	    uxtb r12, r5
+ 1110 0216 5FFAB5FE 	    uxtb r14, r5, ror #24
+ 1111              	
+ 1112 021a 10F82AA0 	    ldrb r10, [r0, r10, lsl #2]
+ 1113 021e 10F82BB0 	    ldrb r11, [r0, r11, lsl #2]
+ 1114 0222 10F82CC0 	    ldrb r12, [r0, r12, lsl #2]
+ 1115 0226 10F82EE0 	    ldrb r14, [r0, r14, lsl #2]
+ 1116              	
+ 1117 022a 86EA0A46 	    eor r6, r6, r10, lsl #16
+ 1118 022e 86EA0B26 	    eor r6, r6, r11, lsl #8
+ 1119 0232 86EA0C06 	    eor r6, r12
+ 1120 0236 86EA0E66 	    eor r6, r6, r14, lsl #24 //rk[36]
+ 1121 023a 87EA0607 	    eor r7, r6 //rk[37]
+ 1122 023e 88EA0708 	    eor r8, r7 //rk[38]
+ 1123 0242 89EA0809 	    eor r9, r8 //rk[39]
+ 1124              	
+ 1125              	    //write to memory
+ 1126 0246 0A66     	    str r2, [r1, #96]
+ 1127 0248 4B66     	    str r3, [r1, #100]
+ 1128 024a 8C66     	    str r4, [r1, #104]
+ 1129 024c CD66     	    str r5, [r1, #108]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 46
+
+
+ 1130 024e 0E67     	    str r6, [r1, #112]
+ 1131 0250 4F67     	    str r7, [r1, #116]
+ 1132 0252 C1F87880 	    str r8, [r1, #120]
+ 1133 0256 C1F87C90 	    str r9, [r1, #124]
+ 1134              	
+ 1135 025a 01F18001 	    add r1, #128
+ 1136              	
+ 1137              	    //round 5
+ 1138 025e 5FFA99FA 	    uxtb r10, r9, ror #8
+ 1139 0262 5FFAA9FB 	    uxtb r11, r9, ror #16
+ 1140 0266 5FFAB9FC 	    uxtb r12, r9, ror #24
+ 1141 026a 5FFA89FE 	    uxtb r14, r9
+ 1142              	
+ 1143 026e 10F82AA0 	    ldrb r10, [r0, r10, lsl #2]
+ 1144 0272 10F82BB0 	    ldrb r11, [r0, r11, lsl #2]
+ 1145 0276 10F82CC0 	    ldrb r12, [r0, r12, lsl #2]
+ 1146 027a 10F82EE0 	    ldrb r14, [r0, r14, lsl #2]
+ 1147              	
+ 1148 027e 82F01002 	    eor r2, #0x00000010 //rcon
+ 1149 0282 82EA0A02 	    eor r2, r2, r10
+ 1150 0286 82EA0B22 	    eor r2, r2, r11, lsl #8
+ 1151 028a 82EA0C42 	    eor r2, r2, r12, lsl #16
+ 1152 028e 82EA0E62 	    eor r2, r2, r14, lsl #24 //rk[40]
+ 1153 0292 83EA0203 	    eor r3, r2 //rk[41]
+ 1154 0296 84EA0304 	    eor r4, r3 //rk[42]
+ 1155 029a 85EA0405 	    eor r5, r4 //rk[43]
+ 1156              	
+ 1157 029e 5FFAA5FA 	    uxtb r10, r5, ror #16
+ 1158 02a2 5FFA95FB 	    uxtb r11, r5, ror #8
+ 1159 02a6 5FFA85FC 	    uxtb r12, r5
+ 1160 02aa 5FFAB5FE 	    uxtb r14, r5, ror #24
+ 1161              	
+ 1162 02ae 10F82AA0 	    ldrb r10, [r0, r10, lsl #2]
+ 1163 02b2 10F82BB0 	    ldrb r11, [r0, r11, lsl #2]
+ 1164 02b6 10F82CC0 	    ldrb r12, [r0, r12, lsl #2]
+ 1165 02ba 10F82EE0 	    ldrb r14, [r0, r14, lsl #2]
+ 1166              	
+ 1167 02be 86EA0A46 	    eor r6, r6, r10, lsl #16
+ 1168 02c2 86EA0B26 	    eor r6, r6, r11, lsl #8
+ 1169 02c6 86EA0C06 	    eor r6, r12
+ 1170 02ca 86EA0E66 	    eor r6, r6, r14, lsl #24 //rk[44]
+ 1171 02ce 87EA0607 	    eor r7, r6 //rk[45]
+ 1172 02d2 88EA0708 	    eor r8, r7 //rk[46]
+ 1173 02d6 89EA0809 	    eor r9, r8 //rk[47]
+ 1174              	
+ 1175              	    //write to memory
+ 1176 02da 0A60     	    str r2, [r1, #0]
+ 1177 02dc 4B60     	    str r3, [r1, #4]
+ 1178 02de 8C60     	    str r4, [r1, #8]
+ 1179 02e0 CD60     	    str r5, [r1, #12]
+ 1180 02e2 0E61     	    str r6, [r1, #16]
+ 1181 02e4 4F61     	    str r7, [r1, #20]
+ 1182 02e6 C1F81880 	    str r8, [r1, #24]
+ 1183 02ea C1F81C90 	    str r9, [r1, #28]
+ 1184              	
+ 1185              	    //round 6
+ 1186 02ee 5FFA99FA 	    uxtb r10, r9, ror #8
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 47
+
+
+ 1187 02f2 5FFAA9FB 	    uxtb r11, r9, ror #16
+ 1188 02f6 5FFAB9FC 	    uxtb r12, r9, ror #24
+ 1189 02fa 5FFA89FE 	    uxtb r14, r9
+ 1190              	
+ 1191 02fe 10F82AA0 	    ldrb r10, [r0, r10, lsl #2]
+ 1192 0302 10F82BB0 	    ldrb r11, [r0, r11, lsl #2]
+ 1193 0306 10F82CC0 	    ldrb r12, [r0, r12, lsl #2]
+ 1194 030a 10F82EE0 	    ldrb r14, [r0, r14, lsl #2]
+ 1195              	
+ 1196 030e 82F02002 	    eor r2, #0x00000020 //rcon
+ 1197 0312 82EA0A02 	    eor r2, r2, r10
+ 1198 0316 82EA0B22 	    eor r2, r2, r11, lsl #8
+ 1199 031a 82EA0C42 	    eor r2, r2, r12, lsl #16
+ 1200 031e 82EA0E62 	    eor r2, r2, r14, lsl #24 //rk[48]
+ 1201 0322 83EA0203 	    eor r3, r2 //rk[49]
+ 1202 0326 84EA0304 	    eor r4, r3 //rk[50]
+ 1203 032a 85EA0405 	    eor r5, r4 //rk[51]
+ 1204              	
+ 1205 032e 5FFAA5FA 	    uxtb r10, r5, ror #16
+ 1206 0332 5FFA95FB 	    uxtb r11, r5, ror #8
+ 1207 0336 5FFA85FC 	    uxtb r12, r5
+ 1208 033a 5FFAB5FE 	    uxtb r14, r5, ror #24
+ 1209              	
+ 1210 033e 10F82AA0 	    ldrb r10, [r0, r10, lsl #2]
+ 1211 0342 10F82BB0 	    ldrb r11, [r0, r11, lsl #2]
+ 1212 0346 10F82CC0 	    ldrb r12, [r0, r12, lsl #2]
+ 1213 034a 10F82EE0 	    ldrb r14, [r0, r14, lsl #2]
+ 1214              	
+ 1215 034e 86EA0A46 	    eor r6, r6, r10, lsl #16
+ 1216 0352 86EA0B26 	    eor r6, r6, r11, lsl #8
+ 1217 0356 86EA0C06 	    eor r6, r12
+ 1218 035a 86EA0E66 	    eor r6, r6, r14, lsl #24 //rk[52]
+ 1219 035e 87EA0607 	    eor r7, r6 //rk[53]
+ 1220 0362 88EA0708 	    eor r8, r7 //rk[54]
+ 1221 0366 89EA0809 	    eor r9, r8 //rk[55]
+ 1222              	
+ 1223              	    //write to memory
+ 1224 036a 0A62     	    str r2, [r1, #32]
+ 1225 036c 4B62     	    str r3, [r1, #36]
+ 1226 036e 8C62     	    str r4, [r1, #40]
+ 1227 0370 CD62     	    str r5, [r1, #44]
+ 1228 0372 0E63     	    str r6, [r1, #48]
+ 1229 0374 4F63     	    str r7, [r1, #52]
+ 1230 0376 C1F83880 	    str r8, [r1, #56]
+ 1231 037a C1F83C90 	    str r9, [r1, #60]
+ 1232              	
+ 1233              	    //round 7
+ 1234 037e 5FFA99FA 	    uxtb r10, r9, ror #8
+ 1235 0382 5FFAA9FB 	    uxtb r11, r9, ror #16
+ 1236 0386 5FFAB9FC 	    uxtb r12, r9, ror #24
+ 1237 038a 5FFA89FE 	    uxtb r14, r9
+ 1238              	
+ 1239 038e 10F82AA0 	    ldrb r10, [r0, r10, lsl #2]
+ 1240 0392 10F82BB0 	    ldrb r11, [r0, r11, lsl #2]
+ 1241 0396 10F82CC0 	    ldrb r12, [r0, r12, lsl #2]
+ 1242 039a 10F82EE0 	    ldrb r14, [r0, r14, lsl #2]
+ 1243              	
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 48
+
+
+ 1244 039e 82F04002 	    eor r2, #0x00000040 //rcon
+ 1245 03a2 82EA0A02 	    eor r2, r2, r10
+ 1246 03a6 82EA0B22 	    eor r2, r2, r11, lsl #8
+ 1247 03aa 82EA0C42 	    eor r2, r2, r12, lsl #16
+ 1248 03ae 82EA0E62 	    eor r2, r2, r14, lsl #24 //rk[56]
+ 1249 03b2 83EA0203 	    eor r3, r2 //rk[57]
+ 1250 03b6 84EA0304 	    eor r4, r3 //rk[58]
+ 1251 03ba 85EA0405 	    eor r5, r4 //rk[59]
+ 1252              	
+ 1253              	    //write to memory
+ 1254 03be 0A64     	    str r2, [r1, #64]
+ 1255 03c0 4B64     	    str r3, [r1, #68]
+ 1256 03c2 8C64     	    str r4, [r1, #72]
+ 1257 03c4 CD64     	    str r5, [r1, #76]
+ 1258              	
+ 1259              	    //function epilogue, restore state
+ 1260 03c6 BDE8F05F 	    pop {r4-r12,r14}
+ 1261 03ca 7047     	    bx lr
+ 1262              	.size aes256_keyexp_publicinputs_asm,.-aes256_keyexp_publicinputs_asm
+ 1263              	
+ 1264              	.align 2
+ 1265 03cc 00000000 	.ltorg
+ 1266              	
+ 1267              	@ void aes256_encrypt_publicinputs_asm(const uint8_t *rk,
+ 1268              	@       const uint8_t *in, uint8_t *out) {
+ 1269              	.global aes256_encrypt_publicinputs_asm
+ 1270              	.type   aes256_encrypt_publicinputs_asm,%function
+ 1271              	.align 2
+ 1272              	aes256_encrypt_publicinputs_asm:
+ 1273              	
+ 1274              	    //function prologue, preserve registers and free r2
+ 1275 03d0 2DE9F45F 	    push {r2,r4-r12,r14}
+ 1276              	
+ 1277              	    //load input
+ 1278 03d4 0C68     	    ldr r4, [r1, #0]
+ 1279 03d6 4D68     	    ldr r5, [r1, #4]
+ 1280 03d8 8E68     	    ldr r6, [r1, #8]
+ 1281 03da CF68     	    ldr r7, [r1, #12]
+ 1282              	    //r1 now free to overwrite
+ 1283              	    //load key
+ 1284 03dc 50F8048B 	    ldr r8, [r0], #4
+ 1285 03e0 50F8049B 	    ldr r9, [r0], #4
+ 1286 03e4 50F804AB 	    ldr r10, [r0], #4
+ 1287 03e8 50F804BB 	    ldr r11, [r0], #4
+ 1288 03ec 4FEA000E 	    mov.w r14, r0
+ 1289              	
+ 1290              	    //load table address once
+ 1291 03f0 DFF84CCB 	    ldr r12, =AES_Te0
+ 1292              	
+ 1293              	    //initial addroundkey
+ 1294 03f4 84EA0804 	    eor r4, r8
+ 1295 03f8 85EA0905 	    eor r5, r9
+ 1296 03fc 86EA0A06 	    eor r6, r10
+ 1297 0400 87EA0B07 	    eor r7, r11
+ 1298              	
+ 1299              	.rept 6
+ 1299              	>  aesencrypt_oddround
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 49
+
+
+ 1299 0404 5EF8048B 	>>  ldr r8,[r14],#4
+ 1299 0408 5EF8049B 	>>  ldr r9,[r14],#4
+ 1299 040c 5EF804AB 	>>  ldr r10,[r14],#4
+ 1299 0410 5EF804BB 	>>  ldr r11,[r14],#4
+ 1299              	>> 
+ 1299 0414 E0B2     	>>  uxtb r0,r4
+ 1299 0416 E9B2     	>>  uxtb r1,r5
+ 1299 0418 F2B2     	>>  uxtb r2,r6
+ 1299 041a FBB2     	>>  uxtb r3,r7
+ 1299 041c 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0420 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0424 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0428 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 042c 88EA3048 	>>  eor r8,r8,r0,ror#16
+ 1299 0430 89EA3149 	>>  eor r9,r9,r1,ror#16
+ 1299 0434 8AEA324A 	>>  eor r10,r10,r2,ror#16
+ 1299 0438 8BEA334B 	>>  eor r11,r11,r3,ror#16
+ 1299              	>> 
+ 1299 043c 5FFA95F0 	>>  uxtb r0,r5,ror#8
+ 1299 0440 5FFA96F1 	>>  uxtb r1,r6,ror#8
+ 1299 0444 5FFA97F2 	>>  uxtb r2,r7,ror#8
+ 1299 0448 5FFA94F3 	>>  uxtb r3,r4,ror#8
+ 1299 044c 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0450 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0454 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0458 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 045c 88EA3028 	>>  eor r8,r8,r0,ror#8
+ 1299 0460 89EA3129 	>>  eor r9,r9,r1,ror#8
+ 1299 0464 8AEA322A 	>>  eor r10,r10,r2,ror#8
+ 1299 0468 8BEA332B 	>>  eor r11,r11,r3,ror#8
+ 1299              	>> 
+ 1299 046c 5FFAA6F0 	>>  uxtb r0,r6,ror#16
+ 1299 0470 5FFAA7F1 	>>  uxtb r1,r7,ror#16
+ 1299 0474 5FFAA4F2 	>>  uxtb r2,r4,ror#16
+ 1299 0478 5FFAA5F3 	>>  uxtb r3,r5,ror#16
+ 1299 047c 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0480 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0484 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0488 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 048c 88EA0008 	>>  eor r8,r0
+ 1299 0490 89EA0109 	>>  eor r9,r1
+ 1299 0494 8AEA020A 	>>  eor r10,r2
+ 1299 0498 8BEA030B 	>>  eor r11,r3
+ 1299              	>> 
+ 1299 049c 5FFAB7F0 	>>  uxtb r0,r7,ror#24
+ 1299 04a0 5FFAB4F1 	>>  uxtb r1,r4,ror#24
+ 1299 04a4 5FFAB5F2 	>>  uxtb r2,r5,ror#24
+ 1299 04a8 5FFAB6F3 	>>  uxtb r3,r6,ror#24
+ 1299 04ac 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 04b0 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 04b4 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 04b8 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 04bc 88EA3068 	>>  eor r8,r8,r0,ror#24
+ 1299 04c0 89EA3169 	>>  eor r9,r9,r1,ror#24
+ 1299 04c4 8AEA326A 	>>  eor r10,r10,r2,ror#24
+ 1299 04c8 8BEA336B 	>>  eor r11,r11,r3,ror#24
+ 1299              	>  aesencrypt_evenround
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 50
+
+
+ 1299 04cc 5EF8044B 	>>  ldr r4,[r14],#4
+ 1299 04d0 5EF8045B 	>>  ldr r5,[r14],#4
+ 1299 04d4 5EF8046B 	>>  ldr r6,[r14],#4
+ 1299 04d8 5EF8047B 	>>  ldr r7,[r14],#4
+ 1299              	>> 
+ 1299 04dc 5FFA88F0 	>>  uxtb r0,r8
+ 1299 04e0 5FFA89F1 	>>  uxtb r1,r9
+ 1299 04e4 5FFA8AF2 	>>  uxtb r2,r10
+ 1299 04e8 5FFA8BF3 	>>  uxtb r3,r11
+ 1299 04ec 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 04f0 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 04f4 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 04f8 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 04fc 84EA3044 	>>  eor r4,r4,r0,ror#16
+ 1299 0500 85EA3145 	>>  eor r5,r5,r1,ror#16
+ 1299 0504 86EA3246 	>>  eor r6,r6,r2,ror#16
+ 1299 0508 87EA3347 	>>  eor r7,r7,r3,ror#16
+ 1299              	>> 
+ 1299 050c 5FFA99F0 	>>  uxtb r0,r9,ror#8
+ 1299 0510 5FFA9AF1 	>>  uxtb r1,r10,ror#8
+ 1299 0514 5FFA9BF2 	>>  uxtb r2,r11,ror#8
+ 1299 0518 5FFA98F3 	>>  uxtb r3,r8,ror#8
+ 1299 051c 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0520 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0524 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0528 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 052c 84EA3024 	>>  eor r4,r4,r0,ror#8
+ 1299 0530 85EA3125 	>>  eor r5,r5,r1,ror#8
+ 1299 0534 86EA3226 	>>  eor r6,r6,r2,ror#8
+ 1299 0538 87EA3327 	>>  eor r7,r7,r3,ror#8
+ 1299              	>> 
+ 1299 053c 5FFAAAF0 	>>  uxtb r0,r10,ror#16
+ 1299 0540 5FFAABF1 	>>  uxtb r1,r11,ror#16
+ 1299 0544 5FFAA8F2 	>>  uxtb r2,r8,ror#16
+ 1299 0548 5FFAA9F3 	>>  uxtb r3,r9,ror#16
+ 1299 054c 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0550 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0554 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0558 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 055c 84EA0004 	>>  eor r4,r0
+ 1299 0560 85EA0105 	>>  eor r5,r1
+ 1299 0564 86EA0206 	>>  eor r6,r2
+ 1299 0568 87EA0307 	>>  eor r7,r3
+ 1299              	>> 
+ 1299 056c 5FFABBF0 	>>  uxtb r0,r11,ror#24
+ 1299 0570 5FFAB8F1 	>>  uxtb r1,r8,ror#24
+ 1299 0574 5FFAB9F2 	>>  uxtb r2,r9,ror#24
+ 1299 0578 5FFABAF3 	>>  uxtb r3,r10,ror#24
+ 1299 057c 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0580 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0584 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0588 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 058c 84EA3064 	>>  eor r4,r4,r0,ror#24
+ 1299 0590 85EA3165 	>>  eor r5,r5,r1,ror#24
+ 1299 0594 86EA3266 	>>  eor r6,r6,r2,ror#24
+ 1299 0598 87EA3367 	>>  eor r7,r7,r3,ror#24
+ 1299              	> 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 51
+
+
+ 1299              	>  aesencrypt_oddround
+ 1299 059c 5EF8048B 	>>  ldr r8,[r14],#4
+ 1299 05a0 5EF8049B 	>>  ldr r9,[r14],#4
+ 1299 05a4 5EF804AB 	>>  ldr r10,[r14],#4
+ 1299 05a8 5EF804BB 	>>  ldr r11,[r14],#4
+ 1299              	>> 
+ 1299 05ac E0B2     	>>  uxtb r0,r4
+ 1299 05ae E9B2     	>>  uxtb r1,r5
+ 1299 05b0 F2B2     	>>  uxtb r2,r6
+ 1299 05b2 FBB2     	>>  uxtb r3,r7
+ 1299 05b4 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 05b8 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 05bc 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 05c0 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 05c4 88EA3048 	>>  eor r8,r8,r0,ror#16
+ 1299 05c8 89EA3149 	>>  eor r9,r9,r1,ror#16
+ 1299 05cc 8AEA324A 	>>  eor r10,r10,r2,ror#16
+ 1299 05d0 8BEA334B 	>>  eor r11,r11,r3,ror#16
+ 1299              	>> 
+ 1299 05d4 5FFA95F0 	>>  uxtb r0,r5,ror#8
+ 1299 05d8 5FFA96F1 	>>  uxtb r1,r6,ror#8
+ 1299 05dc 5FFA97F2 	>>  uxtb r2,r7,ror#8
+ 1299 05e0 5FFA94F3 	>>  uxtb r3,r4,ror#8
+ 1299 05e4 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 05e8 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 05ec 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 05f0 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 05f4 88EA3028 	>>  eor r8,r8,r0,ror#8
+ 1299 05f8 89EA3129 	>>  eor r9,r9,r1,ror#8
+ 1299 05fc 8AEA322A 	>>  eor r10,r10,r2,ror#8
+ 1299 0600 8BEA332B 	>>  eor r11,r11,r3,ror#8
+ 1299              	>> 
+ 1299 0604 5FFAA6F0 	>>  uxtb r0,r6,ror#16
+ 1299 0608 5FFAA7F1 	>>  uxtb r1,r7,ror#16
+ 1299 060c 5FFAA4F2 	>>  uxtb r2,r4,ror#16
+ 1299 0610 5FFAA5F3 	>>  uxtb r3,r5,ror#16
+ 1299 0614 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0618 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 061c 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0620 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0624 88EA0008 	>>  eor r8,r0
+ 1299 0628 89EA0109 	>>  eor r9,r1
+ 1299 062c 8AEA020A 	>>  eor r10,r2
+ 1299 0630 8BEA030B 	>>  eor r11,r3
+ 1299              	>> 
+ 1299 0634 5FFAB7F0 	>>  uxtb r0,r7,ror#24
+ 1299 0638 5FFAB4F1 	>>  uxtb r1,r4,ror#24
+ 1299 063c 5FFAB5F2 	>>  uxtb r2,r5,ror#24
+ 1299 0640 5FFAB6F3 	>>  uxtb r3,r6,ror#24
+ 1299 0644 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0648 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 064c 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0650 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0654 88EA3068 	>>  eor r8,r8,r0,ror#24
+ 1299 0658 89EA3169 	>>  eor r9,r9,r1,ror#24
+ 1299 065c 8AEA326A 	>>  eor r10,r10,r2,ror#24
+ 1299 0660 8BEA336B 	>>  eor r11,r11,r3,ror#24
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 52
+
+
+ 1299              	>  aesencrypt_evenround
+ 1299 0664 5EF8044B 	>>  ldr r4,[r14],#4
+ 1299 0668 5EF8045B 	>>  ldr r5,[r14],#4
+ 1299 066c 5EF8046B 	>>  ldr r6,[r14],#4
+ 1299 0670 5EF8047B 	>>  ldr r7,[r14],#4
+ 1299              	>> 
+ 1299 0674 5FFA88F0 	>>  uxtb r0,r8
+ 1299 0678 5FFA89F1 	>>  uxtb r1,r9
+ 1299 067c 5FFA8AF2 	>>  uxtb r2,r10
+ 1299 0680 5FFA8BF3 	>>  uxtb r3,r11
+ 1299 0684 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0688 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 068c 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0690 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0694 84EA3044 	>>  eor r4,r4,r0,ror#16
+ 1299 0698 85EA3145 	>>  eor r5,r5,r1,ror#16
+ 1299 069c 86EA3246 	>>  eor r6,r6,r2,ror#16
+ 1299 06a0 87EA3347 	>>  eor r7,r7,r3,ror#16
+ 1299              	>> 
+ 1299 06a4 5FFA99F0 	>>  uxtb r0,r9,ror#8
+ 1299 06a8 5FFA9AF1 	>>  uxtb r1,r10,ror#8
+ 1299 06ac 5FFA9BF2 	>>  uxtb r2,r11,ror#8
+ 1299 06b0 5FFA98F3 	>>  uxtb r3,r8,ror#8
+ 1299 06b4 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 06b8 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 06bc 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 06c0 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 06c4 84EA3024 	>>  eor r4,r4,r0,ror#8
+ 1299 06c8 85EA3125 	>>  eor r5,r5,r1,ror#8
+ 1299 06cc 86EA3226 	>>  eor r6,r6,r2,ror#8
+ 1299 06d0 87EA3327 	>>  eor r7,r7,r3,ror#8
+ 1299              	>> 
+ 1299 06d4 5FFAAAF0 	>>  uxtb r0,r10,ror#16
+ 1299 06d8 5FFAABF1 	>>  uxtb r1,r11,ror#16
+ 1299 06dc 5FFAA8F2 	>>  uxtb r2,r8,ror#16
+ 1299 06e0 5FFAA9F3 	>>  uxtb r3,r9,ror#16
+ 1299 06e4 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 06e8 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 06ec 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 06f0 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 06f4 84EA0004 	>>  eor r4,r0
+ 1299 06f8 85EA0105 	>>  eor r5,r1
+ 1299 06fc 86EA0206 	>>  eor r6,r2
+ 1299 0700 87EA0307 	>>  eor r7,r3
+ 1299              	>> 
+ 1299 0704 5FFABBF0 	>>  uxtb r0,r11,ror#24
+ 1299 0708 5FFAB8F1 	>>  uxtb r1,r8,ror#24
+ 1299 070c 5FFAB9F2 	>>  uxtb r2,r9,ror#24
+ 1299 0710 5FFABAF3 	>>  uxtb r3,r10,ror#24
+ 1299 0714 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0718 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 071c 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0720 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0724 84EA3064 	>>  eor r4,r4,r0,ror#24
+ 1299 0728 85EA3165 	>>  eor r5,r5,r1,ror#24
+ 1299 072c 86EA3266 	>>  eor r6,r6,r2,ror#24
+ 1299 0730 87EA3367 	>>  eor r7,r7,r3,ror#24
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 53
+
+
+ 1299              	> 
+ 1299              	>  aesencrypt_oddround
+ 1299 0734 5EF8048B 	>>  ldr r8,[r14],#4
+ 1299 0738 5EF8049B 	>>  ldr r9,[r14],#4
+ 1299 073c 5EF804AB 	>>  ldr r10,[r14],#4
+ 1299 0740 5EF804BB 	>>  ldr r11,[r14],#4
+ 1299              	>> 
+ 1299 0744 E0B2     	>>  uxtb r0,r4
+ 1299 0746 E9B2     	>>  uxtb r1,r5
+ 1299 0748 F2B2     	>>  uxtb r2,r6
+ 1299 074a FBB2     	>>  uxtb r3,r7
+ 1299 074c 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0750 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0754 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0758 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 075c 88EA3048 	>>  eor r8,r8,r0,ror#16
+ 1299 0760 89EA3149 	>>  eor r9,r9,r1,ror#16
+ 1299 0764 8AEA324A 	>>  eor r10,r10,r2,ror#16
+ 1299 0768 8BEA334B 	>>  eor r11,r11,r3,ror#16
+ 1299              	>> 
+ 1299 076c 5FFA95F0 	>>  uxtb r0,r5,ror#8
+ 1299 0770 5FFA96F1 	>>  uxtb r1,r6,ror#8
+ 1299 0774 5FFA97F2 	>>  uxtb r2,r7,ror#8
+ 1299 0778 5FFA94F3 	>>  uxtb r3,r4,ror#8
+ 1299 077c 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0780 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0784 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0788 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 078c 88EA3028 	>>  eor r8,r8,r0,ror#8
+ 1299 0790 89EA3129 	>>  eor r9,r9,r1,ror#8
+ 1299 0794 8AEA322A 	>>  eor r10,r10,r2,ror#8
+ 1299 0798 8BEA332B 	>>  eor r11,r11,r3,ror#8
+ 1299              	>> 
+ 1299 079c 5FFAA6F0 	>>  uxtb r0,r6,ror#16
+ 1299 07a0 5FFAA7F1 	>>  uxtb r1,r7,ror#16
+ 1299 07a4 5FFAA4F2 	>>  uxtb r2,r4,ror#16
+ 1299 07a8 5FFAA5F3 	>>  uxtb r3,r5,ror#16
+ 1299 07ac 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 07b0 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 07b4 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 07b8 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 07bc 88EA0008 	>>  eor r8,r0
+ 1299 07c0 89EA0109 	>>  eor r9,r1
+ 1299 07c4 8AEA020A 	>>  eor r10,r2
+ 1299 07c8 8BEA030B 	>>  eor r11,r3
+ 1299              	>> 
+ 1299 07cc 5FFAB7F0 	>>  uxtb r0,r7,ror#24
+ 1299 07d0 5FFAB4F1 	>>  uxtb r1,r4,ror#24
+ 1299 07d4 5FFAB5F2 	>>  uxtb r2,r5,ror#24
+ 1299 07d8 5FFAB6F3 	>>  uxtb r3,r6,ror#24
+ 1299 07dc 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 07e0 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 07e4 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 07e8 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 07ec 88EA3068 	>>  eor r8,r8,r0,ror#24
+ 1299 07f0 89EA3169 	>>  eor r9,r9,r1,ror#24
+ 1299 07f4 8AEA326A 	>>  eor r10,r10,r2,ror#24
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 54
+
+
+ 1299 07f8 8BEA336B 	>>  eor r11,r11,r3,ror#24
+ 1299              	>  aesencrypt_evenround
+ 1299 07fc 5EF8044B 	>>  ldr r4,[r14],#4
+ 1299 0800 5EF8045B 	>>  ldr r5,[r14],#4
+ 1299 0804 5EF8046B 	>>  ldr r6,[r14],#4
+ 1299 0808 5EF8047B 	>>  ldr r7,[r14],#4
+ 1299              	>> 
+ 1299 080c 5FFA88F0 	>>  uxtb r0,r8
+ 1299 0810 5FFA89F1 	>>  uxtb r1,r9
+ 1299 0814 5FFA8AF2 	>>  uxtb r2,r10
+ 1299 0818 5FFA8BF3 	>>  uxtb r3,r11
+ 1299 081c 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0820 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0824 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0828 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 082c 84EA3044 	>>  eor r4,r4,r0,ror#16
+ 1299 0830 85EA3145 	>>  eor r5,r5,r1,ror#16
+ 1299 0834 86EA3246 	>>  eor r6,r6,r2,ror#16
+ 1299 0838 87EA3347 	>>  eor r7,r7,r3,ror#16
+ 1299              	>> 
+ 1299 083c 5FFA99F0 	>>  uxtb r0,r9,ror#8
+ 1299 0840 5FFA9AF1 	>>  uxtb r1,r10,ror#8
+ 1299 0844 5FFA9BF2 	>>  uxtb r2,r11,ror#8
+ 1299 0848 5FFA98F3 	>>  uxtb r3,r8,ror#8
+ 1299 084c 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0850 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0854 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0858 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 085c 84EA3024 	>>  eor r4,r4,r0,ror#8
+ 1299 0860 85EA3125 	>>  eor r5,r5,r1,ror#8
+ 1299 0864 86EA3226 	>>  eor r6,r6,r2,ror#8
+ 1299 0868 87EA3327 	>>  eor r7,r7,r3,ror#8
+ 1299              	>> 
+ 1299 086c 5FFAAAF0 	>>  uxtb r0,r10,ror#16
+ 1299 0870 5FFAABF1 	>>  uxtb r1,r11,ror#16
+ 1299 0874 5FFAA8F2 	>>  uxtb r2,r8,ror#16
+ 1299 0878 5FFAA9F3 	>>  uxtb r3,r9,ror#16
+ 1299 087c 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0880 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0884 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0888 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 088c 84EA0004 	>>  eor r4,r0
+ 1299 0890 85EA0105 	>>  eor r5,r1
+ 1299 0894 86EA0206 	>>  eor r6,r2
+ 1299 0898 87EA0307 	>>  eor r7,r3
+ 1299              	>> 
+ 1299 089c 5FFABBF0 	>>  uxtb r0,r11,ror#24
+ 1299 08a0 5FFAB8F1 	>>  uxtb r1,r8,ror#24
+ 1299 08a4 5FFAB9F2 	>>  uxtb r2,r9,ror#24
+ 1299 08a8 5FFABAF3 	>>  uxtb r3,r10,ror#24
+ 1299 08ac 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 08b0 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 08b4 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 08b8 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 08bc 84EA3064 	>>  eor r4,r4,r0,ror#24
+ 1299 08c0 85EA3165 	>>  eor r5,r5,r1,ror#24
+ 1299 08c4 86EA3266 	>>  eor r6,r6,r2,ror#24
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 55
+
+
+ 1299 08c8 87EA3367 	>>  eor r7,r7,r3,ror#24
+ 1299              	> 
+ 1299              	>  aesencrypt_oddround
+ 1299 08cc 5EF8048B 	>>  ldr r8,[r14],#4
+ 1299 08d0 5EF8049B 	>>  ldr r9,[r14],#4
+ 1299 08d4 5EF804AB 	>>  ldr r10,[r14],#4
+ 1299 08d8 5EF804BB 	>>  ldr r11,[r14],#4
+ 1299              	>> 
+ 1299 08dc E0B2     	>>  uxtb r0,r4
+ 1299 08de E9B2     	>>  uxtb r1,r5
+ 1299 08e0 F2B2     	>>  uxtb r2,r6
+ 1299 08e2 FBB2     	>>  uxtb r3,r7
+ 1299 08e4 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 08e8 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 08ec 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 08f0 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 08f4 88EA3048 	>>  eor r8,r8,r0,ror#16
+ 1299 08f8 89EA3149 	>>  eor r9,r9,r1,ror#16
+ 1299 08fc 8AEA324A 	>>  eor r10,r10,r2,ror#16
+ 1299 0900 8BEA334B 	>>  eor r11,r11,r3,ror#16
+ 1299              	>> 
+ 1299 0904 5FFA95F0 	>>  uxtb r0,r5,ror#8
+ 1299 0908 5FFA96F1 	>>  uxtb r1,r6,ror#8
+ 1299 090c 5FFA97F2 	>>  uxtb r2,r7,ror#8
+ 1299 0910 5FFA94F3 	>>  uxtb r3,r4,ror#8
+ 1299 0914 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0918 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 091c 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0920 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0924 88EA3028 	>>  eor r8,r8,r0,ror#8
+ 1299 0928 89EA3129 	>>  eor r9,r9,r1,ror#8
+ 1299 092c 8AEA322A 	>>  eor r10,r10,r2,ror#8
+ 1299 0930 8BEA332B 	>>  eor r11,r11,r3,ror#8
+ 1299              	>> 
+ 1299 0934 5FFAA6F0 	>>  uxtb r0,r6,ror#16
+ 1299 0938 5FFAA7F1 	>>  uxtb r1,r7,ror#16
+ 1299 093c 5FFAA4F2 	>>  uxtb r2,r4,ror#16
+ 1299 0940 5FFAA5F3 	>>  uxtb r3,r5,ror#16
+ 1299 0944 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0948 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 094c 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0950 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0954 88EA0008 	>>  eor r8,r0
+ 1299 0958 89EA0109 	>>  eor r9,r1
+ 1299 095c 8AEA020A 	>>  eor r10,r2
+ 1299 0960 8BEA030B 	>>  eor r11,r3
+ 1299              	>> 
+ 1299 0964 5FFAB7F0 	>>  uxtb r0,r7,ror#24
+ 1299 0968 5FFAB4F1 	>>  uxtb r1,r4,ror#24
+ 1299 096c 5FFAB5F2 	>>  uxtb r2,r5,ror#24
+ 1299 0970 5FFAB6F3 	>>  uxtb r3,r6,ror#24
+ 1299 0974 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0978 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 097c 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0980 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0984 88EA3068 	>>  eor r8,r8,r0,ror#24
+ 1299 0988 89EA3169 	>>  eor r9,r9,r1,ror#24
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 56
+
+
+ 1299 098c 8AEA326A 	>>  eor r10,r10,r2,ror#24
+ 1299 0990 8BEA336B 	>>  eor r11,r11,r3,ror#24
+ 1299              	>  aesencrypt_evenround
+ 1299 0994 5EF8044B 	>>  ldr r4,[r14],#4
+ 1299 0998 5EF8045B 	>>  ldr r5,[r14],#4
+ 1299 099c 5EF8046B 	>>  ldr r6,[r14],#4
+ 1299 09a0 5EF8047B 	>>  ldr r7,[r14],#4
+ 1299              	>> 
+ 1299 09a4 5FFA88F0 	>>  uxtb r0,r8
+ 1299 09a8 5FFA89F1 	>>  uxtb r1,r9
+ 1299 09ac 5FFA8AF2 	>>  uxtb r2,r10
+ 1299 09b0 5FFA8BF3 	>>  uxtb r3,r11
+ 1299 09b4 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 09b8 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 09bc 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 09c0 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 09c4 84EA3044 	>>  eor r4,r4,r0,ror#16
+ 1299 09c8 85EA3145 	>>  eor r5,r5,r1,ror#16
+ 1299 09cc 86EA3246 	>>  eor r6,r6,r2,ror#16
+ 1299 09d0 87EA3347 	>>  eor r7,r7,r3,ror#16
+ 1299              	>> 
+ 1299 09d4 5FFA99F0 	>>  uxtb r0,r9,ror#8
+ 1299 09d8 5FFA9AF1 	>>  uxtb r1,r10,ror#8
+ 1299 09dc 5FFA9BF2 	>>  uxtb r2,r11,ror#8
+ 1299 09e0 5FFA98F3 	>>  uxtb r3,r8,ror#8
+ 1299 09e4 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 09e8 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 09ec 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 09f0 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 09f4 84EA3024 	>>  eor r4,r4,r0,ror#8
+ 1299 09f8 85EA3125 	>>  eor r5,r5,r1,ror#8
+ 1299 09fc 86EA3226 	>>  eor r6,r6,r2,ror#8
+ 1299 0a00 87EA3327 	>>  eor r7,r7,r3,ror#8
+ 1299              	>> 
+ 1299 0a04 5FFAAAF0 	>>  uxtb r0,r10,ror#16
+ 1299 0a08 5FFAABF1 	>>  uxtb r1,r11,ror#16
+ 1299 0a0c 5FFAA8F2 	>>  uxtb r2,r8,ror#16
+ 1299 0a10 5FFAA9F3 	>>  uxtb r3,r9,ror#16
+ 1299 0a14 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0a18 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0a1c 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0a20 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0a24 84EA0004 	>>  eor r4,r0
+ 1299 0a28 85EA0105 	>>  eor r5,r1
+ 1299 0a2c 86EA0206 	>>  eor r6,r2
+ 1299 0a30 87EA0307 	>>  eor r7,r3
+ 1299              	>> 
+ 1299 0a34 5FFABBF0 	>>  uxtb r0,r11,ror#24
+ 1299 0a38 5FFAB8F1 	>>  uxtb r1,r8,ror#24
+ 1299 0a3c 5FFAB9F2 	>>  uxtb r2,r9,ror#24
+ 1299 0a40 5FFABAF3 	>>  uxtb r3,r10,ror#24
+ 1299 0a44 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0a48 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0a4c 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0a50 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0a54 84EA3064 	>>  eor r4,r4,r0,ror#24
+ 1299 0a58 85EA3165 	>>  eor r5,r5,r1,ror#24
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 57
+
+
+ 1299 0a5c 86EA3266 	>>  eor r6,r6,r2,ror#24
+ 1299 0a60 87EA3367 	>>  eor r7,r7,r3,ror#24
+ 1299              	> 
+ 1299              	>  aesencrypt_oddround
+ 1299 0a64 5EF8048B 	>>  ldr r8,[r14],#4
+ 1299 0a68 5EF8049B 	>>  ldr r9,[r14],#4
+ 1299 0a6c 5EF804AB 	>>  ldr r10,[r14],#4
+ 1299 0a70 5EF804BB 	>>  ldr r11,[r14],#4
+ 1299              	>> 
+ 1299 0a74 E0B2     	>>  uxtb r0,r4
+ 1299 0a76 E9B2     	>>  uxtb r1,r5
+ 1299 0a78 F2B2     	>>  uxtb r2,r6
+ 1299 0a7a FBB2     	>>  uxtb r3,r7
+ 1299 0a7c 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0a80 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0a84 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0a88 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0a8c 88EA3048 	>>  eor r8,r8,r0,ror#16
+ 1299 0a90 89EA3149 	>>  eor r9,r9,r1,ror#16
+ 1299 0a94 8AEA324A 	>>  eor r10,r10,r2,ror#16
+ 1299 0a98 8BEA334B 	>>  eor r11,r11,r3,ror#16
+ 1299              	>> 
+ 1299 0a9c 5FFA95F0 	>>  uxtb r0,r5,ror#8
+ 1299 0aa0 5FFA96F1 	>>  uxtb r1,r6,ror#8
+ 1299 0aa4 5FFA97F2 	>>  uxtb r2,r7,ror#8
+ 1299 0aa8 5FFA94F3 	>>  uxtb r3,r4,ror#8
+ 1299 0aac 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0ab0 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0ab4 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0ab8 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0abc 88EA3028 	>>  eor r8,r8,r0,ror#8
+ 1299 0ac0 89EA3129 	>>  eor r9,r9,r1,ror#8
+ 1299 0ac4 8AEA322A 	>>  eor r10,r10,r2,ror#8
+ 1299 0ac8 8BEA332B 	>>  eor r11,r11,r3,ror#8
+ 1299              	>> 
+ 1299 0acc 5FFAA6F0 	>>  uxtb r0,r6,ror#16
+ 1299 0ad0 5FFAA7F1 	>>  uxtb r1,r7,ror#16
+ 1299 0ad4 5FFAA4F2 	>>  uxtb r2,r4,ror#16
+ 1299 0ad8 5FFAA5F3 	>>  uxtb r3,r5,ror#16
+ 1299 0adc 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0ae0 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0ae4 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0ae8 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0aec 88EA0008 	>>  eor r8,r0
+ 1299 0af0 89EA0109 	>>  eor r9,r1
+ 1299 0af4 8AEA020A 	>>  eor r10,r2
+ 1299 0af8 8BEA030B 	>>  eor r11,r3
+ 1299              	>> 
+ 1299 0afc 5FFAB7F0 	>>  uxtb r0,r7,ror#24
+ 1299 0b00 5FFAB4F1 	>>  uxtb r1,r4,ror#24
+ 1299 0b04 5FFAB5F2 	>>  uxtb r2,r5,ror#24
+ 1299 0b08 5FFAB6F3 	>>  uxtb r3,r6,ror#24
+ 1299 0b0c 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0b10 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0b14 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0b18 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0b1c 88EA3068 	>>  eor r8,r8,r0,ror#24
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 58
+
+
+ 1299 0b20 89EA3169 	>>  eor r9,r9,r1,ror#24
+ 1299 0b24 8AEA326A 	>>  eor r10,r10,r2,ror#24
+ 1299 0b28 8BEA336B 	>>  eor r11,r11,r3,ror#24
+ 1299              	>  aesencrypt_evenround
+ 1299 0b2c 5EF8044B 	>>  ldr r4,[r14],#4
+ 1299 0b30 5EF8045B 	>>  ldr r5,[r14],#4
+ 1299 0b34 5EF8046B 	>>  ldr r6,[r14],#4
+ 1299 0b38 5EF8047B 	>>  ldr r7,[r14],#4
+ 1299              	>> 
+ 1299 0b3c 5FFA88F0 	>>  uxtb r0,r8
+ 1299 0b40 5FFA89F1 	>>  uxtb r1,r9
+ 1299 0b44 5FFA8AF2 	>>  uxtb r2,r10
+ 1299 0b48 5FFA8BF3 	>>  uxtb r3,r11
+ 1299 0b4c 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0b50 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0b54 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0b58 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0b5c 84EA3044 	>>  eor r4,r4,r0,ror#16
+ 1299 0b60 85EA3145 	>>  eor r5,r5,r1,ror#16
+ 1299 0b64 86EA3246 	>>  eor r6,r6,r2,ror#16
+ 1299 0b68 87EA3347 	>>  eor r7,r7,r3,ror#16
+ 1299              	>> 
+ 1299 0b6c 5FFA99F0 	>>  uxtb r0,r9,ror#8
+ 1299 0b70 5FFA9AF1 	>>  uxtb r1,r10,ror#8
+ 1299 0b74 5FFA9BF2 	>>  uxtb r2,r11,ror#8
+ 1299 0b78 5FFA98F3 	>>  uxtb r3,r8,ror#8
+ 1299 0b7c 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0b80 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0b84 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0b88 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0b8c 84EA3024 	>>  eor r4,r4,r0,ror#8
+ 1299 0b90 85EA3125 	>>  eor r5,r5,r1,ror#8
+ 1299 0b94 86EA3226 	>>  eor r6,r6,r2,ror#8
+ 1299 0b98 87EA3327 	>>  eor r7,r7,r3,ror#8
+ 1299              	>> 
+ 1299 0b9c 5FFAAAF0 	>>  uxtb r0,r10,ror#16
+ 1299 0ba0 5FFAABF1 	>>  uxtb r1,r11,ror#16
+ 1299 0ba4 5FFAA8F2 	>>  uxtb r2,r8,ror#16
+ 1299 0ba8 5FFAA9F3 	>>  uxtb r3,r9,ror#16
+ 1299 0bac 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0bb0 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0bb4 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0bb8 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0bbc 84EA0004 	>>  eor r4,r0
+ 1299 0bc0 85EA0105 	>>  eor r5,r1
+ 1299 0bc4 86EA0206 	>>  eor r6,r2
+ 1299 0bc8 87EA0307 	>>  eor r7,r3
+ 1299              	>> 
+ 1299 0bcc 5FFABBF0 	>>  uxtb r0,r11,ror#24
+ 1299 0bd0 5FFAB8F1 	>>  uxtb r1,r8,ror#24
+ 1299 0bd4 5FFAB9F2 	>>  uxtb r2,r9,ror#24
+ 1299 0bd8 5FFABAF3 	>>  uxtb r3,r10,ror#24
+ 1299 0bdc 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0be0 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0be4 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0be8 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0bec 84EA3064 	>>  eor r4,r4,r0,ror#24
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 59
+
+
+ 1299 0bf0 85EA3165 	>>  eor r5,r5,r1,ror#24
+ 1299 0bf4 86EA3266 	>>  eor r6,r6,r2,ror#24
+ 1299 0bf8 87EA3367 	>>  eor r7,r7,r3,ror#24
+ 1299              	> 
+ 1299              	>  aesencrypt_oddround
+ 1299 0bfc 5EF8048B 	>>  ldr r8,[r14],#4
+ 1299 0c00 5EF8049B 	>>  ldr r9,[r14],#4
+ 1299 0c04 5EF804AB 	>>  ldr r10,[r14],#4
+ 1299 0c08 5EF804BB 	>>  ldr r11,[r14],#4
+ 1299              	>> 
+ 1299 0c0c E0B2     	>>  uxtb r0,r4
+ 1299 0c0e E9B2     	>>  uxtb r1,r5
+ 1299 0c10 F2B2     	>>  uxtb r2,r6
+ 1299 0c12 FBB2     	>>  uxtb r3,r7
+ 1299 0c14 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0c18 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0c1c 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0c20 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0c24 88EA3048 	>>  eor r8,r8,r0,ror#16
+ 1299 0c28 89EA3149 	>>  eor r9,r9,r1,ror#16
+ 1299 0c2c 8AEA324A 	>>  eor r10,r10,r2,ror#16
+ 1299 0c30 8BEA334B 	>>  eor r11,r11,r3,ror#16
+ 1299              	>> 
+ 1299 0c34 5FFA95F0 	>>  uxtb r0,r5,ror#8
+ 1299 0c38 5FFA96F1 	>>  uxtb r1,r6,ror#8
+ 1299 0c3c 5FFA97F2 	>>  uxtb r2,r7,ror#8
+ 1299 0c40 5FFA94F3 	>>  uxtb r3,r4,ror#8
+ 1299 0c44 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0c48 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0c4c 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0c50 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0c54 88EA3028 	>>  eor r8,r8,r0,ror#8
+ 1299 0c58 89EA3129 	>>  eor r9,r9,r1,ror#8
+ 1299 0c5c 8AEA322A 	>>  eor r10,r10,r2,ror#8
+ 1299 0c60 8BEA332B 	>>  eor r11,r11,r3,ror#8
+ 1299              	>> 
+ 1299 0c64 5FFAA6F0 	>>  uxtb r0,r6,ror#16
+ 1299 0c68 5FFAA7F1 	>>  uxtb r1,r7,ror#16
+ 1299 0c6c 5FFAA4F2 	>>  uxtb r2,r4,ror#16
+ 1299 0c70 5FFAA5F3 	>>  uxtb r3,r5,ror#16
+ 1299 0c74 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0c78 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0c7c 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0c80 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0c84 88EA0008 	>>  eor r8,r0
+ 1299 0c88 89EA0109 	>>  eor r9,r1
+ 1299 0c8c 8AEA020A 	>>  eor r10,r2
+ 1299 0c90 8BEA030B 	>>  eor r11,r3
+ 1299              	>> 
+ 1299 0c94 5FFAB7F0 	>>  uxtb r0,r7,ror#24
+ 1299 0c98 5FFAB4F1 	>>  uxtb r1,r4,ror#24
+ 1299 0c9c 5FFAB5F2 	>>  uxtb r2,r5,ror#24
+ 1299 0ca0 5FFAB6F3 	>>  uxtb r3,r6,ror#24
+ 1299 0ca4 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0ca8 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0cac 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0cb0 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 60
+
+
+ 1299 0cb4 88EA3068 	>>  eor r8,r8,r0,ror#24
+ 1299 0cb8 89EA3169 	>>  eor r9,r9,r1,ror#24
+ 1299 0cbc 8AEA326A 	>>  eor r10,r10,r2,ror#24
+ 1299 0cc0 8BEA336B 	>>  eor r11,r11,r3,ror#24
+ 1299              	>  aesencrypt_evenround
+ 1299 0cc4 5EF8044B 	>>  ldr r4,[r14],#4
+ 1299 0cc8 5EF8045B 	>>  ldr r5,[r14],#4
+ 1299 0ccc 5EF8046B 	>>  ldr r6,[r14],#4
+ 1299 0cd0 5EF8047B 	>>  ldr r7,[r14],#4
+ 1299              	>> 
+ 1299 0cd4 5FFA88F0 	>>  uxtb r0,r8
+ 1299 0cd8 5FFA89F1 	>>  uxtb r1,r9
+ 1299 0cdc 5FFA8AF2 	>>  uxtb r2,r10
+ 1299 0ce0 5FFA8BF3 	>>  uxtb r3,r11
+ 1299 0ce4 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0ce8 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0cec 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0cf0 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0cf4 84EA3044 	>>  eor r4,r4,r0,ror#16
+ 1299 0cf8 85EA3145 	>>  eor r5,r5,r1,ror#16
+ 1299 0cfc 86EA3246 	>>  eor r6,r6,r2,ror#16
+ 1299 0d00 87EA3347 	>>  eor r7,r7,r3,ror#16
+ 1299              	>> 
+ 1299 0d04 5FFA99F0 	>>  uxtb r0,r9,ror#8
+ 1299 0d08 5FFA9AF1 	>>  uxtb r1,r10,ror#8
+ 1299 0d0c 5FFA9BF2 	>>  uxtb r2,r11,ror#8
+ 1299 0d10 5FFA98F3 	>>  uxtb r3,r8,ror#8
+ 1299 0d14 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0d18 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0d1c 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0d20 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0d24 84EA3024 	>>  eor r4,r4,r0,ror#8
+ 1299 0d28 85EA3125 	>>  eor r5,r5,r1,ror#8
+ 1299 0d2c 86EA3226 	>>  eor r6,r6,r2,ror#8
+ 1299 0d30 87EA3327 	>>  eor r7,r7,r3,ror#8
+ 1299              	>> 
+ 1299 0d34 5FFAAAF0 	>>  uxtb r0,r10,ror#16
+ 1299 0d38 5FFAABF1 	>>  uxtb r1,r11,ror#16
+ 1299 0d3c 5FFAA8F2 	>>  uxtb r2,r8,ror#16
+ 1299 0d40 5FFAA9F3 	>>  uxtb r3,r9,ror#16
+ 1299 0d44 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0d48 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0d4c 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0d50 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ 1299 0d54 84EA0004 	>>  eor r4,r0
+ 1299 0d58 85EA0105 	>>  eor r5,r1
+ 1299 0d5c 86EA0206 	>>  eor r6,r2
+ 1299 0d60 87EA0307 	>>  eor r7,r3
+ 1299              	>> 
+ 1299 0d64 5FFABBF0 	>>  uxtb r0,r11,ror#24
+ 1299 0d68 5FFAB8F1 	>>  uxtb r1,r8,ror#24
+ 1299 0d6c 5FFAB9F2 	>>  uxtb r2,r9,ror#24
+ 1299 0d70 5FFABAF3 	>>  uxtb r3,r10,ror#24
+ 1299 0d74 5CF82000 	>>  ldr r0,[r12,r0,lsl#2]
+ 1299 0d78 5CF82110 	>>  ldr r1,[r12,r1,lsl#2]
+ 1299 0d7c 5CF82220 	>>  ldr r2,[r12,r2,lsl#2]
+ 1299 0d80 5CF82330 	>>  ldr r3,[r12,r3,lsl#2]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 61
+
+
+ 1299 0d84 84EA3064 	>>  eor r4,r4,r0,ror#24
+ 1299 0d88 85EA3165 	>>  eor r5,r5,r1,ror#24
+ 1299 0d8c 86EA3266 	>>  eor r6,r6,r2,ror#24
+ 1299 0d90 87EA3367 	>>  eor r7,r7,r3,ror#24
+ 1300              	    aesencrypt_oddround
+ 1301              	    aesencrypt_evenround
+ 1302              	.endr
+ 1303              	    aesencrypt_oddround
+ 1303 0d94 5EF8048B 	>  ldr r8,[r14],#4
+ 1303 0d98 5EF8049B 	>  ldr r9,[r14],#4
+ 1303 0d9c 5EF804AB 	>  ldr r10,[r14],#4
+ 1303 0da0 5EF804BB 	>  ldr r11,[r14],#4
+ 1303              	> 
+ 1303 0da4 E0B2     	>  uxtb r0,r4
+ 1303 0da6 E9B2     	>  uxtb r1,r5
+ 1303 0da8 F2B2     	>  uxtb r2,r6
+ 1303 0daa FBB2     	>  uxtb r3,r7
+ 1303 0dac 5CF82000 	>  ldr r0,[r12,r0,lsl#2]
+ 1303 0db0 5CF82110 	>  ldr r1,[r12,r1,lsl#2]
+ 1303 0db4 5CF82220 	>  ldr r2,[r12,r2,lsl#2]
+ 1303 0db8 5CF82330 	>  ldr r3,[r12,r3,lsl#2]
+ 1303 0dbc 88EA3048 	>  eor r8,r8,r0,ror#16
+ 1303 0dc0 89EA3149 	>  eor r9,r9,r1,ror#16
+ 1303 0dc4 8AEA324A 	>  eor r10,r10,r2,ror#16
+ 1303 0dc8 8BEA334B 	>  eor r11,r11,r3,ror#16
+ 1303              	> 
+ 1303 0dcc 5FFA95F0 	>  uxtb r0,r5,ror#8
+ 1303 0dd0 5FFA96F1 	>  uxtb r1,r6,ror#8
+ 1303 0dd4 5FFA97F2 	>  uxtb r2,r7,ror#8
+ 1303 0dd8 5FFA94F3 	>  uxtb r3,r4,ror#8
+ 1303 0ddc 5CF82000 	>  ldr r0,[r12,r0,lsl#2]
+ 1303 0de0 5CF82110 	>  ldr r1,[r12,r1,lsl#2]
+ 1303 0de4 5CF82220 	>  ldr r2,[r12,r2,lsl#2]
+ 1303 0de8 5CF82330 	>  ldr r3,[r12,r3,lsl#2]
+ 1303 0dec 88EA3028 	>  eor r8,r8,r0,ror#8
+ 1303 0df0 89EA3129 	>  eor r9,r9,r1,ror#8
+ 1303 0df4 8AEA322A 	>  eor r10,r10,r2,ror#8
+ 1303 0df8 8BEA332B 	>  eor r11,r11,r3,ror#8
+ 1303              	> 
+ 1303 0dfc 5FFAA6F0 	>  uxtb r0,r6,ror#16
+ 1303 0e00 5FFAA7F1 	>  uxtb r1,r7,ror#16
+ 1303 0e04 5FFAA4F2 	>  uxtb r2,r4,ror#16
+ 1303 0e08 5FFAA5F3 	>  uxtb r3,r5,ror#16
+ 1303 0e0c 5CF82000 	>  ldr r0,[r12,r0,lsl#2]
+ 1303 0e10 5CF82110 	>  ldr r1,[r12,r1,lsl#2]
+ 1303 0e14 5CF82220 	>  ldr r2,[r12,r2,lsl#2]
+ 1303 0e18 5CF82330 	>  ldr r3,[r12,r3,lsl#2]
+ 1303 0e1c 88EA0008 	>  eor r8,r0
+ 1303 0e20 89EA0109 	>  eor r9,r1
+ 1303 0e24 8AEA020A 	>  eor r10,r2
+ 1303 0e28 8BEA030B 	>  eor r11,r3
+ 1303              	> 
+ 1303 0e2c 5FFAB7F0 	>  uxtb r0,r7,ror#24
+ 1303 0e30 5FFAB4F1 	>  uxtb r1,r4,ror#24
+ 1303 0e34 5FFAB5F2 	>  uxtb r2,r5,ror#24
+ 1303 0e38 5FFAB6F3 	>  uxtb r3,r6,ror#24
+ 1303 0e3c 5CF82000 	>  ldr r0,[r12,r0,lsl#2]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 62
+
+
+ 1303 0e40 5CF82110 	>  ldr r1,[r12,r1,lsl#2]
+ 1303 0e44 5CF82220 	>  ldr r2,[r12,r2,lsl#2]
+ 1303 0e48 5CF82330 	>  ldr r3,[r12,r3,lsl#2]
+ 1303 0e4c 88EA3068 	>  eor r8,r8,r0,ror#24
+ 1303 0e50 89EA3169 	>  eor r9,r9,r1,ror#24
+ 1303 0e54 8AEA326A 	>  eor r10,r10,r2,ror#24
+ 1303 0e58 8BEA336B 	>  eor r11,r11,r3,ror#24
+ 1304              	    aesencrypt_finalround
+ 1304 0e5c 5FFABBF0 	>  uxtb r0,r11,ror#24
+ 1304 0e60 5FFAB8F1 	>  uxtb r1,r8,ror#24
+ 1304 0e64 5FFAB9F2 	>  uxtb r2,r9,ror#24
+ 1304 0e68 5FFABAF3 	>  uxtb r3,r10,ror#24
+ 1304 0e6c 5CF82040 	>  ldr r4,[r12,r0,lsl#2]
+ 1304 0e70 5CF82150 	>  ldr r5,[r12,r1,lsl#2]
+ 1304 0e74 5CF82260 	>  ldr r6,[r12,r2,lsl#2]
+ 1304 0e78 5CF82370 	>  ldr r7,[r12,r3,lsl#2]
+ 1304              	> 
+ 1304 0e7c 5FFAAAF0 	>  uxtb r0,r10,ror#16
+ 1304 0e80 5FFAABF1 	>  uxtb r1,r11,ror#16
+ 1304 0e84 5FFAA8F2 	>  uxtb r2,r8,ror#16
+ 1304 0e88 5FFAA9F3 	>  uxtb r3,r9,ror#16
+ 1304 0e8c 5CF82000 	>  ldr r0,[r12,r0,lsl#2]
+ 1304 0e90 5CF82110 	>  ldr r1,[r12,r1,lsl#2]
+ 1304 0e94 5CF82220 	>  ldr r2,[r12,r2,lsl#2]
+ 1304 0e98 5CF82330 	>  ldr r3,[r12,r3,lsl#2]
+ 1304 0e9c 60F31F64 	>  bfi r4,r0,#24,#8
+ 1304 0ea0 61F31F65 	>  bfi r5,r1,#24,#8
+ 1304 0ea4 62F31F66 	>  bfi r6,r2,#24,#8
+ 1304 0ea8 63F31F67 	>  bfi r7,r3,#24,#8
+ 1304              	> 
+ 1304 0eac 5FFA88F0 	>  uxtb r0,r8
+ 1304 0eb0 5FFA89F1 	>  uxtb r1,r9
+ 1304 0eb4 5FFA8AF2 	>  uxtb r2,r10
+ 1304 0eb8 5FFA8BF3 	>  uxtb r3,r11
+ 1304 0ebc 5CF82000 	>  ldr r0,[r12,r0,lsl#2]
+ 1304 0ec0 5CF82110 	>  ldr r1,[r12,r1,lsl#2]
+ 1304 0ec4 5CF82220 	>  ldr r2,[r12,r2,lsl#2]
+ 1304 0ec8 5CF82330 	>  ldr r3,[r12,r3,lsl#2]
+ 1304 0ecc 60F30F24 	>  bfi r4,r0,#8,#8
+ 1304 0ed0 61F30F25 	>  bfi r5,r1,#8,#8
+ 1304 0ed4 62F30F26 	>  bfi r6,r2,#8,#8
+ 1304 0ed8 63F30F27 	>  bfi r7,r3,#8,#8
+ 1304              	> 
+ 1304 0edc 5FFA99F0 	>  uxtb r0,r9,ror#8
+ 1304 0ee0 5FFA9AF1 	>  uxtb r1,r10,ror#8
+ 1304 0ee4 5FFA9BF2 	>  uxtb r2,r11,ror#8
+ 1304 0ee8 5FFA98F3 	>  uxtb r3,r8,ror#8
+ 1304 0eec 5CF82000 	>  ldr r0,[r12,r0,lsl#2]
+ 1304 0ef0 5CF82110 	>  ldr r1,[r12,r1,lsl#2]
+ 1304 0ef4 5CF82220 	>  ldr r2,[r12,r2,lsl#2]
+ 1304 0ef8 5CF82330 	>  ldr r3,[r12,r3,lsl#2]
+ 1304 0efc 60F31744 	>  bfi r4,r0,#16,#8
+ 1304 0f00 61F31745 	>  bfi r5,r1,#16,#8
+ 1304 0f04 62F31746 	>  bfi r6,r2,#16,#8
+ 1304 0f08 63F31747 	>  bfi r7,r3,#16,#8
+ 1305              	
+ 1306              	    //rk[56]-rk[59]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 63
+
+
+ 1307 0f0c DEF80000 	    ldr r0, [r14, #0]
+ 1308 0f10 DEF80410 	    ldr r1, [r14, #4]
+ 1309 0f14 DEF80820 	    ldr r2, [r14, #8]
+ 1310 0f18 DEF80C30 	    ldr r3, [r14, #12]
+ 1311              	
+ 1312 0f1c 80EA3420 	    eor r0, r0, r4, ror #8
+ 1313 0f20 81EA3521 	    eor r1, r1, r5, ror #8
+ 1314 0f24 82EA3622 	    eor r2, r2, r6, ror #8
+ 1315 0f28 5DF8044B 	    pop.w {r4}
+ 1316 0f2c 83EA3723 	    eor r3, r3, r7, ror #8
+ 1317              	
+ 1318              	    //write output
+ 1319 0f30 2060     	    str r0, [r4, #0]
+ 1320 0f32 6160     	    str r1, [r4, #4]
+ 1321 0f34 A260     	    str r2, [r4, #8]
+ 1322 0f36 E360     	    str r3, [r4, #12]
+ 1323              	
+ 1324              	    //function epilogue, restore state
+ 1325 0f38 BDE8F05F 	    pop {r4-r12,r14}
+ 1326 0f3c 7047     	    bx lr
+ 1327 0f3e 00000000 	.size aes256_encrypt_publicinputs_asm,.-aes256_encrypt_publicinputs_asm
+ 1327      0000
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\cc5RTE8X.s 			page 64
+
+
+DEFINED SYMBOLS
+  aes-publicinputs.S:8      .data.aestable:00000000 AES_Te0
+  aes-publicinputs.S:7      .data.aestable:00000000 $d
+  aes-publicinputs.S:81     .text.aes128:00000000 aes128_keyexp_publicinputs_asm
+  aes-publicinputs.S:80     .text.aes128:00000000 $t
+  aes-publicinputs.S:536    .text.aes128:000002ec aes128_encrypt_publicinputs_asm
+  aes-publicinputs.S:599    .text.aes192:00000000 aes192_keyexp_publicinputs_asm
+  aes-publicinputs.S:598    .text.aes192:00000000 $t
+  aes-publicinputs.S:862    .text.aes192:000002b4 aes192_encrypt_publicinputs_asm
+  aes-publicinputs.S:925    .text.aes256:00000000 aes256_keyexp_publicinputs_asm
+  aes-publicinputs.S:924    .text.aes256:00000000 $t
+  aes-publicinputs.S:1265   .text.aes256:000003cc $d
+  aes-publicinputs.S:1272   .text.aes256:000003d0 aes256_encrypt_publicinputs_asm
+  aes-publicinputs.S:1271   .text.aes256:000003d0 $t
+  aes-publicinputs.S:1327   .text.aes256:00000f3e $d
+  aes-publicinputs.S:1327   .text.aes256:00000f40 $d
+  aes-publicinputs.S:919    .text.aes192:00000c8a $d
+  aes-publicinputs.S:1327   .text.aes192:00000c8c $d
+  aes-publicinputs.S:593    .text.aes128:00000b2a $d
+  aes-publicinputs.S:1327   .text.aes128:00000b2c $d
+
+NO UNDEFINED SYMBOLS

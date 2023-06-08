@@ -1,0 +1,289 @@
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccbDcn13.s 			page 1
+
+
+   1              	# 0 "basemul_257.S"
+   2              	# 1 "C:\\ChibiStudio\\workspace_user\\CRYSTALS-Dilithium//"
+   0              	
+   0              	
+   0              	
+   1              	#include "macros_fnt.i"
+   1              	// 2
+   2              	.macro ldrstr2 ldrstr, target, c0, c1, mem0, mem1
+   3              	    \ldrstr \c0, [\target, \mem0]
+   4              	    \ldrstr \c1, [\target, \mem1]
+   5              	.endm
+   6              	
+   7              	// 2
+   8              	.macro ldrstr2jump ldrstr, target, c0, c1, mem1, jump
+   9              	    \ldrstr \c1, [\target, \mem1]
+  10              	    \ldrstr \c0, [\target], \jump
+  11              	.endm
+  12              	
+  13              	// 4
+  14              	.macro ldrstr4 ldrstr, target, c0, c1, c2, c3, mem0, mem1, mem2, mem3
+  15              	    \ldrstr \c0, [\target, \mem0]
+  16              	    \ldrstr \c1, [\target, \mem1]
+  17              	    \ldrstr \c2, [\target, \mem2]
+  18              	    \ldrstr \c3, [\target, \mem3]
+  19              	.endm
+  20              	
+  21              	// 4
+  22              	.macro ldrstr4jump ldrstr, target, c0, c1, c2, c3, mem1, mem2, mem3, jump
+  23              	    \ldrstr \c1, [\target, \mem1]
+  24              	    \ldrstr \c2, [\target, \mem2]
+  25              	    \ldrstr \c3, [\target, \mem3]
+  26              	    \ldrstr \c0, [\target], \jump
+  27              	.endm
+  28              	
+  29              	// 8
+  30              	.macro ldrstrvec ldrstr, target, c0, c1, c2, c3, c4, c5, c6, c7, mem0, mem1, mem2, mem3, mem4, mem5
+  31              	    ldrstr4 \ldrstr, \target, \c0, \c1, \c2, \c3, \mem0, \mem1, \mem2, \mem3
+  32              	    ldrstr4 \ldrstr, \target, \c4, \c5, \c6, \c7, \mem4, \mem5, \mem6, \mem7
+  33              	.endm
+  34              	
+  35              	// 8
+  36              	.macro ldrstrvecjump ldrstr, target, c0, c1, c2, c3, c4, c5, c6, c7, mem1, mem2, mem3, mem4, mem5, 
+  37              	    ldrstr4 \ldrstr, \target, \c4, \c5, \c6, \c7, \mem4, \mem5, \mem6, \mem7
+  38              	    ldrstr4jump \ldrstr, \target, \c0, \c1, \c2, \c3, \mem1, \mem2, \mem3, \jump
+  39              	.endm
+  40              	
+  41              	
+  42              	
+  43              	.macro addSub1 c0, c1
+  44              	    add.w \c0, \c1
+  45              	    sub.w \c1, \c0, \c1, lsl #1
+  46              	.endm
+  47              	
+  48              	.macro addSub2 c0, c1, c2, c3
+  49              	    add \c0, \c1
+  50              	    add \c2, \c3
+  51              	    sub.w \c1, \c0, \c1, lsl #1
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccbDcn13.s 			page 2
+
+
+  52              	    sub.w \c3, \c2, \c3, lsl #1
+  53              	.endm
+  54              	
+  55              	.macro addSub4 c0, c1, c2, c3, c4, c5, c6, c7
+  56              	    add \c0, \c1
+  57              	    add \c2, \c3
+  58              	    add \c4, \c5
+  59              	    add \c6, \c7
+  60              	    sub.w \c1, \c0, \c1, lsl #1
+  61              	    sub.w \c3, \c2, \c3, lsl #1
+  62              	    sub.w \c5, \c4, \c5, lsl #1
+  63              	    sub.w \c7, \c6, \c7, lsl #1
+  64              	.endm
+  65              	
+  66              	// 2
+  67              	.macro barrett_32 a, Qbar, Q, tmp
+  68              	    smmulr.w \tmp, \a, \Qbar
+  69              	    mls.w \a, \tmp, \Q, \a
+  70              	.endm
+  71              	
+  72              	.macro FNT_CT_butterfly c0, c1, logW
+  73              	    add.w \c0, \c0, \c1, lsl #\logW
+  74              	    sub.w \c1, \c0, \c1, lsl #(\logW+1)
+  75              	.endm
+  76              	
+  77              	.macro shift_subAdd c0, c1, shlv
+  78              	    sub.w \c0, \c0, \c1, lsl #(\shlv)
+  79              	    add.w \c1, \c0, \c1, lsl #(\shlv+1)
+  80              	.endm
+  81              	
+  82              	.macro FNT_CT_ibutterfly c0, c1, shlv
+  83              	    shift_subAdd \c0, \c1, \shlv
+  84              	.endm
+  85              	
+  86              	// 46
+  87              	.macro _3_layer_CT_32_FNT c0, c1, c2, c3, c4, c5, c6, c7, xi0, xi1, xi2, xi3, xi4, xi5, xi6, twiddl
+  88              	    vmov.w \twiddle, \xi0
+  89              	
+  90              	    // c0, c1, c2, c3, c4, c5, c6, c7, c8
+  91              	    // 0,4
+  92              	    mla \tmp, \c4, \twiddle, \c0
+  93              	    mls \c4, \c4, \twiddle, \c0
+  94              	
+  95              	    // 1,5
+  96              	    mla \c0, \c5, \twiddle, \c1
+  97              	    mls \c5, \c5, \twiddle, \c1
+  98              	
+  99              	    // 2,6
+ 100              	    mla \c1, \c6, \twiddle, \c2
+ 101              	    mls \c6, \c6, \twiddle, \c2
+ 102              	
+ 103              	    // 3,7
+ 104              	    mla \c2, \c7, \twiddle, \c3
+ 105              	    mls \c7, \c7, \twiddle, \c3
+ 106              	
+ 107              	    // tmp, c0, c1, c2, c4, c5, c6, c7
+ 108              	
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccbDcn13.s 			page 3
+
+
+ 109              	    barrett_32 \tmp, \Qprime, \Q, \c3
+ 110              	    barrett_32 \c0, \Qprime, \Q, \c3
+ 111              	    barrett_32 \c1, \Qprime, \Q, \c3
+ 112              	    barrett_32 \c2, \Qprime, \Q, \c3
+ 113              	    barrett_32 \c4, \Qprime, \Q, \c3
+ 114              	    barrett_32 \c5, \Qprime, \Q, \c3
+ 115              	    barrett_32 \c6, \Qprime, \Q, \c3
+ 116              	    barrett_32 \c7, \Qprime, \Q, \c3
+ 117              	
+ 118              	    vmov.w \twiddle, \xi1
+ 119              	    // 0,2
+ 120              	    mla \tmp2, \c1, \twiddle, \tmp
+ 121              	    mls \c3, \c1, \twiddle, \tmp
+ 122              	
+ 123              	    // 1,3
+ 124              	    mla \tmp, \c2, \twiddle, \c0
+ 125              	    mls \c0, \c2, \twiddle, \c0
+ 126              	
+ 127              	    vmov.w \twiddle, \xi2
+ 128              	
+ 129              	    // 4,6
+ 130              	    mla \c2, \c6, \twiddle, \c4
+ 131              	    mls \c1, \c6, \twiddle, \c4
+ 132              	
+ 133              	    // 5,7
+ 134              	    mla \c6, \c7, \twiddle, \c5
+ 135              	    mls \c7, \c7, \twiddle, \c5
+ 136              	
+ 137              	    // tmp2, tmp, c3, c0 | c2, c6, c1, c7
+ 138              	
+ 139              	    // 4,5
+ 140              	    vmov.w \twiddle, \xi5
+ 141              	    mla \c4, \c6, \twiddle, \c2
+ 142              	    mls \c5, \c6, \twiddle, \c2
+ 143              	
+ 144              	    // 6,7
+ 145              	    vmov.w \twiddle, \xi6
+ 146              	    mla \c6, \c7, \twiddle, \c1
+ 147              	    mls \c7, \c7, \twiddle, \c1
+ 148              	
+ 149              	    // 2,3
+ 150              	    vmov.w \twiddle, \xi4
+ 151              	    mla \c2, \c0, \twiddle, \c3
+ 152              	    mls \c3, \c0, \twiddle, \c3
+ 153              	
+ 154              	    // 0,1
+ 155              	    vmov.w \twiddle, \xi3
+ 156              	    mla \c0, \tmp, \twiddle, \tmp2
+ 157              	    mls \c1, \tmp, \twiddle, \tmp2
+ 158              	.endm...
+   2              	
+   3              	.syntax unified
+   4              	.cpu cortex-m4
+   5              	
+   6              	.align 2
+   7              	.global __asm_point_mul_257_16
+   8              	.type __asm_point_mul_257_16, %function
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccbDcn13.s 			page 4
+
+
+   9              	__asm_point_mul_257_16:
+  10 0000 2DE9F04F 	    push.w {r4-r11, lr}
+  11              	
+  12 0004 DDF824E0 	    ldr.w r14, [sp, #36]
+  13              	
+  14              	    .equ width, 4
+  15              	
+  16 0008 0EF5807C 	    add.w r12, r14, #64*width
+  17              	    _point_mul_16_loop:
+  18              	
+  19 000c D1F80870 	    ldr.w r7, [r1, #2*width]
+  20 0010 D1F80C80 	    ldr.w r8, [r1, #3*width]
+  21 0014 DEF80490 	    ldr.w r9, [r14, #1*width]
+  22 0018 D1F80450 	    ldr.w r5, [r1, #1*width]
+  23 001c 51F8104B 	    ldr.w r4, [r1], #4*width
+  24 0020 5EF8086B 	    ldr.w r6, [r14], #2*width
+  25              	
+  26 0024 14FB26FA 	    smultb r10, r4, r6
+  27              	    barrett_32 r10, r2, r3, r11
+  27 0028 5AFB12FB 	>  smmulr.w r11,r10,r2
+  27 002c 0BFB13AA 	>  mls.w r10,r11,r3,r10
+  28 0030 C4EA0A44 	    pkhbt r4, r4, r10, lsl #16
+  29              	
+  30 0034 C6F10006 	    neg.w r6, r6
+  31              	
+  32 0038 15FB26FA 	    smultb r10, r5, r6
+  33              	    barrett_32 r10, r2, r3, r11
+  33 003c 5AFB12FB 	>  smmulr.w r11,r10,r2
+  33 0040 0BFB13AA 	>  mls.w r10,r11,r3,r10
+  34 0044 C5EA0A45 	    pkhbt r5, r5, r10, lsl #16
+  35              	
+  36 0048 C0F80450 	    str.w r5, [r0, #1*width]
+  37 004c 40F8084B 	    str.w r4, [r0], #2*width
+  38              	
+  39 0050 17FB29FA 	    smultb r10, r7, r9
+  40              	    barrett_32 r10, r2, r3, r11
+  40 0054 5AFB12FB 	>  smmulr.w r11,r10,r2
+  40 0058 0BFB13AA 	>  mls.w r10,r11,r3,r10
+  41 005c C7EA0A47 	    pkhbt r7, r7, r10, lsl #16
+  42              	
+  43 0060 C9F10009 	    neg.w r9, r9
+  44              	
+  45 0064 18FB29FA 	    smultb r10, r8, r9
+  46              	    barrett_32 r10, r2, r3, r11
+  46 0068 5AFB12FB 	>  smmulr.w r11,r10,r2
+  46 006c 0BFB13AA 	>  mls.w r10,r11,r3,r10
+  47 0070 C8EA0A48 	    pkhbt r8, r8, r10, lsl #16
+  48              	
+  49 0074 C0F80480 	    str.w r8, [r0, #1*width]
+  50 0078 40F8087B 	    str.w r7, [r0], #2*width
+  51              	
+  52 007c BEEB0C0F 	    cmp.w r14, r12
+  53 0080 7FF4C4AF 	    bne.w _point_mul_16_loop
+  54              	
+  55 0084 BDE8F08F 	    pop.w {r4-r11, pc}
+  56              	
+  57              	
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccbDcn13.s 			page 5
+
+
+  58              	.align 2
+  59              	.global __asm_asymmetric_mul_257_16
+  60              	.type __asm_asymmetric_mul_257_16, %function
+  61              	__asm_asymmetric_mul_257_16:
+  62 0088 2DE9F04F 	    push.w {r4-r11, lr}
+  63              	
+  64              	    .equ width, 4
+  65              	
+  66 008c 00F5806C 	    add.w r12, r0, #256*width
+  67              	    _asymmetric_mul_16_loop:
+  68              	
+  69 0090 D1F80470 	    ldr.w r7, [r1, #width]
+  70 0094 51F8084B 	    ldr.w r4, [r1], #2*width
+  71 0098 D2F80480 	    ldr.w r8, [r2, #width]
+  72 009c 52F8085B 	    ldr.w r5, [r2], #2*width
+  73 00a0 D3F80490 	    ldr.w r9, [r3, #width]
+  74 00a4 53F8086B 	    ldr.w r6, [r3], #2*width
+  75              	
+  76 00a8 24FB06FA 	    smuad r10, r4, r6
+  77 00ac 24FB15FB 	    smuadx r11, r4, r5
+  78              	
+  79 00b0 C0F804B0 	    str.w r11, [r0, #width]
+  80 00b4 40F808AB 	    str.w r10, [r0], #2*width
+  81              	
+  82 00b8 27FB09FA 	    smuad r10, r7, r9
+  83 00bc 27FB18FB 	    smuadx r11, r7, r8
+  84              	
+  85 00c0 C0F804B0 	    str.w r11, [r0, #width]
+  86 00c4 40F808AB 	    str.w r10, [r0], #2*width
+  87              	
+  88 00c8 B0EB0C0F 	    cmp.w r0, r12
+  89 00cc 7FF4E0AF 	    bne.w _asymmetric_mul_16_loop
+  90              	
+  91 00d0 BDE8F08F 	    pop.w {r4-r11, pc}...
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccbDcn13.s 			page 6
+
+
+DEFINED SYMBOLS
+       basemul_257.S:6      .text:00000000 $t
+       basemul_257.S:9      .text:00000000 __asm_point_mul_257_16
+       basemul_257.S:14     *ABS*:00000004 width
+       basemul_257.S:17     .text:0000000c _point_mul_16_loop
+       basemul_257.S:61     .text:00000088 __asm_asymmetric_mul_257_16
+       basemul_257.S:67     .text:00000090 _asymmetric_mul_16_loop
+
+NO UNDEFINED SYMBOLS

@@ -31,12 +31,8 @@ build/obj/rt_test_sequence_005.o: \
  ../../chibios2111/os/common/startup/ARMCMx/devices/STM32F4xx/cmparams.h \
  ../../chibios2111/os/hal/boards/ST_STM32F4_DISCOVERY/board.h \
  ../../chibios2111/os/common/ext/ST/STM32F4xx/stm32f4xx.h \
- ../../chibios2111/os/common/ext/ST/STM32F4xx/stm32f407xx.h \
- ../../chibios2111/os/common/ext/ARM/CMSIS/Core/Include/core_cm4.h \
- ../../chibios2111/os/common/ext/ARM/CMSIS/Core/Include/cmsis_version.h \
- ../../chibios2111/os/common/ext/ARM/CMSIS/Core/Include/cmsis_compiler.h \
- ../../chibios2111/os/common/ext/ARM/CMSIS/Core/Include/cmsis_gcc.h \
- ../../chibios2111/os/common/ext/ARM/CMSIS/Core/Include/mpu_armv7.h \
+ ../../chibios2111/os/common/ext/ST/STM32F4xx/stm32f407xx.h core_cm4.h \
+ cmsis_version.h cmsis_compiler.h cmsis_gcc.h mpu_armv7.h \
  ../../chibios2111/os/common/ext/ST/STM32F4xx/system_stm32f4xx.h \
  ../../chibios2111/os/common/ports/ARMv7-M/mpu.h \
  ../../chibios2111/os/hal/osal/rt-nil/chcore_timer.h \
@@ -166,11 +162,11 @@ cfg/chconf.h:
 ../../chibios2111/os/hal/boards/ST_STM32F4_DISCOVERY/board.h:
 ../../chibios2111/os/common/ext/ST/STM32F4xx/stm32f4xx.h:
 ../../chibios2111/os/common/ext/ST/STM32F4xx/stm32f407xx.h:
-../../chibios2111/os/common/ext/ARM/CMSIS/Core/Include/core_cm4.h:
-../../chibios2111/os/common/ext/ARM/CMSIS/Core/Include/cmsis_version.h:
-../../chibios2111/os/common/ext/ARM/CMSIS/Core/Include/cmsis_compiler.h:
-../../chibios2111/os/common/ext/ARM/CMSIS/Core/Include/cmsis_gcc.h:
-../../chibios2111/os/common/ext/ARM/CMSIS/Core/Include/mpu_armv7.h:
+core_cm4.h:
+cmsis_version.h:
+cmsis_compiler.h:
+cmsis_gcc.h:
+mpu_armv7.h:
 ../../chibios2111/os/common/ext/ST/STM32F4xx/system_stm32f4xx.h:
 ../../chibios2111/os/common/ports/ARMv7-M/mpu.h:
 ../../chibios2111/os/hal/osal/rt-nil/chcore_timer.h:

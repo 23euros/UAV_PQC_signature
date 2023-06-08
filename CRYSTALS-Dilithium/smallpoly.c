@@ -2,7 +2,7 @@
 #include "smallntt.h"
 
 void poly_small_ntt_precomp(smallpoly *out, smallhalfpoly *out2, poly *in) {
-  for (int i = 0; i < N; i++)
+  for (int i = 0; i < N1; i++)
   {
     out->coeffs[i] = in->coeffs[i];
   }
@@ -54,7 +54,7 @@ void small_polyeta_unpack(smallpoly *r, const uint8_t *a) {
   unsigned int i;
 
 #if ETA == 2
-  for(i = 0; i < N/8; ++i) {
+  for(i = 0; i < N1/8; ++i) {
     r->coeffs[8*i+0] =  (a[3*i+0] >> 0) & 7;
     r->coeffs[8*i+1] =  (a[3*i+0] >> 3) & 7;
     r->coeffs[8*i+2] = ((a[3*i+0] >> 6) | (a[3*i+1] << 2)) & 7;
@@ -74,7 +74,7 @@ void small_polyeta_unpack(smallpoly *r, const uint8_t *a) {
     r->coeffs[8*i+7] = ETA - r->coeffs[8*i+7];
   }
 #elif ETA == 4
-  for(i = 0; i < N/2; ++i) {
+  for(i = 0; i < N1/2; ++i) {
     r->coeffs[2*i+0] = a[i] & 0x0F;
     r->coeffs[2*i+1] = a[i] >> 4;
     r->coeffs[2*i+0] = ETA - r->coeffs[2*i+0];

@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccXH84sU.s 			page 1
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccROVvVr.s 			page 1
 
 
    1              	# 0 "../../chibios2111/os/common/ports/ARMv7-M/compilers/GCC/chcoreasm.S"
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccXH84sU.s 			page 1
   13              	    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   14              	    GNU General Public License for more details.
   15              	
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccXH84sU.s 			page 2
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccROVvVr.s 			page 2
 
 
   16              	    You should have received a copy of the GNU General Public License
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccXH84sU.s 			page 1
   69              	#include "chcustomer.h"
    1              	/*
   70              	#if CH_LICENSE == CH_LICENSE_PARTNER
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccXH84sU.s 			page 3
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccROVvVr.s 			page 3
 
 
   38              	#include "chconf.h"
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccXH84sU.s 			page 1
   20              	 *
   21              	 * @defgroup ARMCMx_STM32F4xx STM32F4xx Specific Parameters
   22              	 * @ingroup ARMCMx_SPECIFIC
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccXH84sU.s 			page 4
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccROVvVr.s 			page 4
 
 
   23              	 * @details This file contains the Cortex-M4 specific parameters for the
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccXH84sU.s 			page 1
   49              	#elif defined(_CHIBIOS_NIL_CONF_)
   50              	#define CONTEXT_OFFSET  0
   51              	
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccXH84sU.s 			page 5
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccROVvVr.s 			page 5
 
 
   52              	#else
@@ -272,7 +272,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccXH84sU.s 			page 1
   80 0000 2DE9F04F 	                push    {r4, r5, r6, r7, r8, r9, r10, r11, lr}
   81              	#if CORTEX_USE_FPU
   82              	                /* Saving FPU context.*/
-  83              	                vpush   {s16-s31}
+  83 0004 2DED108A 	                vpush   {s16-s31}
   84              	#endif
   85              	
   86              	#if PORT_SWITCHED_REGIONS_NUMBER > 0
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccXH84sU.s 			page 1
  106              	                str     r3, [r2, #-4]   /* RNR */
  107              	                ldm     r2, {r10, r11}  /* RBAR, RASR */
  108              	#endif
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccXH84sU.s 			page 6
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccROVvVr.s 			page 6
 
 
  109              	#if PORT_SWITCHED_REGIONS_NUMBER == 1
@@ -315,13 +315,13 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccXH84sU.s 			page 1
  120              	#endif
  121              	#endif
  122              	
- 123 0004 C1F80CD0 	                str     sp, [r1, #CONTEXT_OFFSET]
+ 123 0008 C1F80CD0 	                str     sp, [r1, #CONTEXT_OFFSET]
  124              	#if (CORTEX_SIMPLIFIED_PRIORITY == FALSE) &&                                \
  125              	    ((CORTEX_MODEL == 3) || (CORTEX_MODEL == 4))
  126              	                /* Workaround for ARM errata 752419, only applied if
  127              	                   condition exists for it to be triggered.*/
- 128 0008 C368     	                ldr     r3, [r0, #CONTEXT_OFFSET]
- 129 000a 9D46     	                mov     sp, r3
+ 128 000c C368     	                ldr     r3, [r0, #CONTEXT_OFFSET]
+ 129 000e 9D46     	                mov     sp, r3
  130              	#else
  131              	                ldr     sp, [r0, #CONTEXT_OFFSET]
  132              	#endif
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccXH84sU.s 			page 1
  163              	#if PORT_SWITCHED_REGIONS_NUMBER >= 4
  164              	                add     r3, #1
  165              	                str     r3, [r2, #-4]   /* RNR */
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccXH84sU.s 			page 7
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccROVvVr.s 			page 7
 
 
  166              	                stm     r2, {r10, r11}  /* RBAR, RASR */
@@ -367,9 +367,9 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccXH84sU.s 			page 1
  169              	
  170              	#if CORTEX_USE_FPU
  171              	                /* Restoring FPU context.*/
- 172              	                vpop    {s16-s31}
+ 172 0010 BDEC108A 	                vpop    {s16-s31}
  173              	#endif
- 174 000c BDE8F08F 	                pop     {r4, r5, r6, r7, r8, r9, r10, r11, pc}
+ 174 0014 BDE8F08F 	                pop     {r4, r5, r6, r7, r8, r9, r10, r11, pc}
  175              	
  176              	/*--------------------------------------------------------------------------*
  177              	 * Start a thread by invoking its work function.
@@ -394,14 +394,14 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccXH84sU.s 			page 1
  196              	#if CORTEX_SIMPLIFIED_PRIORITY
  197              	                cpsie   i
  198              	#else
- 199 0010 0023     	                movs    r3, #0              /* CORTEX_BASEPRI_DISABLED */
- 200 0012 83F31188 	                msr     BASEPRI, r3
+ 199 0018 0023     	                movs    r3, #0              /* CORTEX_BASEPRI_DISABLED */
+ 200 001a 83F31188 	                msr     BASEPRI, r3
  201              	#endif
- 202 0016 2846     	                mov     r0, r5
- 203 0018 A047     	                blx     r4
- 204 001a 0020     	                movs    r0, #0              /* MSG_OK */
- 205 001c FFF7FEFF 	                bl      chThdExit
- 206 0020 FEE7     	.zombies:       b       .zombies
+ 202 001e 2846     	                mov     r0, r5
+ 203 0020 A047     	                blx     r4
+ 204 0022 0020     	                movs    r0, #0              /* MSG_OK */
+ 205 0024 FFF7FEFF 	                bl      chThdExit
+ 206 0028 FEE7     	.zombies:       b       .zombies
  207              	
  208              	/*--------------------------------------------------------------------------*
  209              	 * Post-IRQ switch code.
@@ -417,8 +417,8 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccXH84sU.s 			page 1
  219              	#if CH_DBG_SYSTEM_STATE_CHECK
  220              	                bl      __dbg_check_lock
  221              	#endif
- 222 0022 FFF7FEFF 	                bl      chSchDoPreemption
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccXH84sU.s 			page 8
+ 222 002a FFF7FEFF 	                bl      chSchDoPreemption
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccROVvVr.s 			page 8
 
 
  223              	#if CH_DBG_SYSTEM_STATE_CHECK
@@ -436,19 +436,19 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccXH84sU.s 			page 1
  235              	                str     r2, [r3, #0]
  236              	                cpsie   i
  237              	#else /* !CORTEX_SIMPLIFIED_PRIORITY */
- 238 0026 00DF     	                svc     #0
+ 238 002e 00DF     	                svc     #0
  239              	#endif /* !CORTEX_SIMPLIFIED_PRIORITY */
- 240 0028 FEE7     	.L1:            b       .L1
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccXH84sU.s 			page 9
+ 240 0030 FEE7     	.L1:            b       .L1
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccROVvVr.s 			page 9
 
 
 DEFINED SYMBOLS
 ../../chibios2111/os/common/ports/ARMv7-M/compilers/GCC/chcoreasm.S:79     .text:00000000 __port_switch
 ../../chibios2111/os/common/ports/ARMv7-M/compilers/GCC/chcoreasm.S:80     .text:00000000 $t
-../../chibios2111/os/common/ports/ARMv7-M/compilers/GCC/chcoreasm.S:186    .text:00000010 __port_thread_start
-../../chibios2111/os/common/ports/ARMv7-M/compilers/GCC/chcoreasm.S:206    .text:00000020 .zombies
-../../chibios2111/os/common/ports/ARMv7-M/compilers/GCC/chcoreasm.S:215    .text:00000022 __port_switch_from_isr
-../../chibios2111/os/common/ports/ARMv7-M/compilers/GCC/chcoreasm.S:230    .text:00000026 __port_exit_from_isr
+../../chibios2111/os/common/ports/ARMv7-M/compilers/GCC/chcoreasm.S:186    .text:00000018 __port_thread_start
+../../chibios2111/os/common/ports/ARMv7-M/compilers/GCC/chcoreasm.S:206    .text:00000028 .zombies
+../../chibios2111/os/common/ports/ARMv7-M/compilers/GCC/chcoreasm.S:215    .text:0000002a __port_switch_from_isr
+../../chibios2111/os/common/ports/ARMv7-M/compilers/GCC/chcoreasm.S:230    .text:0000002e __port_exit_from_isr
 
 UNDEFINED SYMBOLS
 chThdExit

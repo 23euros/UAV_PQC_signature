@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccLRFh9P.s 			page 1
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccP1abPk.s 			page 1
 
 
    1              	# 0 "../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S"
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccLRFh9P.s 			page 1
   50              	
   51              	/*===========================================================================*/
   52              	/* Module pre-compile time settings.                                         */
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccLRFh9P.s 			page 2
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccP1abPk.s 			page 2
 
 
   53              	/*===========================================================================*/
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccLRFh9P.s 			page 1
  107              	/**
  108              	 * @brief   Stack segments initialization switch.
  109              	 */
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccLRFh9P.s 			page 3
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccP1abPk.s 			page 3
 
 
  110              	#if !defined(CRT0_INIT_STACKS) || defined(__DOXYGEN__)
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccLRFh9P.s 			page 1
  164              	
  165              	/**
  166              	 * @brief   CPACR register initialization value.
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccLRFh9P.s 			page 4
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccP1abPk.s 			page 4
 
 
  167              	 * @note    Only used if @p CRT0_INIT_FPU is equal to @p TRUE.
@@ -216,97 +216,97 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccLRFh9P.s 			page 1
  199              	
  200              	#if CRT0_FORCE_MSP_INIT == TRUE
  201              	                /* MSP stack pointers initialization.*/
- 202 0002 2648     	                ldr     r0, =__main_stack_end__
+ 202 0002 3748     	                ldr     r0, =__main_stack_end__
  203 0004 80F30888 	                msr     MSP, r0
  204              	#endif
  205              	
  206              	                /* PSP stack pointers initialization.*/
- 207 0008 2548     	                ldr     r0, =__process_stack_end__
+ 207 0008 3648     	                ldr     r0, =__process_stack_end__
  208 000a 80F30988 	                msr     PSP, r0
  209              	
  210              	#if CRT0_VTOR_INIT == TRUE
  211              	                /* Initial VTOR position enforced.*/
- 212 000e 2548     	                ldr     r0, =_vectors
- 213 0010 2549     	                ldr     r1, =SCB_VTOR
+ 212 000e 3648     	                ldr     r0, =_vectors
+ 213 0010 3649     	                ldr     r1, =SCB_VTOR
  214 0012 0860     	                str     r0, [r1]
  215              	#endif
  216              	
  217              	#if CRT0_INIT_FPU == TRUE
  218              	                /* FPU FPCCR initialization.*/
- 219              	                movw    r0, #CRT0_FPCCR_INIT & 0xFFFF
- 220              	                movt    r0, #CRT0_FPCCR_INIT >> 16
- 221              	                movw    r1, #SCB_FPCCR & 0xFFFF
- 222              	                movt    r1, #SCB_FPCCR >> 16
- 223              	                str     r0, [r1]
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccLRFh9P.s 			page 5
+ 219 0014 40F20000 	                movw    r0, #CRT0_FPCCR_INIT & 0xFFFF
+ 220 0018 CCF20000 	                movt    r0, #CRT0_FPCCR_INIT >> 16
+ 221 001c 4EF63471 	                movw    r1, #SCB_FPCCR & 0xFFFF
+ 222 0020 CEF20001 	                movt    r1, #SCB_FPCCR >> 16
+ 223 0024 0860     	                str     r0, [r1]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccP1abPk.s 			page 5
 
 
- 224              	                dsb
- 225              	                isb
+ 224 0026 BFF34F8F 	                dsb
+ 225 002a BFF36F8F 	                isb
  226              	
  227              	                /* CPACR initialization.*/
- 228              	                movw    r0, #CRT0_CPACR_INIT & 0xFFFF
- 229              	                movt    r0, #CRT0_CPACR_INIT >> 16
- 230              	                movw    r1, #SCB_CPACR & 0xFFFF
- 231              	                movt    r1, #SCB_CPACR >> 16
- 232              	                str     r0, [r1]
- 233              	                dsb
- 234              	                isb
+ 228 002e 40F20000 	                movw    r0, #CRT0_CPACR_INIT & 0xFFFF
+ 229 0032 C0F2F000 	                movt    r0, #CRT0_CPACR_INIT >> 16
+ 230 0036 4EF68851 	                movw    r1, #SCB_CPACR & 0xFFFF
+ 231 003a CEF20001 	                movt    r1, #SCB_CPACR >> 16
+ 232 003e 0860     	                str     r0, [r1]
+ 233 0040 BFF34F8F 	                dsb
+ 234 0044 BFF36F8F 	                isb
  235              	
  236              	                /* FPU FPSCR initially cleared.*/
- 237              	                mov     r0, #0
- 238              	                vmsr    FPSCR, r0
+ 237 0048 4FF00000 	                mov     r0, #0
+ 238 004c E1EE100A 	                vmsr    FPSCR, r0
  239              	
  240              	                /* FPU FPDSCR initially cleared.*/
- 241              	                movw    r1, #SCB_FPDSCR & 0xFFFF
- 242              	                movt    r1, #SCB_FPDSCR >> 16
- 243              	                str     r0, [r1]
+ 241 0050 4EF63C71 	                movw    r1, #SCB_FPDSCR & 0xFFFF
+ 242 0054 CEF20001 	                movt    r1, #SCB_FPDSCR >> 16
+ 243 0058 0860     	                str     r0, [r1]
  244              	
  245              	                /* Enforcing FPCA bit in the CONTROL register.*/
- 246              	                movs    r0, #CRT0_CONTROL_INIT | CONTROL_FPCA
+ 246 005a 0620     	                movs    r0, #CRT0_CONTROL_INIT | CONTROL_FPCA
  247              	
  248              	#else
- 249 0014 0220     	                movs    r0, #CRT0_CONTROL_INIT
+ 249              	                movs    r0, #CRT0_CONTROL_INIT
  250              	#endif
  251              	
  252              	                /* CONTROL register initialization as configured.*/
- 253 0016 80F31488 	                msr     CONTROL, r0
- 254 001a BFF36F8F 	                isb
+ 253 005c 80F31488 	                msr     CONTROL, r0
+ 254 0060 BFF36F8F 	                isb
  255              	
  256              	#if CRT0_INIT_CORE == TRUE
  257              	                /* Core initialization.*/
- 258 001e FFF7FEFF 	                bl      __cpu_init
+ 258 0064 FFF7FEFF 	                bl      __cpu_init
  259              	#endif
  260              	
  261              	                /* Early initialization.*/
- 262 0022 FFF7FEFF 	                bl      __early_init
+ 262 0068 FFF7FEFF 	                bl      __early_init
  263              	
  264              	#if CRT0_INIT_STACKS == TRUE
- 265 0026 4FF05530 	                ldr     r0, =CRT0_STACKS_FILL_PATTERN
+ 265 006c 4FF05530 	                ldr     r0, =CRT0_STACKS_FILL_PATTERN
  266              	                /* Main Stack initialization. Note, it assumes that the
  267              	                   stack size is a multiple of 4 so the linker file must
  268              	                   ensure this.*/
- 269 002a 2049     	                ldr     r1, =__main_stack_base__
- 270 002c 1B4A     	                ldr     r2, =__main_stack_end__
+ 269 0070 1F49     	                ldr     r1, =__main_stack_base__
+ 270 0072 1B4A     	                ldr     r2, =__main_stack_end__
  271              	msloop:
- 272 002e 9142     	                cmp     r1, r2
- 273 0030 3CBF     	                itt     lo
- 274 0032 41F8040B 	                strlo   r0, [r1], #4
- 275 0036 FAE7     	                blo     msloop
+ 272 0074 9142     	                cmp     r1, r2
+ 273 0076 3CBF     	                itt     lo
+ 274 0078 41F8040B 	                strlo   r0, [r1], #4
+ 275 007c FAE7     	                blo     msloop
  276              	
  277              	                /* Process Stack initialization. Note, it assumes that the
  278              	                   stack size is a multiple of 4 so the linker file must
  279              	                   ensure this.*/
- 280 0038 1D49     	                ldr     r1, =__process_stack_base__
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccLRFh9P.s 			page 6
+ 280 007e 1D49     	                ldr     r1, =__process_stack_base__
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccP1abPk.s 			page 6
 
 
- 281 003a 194A     	                ldr     r2, =__process_stack_end__
+ 281 0080 184A     	                ldr     r2, =__process_stack_end__
  282              	psloop:
- 283 003c 9142     	                cmp     r1, r2
- 284 003e 3CBF     	                itt     lo
- 285 0040 41F8040B 	                strlo   r0, [r1], #4
- 286 0044 FAE7     	                blo     psloop
+ 283 0082 9142     	                cmp     r1, r2
+ 284 0084 3CBF     	                itt     lo
+ 285 0086 41F8040B 	                strlo   r0, [r1], #4
+ 286 008a FAE7     	                blo     psloop
  287              	#endif
  288              	
  289              	#if CRT0_INIT_VECTORS == TRUE
@@ -333,93 +333,92 @@ ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccLRFh9P.s 			page 1
  310              	                /* Data initialization. Note, it assumes that the DATA
  311              	                   size is a multiple of 4 so the linker file must ensure
  312              	                   this.*/
- 313 0046 1B49     	                ldr     r1, =__textdata_base__
- 314 0048 1B4A     	                ldr     r2, =__data_base__
- 315 004a 1C4B     	                ldr     r3, =__data_end__
+ 313 008c 1A49     	                ldr     r1, =__textdata_base__
+ 314 008e 1B4A     	                ldr     r2, =__data_base__
+ 315 0090 1B4B     	                ldr     r3, =__data_end__
  316              	dloop:
- 317 004c 9A42     	                cmp     r2, r3
- 318 004e 3EBF     	                ittt    lo
- 319 0050 51F8040B 	                ldrlo   r0, [r1], #4
- 320 0054 42F8040B 	                strlo   r0, [r2], #4
- 321 0058 F8E7     	                blo     dloop
+ 317 0092 9A42     	                cmp     r2, r3
+ 318 0094 3EBF     	                ittt    lo
+ 319 0096 51F8040B 	                ldrlo   r0, [r1], #4
+ 320 009a 42F8040B 	                strlo   r0, [r2], #4
+ 321 009e F8E7     	                blo     dloop
  322              	#endif
  323              	
  324              	#if CRT0_INIT_BSS == TRUE
  325              	                /* BSS initialization. Note, it assumes that the BSS
  326              	                   size is a multiple of 4 so the linker file must ensure
  327              	                   this.*/
- 328 005a 0020     	                movs    r0, #0
- 329 005c 1849     	                ldr     r1, =__bss_base__
- 330 005e 194A     	                ldr     r2, =__bss_end__
+ 328 00a0 0020     	                movs    r0, #0
+ 329 00a2 1849     	                ldr     r1, =__bss_base__
+ 330 00a4 184A     	                ldr     r2, =__bss_end__
  331              	bloop:
- 332 0060 9142     	                cmp     r1, r2
- 333 0062 3CBF     	                itt     lo
- 334 0064 41F8040B 	                strlo   r0, [r1], #4
- 335 0068 FAE7     	                blo     bloop
+ 332 00a6 9142     	                cmp     r1, r2
+ 333 00a8 3CBF     	                itt     lo
+ 334 00aa 41F8040B 	                strlo   r0, [r1], #4
+ 335 00ae FAE7     	                blo     bloop
  336              	#endif
  337              	
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccLRFh9P.s 			page 7
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccP1abPk.s 			page 7
 
 
  338              	#if CRT0_INIT_RAM_AREAS == TRUE
  339              	                /* RAM areas initialization.*/
- 340 006a FFF7FEFF 	                bl      __init_ram_areas
+ 340 00b0 FFF7FEFF 	                bl      __init_ram_areas
  341              	#endif
  342              	
  343              	                /* Late initialization..*/
- 344 006e FFF7FEFF 	                bl      __late_init
+ 344 00b4 FFF7FEFF 	                bl      __late_init
  345              	
  346              	#if CRT0_CALL_CONSTRUCTORS == TRUE
  347              	                /* Constructors invocation.*/
- 348 0072 154C     	                ldr     r4, =__init_array_base__
- 349 0074 154D     	                ldr     r5, =__init_array_end__
+ 348 00b8 144C     	                ldr     r4, =__init_array_base__
+ 349 00ba 154D     	                ldr     r5, =__init_array_end__
  350              	initloop:
- 351 0076 AC42     	                cmp     r4, r5
- 352 0078 03DA     	                bge     endinitloop
- 353 007a 54F8041B 	                ldr     r1, [r4], #4
- 354 007e 8847     	                blx     r1
- 355 0080 F9E7     	                b       initloop
+ 351 00bc AC42     	                cmp     r4, r5
+ 352 00be 03DA     	                bge     endinitloop
+ 353 00c0 54F8041B 	                ldr     r1, [r4], #4
+ 354 00c4 8847     	                blx     r1
+ 355 00c6 F9E7     	                b       initloop
  356              	endinitloop:
  357              	#endif
  358              	
  359              	                /* Main program invocation, r0 contains the returned value.*/
- 360 0082 FFF7FEFF 	                bl      main
+ 360 00c8 FFF7FEFF 	                bl      main
  361              	
  362              	#if CRT0_CALL_DESTRUCTORS == TRUE
  363              	                /* Destructors invocation.*/
- 364 0086 124C     	                ldr     r4, =__fini_array_base__
- 365 0088 124D     	                ldr     r5, =__fini_array_end__
+ 364 00cc 114C     	                ldr     r4, =__fini_array_base__
+ 365 00ce 124D     	                ldr     r5, =__fini_array_end__
  366              	finiloop:
- 367 008a AC42     	                cmp     r4, r5
- 368 008c 03DA     	                bge     endfiniloop
- 369 008e 54F8041B 	                ldr     r1, [r4], #4
- 370 0092 8847     	                blx     r1
- 371 0094 F9E7     	                b       finiloop
+ 367 00d0 AC42     	                cmp     r4, r5
+ 368 00d2 03DA     	                bge     endfiniloop
+ 369 00d4 54F8041B 	                ldr     r1, [r4], #4
+ 370 00d8 8847     	                blx     r1
+ 371 00da F9E7     	                b       finiloop
  372              	endfiniloop:
  373              	#endif
  374              	
  375              	                /* Branching to the defined exit handler.*/
- 376 0096 FFF7FEBF 	                b       __default_exit
+ 376 00dc FFF7FEBF 	                b       __default_exit
  376      00000000 
  376      00000000 
  376      00000000 
- 376      000008ED 
-ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccLRFh9P.s 			page 8
+ 376      08ED00E0 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccP1abPk.s 			page 8
 
 
 DEFINED SYMBOLS
 ../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S:193    .text:00000000 $t
 ../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S:196    .text:00000000 _crt0_entry
-../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S:271    .text:0000002e msloop
-../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S:282    .text:0000003c psloop
-../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S:316    .text:0000004c dloop
-../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S:331    .text:00000060 bloop
-../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S:350    .text:00000076 initloop
-../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S:356    .text:00000082 endinitloop
-../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S:366    .text:0000008a finiloop
-../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S:372    .text:00000096 endfiniloop
-../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S:376    .text:0000009a $d
-../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S:376    .text:0000009c $d
+../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S:271    .text:00000074 msloop
+../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S:282    .text:00000082 psloop
+../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S:316    .text:00000092 dloop
+../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S:331    .text:000000a6 bloop
+../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S:350    .text:000000bc initloop
+../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S:356    .text:000000c8 endinitloop
+../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S:366    .text:000000d0 finiloop
+../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S:372    .text:000000dc endfiniloop
+../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S:376    .text:000000e0 $d
 
 UNDEFINED SYMBOLS
 __main_stack_end__

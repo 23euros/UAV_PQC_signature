@@ -1,0 +1,1363 @@
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 1
+
+
+   1              	# 0 "ntt.S"
+   2              	# 1 "C:\\ChibiStudio\\workspace_user\\CRYSTALS-Dilithium//"
+   0              	
+   0              	
+   0              	
+   1              	// based on code by: Markus Krausz (18.03.18)
+   2              	// date 23.07.21: Now licensed under CC0 with permission of the authors.
+   3              	
+   4              	.syntax unified
+   5              	#include "macros.i"
+   1              	#ifndef MACROS_I
+   2              	#define MACROS_I
+   3              	// 3
+   4              	.macro montgomery_mul_32 a, b, Qprime, Q, tmp, tmp2
+   5              	    smull \tmp, \a, \a, \b
+   6              	    mul \tmp2, \tmp, \Qprime
+   7              	    smlal \tmp, \a, \tmp2, \Q
+   8              	.endm
+   9              	
+  10              	// 2
+  11              	.macro addSub1 c0, c1
+  12              	    add.w \c0, \c1
+  13              	    sub.w \c1, \c0, \c1, lsl #1
+  14              	.endm
+  15              	
+  16              	// 3
+  17              	.macro addSub2 c0, c1, c2, c3
+  18              	    add \c0, \c1
+  19              	    add \c2, \c3
+  20              	    sub.w \c1, \c0, \c1, lsl #1
+  21              	    sub.w \c3, \c2, \c3, lsl #1
+  22              	.endm
+  23              	
+  24              	// 6
+  25              	.macro addSub4 c0, c1, c2, c3, c4, c5, c6, c7
+  26              	    add \c0, \c1
+  27              	    add \c2, \c3
+  28              	    add \c4, \c5
+  29              	    add \c6, \c7
+  30              	    sub.w \c1, \c0, \c1, lsl #1
+  31              	    sub.w \c3, \c2, \c3, lsl #1
+  32              	    sub.w \c5, \c4, \c5, lsl #1
+  33              	    sub.w \c7, \c6, \c7, lsl #1
+  34              	.endm
+  35              	
+  36              	.macro _2_layer_CT_32 c0, c1, c2, c3, zeta0, zeta1, zeta2, Qprime, Q, tmp, tmp2
+  37              	    montgomery_mul_32 \c2, \zeta0, \Qprime, \Q, \tmp, \tmp2
+  38              	    montgomery_mul_32 \c3, \zeta0, \Qprime, \Q, \tmp, \tmp2
+  39              	    addSub2 \c0, \c2, \c1, \c3
+  40              	
+  41              	    montgomery_mul_32 \c1, \zeta1, \Qprime, \Q, \tmp, \tmp2
+  42              	    montgomery_mul_32 \c3, \zeta2, \Qprime, \Q, \tmp, \tmp2
+  43              	    addSub2 \c0, \c1, \c2, \c3
+  44              	.endm
+  45              	
+  46              	.macro _2_layer_inv_CT_32 c0, c1, c2, c3, zeta0, zeta1, zeta2, Qprime, Q, tmp, tmp2
+  47              	    montgomery_mul_32 \c1, \zeta0, \Qprime, \Q, \tmp, \tmp2
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 2
+
+
+  48              	    montgomery_mul_32 \c3, \zeta0, \Qprime, \Q, \tmp, \tmp2
+  49              	    addSub2 \c0, \c1, \c2, \c3
+  50              	
+  51              	    montgomery_mul_32 \c2, \zeta1, \Qprime, \Q, \tmp, \tmp2
+  52              	    montgomery_mul_32 \c3, \zeta2, \Qprime, \Q, \tmp, \tmp2
+  53              	    addSub2 \c0, \c2, \c1, \c3
+  54              	.endm
+  55              	
+  56              	.macro _3_layer_CT_32 c0, c1, c2, c3, c4, c5, c6, c7, xi0, xi1, xi2, xi3, xi4, xi5, xi6, twiddle, Q
+  57              	    vmov.w \twiddle, \xi0
+  58              	    montgomery_mul_32 \c4, \twiddle, \Qprime, \Q, \tmp, \tmp2
+  59              	    montgomery_mul_32 \c5, \twiddle, \Qprime, \Q, \tmp, \tmp2
+  60              	    montgomery_mul_32 \c6, \twiddle, \Qprime, \Q, \tmp, \tmp2
+  61              	    montgomery_mul_32 \c7, \twiddle, \Qprime, \Q, \tmp, \tmp2
+  62              	    addSub4 \c0, \c4, \c1, \c5, \c2, \c6, \c3, \c7
+  63              	
+  64              	    vmov.w \twiddle, \xi1
+  65              	    montgomery_mul_32 \c2, \twiddle, \Qprime, \Q, \tmp, \tmp2
+  66              	    montgomery_mul_32 \c3, \twiddle, \Qprime, \Q, \tmp, \tmp2
+  67              	    vmov.w \twiddle, \xi2
+  68              	    montgomery_mul_32 \c6, \twiddle, \Qprime, \Q, \tmp, \tmp2
+  69              	    montgomery_mul_32 \c7, \twiddle, \Qprime, \Q, \tmp, \tmp2
+  70              	    addSub4 \c0, \c2, \c1, \c3, \c4, \c6, \c5, \c7
+  71              	
+  72              	    vmov.w \twiddle, \xi3
+  73              	    montgomery_mul_32 \c1, \twiddle, \Qprime, \Q, \tmp, \tmp2
+  74              	    vmov.w \twiddle, \xi4
+  75              	    montgomery_mul_32 \c3, \twiddle, \Qprime, \Q, \tmp, \tmp2
+  76              	    vmov.w \twiddle, \xi5
+  77              	    montgomery_mul_32 \c5, \twiddle, \Qprime, \Q, \tmp, \tmp2
+  78              	    vmov.w \twiddle, \xi6
+  79              	    montgomery_mul_32 \c7, \twiddle, \Qprime, \Q, \tmp, \tmp2
+  80              	    addSub4 \c0, \c1, \c2, \c3, \c4, \c5, \c6, \c7
+  81              	.endm
+  82              	
+  83              	.macro _3_layer_inv_CT_32 c0, c1, c2, c3, c4, c5, c6, c7, xi0, xi1, xi2, xi3, xi4, xi5, xi6, twiddl
+  84              	    vmov.w \twiddle, \xi0
+  85              	    montgomery_mul_32 \c1, \twiddle, \Qprime, \Q, \tmp, \tmp2
+  86              	    montgomery_mul_32 \c3, \twiddle, \Qprime, \Q, \tmp, \tmp2
+  87              	    montgomery_mul_32 \c5, \twiddle, \Qprime, \Q, \tmp, \tmp2
+  88              	    montgomery_mul_32 \c7, \twiddle, \Qprime, \Q, \tmp, \tmp2
+  89              	    addSub4 \c0, \c1, \c2, \c3, \c4, \c5, \c6, \c7
+  90              	
+  91              	    vmov.w \twiddle, \xi1
+  92              	    montgomery_mul_32 \c2, \twiddle, \Qprime, \Q, \tmp, \tmp2
+  93              	    montgomery_mul_32 \c6, \twiddle, \Qprime, \Q, \tmp, \tmp2
+  94              	    vmov.w \twiddle, \xi2
+  95              	    montgomery_mul_32 \c3, \twiddle, \Qprime, \Q, \tmp, \tmp2
+  96              	    montgomery_mul_32 \c7, \twiddle, \Qprime, \Q, \tmp, \tmp2
+  97              	    addSub4 \c0, \c2, \c1, \c3, \c4, \c6, \c5, \c7
+  98              	
+  99              	    vmov.w \twiddle, \xi3
+ 100              	    montgomery_mul_32 \c4, \twiddle, \Qprime, \Q, \tmp, \tmp2
+ 101              	    vmov.w \twiddle, \xi4
+ 102              	    montgomery_mul_32 \c5, \twiddle, \Qprime, \Q, \tmp, \tmp2
+ 103              	    vmov.w \twiddle, \xi5
+ 104              	    montgomery_mul_32 \c6, \twiddle, \Qprime, \Q, \tmp, \tmp2
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 3
+
+
+ 105              	    vmov.w \twiddle, \xi6
+ 106              	    montgomery_mul_32 \c7, \twiddle, \Qprime, \Q, \tmp, \tmp2
+ 107              	    addSub4 \c0, \c4, \c1, \c5, \c2, \c6, \c3, \c7
+ 108              	.endm
+ 109              	
+ 110              	/************************************************************
+ 111              	* Name:         _3_layer_inv_butterfly_light_fast_first
+ 112              	*
+ 113              	* Description:  upper half of 3-layer inverse butterfly
+ 114              	*               defined over X^8 - 1
+ 115              	*
+ 116              	* Input:        (c4, c1, c6, c3) = coefficients on the upper half;
+ 117              	*               (xi0, xi1, xi2, xi3, xi4, xi5, xi6) =
+ 118              	*               (  1,  1,  w_4,   1, w_8, w_4, w_8^3) in
+ 119              	*               Montgomery domain
+ 120              	*
+ 121              	* Symbols:      R = 2^32
+ 122              	*
+ 123              	* Constants:    Qprime = -MOD^{-1} mod^{+-} R, Q = MOD
+ 124              	*
+ 125              	* Output:
+ 126              	*               c4 =  c4 + c1        + (c6 + c3)
+ 127              	*               c5 = (c4 - c1) w_4   + (c6 + c3) w_8^3
+ 128              	*               c6 =  c4 + c1        - (c6 + c3)
+ 129              	*               c7 = (c4 - c1) w_8^3 + (c6 + c3) w_4
+ 130              	************************************************************/
+ 131              	// 15
+ 132              	.macro _3_layer_inv_butterfly_light_fast_first c0, c1, c2, c3, c4, c5, c6, c7, xi0, xi1, xi2, xi3, 
+ 133              	    addSub2 \c4, \c1, \c6, \c3
+ 134              	    addSub1 \c4, \c6
+ 135              	
+ 136              	    vmov.w \tmp, \xi4
+ 137              	    vmov.w \tmp2, \xi6
+ 138              	
+ 139              	    smull.w \c0, \c5, \c1, \tmp
+ 140              	    smlal.w \c0, \c5, \c3, \tmp2
+ 141              	    mul.w \twiddle, \c0, \Qprime
+ 142              	    smlal.w \c0, \c5, \twiddle, \Q
+ 143              	
+ 144              	    smull.w \c2, \c7, \c1, \tmp2
+ 145              	    smlal.w \c2, \c7, \c3, \tmp
+ 146              	    mul.w \twiddle, \c2, \Qprime
+ 147              	    smlal.w \c2, \c7, \twiddle, \Q
+ 148              	.endm
+ 149              	
+ 150              	/************************************************************
+ 151              	* Name:         _3_layer_inv_butterfly_light_fast_second
+ 152              	*
+ 153              	* Description:  lower half of 3-layer inverse butterfly
+ 154              	*               defined over X^8 - 1, and the 2nd
+ 155              	*               layer of butterflies
+ 156              	*
+ 157              	* Input:
+ 158              	*               (c4, c5, c6, c7) = results of the upper half;
+ 159              	*               (c0, c1, c2, c3) = coefficients on the lower half;
+ 160              	*               (xi0, xi1, xi2, xi3, xi4, xi5, xi6) =
+ 161              	*               (  1,  1,  w_4,   1, w_8, w_4, w_8^3) in
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 4
+
+
+ 162              	*               Montgomery domain
+ 163              	*
+ 164              	* Symbols:      R = 2^32
+ 165              	*
+ 166              	* Constants:    Qprime = -MOD^{-1} mod^{+-} R, Q = MOD
+ 167              	*
+ 168              	* Output:       (normal order)
+ 169              	*               c0 =   c0 + c1     + (c2 + c3)         + (  c4 + c5     + (c6 + c7)       )
+ 170              	*               c1 =  (c0 - c1) w3 + (c2 - c3)  w4     + ( (c4 - c5) w5 + (c6 - c7) w6    )
+ 171              	*               c2 = ( c0 + c1     - (c2 + c3)) w1     + (( c4 + c5     - (c6 + c7)   ) w2)
+ 172              	*               c3 = ((c0 - c1) w3 - (c2 - c3)  w4) w1 + (((c4 - c5) w5 - (c6 - c7) w6) w2)
+ 173              	*               c4 =   c0 + c1     - (c2 + c3)         - (  c4 + c5     + (c6 + c7)       ) w0
+ 174              	*               c5 =  (c0 - c1) w3 + (c2 - c3)  w4     - ( (c4 - c5) w5 + (c6 - c7) w6    ) w0
+ 175              	*               c6 = ( c0 + c1     - (c2 + c3)) w1     - (( c4 + c5     - (c6 + c7)   ) w2) w0
+ 176              	*               c7 = ((c0 - c1) w3 - (c2 - c3)  w4) w1 - (((c4 - c5) w5 - (c6 - c7) w6) w2) w0
+ 177              	************************************************************/
+ 178              	// 19
+ 179              	.macro _3_layer_inv_butterfly_light_fast_second c0, c1, c2, c3, c4, c5, c6, c7, xi0, xi1, xi2, xi3,
+ 180              	    addSub2 \c0, \c1, \c2, \c3
+ 181              	
+ 182              	    vmov.w \twiddle, \xi2
+ 183              	    montgomery_mul_32 \c3, \twiddle, \Qprime, \Q, \tmp, \tmp2
+ 184              	    addSub2 \c0, \c2, \c1, \c3
+ 185              	
+ 186              	    montgomery_mul_32 \c6, \twiddle, \Qprime, \Q, \tmp, \tmp2
+ 187              	
+ 188              	    addSub4 \c0, \c4, \c1, \c5, \c2, \c6, \c3, \c7
+ 189              	.endm
+ 190              	
+   6              	
+   7              	// This code uses UMULL - which is constant time on the M4, but not on the M3
+   8              	// Make sure that this code is never used on an M3
+   9 0000 20FB0000 	smlad r0,r0,r0,r0
+  10              	
+  11              	// ##############################
+  12              	// ##########   NTT    ##########
+  13              	// ##############################
+  14              	
+  15              	//void pqcrystals_dilithium_ntt(int32_t p[N]);
+  16              	.global pqcrystals_dilithium_ntt
+  17              	.type pqcrystals_dilithium_ntt,%function
+  18              	.align 2
+  19              	pqcrystals_dilithium_ntt:
+  20              	  //bind aliases
+  21              	  ptr_p     .req R0
+  22              	  ptr_zeta  .req R1
+  23              	  zeta      .req R1
+  24              	  qinv      .req R2
+  25              	  q         .req R3
+  26              	  cntr      .req R4
+  27              	  pol4      .req R4
+  28              	  pol0      .req R5
+  29              	  pol1      .req R6
+  30              	  pol2      .req R7
+  31              	  pol3      .req R8
+  32              	  temp_h    .req R9
+  33              	  temp_l    .req R10
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 5
+
+
+  34              	  zeta0     .req R11
+  35              	  zeta1     .req R12
+  36              	  zeta2     .req R14
+  37              	  pol5     .req R11
+  38              	  pol6     .req R12
+  39              	  pol7     .req R14
+  40              	
+  41              	  //preserve registers
+  42 0004 2DE9F04F 	  push {R4-R11, R14}
+  43              	  
+  44              	  //load constants, ptr
+  45 0008 DFF8F029 	  ldr.w qinv, inv_ntt_asm_smull_qinv  //-qinv_signed
+  46 000c DFF8F039 	  ldr.w q, inv_ntt_asm_smull_q
+  47              	
+  48              	  //stage 1 - 3
+  49              	  .equ distance, 512
+  50              	  .equ strincr, 4
+  51              	  
+  52 0010 DFF8B415 	  ldr ptr_zeta, =#zetas_new332
+  53 0014 B1EC071A 	  vldm ptr_zeta!, {s2-s8} 
+  54 0018 00EE101A 	  vmov s0, ptr_zeta
+  55              	  
+  56 001c 00F1800A 	  add.w temp_l, ptr_p, #32*strincr // 32 iterations
+  57 0020 04EE90AA 	  vmov s9, temp_l
+  58              	  1:
+  59              	    .rept 2
+  59 0024 D0F80050 	>  ldr.w pol0,[ptr_p]
+  59 0028 D0F88060 	>  ldr.w pol1,[ptr_p,#1*distance/4]
+  59 002c D0F80071 	>  ldr.w pol2,[ptr_p,#2*distance/4]
+  59 0030 D0F88081 	>  ldr.w pol3,[ptr_p,#3*distance/4]
+  59 0034 D0F80042 	>  ldr.w pol4,[ptr_p,#4*distance/4]
+  59 0038 D0F880B2 	>  ldr.w pol5,[ptr_p,#5*distance/4]
+  59 003c D0F800C3 	>  ldr.w pol6,[ptr_p,#6*distance/4]
+  59 0040 D0F880E3 	>  ldr.w pol7,[ptr_p,#7*distance/4]
+  59              	> 
+  59              	>  _3_layer_CT_32 pol0,pol1,pol2,pol3,pol4,pol5,pol6,pol7,s2,s3,s4,s5,s6,s7,s8,zeta,qinv,q,temp_h,temp_l
+  59 0044 11EE101A 	>>  vmov.w zeta,s2
+  59              	>>  montgomery_mul_32 pol4,zeta,qinv,q,temp_h,temp_l
+  59 0048 84FB0194 	>>>  smull temp_h,pol4,pol4,zeta
+  59 004c 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 0050 CAFB0394 	>>>  smlal temp_h,pol4,temp_l,q
+  59              	>>  montgomery_mul_32 pol5,zeta,qinv,q,temp_h,temp_l
+  59 0054 8BFB019B 	>>>  smull temp_h,pol5,pol5,zeta
+  59 0058 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 005c CAFB039B 	>>>  smlal temp_h,pol5,temp_l,q
+  59              	>>  montgomery_mul_32 pol6,zeta,qinv,q,temp_h,temp_l
+  59 0060 8CFB019C 	>>>  smull temp_h,pol6,pol6,zeta
+  59 0064 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 0068 CAFB039C 	>>>  smlal temp_h,pol6,temp_l,q
+  59              	>>  montgomery_mul_32 pol7,zeta,qinv,q,temp_h,temp_l
+  59 006c 8EFB019E 	>>>  smull temp_h,pol7,pol7,zeta
+  59 0070 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 0074 CAFB039E 	>>>  smlal temp_h,pol7,temp_l,q
+  59              	>>  addSub4 pol0,pol4,pol1,pol5,pol2,pol6,pol3,pol7
+  59 0078 2544     	>>>  add pol0,pol4
+  59 007a 5E44     	>>>  add pol1,pol5
+  59 007c 6744     	>>>  add pol2,pol6
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 6
+
+
+  59 007e F044     	>>>  add pol3,pol7
+  59 0080 A5EB4404 	>>>  sub.w pol4,pol0,pol4,lsl#1
+  59 0084 A6EB4B0B 	>>>  sub.w pol5,pol1,pol5,lsl#1
+  59 0088 A7EB4C0C 	>>>  sub.w pol6,pol2,pol6,lsl#1
+  59 008c A8EB4E0E 	>>>  sub.w pol7,pol3,pol7,lsl#1
+  59              	>> 
+  59 0090 11EE901A 	>>  vmov.w zeta,s3
+  59              	>>  montgomery_mul_32 pol2,zeta,qinv,q,temp_h,temp_l
+  59 0094 87FB0197 	>>>  smull temp_h,pol2,pol2,zeta
+  59 0098 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 009c CAFB0397 	>>>  smlal temp_h,pol2,temp_l,q
+  59              	>>  montgomery_mul_32 pol3,zeta,qinv,q,temp_h,temp_l
+  59 00a0 88FB0198 	>>>  smull temp_h,pol3,pol3,zeta
+  59 00a4 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 00a8 CAFB0398 	>>>  smlal temp_h,pol3,temp_l,q
+  59 00ac 12EE101A 	>>  vmov.w zeta,s4
+  59              	>>  montgomery_mul_32 pol6,zeta,qinv,q,temp_h,temp_l
+  59 00b0 8CFB019C 	>>>  smull temp_h,pol6,pol6,zeta
+  59 00b4 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 00b8 CAFB039C 	>>>  smlal temp_h,pol6,temp_l,q
+  59              	>>  montgomery_mul_32 pol7,zeta,qinv,q,temp_h,temp_l
+  59 00bc 8EFB019E 	>>>  smull temp_h,pol7,pol7,zeta
+  59 00c0 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 00c4 CAFB039E 	>>>  smlal temp_h,pol7,temp_l,q
+  59              	>>  addSub4 pol0,pol2,pol1,pol3,pol4,pol6,pol5,pol7
+  59 00c8 3D44     	>>>  add pol0,pol2
+  59 00ca 4644     	>>>  add pol1,pol3
+  59 00cc 6444     	>>>  add pol4,pol6
+  59 00ce F344     	>>>  add pol5,pol7
+  59 00d0 A5EB4707 	>>>  sub.w pol2,pol0,pol2,lsl#1
+  59 00d4 A6EB4808 	>>>  sub.w pol3,pol1,pol3,lsl#1
+  59 00d8 A4EB4C0C 	>>>  sub.w pol6,pol4,pol6,lsl#1
+  59 00dc ABEB4E0E 	>>>  sub.w pol7,pol5,pol7,lsl#1
+  59              	>> 
+  59 00e0 12EE901A 	>>  vmov.w zeta,s5
+  59              	>>  montgomery_mul_32 pol1,zeta,qinv,q,temp_h,temp_l
+  59 00e4 86FB0196 	>>>  smull temp_h,pol1,pol1,zeta
+  59 00e8 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 00ec CAFB0396 	>>>  smlal temp_h,pol1,temp_l,q
+  59 00f0 13EE101A 	>>  vmov.w zeta,s6
+  59              	>>  montgomery_mul_32 pol3,zeta,qinv,q,temp_h,temp_l
+  59 00f4 88FB0198 	>>>  smull temp_h,pol3,pol3,zeta
+  59 00f8 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 00fc CAFB0398 	>>>  smlal temp_h,pol3,temp_l,q
+  59 0100 13EE901A 	>>  vmov.w zeta,s7
+  59              	>>  montgomery_mul_32 pol5,zeta,qinv,q,temp_h,temp_l
+  59 0104 8BFB019B 	>>>  smull temp_h,pol5,pol5,zeta
+  59 0108 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 010c CAFB039B 	>>>  smlal temp_h,pol5,temp_l,q
+  59 0110 14EE101A 	>>  vmov.w zeta,s8
+  59              	>>  montgomery_mul_32 pol7,zeta,qinv,q,temp_h,temp_l
+  59 0114 8EFB019E 	>>>  smull temp_h,pol7,pol7,zeta
+  59 0118 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 011c CAFB039E 	>>>  smlal temp_h,pol7,temp_l,q
+  59              	>>  addSub4 pol0,pol1,pol2,pol3,pol4,pol5,pol6,pol7
+  59 0120 3544     	>>>  add pol0,pol1
+  59 0122 4744     	>>>  add pol2,pol3
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 7
+
+
+  59 0124 5C44     	>>>  add pol4,pol5
+  59 0126 F444     	>>>  add pol6,pol7
+  59 0128 A5EB4606 	>>>  sub.w pol1,pol0,pol1,lsl#1
+  59 012c A7EB4808 	>>>  sub.w pol3,pol2,pol3,lsl#1
+  59 0130 A4EB4B0B 	>>>  sub.w pol5,pol4,pol5,lsl#1
+  59 0134 ACEB4E0E 	>>>  sub.w pol7,pol6,pol7,lsl#1
+  59              	> 
+  59 0138 C0F88060 	>  str.w pol1,[ptr_p,#1*distance/4]
+  59 013c C0F80071 	>  str.w pol2,[ptr_p,#2*distance/4]
+  59 0140 C0F88081 	>  str.w pol3,[ptr_p,#3*distance/4]
+  59 0144 C0F80042 	>  str.w pol4,[ptr_p,#4*distance/4]
+  59 0148 C0F880B2 	>  str.w pol5,[ptr_p,#5*distance/4]
+  59 014c C0F800C3 	>  str.w pol6,[ptr_p,#6*distance/4]
+  59 0150 C0F880E3 	>  str.w pol7,[ptr_p,#7*distance/4]
+  59 0154 40F8045B 	>  str.w pol0,[ptr_p],#strincr
+  59              	> 
+  59 0158 D0F80050 	>  ldr.w pol0,[ptr_p]
+  59 015c D0F88060 	>  ldr.w pol1,[ptr_p,#1*distance/4]
+  59 0160 D0F80071 	>  ldr.w pol2,[ptr_p,#2*distance/4]
+  59 0164 D0F88081 	>  ldr.w pol3,[ptr_p,#3*distance/4]
+  59 0168 D0F80042 	>  ldr.w pol4,[ptr_p,#4*distance/4]
+  59 016c D0F880B2 	>  ldr.w pol5,[ptr_p,#5*distance/4]
+  59 0170 D0F800C3 	>  ldr.w pol6,[ptr_p,#6*distance/4]
+  59 0174 D0F880E3 	>  ldr.w pol7,[ptr_p,#7*distance/4]
+  59              	> 
+  59              	>  _3_layer_CT_32 pol0,pol1,pol2,pol3,pol4,pol5,pol6,pol7,s2,s3,s4,s5,s6,s7,s8,zeta,qinv,q,temp_h,temp_l
+  59 0178 11EE101A 	>>  vmov.w zeta,s2
+  59              	>>  montgomery_mul_32 pol4,zeta,qinv,q,temp_h,temp_l
+  59 017c 84FB0194 	>>>  smull temp_h,pol4,pol4,zeta
+  59 0180 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 0184 CAFB0394 	>>>  smlal temp_h,pol4,temp_l,q
+  59              	>>  montgomery_mul_32 pol5,zeta,qinv,q,temp_h,temp_l
+  59 0188 8BFB019B 	>>>  smull temp_h,pol5,pol5,zeta
+  59 018c 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 0190 CAFB039B 	>>>  smlal temp_h,pol5,temp_l,q
+  59              	>>  montgomery_mul_32 pol6,zeta,qinv,q,temp_h,temp_l
+  59 0194 8CFB019C 	>>>  smull temp_h,pol6,pol6,zeta
+  59 0198 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 019c CAFB039C 	>>>  smlal temp_h,pol6,temp_l,q
+  59              	>>  montgomery_mul_32 pol7,zeta,qinv,q,temp_h,temp_l
+  59 01a0 8EFB019E 	>>>  smull temp_h,pol7,pol7,zeta
+  59 01a4 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 01a8 CAFB039E 	>>>  smlal temp_h,pol7,temp_l,q
+  59              	>>  addSub4 pol0,pol4,pol1,pol5,pol2,pol6,pol3,pol7
+  59 01ac 2544     	>>>  add pol0,pol4
+  59 01ae 5E44     	>>>  add pol1,pol5
+  59 01b0 6744     	>>>  add pol2,pol6
+  59 01b2 F044     	>>>  add pol3,pol7
+  59 01b4 A5EB4404 	>>>  sub.w pol4,pol0,pol4,lsl#1
+  59 01b8 A6EB4B0B 	>>>  sub.w pol5,pol1,pol5,lsl#1
+  59 01bc A7EB4C0C 	>>>  sub.w pol6,pol2,pol6,lsl#1
+  59 01c0 A8EB4E0E 	>>>  sub.w pol7,pol3,pol7,lsl#1
+  59              	>> 
+  59 01c4 11EE901A 	>>  vmov.w zeta,s3
+  59              	>>  montgomery_mul_32 pol2,zeta,qinv,q,temp_h,temp_l
+  59 01c8 87FB0197 	>>>  smull temp_h,pol2,pol2,zeta
+  59 01cc 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 8
+
+
+  59 01d0 CAFB0397 	>>>  smlal temp_h,pol2,temp_l,q
+  59              	>>  montgomery_mul_32 pol3,zeta,qinv,q,temp_h,temp_l
+  59 01d4 88FB0198 	>>>  smull temp_h,pol3,pol3,zeta
+  59 01d8 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 01dc CAFB0398 	>>>  smlal temp_h,pol3,temp_l,q
+  59 01e0 12EE101A 	>>  vmov.w zeta,s4
+  59              	>>  montgomery_mul_32 pol6,zeta,qinv,q,temp_h,temp_l
+  59 01e4 8CFB019C 	>>>  smull temp_h,pol6,pol6,zeta
+  59 01e8 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 01ec CAFB039C 	>>>  smlal temp_h,pol6,temp_l,q
+  59              	>>  montgomery_mul_32 pol7,zeta,qinv,q,temp_h,temp_l
+  59 01f0 8EFB019E 	>>>  smull temp_h,pol7,pol7,zeta
+  59 01f4 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 01f8 CAFB039E 	>>>  smlal temp_h,pol7,temp_l,q
+  59              	>>  addSub4 pol0,pol2,pol1,pol3,pol4,pol6,pol5,pol7
+  59 01fc 3D44     	>>>  add pol0,pol2
+  59 01fe 4644     	>>>  add pol1,pol3
+  59 0200 6444     	>>>  add pol4,pol6
+  59 0202 F344     	>>>  add pol5,pol7
+  59 0204 A5EB4707 	>>>  sub.w pol2,pol0,pol2,lsl#1
+  59 0208 A6EB4808 	>>>  sub.w pol3,pol1,pol3,lsl#1
+  59 020c A4EB4C0C 	>>>  sub.w pol6,pol4,pol6,lsl#1
+  59 0210 ABEB4E0E 	>>>  sub.w pol7,pol5,pol7,lsl#1
+  59              	>> 
+  59 0214 12EE901A 	>>  vmov.w zeta,s5
+  59              	>>  montgomery_mul_32 pol1,zeta,qinv,q,temp_h,temp_l
+  59 0218 86FB0196 	>>>  smull temp_h,pol1,pol1,zeta
+  59 021c 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 0220 CAFB0396 	>>>  smlal temp_h,pol1,temp_l,q
+  59 0224 13EE101A 	>>  vmov.w zeta,s6
+  59              	>>  montgomery_mul_32 pol3,zeta,qinv,q,temp_h,temp_l
+  59 0228 88FB0198 	>>>  smull temp_h,pol3,pol3,zeta
+  59 022c 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 0230 CAFB0398 	>>>  smlal temp_h,pol3,temp_l,q
+  59 0234 13EE901A 	>>  vmov.w zeta,s7
+  59              	>>  montgomery_mul_32 pol5,zeta,qinv,q,temp_h,temp_l
+  59 0238 8BFB019B 	>>>  smull temp_h,pol5,pol5,zeta
+  59 023c 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 0240 CAFB039B 	>>>  smlal temp_h,pol5,temp_l,q
+  59 0244 14EE101A 	>>  vmov.w zeta,s8
+  59              	>>  montgomery_mul_32 pol7,zeta,qinv,q,temp_h,temp_l
+  59 0248 8EFB019E 	>>>  smull temp_h,pol7,pol7,zeta
+  59 024c 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  59 0250 CAFB039E 	>>>  smlal temp_h,pol7,temp_l,q
+  59              	>>  addSub4 pol0,pol1,pol2,pol3,pol4,pol5,pol6,pol7
+  59 0254 3544     	>>>  add pol0,pol1
+  59 0256 4744     	>>>  add pol2,pol3
+  59 0258 5C44     	>>>  add pol4,pol5
+  59 025a F444     	>>>  add pol6,pol7
+  59 025c A5EB4606 	>>>  sub.w pol1,pol0,pol1,lsl#1
+  59 0260 A7EB4808 	>>>  sub.w pol3,pol2,pol3,lsl#1
+  59 0264 A4EB4B0B 	>>>  sub.w pol5,pol4,pol5,lsl#1
+  59 0268 ACEB4E0E 	>>>  sub.w pol7,pol6,pol7,lsl#1
+  59              	> 
+  59 026c C0F88060 	>  str.w pol1,[ptr_p,#1*distance/4]
+  59 0270 C0F80071 	>  str.w pol2,[ptr_p,#2*distance/4]
+  59 0274 C0F88081 	>  str.w pol3,[ptr_p,#3*distance/4]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 9
+
+
+  59 0278 C0F80042 	>  str.w pol4,[ptr_p,#4*distance/4]
+  59 027c C0F880B2 	>  str.w pol5,[ptr_p,#5*distance/4]
+  59 0280 C0F800C3 	>  str.w pol6,[ptr_p,#6*distance/4]
+  59 0284 C0F880E3 	>  str.w pol7,[ptr_p,#7*distance/4]
+  59 0288 40F8045B 	>  str.w pol0,[ptr_p],#strincr
+  60              	    ldr.w pol0, [ptr_p]
+  61              	    ldr.w pol1, [ptr_p, #1*distance/4]
+  62              	    ldr.w pol2, [ptr_p, #2*distance/4]
+  63              	    ldr.w pol3, [ptr_p, #3*distance/4]
+  64              	    ldr.w pol4, [ptr_p, #4*distance/4]
+  65              	    ldr.w pol5, [ptr_p, #5*distance/4]
+  66              	    ldr.w pol6, [ptr_p, #6*distance/4]
+  67              	    ldr.w pol7, [ptr_p, #7*distance/4]
+  68              	
+  69              	    _3_layer_CT_32 pol0, pol1, pol2, pol3, pol4, pol5, pol6, pol7, s2, s3, s4, s5, s6, s7, s8, zeta
+  70              	
+  71              	    str.w pol1, [ptr_p, #1*distance/4]
+  72              	    str.w pol2, [ptr_p, #2*distance/4]
+  73              	    str.w pol3, [ptr_p, #3*distance/4]
+  74              	    str.w pol4, [ptr_p, #4*distance/4]
+  75              	    str.w pol5, [ptr_p, #5*distance/4]
+  76              	    str.w pol6, [ptr_p, #6*distance/4]
+  77              	    str.w pol7, [ptr_p, #7*distance/4]
+  78              	    str.w pol0, [ptr_p], #strincr
+  79              	    .endr
+  80 028c 14EE90AA 	    vmov temp_l, s9
+  81 0290 B0EB0A0F 	    cmp.w ptr_p, temp_l
+  82 0294 7FF4C6AE 	    bne 1b
+  83              	  
+  84 0298 A0F18000 	  sub ptr_p, #32*4
+  85              	
+  86              	  // stage 4 - 6  
+  87              	  .equ distance, 64
+  88 029c 00F5806A 	  add.w temp_l, ptr_p, #8*112+8*4*4 // 8 iterations
+  89 02a0 04EE90AA 	  vmov s9, temp_l
+  90              	  1:
+  91 02a4 00F1100A 	    add.w temp_l, ptr_p, #4*strincr // 4 iterations
+  92 02a8 05EE10AA 	    vmov s10, temp_l
+  93 02ac 10EE101A 	    vmov ptr_zeta, s0
+  94 02b0 B1EC071A 	    vldm ptr_zeta!, {s2-s8}
+  95 02b4 00EE101A 	    vmov s0, ptr_zeta
+  96              	    2:
+  97              	      .rept 2
+  97 02b8 D0F80050 	>  ldr.w pol0,[ptr_p]
+  97 02bc D0F81060 	>  ldr.w pol1,[ptr_p,#1*distance/4]
+  97 02c0 D0F82070 	>  ldr.w pol2,[ptr_p,#2*distance/4]
+  97 02c4 D0F83080 	>  ldr.w pol3,[ptr_p,#3*distance/4]
+  97 02c8 D0F84040 	>  ldr.w pol4,[ptr_p,#4*distance/4]
+  97 02cc D0F850B0 	>  ldr.w pol5,[ptr_p,#5*distance/4]
+  97 02d0 D0F860C0 	>  ldr.w pol6,[ptr_p,#6*distance/4]
+  97 02d4 D0F870E0 	>  ldr.w pol7,[ptr_p,#7*distance/4]
+  97              	> 
+  97              	>  _3_layer_CT_32 pol0,pol1,pol2,pol3,pol4,pol5,pol6,pol7,s2,s3,s4,s5,s6,s7,s8,zeta,qinv,q,temp_h,temp_l
+  97 02d8 11EE101A 	>>  vmov.w zeta,s2
+  97              	>>  montgomery_mul_32 pol4,zeta,qinv,q,temp_h,temp_l
+  97 02dc 84FB0194 	>>>  smull temp_h,pol4,pol4,zeta
+  97 02e0 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 10
+
+
+  97 02e4 CAFB0394 	>>>  smlal temp_h,pol4,temp_l,q
+  97              	>>  montgomery_mul_32 pol5,zeta,qinv,q,temp_h,temp_l
+  97 02e8 8BFB019B 	>>>  smull temp_h,pol5,pol5,zeta
+  97 02ec 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 02f0 CAFB039B 	>>>  smlal temp_h,pol5,temp_l,q
+  97              	>>  montgomery_mul_32 pol6,zeta,qinv,q,temp_h,temp_l
+  97 02f4 8CFB019C 	>>>  smull temp_h,pol6,pol6,zeta
+  97 02f8 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 02fc CAFB039C 	>>>  smlal temp_h,pol6,temp_l,q
+  97              	>>  montgomery_mul_32 pol7,zeta,qinv,q,temp_h,temp_l
+  97 0300 8EFB019E 	>>>  smull temp_h,pol7,pol7,zeta
+  97 0304 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 0308 CAFB039E 	>>>  smlal temp_h,pol7,temp_l,q
+  97              	>>  addSub4 pol0,pol4,pol1,pol5,pol2,pol6,pol3,pol7
+  97 030c 2544     	>>>  add pol0,pol4
+  97 030e 5E44     	>>>  add pol1,pol5
+  97 0310 6744     	>>>  add pol2,pol6
+  97 0312 F044     	>>>  add pol3,pol7
+  97 0314 A5EB4404 	>>>  sub.w pol4,pol0,pol4,lsl#1
+  97 0318 A6EB4B0B 	>>>  sub.w pol5,pol1,pol5,lsl#1
+  97 031c A7EB4C0C 	>>>  sub.w pol6,pol2,pol6,lsl#1
+  97 0320 A8EB4E0E 	>>>  sub.w pol7,pol3,pol7,lsl#1
+  97              	>> 
+  97 0324 11EE901A 	>>  vmov.w zeta,s3
+  97              	>>  montgomery_mul_32 pol2,zeta,qinv,q,temp_h,temp_l
+  97 0328 87FB0197 	>>>  smull temp_h,pol2,pol2,zeta
+  97 032c 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 0330 CAFB0397 	>>>  smlal temp_h,pol2,temp_l,q
+  97              	>>  montgomery_mul_32 pol3,zeta,qinv,q,temp_h,temp_l
+  97 0334 88FB0198 	>>>  smull temp_h,pol3,pol3,zeta
+  97 0338 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 033c CAFB0398 	>>>  smlal temp_h,pol3,temp_l,q
+  97 0340 12EE101A 	>>  vmov.w zeta,s4
+  97              	>>  montgomery_mul_32 pol6,zeta,qinv,q,temp_h,temp_l
+  97 0344 8CFB019C 	>>>  smull temp_h,pol6,pol6,zeta
+  97 0348 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 034c CAFB039C 	>>>  smlal temp_h,pol6,temp_l,q
+  97              	>>  montgomery_mul_32 pol7,zeta,qinv,q,temp_h,temp_l
+  97 0350 8EFB019E 	>>>  smull temp_h,pol7,pol7,zeta
+  97 0354 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 0358 CAFB039E 	>>>  smlal temp_h,pol7,temp_l,q
+  97              	>>  addSub4 pol0,pol2,pol1,pol3,pol4,pol6,pol5,pol7
+  97 035c 3D44     	>>>  add pol0,pol2
+  97 035e 4644     	>>>  add pol1,pol3
+  97 0360 6444     	>>>  add pol4,pol6
+  97 0362 F344     	>>>  add pol5,pol7
+  97 0364 A5EB4707 	>>>  sub.w pol2,pol0,pol2,lsl#1
+  97 0368 A6EB4808 	>>>  sub.w pol3,pol1,pol3,lsl#1
+  97 036c A4EB4C0C 	>>>  sub.w pol6,pol4,pol6,lsl#1
+  97 0370 ABEB4E0E 	>>>  sub.w pol7,pol5,pol7,lsl#1
+  97              	>> 
+  97 0374 12EE901A 	>>  vmov.w zeta,s5
+  97              	>>  montgomery_mul_32 pol1,zeta,qinv,q,temp_h,temp_l
+  97 0378 86FB0196 	>>>  smull temp_h,pol1,pol1,zeta
+  97 037c 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 0380 CAFB0396 	>>>  smlal temp_h,pol1,temp_l,q
+  97 0384 13EE101A 	>>  vmov.w zeta,s6
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 11
+
+
+  97              	>>  montgomery_mul_32 pol3,zeta,qinv,q,temp_h,temp_l
+  97 0388 88FB0198 	>>>  smull temp_h,pol3,pol3,zeta
+  97 038c 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 0390 CAFB0398 	>>>  smlal temp_h,pol3,temp_l,q
+  97 0394 13EE901A 	>>  vmov.w zeta,s7
+  97              	>>  montgomery_mul_32 pol5,zeta,qinv,q,temp_h,temp_l
+  97 0398 8BFB019B 	>>>  smull temp_h,pol5,pol5,zeta
+  97 039c 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 03a0 CAFB039B 	>>>  smlal temp_h,pol5,temp_l,q
+  97 03a4 14EE101A 	>>  vmov.w zeta,s8
+  97              	>>  montgomery_mul_32 pol7,zeta,qinv,q,temp_h,temp_l
+  97 03a8 8EFB019E 	>>>  smull temp_h,pol7,pol7,zeta
+  97 03ac 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 03b0 CAFB039E 	>>>  smlal temp_h,pol7,temp_l,q
+  97              	>>  addSub4 pol0,pol1,pol2,pol3,pol4,pol5,pol6,pol7
+  97 03b4 3544     	>>>  add pol0,pol1
+  97 03b6 4744     	>>>  add pol2,pol3
+  97 03b8 5C44     	>>>  add pol4,pol5
+  97 03ba F444     	>>>  add pol6,pol7
+  97 03bc A5EB4606 	>>>  sub.w pol1,pol0,pol1,lsl#1
+  97 03c0 A7EB4808 	>>>  sub.w pol3,pol2,pol3,lsl#1
+  97 03c4 A4EB4B0B 	>>>  sub.w pol5,pol4,pol5,lsl#1
+  97 03c8 ACEB4E0E 	>>>  sub.w pol7,pol6,pol7,lsl#1
+  97              	> 
+  97 03cc C0F81060 	>  str.w pol1,[ptr_p,#1*distance/4]
+  97 03d0 C0F82070 	>  str.w pol2,[ptr_p,#2*distance/4]
+  97 03d4 C0F83080 	>  str.w pol3,[ptr_p,#3*distance/4]
+  97 03d8 C0F84040 	>  str.w pol4,[ptr_p,#4*distance/4]
+  97 03dc C0F850B0 	>  str.w pol5,[ptr_p,#5*distance/4]
+  97 03e0 C0F860C0 	>  str.w pol6,[ptr_p,#6*distance/4]
+  97 03e4 C0F870E0 	>  str.w pol7,[ptr_p,#7*distance/4]
+  97 03e8 40F8045B 	>  str.w pol0,[ptr_p],#4
+  97              	> 
+  97 03ec D0F80050 	>  ldr.w pol0,[ptr_p]
+  97 03f0 D0F81060 	>  ldr.w pol1,[ptr_p,#1*distance/4]
+  97 03f4 D0F82070 	>  ldr.w pol2,[ptr_p,#2*distance/4]
+  97 03f8 D0F83080 	>  ldr.w pol3,[ptr_p,#3*distance/4]
+  97 03fc D0F84040 	>  ldr.w pol4,[ptr_p,#4*distance/4]
+  97 0400 D0F850B0 	>  ldr.w pol5,[ptr_p,#5*distance/4]
+  97 0404 D0F860C0 	>  ldr.w pol6,[ptr_p,#6*distance/4]
+  97 0408 D0F870E0 	>  ldr.w pol7,[ptr_p,#7*distance/4]
+  97              	> 
+  97              	>  _3_layer_CT_32 pol0,pol1,pol2,pol3,pol4,pol5,pol6,pol7,s2,s3,s4,s5,s6,s7,s8,zeta,qinv,q,temp_h,temp_l
+  97 040c 11EE101A 	>>  vmov.w zeta,s2
+  97              	>>  montgomery_mul_32 pol4,zeta,qinv,q,temp_h,temp_l
+  97 0410 84FB0194 	>>>  smull temp_h,pol4,pol4,zeta
+  97 0414 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 0418 CAFB0394 	>>>  smlal temp_h,pol4,temp_l,q
+  97              	>>  montgomery_mul_32 pol5,zeta,qinv,q,temp_h,temp_l
+  97 041c 8BFB019B 	>>>  smull temp_h,pol5,pol5,zeta
+  97 0420 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 0424 CAFB039B 	>>>  smlal temp_h,pol5,temp_l,q
+  97              	>>  montgomery_mul_32 pol6,zeta,qinv,q,temp_h,temp_l
+  97 0428 8CFB019C 	>>>  smull temp_h,pol6,pol6,zeta
+  97 042c 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 0430 CAFB039C 	>>>  smlal temp_h,pol6,temp_l,q
+  97              	>>  montgomery_mul_32 pol7,zeta,qinv,q,temp_h,temp_l
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 12
+
+
+  97 0434 8EFB019E 	>>>  smull temp_h,pol7,pol7,zeta
+  97 0438 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 043c CAFB039E 	>>>  smlal temp_h,pol7,temp_l,q
+  97              	>>  addSub4 pol0,pol4,pol1,pol5,pol2,pol6,pol3,pol7
+  97 0440 2544     	>>>  add pol0,pol4
+  97 0442 5E44     	>>>  add pol1,pol5
+  97 0444 6744     	>>>  add pol2,pol6
+  97 0446 F044     	>>>  add pol3,pol7
+  97 0448 A5EB4404 	>>>  sub.w pol4,pol0,pol4,lsl#1
+  97 044c A6EB4B0B 	>>>  sub.w pol5,pol1,pol5,lsl#1
+  97 0450 A7EB4C0C 	>>>  sub.w pol6,pol2,pol6,lsl#1
+  97 0454 A8EB4E0E 	>>>  sub.w pol7,pol3,pol7,lsl#1
+  97              	>> 
+  97 0458 11EE901A 	>>  vmov.w zeta,s3
+  97              	>>  montgomery_mul_32 pol2,zeta,qinv,q,temp_h,temp_l
+  97 045c 87FB0197 	>>>  smull temp_h,pol2,pol2,zeta
+  97 0460 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 0464 CAFB0397 	>>>  smlal temp_h,pol2,temp_l,q
+  97              	>>  montgomery_mul_32 pol3,zeta,qinv,q,temp_h,temp_l
+  97 0468 88FB0198 	>>>  smull temp_h,pol3,pol3,zeta
+  97 046c 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 0470 CAFB0398 	>>>  smlal temp_h,pol3,temp_l,q
+  97 0474 12EE101A 	>>  vmov.w zeta,s4
+  97              	>>  montgomery_mul_32 pol6,zeta,qinv,q,temp_h,temp_l
+  97 0478 8CFB019C 	>>>  smull temp_h,pol6,pol6,zeta
+  97 047c 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 0480 CAFB039C 	>>>  smlal temp_h,pol6,temp_l,q
+  97              	>>  montgomery_mul_32 pol7,zeta,qinv,q,temp_h,temp_l
+  97 0484 8EFB019E 	>>>  smull temp_h,pol7,pol7,zeta
+  97 0488 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 048c CAFB039E 	>>>  smlal temp_h,pol7,temp_l,q
+  97              	>>  addSub4 pol0,pol2,pol1,pol3,pol4,pol6,pol5,pol7
+  97 0490 3D44     	>>>  add pol0,pol2
+  97 0492 4644     	>>>  add pol1,pol3
+  97 0494 6444     	>>>  add pol4,pol6
+  97 0496 F344     	>>>  add pol5,pol7
+  97 0498 A5EB4707 	>>>  sub.w pol2,pol0,pol2,lsl#1
+  97 049c A6EB4808 	>>>  sub.w pol3,pol1,pol3,lsl#1
+  97 04a0 A4EB4C0C 	>>>  sub.w pol6,pol4,pol6,lsl#1
+  97 04a4 ABEB4E0E 	>>>  sub.w pol7,pol5,pol7,lsl#1
+  97              	>> 
+  97 04a8 12EE901A 	>>  vmov.w zeta,s5
+  97              	>>  montgomery_mul_32 pol1,zeta,qinv,q,temp_h,temp_l
+  97 04ac 86FB0196 	>>>  smull temp_h,pol1,pol1,zeta
+  97 04b0 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 04b4 CAFB0396 	>>>  smlal temp_h,pol1,temp_l,q
+  97 04b8 13EE101A 	>>  vmov.w zeta,s6
+  97              	>>  montgomery_mul_32 pol3,zeta,qinv,q,temp_h,temp_l
+  97 04bc 88FB0198 	>>>  smull temp_h,pol3,pol3,zeta
+  97 04c0 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 04c4 CAFB0398 	>>>  smlal temp_h,pol3,temp_l,q
+  97 04c8 13EE901A 	>>  vmov.w zeta,s7
+  97              	>>  montgomery_mul_32 pol5,zeta,qinv,q,temp_h,temp_l
+  97 04cc 8BFB019B 	>>>  smull temp_h,pol5,pol5,zeta
+  97 04d0 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 04d4 CAFB039B 	>>>  smlal temp_h,pol5,temp_l,q
+  97 04d8 14EE101A 	>>  vmov.w zeta,s8
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 13
+
+
+  97              	>>  montgomery_mul_32 pol7,zeta,qinv,q,temp_h,temp_l
+  97 04dc 8EFB019E 	>>>  smull temp_h,pol7,pol7,zeta
+  97 04e0 09FB02FA 	>>>  mul temp_l,temp_h,qinv
+  97 04e4 CAFB039E 	>>>  smlal temp_h,pol7,temp_l,q
+  97              	>>  addSub4 pol0,pol1,pol2,pol3,pol4,pol5,pol6,pol7
+  97 04e8 3544     	>>>  add pol0,pol1
+  97 04ea 4744     	>>>  add pol2,pol3
+  97 04ec 5C44     	>>>  add pol4,pol5
+  97 04ee F444     	>>>  add pol6,pol7
+  97 04f0 A5EB4606 	>>>  sub.w pol1,pol0,pol1,lsl#1
+  97 04f4 A7EB4808 	>>>  sub.w pol3,pol2,pol3,lsl#1
+  97 04f8 A4EB4B0B 	>>>  sub.w pol5,pol4,pol5,lsl#1
+  97 04fc ACEB4E0E 	>>>  sub.w pol7,pol6,pol7,lsl#1
+  97              	> 
+  97 0500 C0F81060 	>  str.w pol1,[ptr_p,#1*distance/4]
+  97 0504 C0F82070 	>  str.w pol2,[ptr_p,#2*distance/4]
+  97 0508 C0F83080 	>  str.w pol3,[ptr_p,#3*distance/4]
+  97 050c C0F84040 	>  str.w pol4,[ptr_p,#4*distance/4]
+  97 0510 C0F850B0 	>  str.w pol5,[ptr_p,#5*distance/4]
+  97 0514 C0F860C0 	>  str.w pol6,[ptr_p,#6*distance/4]
+  97 0518 C0F870E0 	>  str.w pol7,[ptr_p,#7*distance/4]
+  97 051c 40F8045B 	>  str.w pol0,[ptr_p],#4
+  98              	      ldr.w pol0, [ptr_p]
+  99              	      ldr.w pol1, [ptr_p, #1*distance/4]
+ 100              	      ldr.w pol2, [ptr_p, #2*distance/4]
+ 101              	      ldr.w pol3, [ptr_p, #3*distance/4]
+ 102              	      ldr.w pol4, [ptr_p, #4*distance/4]
+ 103              	      ldr.w pol5, [ptr_p, #5*distance/4]
+ 104              	      ldr.w pol6, [ptr_p, #6*distance/4]
+ 105              	      ldr.w pol7, [ptr_p, #7*distance/4]
+ 106              	
+ 107              	      _3_layer_CT_32 pol0, pol1, pol2, pol3, pol4, pol5, pol6, pol7, s2, s3, s4, s5, s6, s7, s8, ze
+ 108              	      
+ 109              	      str.w pol1, [ptr_p, #1*distance/4]
+ 110              	      str.w pol2, [ptr_p, #2*distance/4]
+ 111              	      str.w pol3, [ptr_p, #3*distance/4]
+ 112              	      str.w pol4, [ptr_p, #4*distance/4]
+ 113              	      str.w pol5, [ptr_p, #5*distance/4]
+ 114              	      str.w pol6, [ptr_p, #6*distance/4]
+ 115              	      str.w pol7, [ptr_p, #7*distance/4]
+ 116              	      str.w pol0, [ptr_p], #4
+ 117              	      .endr
+ 118 0520 15EE10AA 	      vmov temp_l, s10
+ 119 0524 B0EB0A0F 	      cmp.w ptr_p, temp_l
+ 120 0528 7FF4C6AE 	      bne 2b
+ 121              	
+ 122 052c 00F17000 	    add.w ptr_p, #112
+ 123 0530 14EE90AA 	    vmov temp_l, s9
+ 124 0534 B0EB0A0F 	    cmp.w ptr_p, temp_l
+ 125 0538 7FF4B4AE 	    bne 1b
+ 126              	  
+ 127 053c A0F58060 	    sub ptr_p, #4*4*8+112*8
+ 128 0540 10EE101A 	    vmov ptr_zeta, s0
+ 129              	    //stage 7 and 8
+ 130 0544 00F58064 	    add cntr, ptr_p, #1024 // 64 iterations
+ 131              	    1:
+ 132 0548 D1F804C0 	      ldr.w zeta1, [ptr_zeta, #4]  //z128,..., z254
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 14
+
+
+ 133 054c D1F808E0 	      ldr.w zeta2, [ptr_zeta, #8]  //z129,..., z255
+ 134 0550 51F80CBB 	      ldr zeta0, [ptr_zeta], #12  //z64, ..., z127
+ 135 0554 D0F80050 	      ldr.w pol0, [ptr_p]  //1*4
+ 136 0558 D0F80460 	      ldr.w pol1, [ptr_p, #4]
+ 137 055c D0F80870 	      ldr.w pol2, [ptr_p, #8]
+ 138 0560 D0F80C80 	      ldr.w pol3, [ptr_p, #12] 
+ 139              	
+ 140              	      _2_layer_CT_32 pol0, pol1, pol2, pol3, zeta0, zeta1, zeta2, qinv, q, temp_h, temp_l
+ 140              	>  montgomery_mul_32 pol2,zeta0,qinv,q,temp_h,temp_l
+ 140 0564 87FB0B97 	>>  smull temp_h,pol2,pol2,zeta0
+ 140 0568 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 140 056c CAFB0397 	>>  smlal temp_h,pol2,temp_l,q
+ 140              	>  montgomery_mul_32 pol3,zeta0,qinv,q,temp_h,temp_l
+ 140 0570 88FB0B98 	>>  smull temp_h,pol3,pol3,zeta0
+ 140 0574 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 140 0578 CAFB0398 	>>  smlal temp_h,pol3,temp_l,q
+ 140              	>  addSub2 pol0,pol2,pol1,pol3
+ 140 057c 3D44     	>>  add pol0,pol2
+ 140 057e 4644     	>>  add pol1,pol3
+ 140 0580 A5EB4707 	>>  sub.w pol2,pol0,pol2,lsl#1
+ 140 0584 A6EB4808 	>>  sub.w pol3,pol1,pol3,lsl#1
+ 140              	> 
+ 140              	>  montgomery_mul_32 pol1,zeta1,qinv,q,temp_h,temp_l
+ 140 0588 86FB0C96 	>>  smull temp_h,pol1,pol1,zeta1
+ 140 058c 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 140 0590 CAFB0396 	>>  smlal temp_h,pol1,temp_l,q
+ 140              	>  montgomery_mul_32 pol3,zeta2,qinv,q,temp_h,temp_l
+ 140 0594 88FB0E98 	>>  smull temp_h,pol3,pol3,zeta2
+ 140 0598 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 140 059c CAFB0398 	>>  smlal temp_h,pol3,temp_l,q
+ 140              	>  addSub2 pol0,pol1,pol2,pol3
+ 140 05a0 3544     	>>  add pol0,pol1
+ 140 05a2 4744     	>>  add pol2,pol3
+ 140 05a4 A5EB4606 	>>  sub.w pol1,pol0,pol1,lsl#1
+ 140 05a8 A7EB4808 	>>  sub.w pol3,pol2,pol3,lsl#1
+ 141              	
+ 142 05ac C0F80460 	      str.w pol1, [ptr_p, #4]
+ 143 05b0 C0F80870 	      str.w pol2, [ptr_p, #8]
+ 144 05b4 C0F80C80 	      str.w pol3, [ptr_p, #12]
+ 145 05b8 40F8105B 	      str pol0, [ptr_p], #16
+ 146              	
+ 147 05bc B4EB000F 	      cmp.w cntr, ptr_p
+ 148 05c0 7FF4C2AF 	      bne.w 1b
+ 149              	
+ 150              	    //restore registers
+ 151 05c4 BDE8F08F 	    pop {R4-R11, PC}
+ 152              	
+ 153              	    //unbind aliases
+ 154              	    .unreq ptr_p
+ 155              	    .unreq ptr_zeta
+ 156              	    .unreq qinv
+ 157              	    .unreq q
+ 158              	    .unreq cntr
+ 159              	    .unreq pol0
+ 160              	    .unreq pol1
+ 161              	    .unreq pol2
+ 162              	    .unreq pol3
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 15
+
+
+ 163              	    .unreq temp_h
+ 164              	    .unreq temp_l
+ 165              	    .unreq zeta0
+ 166              	    .unreq zeta1
+ 167              	    .unreq zeta2
+ 168              	
+ 169 05c8 00000000 	.ltorg
+ 170              	// ##############################
+ 171              	// ##########  NTT^-1  ##########
+ 172              	// ##############################
+ 173              	
+ 174              	//void pqcrystals_dilithium_invntt_tomont(int32_t p[N]);
+ 175              	.global pqcrystals_dilithium_invntt_tomont
+ 176              	.type pqcrystals_dilithium_invntt_tomont,%function
+ 177              	.align 2
+ 178              	pqcrystals_dilithium_invntt_tomont:
+ 179              	  //bind aliases
+ 180              	  ptr_p     .req R0
+ 181              	  ptr_zeta  .req R1
+ 182              	  zeta      .req R1
+ 183              	  qinv      .req R2
+ 184              	  q         .req R3
+ 185              	  cntr      .req R4
+ 186              	  pol4      .req R4
+ 187              	  pol0      .req R5
+ 188              	  pol1      .req R6
+ 189              	  pol2      .req R7
+ 190              	  pol3      .req R8
+ 191              	  temp_h    .req R9
+ 192              	  temp_l    .req R10
+ 193              	  zeta0     .req R11
+ 194              	  zeta1     .req R12
+ 195              	  zeta2     .req R14
+ 196              	  pol5     .req R11
+ 197              	  pol6     .req R12
+ 198              	  pol7     .req R14
+ 199              	
+ 200              	  //preserve registers
+ 201 05cc 2DE9F04F 	  push {R4-R11, R14}
+ 202              	    
+ 203              	  //load constants, ptr
+ 204 05d0 DFF82824 	  ldr.w qinv, inv_ntt_asm_smull_qinv  //-qinv_signed
+ 205 05d4 DFF82834 	  ldr.w q, inv_ntt_asm_smull_q
+ 206              	
+ 207              	  //stage 1 - 3
+ 208              	  .equ distance, 16
+ 209              	  .equ strincr, 32
+ 210              	
+ 211 05d8 DFF82814 	  ldr ptr_zeta, =#zetas_new332inv
+ 212 05dc B1EC071A 	  vldm ptr_zeta!, {s2-s8} 
+ 213 05e0 00EE101A 	  vmov s0, ptr_zeta
+ 214              	  
+ 215 05e4 00F5806A 	  add.w temp_l, ptr_p, #32*strincr // 32 iterations
+ 216 05e8 04EE90AA 	  vmov s9, temp_l
+ 217              	  1:
+ 218 05ec D0F81040 	    ldr.w pol4, [ptr_p, #4*distance/4]
+ 219 05f0 D0F81460 	    ldr.w pol1, [ptr_p, #5*distance/4]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 16
+
+
+ 220 05f4 D0F818C0 	    ldr.w pol6, [ptr_p, #6*distance/4]
+ 221 05f8 D0F81C80 	    ldr.w pol3, [ptr_p, #7*distance/4]
+ 222              	    _3_layer_inv_butterfly_light_fast_first pol0, pol1, pol2, pol3, pol4, pol5, pol6, pol7, s2, s3,
+ 222              	>  addSub2 pol4,pol1,pol6,pol3
+ 222 05fc 3444     	>>  add pol4,pol1
+ 222 05fe C444     	>>  add pol6,pol3
+ 222 0600 A4EB4606 	>>  sub.w pol1,pol4,pol1,lsl#1
+ 222 0604 ACEB4808 	>>  sub.w pol3,pol6,pol3,lsl#1
+ 222              	>  addSub1 pol4,pol6
+ 222 0608 04EB0C04 	>>  add.w pol4,pol6
+ 222 060c A4EB4C0C 	>>  sub.w pol6,pol4,pol6,lsl#1
+ 222              	> 
+ 222 0610 13EE109A 	>  vmov.w temp_h,s6
+ 222 0614 14EE10AA 	>  vmov.w temp_l,s8
+ 222              	> 
+ 222 0618 86FB095B 	>  smull.w pol0,pol5,pol1,temp_h
+ 222 061c C8FB0A5B 	>  smlal.w pol0,pol5,pol3,temp_l
+ 222 0620 05FB02F1 	>  mul.w zeta,pol0,qinv
+ 222 0624 C1FB035B 	>  smlal.w pol0,pol5,zeta,q
+ 222              	> 
+ 222 0628 86FB0A7E 	>  smull.w pol2,pol7,pol1,temp_l
+ 222 062c C8FB097E 	>  smlal.w pol2,pol7,pol3,temp_h
+ 222 0630 07FB02F1 	>  mul.w zeta,pol2,qinv
+ 222 0634 C1FB037E 	>  smlal.w pol2,pol7,zeta,q
+ 223              	    
+ 224 0638 D0F80050 	    ldr.w pol0, [ptr_p]
+ 225 063c D0F80460 	    ldr.w pol1, [ptr_p, #1*distance/4]
+ 226 0640 D0F80870 	    ldr.w pol2, [ptr_p, #2*distance/4]
+ 227 0644 D0F80C80 	    ldr.w pol3, [ptr_p, #3*distance/4]
+ 228              	    _3_layer_inv_butterfly_light_fast_second pol0, pol1, pol2, pol3, pol4, pol5, pol6, pol7, s2, s3
+ 228              	>  addSub2 pol0,pol1,pol2,pol3
+ 228 0648 3544     	>>  add pol0,pol1
+ 228 064a 4744     	>>  add pol2,pol3
+ 228 064c A5EB4606 	>>  sub.w pol1,pol0,pol1,lsl#1
+ 228 0650 A7EB4808 	>>  sub.w pol3,pol2,pol3,lsl#1
+ 228              	> 
+ 228 0654 12EE101A 	>  vmov.w zeta,s4
+ 228              	>  montgomery_mul_32 pol3,zeta,qinv,q,temp_h,temp_l
+ 228 0658 88FB0198 	>>  smull temp_h,pol3,pol3,zeta
+ 228 065c 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 228 0660 CAFB0398 	>>  smlal temp_h,pol3,temp_l,q
+ 228              	>  addSub2 pol0,pol2,pol1,pol3
+ 228 0664 3D44     	>>  add pol0,pol2
+ 228 0666 4644     	>>  add pol1,pol3
+ 228 0668 A5EB4707 	>>  sub.w pol2,pol0,pol2,lsl#1
+ 228 066c A6EB4808 	>>  sub.w pol3,pol1,pol3,lsl#1
+ 228              	> 
+ 228              	>  montgomery_mul_32 pol6,zeta,qinv,q,temp_h,temp_l
+ 228 0670 8CFB019C 	>>  smull temp_h,pol6,pol6,zeta
+ 228 0674 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 228 0678 CAFB039C 	>>  smlal temp_h,pol6,temp_l,q
+ 228              	> 
+ 228              	>  addSub4 pol0,pol4,pol1,pol5,pol2,pol6,pol3,pol7
+ 228 067c 2544     	>>  add pol0,pol4
+ 228 067e 5E44     	>>  add pol1,pol5
+ 228 0680 6744     	>>  add pol2,pol6
+ 228 0682 F044     	>>  add pol3,pol7
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 17
+
+
+ 228 0684 A5EB4404 	>>  sub.w pol4,pol0,pol4,lsl#1
+ 228 0688 A6EB4B0B 	>>  sub.w pol5,pol1,pol5,lsl#1
+ 228 068c A7EB4C0C 	>>  sub.w pol6,pol2,pol6,lsl#1
+ 228 0690 A8EB4E0E 	>>  sub.w pol7,pol3,pol7,lsl#1
+ 229              	    
+ 230 0694 C0F80460 	    str.w pol1, [ptr_p, #1*distance/4]
+ 231 0698 C0F80870 	    str.w pol2, [ptr_p, #2*distance/4]
+ 232 069c C0F80C80 	    str.w pol3, [ptr_p, #3*distance/4]
+ 233 06a0 C0F81040 	    str.w pol4, [ptr_p, #4*distance/4]
+ 234 06a4 C0F814B0 	    str.w pol5, [ptr_p, #5*distance/4]
+ 235 06a8 C0F818C0 	    str.w pol6, [ptr_p, #6*distance/4]
+ 236 06ac C0F81CE0 	    str.w pol7, [ptr_p, #7*distance/4]
+ 237 06b0 40F8205B 	    str.w pol0, [ptr_p], #strincr
+ 238 06b4 14EE90AA 	    vmov temp_l, s9
+ 239 06b8 B0EB0A0F 	    cmp.w ptr_p, temp_l
+ 240 06bc 7FF496AF 	  bne.w 1b
+ 241              	  
+ 242 06c0 A0F58060 	  sub ptr_p, #32*strincr
+ 243              	
+ 244              	  // stage 4 - 6  
+ 245              	  .equ distance, 128
+ 246              	  .equ strincr, 256
+ 247              	  
+ 248              	  // iteration 0
+ 249 06c4 40F2040A 	  movw temp_l, #4
+ 250 06c8 00F5806A 	  add.w temp_l, ptr_p, #4*256 // 4 iterations
+ 251 06cc 05EE10AA 	  vmov s10, temp_l
+ 252              		
+ 253 06d0 10EE101A 	  vmov ptr_zeta, s0
+ 254 06d4 B1EC071A 	  vldm ptr_zeta!, {s2-s8}
+ 255 06d8 00EE101A 	  vmov s0, ptr_zeta
+ 256              	
+ 257              	  2:
+ 258 06dc D0F88040 	    ldr.w pol4, [ptr_p, #4*distance/4]
+ 259 06e0 D0F8A060 	    ldr.w pol1, [ptr_p, #5*distance/4]
+ 260 06e4 D0F8C0C0 	    ldr.w pol6, [ptr_p, #6*distance/4]
+ 261 06e8 D0F8E080 	    ldr.w pol3, [ptr_p, #7*distance/4]
+ 262              	    _3_layer_inv_butterfly_light_fast_first pol0, pol1, pol2, pol3, pol4, pol5, pol6, pol7, s2, s3,
+ 262              	>  addSub2 pol4,pol1,pol6,pol3
+ 262 06ec 3444     	>>  add pol4,pol1
+ 262 06ee C444     	>>  add pol6,pol3
+ 262 06f0 A4EB4606 	>>  sub.w pol1,pol4,pol1,lsl#1
+ 262 06f4 ACEB4808 	>>  sub.w pol3,pol6,pol3,lsl#1
+ 262              	>  addSub1 pol4,pol6
+ 262 06f8 04EB0C04 	>>  add.w pol4,pol6
+ 262 06fc A4EB4C0C 	>>  sub.w pol6,pol4,pol6,lsl#1
+ 262              	> 
+ 262 0700 13EE109A 	>  vmov.w temp_h,s6
+ 262 0704 14EE10AA 	>  vmov.w temp_l,s8
+ 262              	> 
+ 262 0708 86FB095B 	>  smull.w pol0,pol5,pol1,temp_h
+ 262 070c C8FB0A5B 	>  smlal.w pol0,pol5,pol3,temp_l
+ 262 0710 05FB02F1 	>  mul.w zeta,pol0,qinv
+ 262 0714 C1FB035B 	>  smlal.w pol0,pol5,zeta,q
+ 262              	> 
+ 262 0718 86FB0A7E 	>  smull.w pol2,pol7,pol1,temp_l
+ 262 071c C8FB097E 	>  smlal.w pol2,pol7,pol3,temp_h
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 18
+
+
+ 262 0720 07FB02F1 	>  mul.w zeta,pol2,qinv
+ 262 0724 C1FB037E 	>  smlal.w pol2,pol7,zeta,q
+ 263              	    
+ 264 0728 D0F80050 	    ldr.w pol0, [ptr_p]
+ 265 072c D0F82060 	    ldr.w pol1, [ptr_p, #1*distance/4]
+ 266 0730 D0F84070 	    ldr.w pol2, [ptr_p, #2*distance/4]
+ 267 0734 D0F86080 	    ldr.w pol3, [ptr_p, #3*distance/4]
+ 268              	    _3_layer_inv_butterfly_light_fast_second pol0, pol1, pol2, pol3, pol4, pol5, pol6, pol7, s2, s3
+ 268              	>  addSub2 pol0,pol1,pol2,pol3
+ 268 0738 3544     	>>  add pol0,pol1
+ 268 073a 4744     	>>  add pol2,pol3
+ 268 073c A5EB4606 	>>  sub.w pol1,pol0,pol1,lsl#1
+ 268 0740 A7EB4808 	>>  sub.w pol3,pol2,pol3,lsl#1
+ 268              	> 
+ 268 0744 12EE101A 	>  vmov.w zeta,s4
+ 268              	>  montgomery_mul_32 pol3,zeta,qinv,q,temp_h,temp_l
+ 268 0748 88FB0198 	>>  smull temp_h,pol3,pol3,zeta
+ 268 074c 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 268 0750 CAFB0398 	>>  smlal temp_h,pol3,temp_l,q
+ 268              	>  addSub2 pol0,pol2,pol1,pol3
+ 268 0754 3D44     	>>  add pol0,pol2
+ 268 0756 4644     	>>  add pol1,pol3
+ 268 0758 A5EB4707 	>>  sub.w pol2,pol0,pol2,lsl#1
+ 268 075c A6EB4808 	>>  sub.w pol3,pol1,pol3,lsl#1
+ 268              	> 
+ 268              	>  montgomery_mul_32 pol6,zeta,qinv,q,temp_h,temp_l
+ 268 0760 8CFB019C 	>>  smull temp_h,pol6,pol6,zeta
+ 268 0764 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 268 0768 CAFB039C 	>>  smlal temp_h,pol6,temp_l,q
+ 268              	> 
+ 268              	>  addSub4 pol0,pol4,pol1,pol5,pol2,pol6,pol3,pol7
+ 268 076c 2544     	>>  add pol0,pol4
+ 268 076e 5E44     	>>  add pol1,pol5
+ 268 0770 6744     	>>  add pol2,pol6
+ 268 0772 F044     	>>  add pol3,pol7
+ 268 0774 A5EB4404 	>>  sub.w pol4,pol0,pol4,lsl#1
+ 268 0778 A6EB4B0B 	>>  sub.w pol5,pol1,pol5,lsl#1
+ 268 077c A7EB4C0C 	>>  sub.w pol6,pol2,pol6,lsl#1
+ 268 0780 A8EB4E0E 	>>  sub.w pol7,pol3,pol7,lsl#1
+ 269              	
+ 270 0784 C0F82060 	    str.w pol1, [ptr_p, #1*distance/4]
+ 271 0788 C0F84070 	    str.w pol2, [ptr_p, #2*distance/4]
+ 272 078c C0F86080 	    str.w pol3, [ptr_p, #3*distance/4]
+ 273 0790 C0F88040 	    str.w pol4, [ptr_p, #4*distance/4]
+ 274 0794 C0F8A0B0 	    str.w pol5, [ptr_p, #5*distance/4]
+ 275 0798 C0F8C0C0 	    str.w pol6, [ptr_p, #6*distance/4]
+ 276 079c C0F8E0E0 	    str.w pol7, [ptr_p, #7*distance/4]
+ 277 07a0 C0F80050 	    str.w pol0, [ptr_p]
+ 278 07a4 00F58070 	    add.w ptr_p, #strincr
+ 279              	
+ 280 07a8 15EE10AA 	    vmov temp_l, s10
+ 281 07ac BAEB000F 	    cmp.w temp_l, ptr_p
+ 282 07b0 7FF494AF 	  bne.w 2b
+ 283              	
+ 284 07b4 A0F57F70 	  sub.w ptr_p, #4*256-4
+ 285              	
+ 286              	  // iteration 1-7
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 19
+
+
+ 287 07b8 00F11C0A 	  add.w temp_l, ptr_p, #7*4 // 7 iterations
+ 288 07bc 04EE90AA 	  vmov s9, temp_l
+ 289              	  1:
+ 290 07c0 00F5806A 	    add.w temp_l, ptr_p, #4*strincr // 4 iterations
+ 291 07c4 05EE10AA 	    vmov s10, temp_l
+ 292              	
+ 293 07c8 10EE101A 		  vmov ptr_zeta, s0
+ 294 07cc B1EC071A 	    vldm ptr_zeta!, {s2-s8}
+ 295 07d0 00EE101A 	    vmov s0, ptr_zeta
+ 296              	    2:     
+ 297 07d4 D0F80050 		    ldr.w pol0, [ptr_p]
+ 298 07d8 D0F82060 		    ldr.w pol1, [ptr_p, #1*distance/4]
+ 299 07dc D0F84070 		    ldr.w pol2, [ptr_p, #2*distance/4]
+ 300 07e0 D0F86080 		    ldr.w pol3, [ptr_p, #3*distance/4]
+ 301 07e4 D0F88040 		    ldr.w pol4, [ptr_p, #4*distance/4]
+ 302 07e8 D0F8A0B0 		    ldr.w pol5, [ptr_p, #5*distance/4]
+ 303 07ec D0F8C0C0 		    ldr.w pol6, [ptr_p, #6*distance/4]
+ 304 07f0 D0F8E0E0 		    ldr.w pol7, [ptr_p, #7*distance/4]
+ 305              	
+ 306              		    _3_layer_inv_CT_32 pol0, pol1, pol2, pol3, pol4, pol5, pol6, pol7, s2, s3, s4, s5, s6, s7, s8,
+ 306 07f4 11EE101A 	>  vmov.w zeta,s2
+ 306              	>  montgomery_mul_32 pol1,zeta,qinv,q,temp_h,temp_l
+ 306 07f8 86FB0196 	>>  smull temp_h,pol1,pol1,zeta
+ 306 07fc 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 306 0800 CAFB0396 	>>  smlal temp_h,pol1,temp_l,q
+ 306              	>  montgomery_mul_32 pol3,zeta,qinv,q,temp_h,temp_l
+ 306 0804 88FB0198 	>>  smull temp_h,pol3,pol3,zeta
+ 306 0808 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 306 080c CAFB0398 	>>  smlal temp_h,pol3,temp_l,q
+ 306              	>  montgomery_mul_32 pol5,zeta,qinv,q,temp_h,temp_l
+ 306 0810 8BFB019B 	>>  smull temp_h,pol5,pol5,zeta
+ 306 0814 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 306 0818 CAFB039B 	>>  smlal temp_h,pol5,temp_l,q
+ 306              	>  montgomery_mul_32 pol7,zeta,qinv,q,temp_h,temp_l
+ 306 081c 8EFB019E 	>>  smull temp_h,pol7,pol7,zeta
+ 306 0820 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 306 0824 CAFB039E 	>>  smlal temp_h,pol7,temp_l,q
+ 306              	>  addSub4 pol0,pol1,pol2,pol3,pol4,pol5,pol6,pol7
+ 306 0828 3544     	>>  add pol0,pol1
+ 306 082a 4744     	>>  add pol2,pol3
+ 306 082c 5C44     	>>  add pol4,pol5
+ 306 082e F444     	>>  add pol6,pol7
+ 306 0830 A5EB4606 	>>  sub.w pol1,pol0,pol1,lsl#1
+ 306 0834 A7EB4808 	>>  sub.w pol3,pol2,pol3,lsl#1
+ 306 0838 A4EB4B0B 	>>  sub.w pol5,pol4,pol5,lsl#1
+ 306 083c ACEB4E0E 	>>  sub.w pol7,pol6,pol7,lsl#1
+ 306              	> 
+ 306 0840 11EE901A 	>  vmov.w zeta,s3
+ 306              	>  montgomery_mul_32 pol2,zeta,qinv,q,temp_h,temp_l
+ 306 0844 87FB0197 	>>  smull temp_h,pol2,pol2,zeta
+ 306 0848 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 306 084c CAFB0397 	>>  smlal temp_h,pol2,temp_l,q
+ 306              	>  montgomery_mul_32 pol6,zeta,qinv,q,temp_h,temp_l
+ 306 0850 8CFB019C 	>>  smull temp_h,pol6,pol6,zeta
+ 306 0854 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 306 0858 CAFB039C 	>>  smlal temp_h,pol6,temp_l,q
+ 306 085c 12EE101A 	>  vmov.w zeta,s4
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 20
+
+
+ 306              	>  montgomery_mul_32 pol3,zeta,qinv,q,temp_h,temp_l
+ 306 0860 88FB0198 	>>  smull temp_h,pol3,pol3,zeta
+ 306 0864 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 306 0868 CAFB0398 	>>  smlal temp_h,pol3,temp_l,q
+ 306              	>  montgomery_mul_32 pol7,zeta,qinv,q,temp_h,temp_l
+ 306 086c 8EFB019E 	>>  smull temp_h,pol7,pol7,zeta
+ 306 0870 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 306 0874 CAFB039E 	>>  smlal temp_h,pol7,temp_l,q
+ 306              	>  addSub4 pol0,pol2,pol1,pol3,pol4,pol6,pol5,pol7
+ 306 0878 3D44     	>>  add pol0,pol2
+ 306 087a 4644     	>>  add pol1,pol3
+ 306 087c 6444     	>>  add pol4,pol6
+ 306 087e F344     	>>  add pol5,pol7
+ 306 0880 A5EB4707 	>>  sub.w pol2,pol0,pol2,lsl#1
+ 306 0884 A6EB4808 	>>  sub.w pol3,pol1,pol3,lsl#1
+ 306 0888 A4EB4C0C 	>>  sub.w pol6,pol4,pol6,lsl#1
+ 306 088c ABEB4E0E 	>>  sub.w pol7,pol5,pol7,lsl#1
+ 306              	> 
+ 306 0890 12EE901A 	>  vmov.w zeta,s5
+ 306              	>  montgomery_mul_32 pol4,zeta,qinv,q,temp_h,temp_l
+ 306 0894 84FB0194 	>>  smull temp_h,pol4,pol4,zeta
+ 306 0898 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 306 089c CAFB0394 	>>  smlal temp_h,pol4,temp_l,q
+ 306 08a0 13EE101A 	>  vmov.w zeta,s6
+ 306              	>  montgomery_mul_32 pol5,zeta,qinv,q,temp_h,temp_l
+ 306 08a4 8BFB019B 	>>  smull temp_h,pol5,pol5,zeta
+ 306 08a8 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 306 08ac CAFB039B 	>>  smlal temp_h,pol5,temp_l,q
+ 306 08b0 13EE901A 	>  vmov.w zeta,s7
+ 306              	>  montgomery_mul_32 pol6,zeta,qinv,q,temp_h,temp_l
+ 306 08b4 8CFB019C 	>>  smull temp_h,pol6,pol6,zeta
+ 306 08b8 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 306 08bc CAFB039C 	>>  smlal temp_h,pol6,temp_l,q
+ 306 08c0 14EE101A 	>  vmov.w zeta,s8
+ 306              	>  montgomery_mul_32 pol7,zeta,qinv,q,temp_h,temp_l
+ 306 08c4 8EFB019E 	>>  smull temp_h,pol7,pol7,zeta
+ 306 08c8 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 306 08cc CAFB039E 	>>  smlal temp_h,pol7,temp_l,q
+ 306              	>  addSub4 pol0,pol4,pol1,pol5,pol2,pol6,pol3,pol7
+ 306 08d0 2544     	>>  add pol0,pol4
+ 306 08d2 5E44     	>>  add pol1,pol5
+ 306 08d4 6744     	>>  add pol2,pol6
+ 306 08d6 F044     	>>  add pol3,pol7
+ 306 08d8 A5EB4404 	>>  sub.w pol4,pol0,pol4,lsl#1
+ 306 08dc A6EB4B0B 	>>  sub.w pol5,pol1,pol5,lsl#1
+ 306 08e0 A7EB4C0C 	>>  sub.w pol6,pol2,pol6,lsl#1
+ 306 08e4 A8EB4E0E 	>>  sub.w pol7,pol3,pol7,lsl#1
+ 307              	
+ 308 08e8 C0F82060 		    str.w pol1, [ptr_p, #1*distance/4]
+ 309 08ec C0F84070 		    str.w pol2, [ptr_p, #2*distance/4]
+ 310 08f0 C0F86080 		    str.w pol3, [ptr_p, #3*distance/4]
+ 311 08f4 C0F88040 		    str.w pol4, [ptr_p, #4*distance/4]
+ 312 08f8 C0F8A0B0 		    str.w pol5, [ptr_p, #5*distance/4]
+ 313 08fc C0F8C0C0 		    str.w pol6, [ptr_p, #6*distance/4]
+ 314 0900 C0F8E0E0 		    str.w pol7, [ptr_p, #7*distance/4]
+ 315 0904 C0F80050 		    str.w pol0, [ptr_p]
+ 316 0908 00F58070 		    add.w ptr_p, #strincr
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 21
+
+
+ 317              	
+ 318 090c 15EE10AA 	      vmov temp_l, s10
+ 319 0910 B0EB0A0F 	      cmp.w ptr_p, temp_l
+ 320 0914 7FF45EAF 	    bne 2b
+ 321 0918 A0F57F70 	    sub.w ptr_p, #4*strincr-4
+ 322              	
+ 323 091c 14EE90AA 	    vmov temp_l, s9
+ 324 0920 BAEB000F 	    cmp.w temp_l, ptr_p
+ 325 0924 7FF44CAF 	  bne 1b
+ 326              	  
+ 327 0928 A0F12000 	  sub ptr_p, #8*4
+ 328 092c 10EE101A 	  vmov ptr_zeta, s0
+ 329              	  
+ 330              	  //stage 7 and 8
+ 331              	  .equ strincr, 4
+ 332              	
+ 333 0930 00F58074 	  add.w cntr, ptr_p, #64*strincr // 64 iterations 
+ 334 0934 04EE904A 	  vmov s9, cntr
+ 335              	  1:
+ 336 0938 D1F804C0 	    ldr.w zeta1, [ptr_zeta, #4]
+ 337 093c D1F808E0 	    ldr.w zeta2, [ptr_zeta, #8]
+ 338 0940 51F80CBB 	    ldr zeta0, [ptr_zeta], #12
+ 339 0944 D0F80050 	    ldr.w pol0, [ptr_p]
+ 340 0948 D0F80061 	    ldr.w pol1, [ptr_p, #256]
+ 341 094c D0F80072 	    ldr.w pol2, [ptr_p, #512]
+ 342 0950 D0F80083 	    ldr.w pol3, [ptr_p, #768]
+ 343              	
+ 344              	    _2_layer_inv_CT_32 pol0, pol1, pol2, pol3, zeta0, zeta1, zeta2, qinv, q, temp_h, temp_l
+ 344              	>  montgomery_mul_32 pol1,zeta0,qinv,q,temp_h,temp_l
+ 344 0954 86FB0B96 	>>  smull temp_h,pol1,pol1,zeta0
+ 344 0958 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 344 095c CAFB0396 	>>  smlal temp_h,pol1,temp_l,q
+ 344              	>  montgomery_mul_32 pol3,zeta0,qinv,q,temp_h,temp_l
+ 344 0960 88FB0B98 	>>  smull temp_h,pol3,pol3,zeta0
+ 344 0964 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 344 0968 CAFB0398 	>>  smlal temp_h,pol3,temp_l,q
+ 344              	>  addSub2 pol0,pol1,pol2,pol3
+ 344 096c 3544     	>>  add pol0,pol1
+ 344 096e 4744     	>>  add pol2,pol3
+ 344 0970 A5EB4606 	>>  sub.w pol1,pol0,pol1,lsl#1
+ 344 0974 A7EB4808 	>>  sub.w pol3,pol2,pol3,lsl#1
+ 344              	> 
+ 344              	>  montgomery_mul_32 pol2,zeta1,qinv,q,temp_h,temp_l
+ 344 0978 87FB0C97 	>>  smull temp_h,pol2,pol2,zeta1
+ 344 097c 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 344 0980 CAFB0397 	>>  smlal temp_h,pol2,temp_l,q
+ 344              	>  montgomery_mul_32 pol3,zeta2,qinv,q,temp_h,temp_l
+ 344 0984 88FB0E98 	>>  smull temp_h,pol3,pol3,zeta2
+ 344 0988 09FB02FA 	>>  mul temp_l,temp_h,qinv
+ 344 098c CAFB0398 	>>  smlal temp_h,pol3,temp_l,q
+ 344              	>  addSub2 pol0,pol2,pol1,pol3
+ 344 0990 3D44     	>>  add pol0,pol2
+ 344 0992 4644     	>>  add pol1,pol3
+ 344 0994 A5EB4707 	>>  sub.w pol2,pol0,pol2,lsl#1
+ 344 0998 A6EB4808 	>>  sub.w pol3,pol1,pol3,lsl#1
+ 345              	
+ 346 099c D1F804C0 	    ldr.w zeta1, [ptr_zeta, #4]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 22
+
+
+ 347 09a0 D1F808E0 	    ldr.w zeta2, [ptr_zeta, #8]
+ 348 09a4 D1F80CB0 	    ldr.w zeta0, [ptr_zeta, #12]
+ 349 09a8 51F8104B 	    ldr.w cntr, [ptr_zeta], #16
+ 350              	    montgomery_mul_32 pol0, cntr, qinv, q, temp_h, temp_l
+ 350 09ac 85FB0495 	>  smull temp_h,pol0,pol0,cntr
+ 350 09b0 09FB02FA 	>  mul temp_l,temp_h,qinv
+ 350 09b4 CAFB0395 	>  smlal temp_h,pol0,temp_l,q
+ 351              	    montgomery_mul_32 pol1, zeta1, qinv, q, temp_h, temp_l
+ 351 09b8 86FB0C96 	>  smull temp_h,pol1,pol1,zeta1
+ 351 09bc 09FB02FA 	>  mul temp_l,temp_h,qinv
+ 351 09c0 CAFB0396 	>  smlal temp_h,pol1,temp_l,q
+ 352              	    montgomery_mul_32 pol2, zeta2, qinv, q, temp_h, temp_l
+ 352 09c4 87FB0E97 	>  smull temp_h,pol2,pol2,zeta2
+ 352 09c8 09FB02FA 	>  mul temp_l,temp_h,qinv
+ 352 09cc CAFB0397 	>  smlal temp_h,pol2,temp_l,q
+ 353              	    montgomery_mul_32 pol3, zeta0, qinv, q, temp_h, temp_l
+ 353 09d0 88FB0B98 	>  smull temp_h,pol3,pol3,zeta0
+ 353 09d4 09FB02FA 	>  mul temp_l,temp_h,qinv
+ 353 09d8 CAFB0398 	>  smlal temp_h,pol3,temp_l,q
+ 354              	
+ 355 09dc C0F80061 	    str.w pol1, [ptr_p, #256]
+ 356 09e0 C0F80072 	    str.w pol2, [ptr_p, #512]
+ 357 09e4 C0F80083 	    str.w pol3, [ptr_p, #768]
+ 358 09e8 40F8045B 	    str pol0, [ptr_p], #strincr
+ 359              	
+ 360 09ec 14EE904A 	    vmov cntr, s9
+ 361 09f0 B4EB000F 	    cmp.w cntr, ptr_p
+ 362 09f4 7FF4A0AF 	    bne.w 1b
+ 363              	
+ 364              	    //restore registers
+ 365 09f8 BDE8F08F 	    pop {R4-R11, PC}
+ 366              	
+ 367              	    //unbind aliases
+ 368              	    .unreq ptr_p
+ 369              	    .unreq ptr_zeta
+ 370              	    .unreq qinv
+ 371              	    .unreq q
+ 372              	    .unreq cntr
+ 373              	    .unreq pol0
+ 374              	    .unreq pol1
+ 375              	    .unreq pol2
+ 376              	    .unreq pol3
+ 377              	    .unreq temp_h
+ 378              	    .unreq temp_l
+ 379              	    .unreq zeta0
+ 380              	    .unreq zeta1
+ 381              	    .unreq zeta2
+ 382              	
+ 383              	.align 2
+ 384              	inv_ntt_asm_smull_qinv:
+ 385 09fc FFDF7FFC 	.word 0xfc7fdfff
+ 386              	.align 2
+ 387              	inv_ntt_asm_smull_q:
+ 388 0a00 01E07F00 	.word 8380417
+ 389              	
+ 390              	.section .rodata
+ 391              	
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 23
+
+
+ 392              	.type zetas_new332, %object
+ 393              	.align 2
+ 394              	zetas_new332:
+ 395 0000 F7640000 	.word 25847, -2608894, -518909, 237124, -777960, -876248, 466468, 1826347, 2725464, 1024112, 270602
+ 395      0231D8FF 
+ 395      0315F8FF 
+ 395      449E0300 
+ 395      1821F4FF 
+ 396              	.size zetas_new332,.-zetas_new332
+ 397              	
+ 398              	.type zetas_new332inv, %object
+ 399              	.align 2
+ 400              	zetas_new332inv:
+ 401 03fc 00FE3F00 	.word 4193792, 4193792, -25847, 4193792, 518909, -25847, 2608894, 4193792, 4193792, -25847, 4193792
+ 401      00FE3F00 
+ 401      099BFFFF 
+ 401      00FE3F00 
+ 401      FDEA0700 
+ 402              	.size zetas_new332inv,.-zetas_new332inv
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBK14Ht.s 			page 24
+
+
+DEFINED SYMBOLS
+               ntt.S:9      .text:00000000 $t
+               ntt.S:19     .text:00000004 pqcrystals_dilithium_ntt
+               ntt.S:384    .text:000009fc inv_ntt_asm_smull_qinv
+               ntt.S:387    .text:00000a00 inv_ntt_asm_smull_q
+               ntt.S:49     *ABS*:00000080 distance
+               ntt.S:50     *ABS*:00000004 strincr
+               ntt.S:394    .rodata:00000000 zetas_new332
+               ntt.S:169    .text:000005c8 $d
+               ntt.S:178    .text:000005cc pqcrystals_dilithium_invntt_tomont
+               ntt.S:177    .text:000005cc $t
+               ntt.S:400    .rodata:000003fc zetas_new332inv
+               ntt.S:385    .text:000009fc $d
+               ntt.S:388    .text:00000a00 $d
+               ntt.S:393    .rodata:00000000 $d
+               ntt.S:402    .text:00000a04 $d
+
+NO UNDEFINED SYMBOLS

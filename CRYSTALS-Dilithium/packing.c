@@ -174,7 +174,7 @@ void pack_sig(uint8_t sig[CRYPTO_BYTES],
 
   k = 0;
   for(i = 0; i < K; ++i) {
-    for(j = 0; j < N; ++j)
+    for(j = 0; j < N1; ++j)
       if(h->vec[i].coeffs[j] != 0)
         sig[k++] = j;
 
@@ -211,7 +211,7 @@ void pack_sig_h(unsigned char sig[CRYPTO_BYTES],
   sig += L*POLYZ_PACKEDBYTES;
 
   // Encode h
-  for (unsigned int j = 0; j < N; j++) {
+  for (unsigned int j = 0; j < N1; j++) {
       if (h_elem->coeffs[j] != 0) {
           sig[*hints_written] = (uint8_t)j;
           (*hints_written)++;
@@ -261,7 +261,7 @@ int unpack_sig(uint8_t c[SEEDBYTES],
   /* Decode h */
   k = 0;
   for(i = 0; i < K; ++i) {
-    for(j = 0; j < N; ++j)
+    for(j = 0; j < N1; ++j)
       h->vec[i].coeffs[j] = 0;
 
     if(sig[OMEGA + i] < k || sig[OMEGA + i] > OMEGA)

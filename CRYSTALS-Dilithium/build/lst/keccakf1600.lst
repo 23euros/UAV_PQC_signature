@@ -1,0 +1,3586 @@
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 1
+
+
+   1              	# 0 "keccakf1600.S"
+   2              	# 1 "C:\\ChibiStudio\\workspace_user\\CRYSTALS-Dilithium//"
+   0              	
+   0              	
+   0              	
+   1              	@
+   2              	@ Implementation by the Keccak, Keyak and Ketje Teams, namely, Guido Bertoni,
+   3              	@ Joan Daemen, Michaël Peeters, Gilles Van Assche and Ronny Van Keer, hereby
+   4              	@ denoted as "the implementer".
+   5              	@
+   6              	@ For more information, feedback or questions, please refer to our websites:
+   7              	@ http://keccak.noekeon.org/
+   8              	@ http://keyak.noekeon.org/
+   9              	@ http://ketje.noekeon.org/
+  10              	@
+  11              	@ To the extent possible under law, the implementer has waived all copyright
+  12              	@ and related or neighboring rights to the source code in this file.
+  13              	@ http://creativecommons.org/publicdomain/zero/1.0/
+  14              	@
+  15              	
+  16              	@ WARNING: These functions work only on little endian CPU with@ ARMv7m architecture (ARM Cortex-M3,
+  17              	
+  18              	
+  19              		.thumb
+  20              		.syntax unified
+  21              	.text
+  22              	
+  23              		@ Credit: Henry S. Warren, Hacker's Delight, Addison-Wesley, 2002
+  24              	.macro	toBitInterleaving	x0,x1,s0,s1,t,over
+  25              	
+  26              		and		\t,\x0,#0x55555555
+  27              		orr		\t,\t,\t, LSR #1
+  28              		and		\t,\t,#0x33333333
+  29              		orr		\t,\t,\t, LSR #2
+  30              		and		\t,\t,#0x0F0F0F0F
+  31              		orr		\t,\t,\t, LSR #4
+  32              		and		\t,\t,#0x00FF00FF
+  33              		bfi		\t,\t,#8, #8
+  34              		.if \over != 0
+  35              		lsr		\s0,\t, #8
+  36              		.else
+  37              		eor		\s0,\s0,\t, LSR #8
+  38              		.endif
+  39              	
+  40              		and		\t,\x1,#0x55555555
+  41              		orr		\t,\t,\t, LSR #1
+  42              		and		\t,\t,#0x33333333
+  43              		orr		\t,\t,\t, LSR #2
+  44              		and		\t,\t,#0x0F0F0F0F
+  45              		orr		\t,\t,\t, LSR #4
+  46              		and		\t,\t,#0x00FF00FF
+  47              		orr		\t,\t,\t, LSR #8
+  48              		eor		\s0,\s0,\t, LSL #16
+  49              	
+  50              		and		\t,\x0,#0xAAAAAAAA
+  51              		orr		\t,\t,\t, LSL #1
+  52              		and		\t,\t,#0xCCCCCCCC
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 2
+
+
+  53              		orr		\t,\t,\t, LSL #2
+  54              		and		\t,\t,#0xF0F0F0F0
+  55              		orr		\t,\t,\t, LSL #4
+  56              		and		\t,\t,#0xFF00FF00
+  57              		orr		\t,\t,\t, LSL #8
+  58              		.if \over != 0
+  59              		lsr		\s1,\t, #16
+  60              		.else
+  61              		eor		\s1,\s1,\t, LSR #16
+  62              		.endif
+  63              	
+  64              		and		\t,\x1,#0xAAAAAAAA
+  65              		orr		\t,\t,\t, LSL #1
+  66              		and		\t,\t,#0xCCCCCCCC
+  67              		orr		\t,\t,\t, LSL #2
+  68              		and		\t,\t,#0xF0F0F0F0
+  69              		orr		\t,\t,\t, LSL #4
+  70              		and		\t,\t,#0xFF00FF00
+  71              		orr		\t,\t,\t, LSL #8
+  72              		bfc		\t, #0, #16
+  73              		eors	\s1,\s1,\t
+  74              		.endm
+  75              	
+  76              		@ Credit: Henry S. Warren, Hacker's Delight, Addison-Wesley, 2002
+  77              	.macro	fromBitInterleaving		x0, x1, t
+  78              	
+  79              		movs	\t, \x0					@ t = x0@
+  80              		bfi		\x0, \x1, #16, #16		@ x0 = (x0 & 0x0000FFFF) | (x1 << 16)@
+  81              		bfc		\x1, #0, #16			@	x1 = (t >> 16) | (x1 & 0xFFFF0000)@
+  82              		orr		\x1, \x1, \t, LSR #16
+  83              	
+  84              	    eor		\t, \x0, \x0, LSR #8    @ t = (x0 ^ (x0 >>  8)) & 0x0000FF00UL@  x0 = x0 ^ t ^ (t <<  8)@
+  85              		and		\t, #0x0000FF00
+  86              	    eors	\x0, \x0, \t
+  87              	    eor		\x0, \x0, \t, LSL #8
+  88              	
+  89              	    eor		\t, \x0, \x0, LSR #4	@ t = (x0 ^ (x0 >>  4)) & 0x00F000F0UL@  x0 = x0 ^ t ^ (t <<  4)@
+  90              		and		\t, #0x00F000F0
+  91              	    eors	\x0, \x0, \t
+  92              	    eor		\x0, \x0, \t, LSL #4
+  93              	
+  94              	    eor		\t, \x0, \x0, LSR #2	@ t = (x0 ^ (x0 >>  2)) & 0x0C0C0C0CUL@  x0 = x0 ^ t ^ (t <<  2)@
+  95              		and		\t, #0x0C0C0C0C
+  96              	    eors	\x0, \x0, \t
+  97              	    eor		\x0, \x0, \t, LSL #2
+  98              	
+  99              	    eor		\t, \x0, \x0, LSR #1	@ t = (x0 ^ (x0 >>  1)) & 0x22222222UL@  x0 = x0 ^ t ^ (t <<  1)@
+ 100              		and		\t, #0x22222222
+ 101              	    eors	\x0, \x0, \t
+ 102              	    eor		\x0, \x0, \t, LSL #1
+ 103              	
+ 104              	    eor		\t, \x1, \x1, LSR #8    @ t = (x1 ^ (x1 >>  8)) & 0x0000FF00UL@  x1 = x1 ^ t ^ (t <<  8)@
+ 105              		and		\t, #0x0000FF00
+ 106              	    eors	\x1, \x1, \t
+ 107              	    eor		\x1, \x1, \t, LSL #8
+ 108              	
+ 109              	    eor		\t, \x1, \x1, LSR #4	@ t = (x1 ^ (x1 >>  4)) & 0x00F000F0UL@  x1 = x1 ^ t ^ (t <<  4)@
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 3
+
+
+ 110              		and		\t, #0x00F000F0
+ 111              	    eors	\x1, \x1, \t
+ 112              	    eor		\x1, \x1, \t, LSL #4
+ 113              	
+ 114              	    eor		\t, \x1, \x1, LSR #2	@ t = (x1 ^ (x1 >>  2)) & 0x0C0C0C0CUL@  x1 = x1 ^ t ^ (t <<  2)@
+ 115              		and		\t, #0x0C0C0C0C
+ 116              	    eors	\x1, \x1, \t
+ 117              	    eor		\x1, \x1, \t, LSL #2
+ 118              	
+ 119              	    eor		\t, \x1, \x1, LSR #1	@ t = (x1 ^ (x1 >>  1)) & 0x22222222UL@  x1 = x1 ^ t ^ (t <<  1)@
+ 120              		and		\t, #0x22222222
+ 121              	    eors	\x1, \x1, \t
+ 122              	    eor		\x1, \x1, \t, LSL #1
+ 123              		.endm
+ 124              	
+ 125              	@	--- offsets in state
+ 126              	.equ Aba0, 0*4
+ 127              	.equ Aba1, 1*4
+ 128              	.equ Abe0, 2*4
+ 129              	.equ Abe1, 3*4
+ 130              	.equ Abi0, 4*4
+ 131              	.equ Abi1, 5*4
+ 132              	.equ Abo0, 6*4
+ 133              	.equ Abo1, 7*4
+ 134              	.equ Abu0, 8*4
+ 135              	.equ Abu1, 9*4
+ 136              	.equ Aga0, 10*4
+ 137              	.equ Aga1, 11*4
+ 138              	.equ Age0, 12*4
+ 139              	.equ Age1, 13*4
+ 140              	.equ Agi0, 14*4
+ 141              	.equ Agi1, 15*4
+ 142              	.equ Ago0, 16*4
+ 143              	.equ Ago1, 17*4
+ 144              	.equ Agu0, 18*4
+ 145              	.equ Agu1, 19*4
+ 146              	.equ Aka0, 20*4
+ 147              	.equ Aka1, 21*4
+ 148              	.equ Ake0, 22*4
+ 149              	.equ Ake1, 23*4
+ 150              	.equ Aki0, 24*4
+ 151              	.equ Aki1, 25*4
+ 152              	.equ Ako0, 26*4
+ 153              	.equ Ako1, 27*4
+ 154              	.equ Aku0, 28*4
+ 155              	.equ Aku1, 29*4
+ 156              	.equ Ama0, 30*4
+ 157              	.equ Ama1, 31*4
+ 158              	.equ Ame0, 32*4
+ 159              	.equ Ame1, 33*4
+ 160              	.equ Ami0, 34*4
+ 161              	.equ Ami1, 35*4
+ 162              	.equ Amo0, 36*4
+ 163              	.equ Amo1, 37*4
+ 164              	.equ Amu0, 38*4
+ 165              	.equ Amu1, 39*4
+ 166              	.equ Asa0, 40*4
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 4
+
+
+ 167              	.equ Asa1, 41*4
+ 168              	.equ Ase0, 42*4
+ 169              	.equ Ase1, 43*4
+ 170              	.equ Asi0, 44*4
+ 171              	.equ Asi1, 45*4
+ 172              	.equ Aso0, 46*4
+ 173              	.equ Aso1, 47*4
+ 174              	.equ Asu0, 48*4
+ 175              	.equ Asu1, 49*4
+ 176              	
+ 177              	@	--- offsets on stack
+ 178              	.equ mDa0, 0*4
+ 179              	.equ mDa1, 1*4
+ 180              	.equ mDo0, 2*4
+ 181              	.equ mDo1, 3*4
+ 182              	.equ mDi0, 4*4
+ 183              	.equ mRC	, 5*4
+ 184              	.equ mSize, 6*4
+ 185              	
+ 186              	
+ 187              	.macro	xor5		result,b,g,k,m,s
+ 188              	
+ 189              		ldr			\result, [r0, #\b]
+ 190              		ldr			r1, [r0, #\g]
+ 191              		eors		\result, \result, r1
+ 192              		ldr			r1, [r0, #\k]
+ 193              		eors		\result, \result, r1
+ 194              		ldr			r1, [r0, #\m]
+ 195              		eors		\result, \result, r1
+ 196              		ldr			r1, [r0, #\s]
+ 197              		eors		\result, \result, r1
+ 198              		.endm
+ 199              	
+ 200              	.macro	xorrol 		result, aa, bb
+ 201              	
+ 202              		eor			\result, \aa, \bb, ROR #31
+ 203              		.endm
+ 204              	
+ 205              	.macro	xandnot 	resofs, aa, bb, cc
+ 206              	
+ 207              		bic			r1, \cc, \bb
+ 208              		eors		r1, r1, \aa
+ 209              		str			r1, [r0, #\resofs]
+ 210              		.endm
+ 211              	
+ 212              	.macro	KeccakThetaRhoPiChiIota aA1, aDax, aA2, aDex, rot2, aA3, aDix, rot3, aA4, aDox, rot4, aA5, a
+ 213              		ldr		r3, [r0, #\aA1]
+ 214              		ldr		r4, [r0, #\aA2]
+ 215              		ldr		r5, [r0, #\aA3]
+ 216              		ldr		r6, [r0, #\aA4]
+ 217              		ldr		r7, [r0, #\aA5]
+ 218              		eors	r3, r3, \aDax
+ 219              		eors	r5, r5, \aDix
+ 220              		eors	r4, r4, \aDex
+ 221              		eors	r6, r6, \aDox
+ 222              		eors	r7, r7, \aDux
+ 223              		rors	r4, #32-\rot2
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 5
+
+
+ 224              		rors	r5, #32-\rot3
+ 225              		rors	r6, #32-\rot4
+ 226              		rors	r7, #32-\rot5
+ 227              	    xandnot \aA2, r4, r5, r6
+ 228              	    xandnot \aA3, r5, r6, r7
+ 229              	    xandnot \aA4, r6, r7, r3
+ 230              	    xandnot \aA5, r7, r3, r4
+ 231              		ldr		r1, [sp, #mRC]
+ 232              		bics	r5, r5, r4
+ 233              		ldr		r4, [r1, #\offset]
+ 234              		eors	r3, r3, r5
+ 235              		eors	r3, r3, r4
+ 236              		.if	\last == 1
+ 237              		ldr		r4, [r1, #32]!
+ 238              		str		r1, [sp, #mRC]
+ 239              		cmp		r4, #0xFF
+ 240              		.endif
+ 241              		str		r3, [r0, #\aA1]
+ 242              		.endm
+ 243              	
+ 244              	.macro	KeccakThetaRhoPiChi aB1, aA1, aDax, rot1, aB2, aA2, aDex, rot2, aB3, aA3, aDix, rot3, aB4, a
+ 245              		ldr		\aB1, [r0, #\aA1]
+ 246              		ldr		\aB2, [r0, #\aA2]
+ 247              		ldr		\aB3, [r0, #\aA3]
+ 248              		ldr		\aB4, [r0, #\aA4]
+ 249              		ldr		\aB5, [r0, #\aA5]
+ 250              		eors	\aB1, \aB1, \aDax
+ 251              		eors	\aB3, \aB3, \aDix
+ 252              		eors	\aB2, \aB2, \aDex
+ 253              		eors	\aB4, \aB4, \aDox
+ 254              		eors	\aB5, \aB5, \aDux
+ 255              		rors	\aB1, #32-\rot1
+ 256              		.if	\rot2 > 0
+ 257              		rors	\aB2, #32-\rot2
+ 258              		.endif
+ 259              		rors	\aB3, #32-\rot3
+ 260              		rors	\aB4, #32-\rot4
+ 261              		rors	\aB5, #32-\rot5
+ 262              		xandnot \aA1, r3, r4, r5
+ 263              	    xandnot \aA2, r4, r5, r6
+ 264              	    xandnot \aA3, r5, r6, r7
+ 265              	    xandnot \aA4, r6, r7, r3
+ 266              	    xandnot \aA5, r7, r3, r4
+ 267              		.endm
+ 268              	
+ 269              	.macro	KeccakRound0
+ 270              	
+ 271              		xor5        r3,  Abu0, Agu0, Aku0, Amu0, Asu0
+ 272              		xor5        r7, Abe1, Age1, Ake1, Ame1, Ase1
+ 273              		xorrol      r6, r3, r7
+ 274              		str			r6, [sp, #mDa0]
+ 275              		xor5        r6,  Abu1, Agu1, Aku1, Amu1, Asu1
+ 276              		xor5        lr, Abe0, Age0, Ake0, Ame0, Ase0
+ 277              		eors        r8, r6, lr
+ 278              		str			r8, [sp, #mDa1]
+ 279              	
+ 280              		xor5        r5,  Abi0, Agi0, Aki0, Ami0, Asi0
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 6
+
+
+ 281              		xorrol      r9, r5, r6
+ 282              		str			r9, [sp, #mDo0]
+ 283              		xor5        r4,  Abi1, Agi1, Aki1, Ami1, Asi1
+ 284              		eors		r3, r3, r4
+ 285              		str			r3, [sp, #mDo1]
+ 286              	
+ 287              		xor5        r3,  Aba0, Aga0, Aka0, Ama0, Asa0
+ 288              		xorrol      r10, r3, r4
+ 289              		xor5        r6,  Aba1, Aga1, Aka1, Ama1, Asa1
+ 290              		eors        r11, r6, r5
+ 291              	
+ 292              		xor5        r4,  Abo1, Ago1, Ako1, Amo1, Aso1
+ 293              		xorrol      r5, lr, r4
+ 294              		str			r5, [sp, #mDi0]
+ 295              		xor5        r5,  Abo0, Ago0, Ako0, Amo0, Aso0
+ 296              		eors        r2, r7, r5
+ 297              	
+ 298              		xorrol      r12, r5, r6
+ 299              		eors        lr, r4, r3
+ 300              	
+ 301              		KeccakThetaRhoPiChi r5, Aka1, r8,  2, r6, Ame1, r11, 23, r7, Asi1, r2, 31, r3, Abo0, r9, 14, r4, A
+ 302              		KeccakThetaRhoPiChi r7, Asa1, r8,  9, r3, Abe0, r10,  0, r4, Agi1, r2,  3, r5, Ako0, r9, 12, r6, A
+ 303              		ldr			r8, [sp, #mDa0]
+ 304              		KeccakThetaRhoPiChi r4, Aga0, r8, 18, r5, Ake0, r10,  5, r6, Ami1, r2,  8, r7, Aso0, r9, 28, r3, A
+ 305              		KeccakThetaRhoPiChi r6, Ama0, r8, 20, r7, Ase1, r11,  1, r3, Abi1, r2, 31, r4, Ago0, r9, 27, r5, A
+ 306              		ldr			r9, [sp, #mDo1]
+ 307              		KeccakThetaRhoPiChiIota  Aba0, r8,          Age0, r10, 22,      Aki1, r2, 22,      Amo1, r9, 11,  
+ 308              	
+ 309              		ldr			r2, [sp, #mDi0]
+ 310              		KeccakThetaRhoPiChi r5, Aka0, r8,  1, r6, Ame0, r10, 22, r7, Asi0, r2, 30, r3, Abo1, r9, 14, r4, A
+ 311              		KeccakThetaRhoPiChi r7, Asa0, r8,  9, r3, Abe1, r11,  1, r4, Agi0, r2,  3, r5, Ako1, r9, 13, r6, A
+ 312              		ldr			r8, [sp, #mDa1]
+ 313              		KeccakThetaRhoPiChi r4, Aga1, r8, 18, r5, Ake1, r11,  5, r6, Ami0, r2,  7, r7, Aso1, r9, 28, r3, A
+ 314              		KeccakThetaRhoPiChi r6, Ama1, r8, 21, r7, Ase0, r10,  1, r3, Abi0, r2, 31, r4, Ago1, r9, 28, r5, A
+ 315              		ldr			r9, [sp, #mDo0]
+ 316              		KeccakThetaRhoPiChiIota  Aba1, r8,          Age1, r11, 22,      Aki0, r2, 21,      Amo0, r9, 10,  
+ 317              		.endm
+ 318              	
+ 319              	.macro	KeccakRound1
+ 320              	
+ 321              		xor5        r3,  Asu0, Agu0, Amu0, Abu1, Aku1
+ 322              		xor5        r7, Age1, Ame0, Abe0, Ake1, Ase1
+ 323              		xorrol      r6, r3, r7
+ 324              		str			r6, [sp, #mDa0]
+ 325              		xor5        r6,  Asu1, Agu1, Amu1, Abu0, Aku0
+ 326              		xor5        lr, Age0, Ame1, Abe1, Ake0, Ase0
+ 327              		eors        r8, r6, lr
+ 328              		str			r8, [sp, #mDa1]
+ 329              	
+ 330              		xor5        r5,  Aki1, Asi1, Agi0, Ami1, Abi0
+ 331              		xorrol      r9, r5, r6
+ 332              		str			r9, [sp, #mDo0]
+ 333              		xor5        r4,  Aki0, Asi0, Agi1, Ami0, Abi1
+ 334              		eors		r3, r3, r4
+ 335              		str			r3, [sp, #mDo1]
+ 336              	
+ 337              		xor5        r3,  Aba0, Aka1, Asa0, Aga0, Ama1
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 7
+
+
+ 338              		xorrol      r10, r3, r4
+ 339              		xor5        r6,  Aba1, Aka0, Asa1, Aga1, Ama0
+ 340              		eors        r11, r6, r5
+ 341              	
+ 342              		xor5        r4,  Amo0, Abo1, Ako0, Aso1, Ago0
+ 343              		xorrol      r5, lr, r4
+ 344              		str			r5, [sp, #mDi0]
+ 345              		xor5        r5,  Amo1, Abo0, Ako1, Aso0, Ago1
+ 346              		eors        r2, r7, r5
+ 347              	
+ 348              		xorrol      r12, r5, r6
+ 349              		eors        lr, r4, r3
+ 350              	
+ 351              		KeccakThetaRhoPiChi r5, Asa1, r8,  2, r6, Ake1, r11, 23, r7, Abi1, r2, 31, r3, Amo1, r9, 14, r4, A
+ 352              		KeccakThetaRhoPiChi r7, Ama0, r8,  9, r3, Age0, r10,  0, r4, Asi0, r2,  3, r5, Ako1, r9, 12, r6, A
+ 353              		ldr			r8, [sp, #mDa0]
+ 354              		KeccakThetaRhoPiChi r4, Aka1, r8, 18, r5, Abe1, r10,  5, r6, Ami0, r2,  8, r7, Ago1, r9, 28, r3, A
+ 355              		KeccakThetaRhoPiChi r6, Aga0, r8, 20, r7, Ase1, r11,  1, r3, Aki0, r2, 31, r4, Abo0, r9, 27, r5, A
+ 356              		ldr			r9, [sp, #mDo1]
+ 357              		KeccakThetaRhoPiChiIota  Aba0, r8,          Ame1, r10, 22,      Agi1, r2, 22,      Aso1, r9, 11,  
+ 358              	
+ 359              		ldr			r2, [sp, #mDi0]
+ 360              		KeccakThetaRhoPiChi r5, Asa0, r8,  1, r6, Ake0, r10, 22, r7, Abi0, r2, 30, r3, Amo0, r9, 14, r4, A
+ 361              		KeccakThetaRhoPiChi r7, Ama1, r8,  9, r3, Age1, r11,  1, r4, Asi1, r2,  3, r5, Ako0, r9, 13, r6, A
+ 362              		ldr			r8, [sp, #mDa1]
+ 363              		KeccakThetaRhoPiChi r4, Aka0, r8, 18, r5, Abe0, r11,  5, r6, Ami1, r2,  7, r7, Ago0, r9, 28, r3, A
+ 364              		KeccakThetaRhoPiChi r6, Aga1, r8, 21, r7, Ase0, r10,  1, r3, Aki1, r2, 31, r4, Abo1, r9, 28, r5, A
+ 365              		ldr			r9, [sp, #mDo0]
+ 366              		KeccakThetaRhoPiChiIota  Aba1, r8,          Ame0, r11, 22,      Agi0, r2, 21,      Aso0, r9, 10,  
+ 367              		.endm
+ 368              	
+ 369              	.macro	KeccakRound2
+ 370              	
+ 371              		xor5        r3, Aku1, Agu0, Abu1, Asu1, Amu1
+ 372              		xor5        r7, Ame0, Ake0, Age0, Abe0, Ase1
+ 373              		xorrol      r6, r3, r7
+ 374              		str			r6, [sp, #mDa0]
+ 375              		xor5        r6,  Aku0, Agu1, Abu0, Asu0, Amu0
+ 376              		xor5        lr, Ame1, Ake1, Age1, Abe1, Ase0
+ 377              		eors        r8, r6, lr
+ 378              		str			r8, [sp, #mDa1]
+ 379              	
+ 380              		xor5        r5,  Agi1, Abi1, Asi1, Ami0, Aki1
+ 381              		xorrol      r9, r5, r6
+ 382              		str			r9, [sp, #mDo0]
+ 383              		xor5        r4,  Agi0, Abi0, Asi0, Ami1, Aki0
+ 384              		eors		r3, r3, r4
+ 385              		str			r3, [sp, #mDo1]
+ 386              	
+ 387              		xor5        r3,  Aba0, Asa1, Ama1, Aka1, Aga1
+ 388              		xorrol      r10, r3, r4
+ 389              		xor5        r6,  Aba1, Asa0, Ama0, Aka0, Aga0
+ 390              		eors        r11, r6, r5
+ 391              	
+ 392              		xor5        r4,  Aso0, Amo0, Ako1, Ago0, Abo0
+ 393              		xorrol      r5, lr, r4
+ 394              		str			r5, [sp, #mDi0]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 8
+
+
+ 395              		xor5        r5,  Aso1, Amo1, Ako0, Ago1, Abo1
+ 396              		eors        r2, r7, r5
+ 397              	
+ 398              		xorrol      r12, r5, r6
+ 399              		eors        lr, r4, r3
+ 400              	
+ 401              		KeccakThetaRhoPiChi r5, Ama0, r8,  2, r6, Abe0, r11, 23, r7, Aki0, r2, 31, r3, Aso1, r9, 14, r4, A
+ 402              		KeccakThetaRhoPiChi r7, Aga0, r8,  9, r3, Ame1, r10,  0, r4, Abi0, r2,  3, r5, Ako0, r9, 12, r6, A
+ 403              		ldr			r8, [sp, #mDa0]
+ 404              		KeccakThetaRhoPiChi r4, Asa1, r8, 18, r5, Age1, r10,  5, r6, Ami1, r2,  8, r7, Abo1, r9, 28, r3, A
+ 405              		KeccakThetaRhoPiChi r6, Aka1, r8, 20, r7, Ase1, r11,  1, r3, Agi0, r2, 31, r4, Amo1, r9, 27, r5, A
+ 406              		ldr			r9, [sp, #mDo1]
+ 407              		KeccakThetaRhoPiChiIota  Aba0, r8,          Ake1, r10, 22,      Asi0, r2, 22,      Ago0, r9, 11,  
+ 408              	
+ 409              		ldr			r2, [sp, #mDi0]
+ 410              		KeccakThetaRhoPiChi r5, Ama1, r8,  1, r6, Abe1, r10, 22, r7, Aki1, r2, 30, r3, Aso0, r9, 14, r4, A
+ 411              		KeccakThetaRhoPiChi r7, Aga1, r8,  9, r3, Ame0, r11,  1, r4, Abi1, r2,  3, r5, Ako1, r9, 13, r6, A
+ 412              		ldr			r8, [sp, #mDa1]
+ 413              		KeccakThetaRhoPiChi r4, Asa0, r8, 18, r5, Age0, r11,  5, r6, Ami0, r2,  7, r7, Abo0, r9, 28, r3, A
+ 414              		KeccakThetaRhoPiChi r6, Aka0, r8, 21, r7, Ase0, r10,  1, r3, Agi1, r2, 31, r4, Amo0, r9, 28, r5, A
+ 415              		ldr			r9, [sp, #mDo0]
+ 416              		KeccakThetaRhoPiChiIota  Aba1, r8,          Ake0, r11, 22,      Asi1, r2, 21,      Ago1, r9, 10,  
+ 417              		.endm
+ 418              	
+ 419              	.macro	KeccakRound3
+ 420              	
+ 421              		xor5        r3,  Amu1, Agu0, Asu1, Aku0, Abu0
+ 422              		xor5        r7, Ake0, Abe1, Ame1, Age0, Ase1
+ 423              		xorrol      r6, r3, r7
+ 424              		str			r6, [sp, #mDa0]
+ 425              		xor5        r6,  Amu0, Agu1, Asu0, Aku1, Abu1
+ 426              		xor5        lr, Ake1, Abe0, Ame0, Age1, Ase0
+ 427              		eors        r8, r6, lr
+ 428              		str			r8, [sp, #mDa1]
+ 429              	
+ 430              		xor5        r5,  Asi0, Aki0, Abi1, Ami1, Agi1
+ 431              		xorrol      r9, r5, r6
+ 432              		str			r9, [sp, #mDo0]
+ 433              		xor5        r4,  Asi1, Aki1, Abi0, Ami0, Agi0
+ 434              		eors		r3, r3, r4
+ 435              		str			r3, [sp, #mDo1]
+ 436              	
+ 437              		xor5        r3,  Aba0, Ama0, Aga1, Asa1, Aka0
+ 438              		xorrol      r10, r3, r4
+ 439              		xor5        r6,  Aba1, Ama1, Aga0, Asa0, Aka1
+ 440              		eors        r11, r6, r5
+ 441              	
+ 442              		xor5        r4,  Ago1, Aso0, Ako0, Abo0, Amo1
+ 443              		xorrol      r5, lr, r4
+ 444              		str			r5, [sp, #mDi0]
+ 445              		xor5        r5,  Ago0, Aso1, Ako1, Abo1, Amo0
+ 446              		eors        r2, r7, r5
+ 447              	
+ 448              		xorrol      r12, r5, r6
+ 449              		eors        lr, r4, r3
+ 450              	
+ 451              		KeccakThetaRhoPiChi r5, Aga0, r8,  2, r6, Age0, r11, 23, r7, Agi0, r2, 31, r3, Ago0, r9, 14, r4, A
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 9
+
+
+ 452              		KeccakThetaRhoPiChi r7, Aka1, r8,  9, r3, Ake1, r10,  0, r4, Aki1, r2,  3, r5, Ako1, r9, 12, r6, A
+ 453              		ldr			r8, [sp, #mDa0]
+ 454              		KeccakThetaRhoPiChi r4, Ama0, r8, 18, r5, Ame0, r10,  5, r6, Ami0, r2,  8, r7, Amo0, r9, 28, r3, A
+ 455              		KeccakThetaRhoPiChi r6, Asa1, r8, 20, r7, Ase1, r11,  1, r3, Asi1, r2, 31, r4, Aso1, r9, 27, r5, A
+ 456              		ldr			r9, [sp, #mDo1]
+ 457              		KeccakThetaRhoPiChiIota  Aba0, r8,          Abe0, r10, 22,      Abi0, r2, 22,      Abo0, r9, 11,  
+ 458              	
+ 459              		ldr			r2, [sp, #mDi0]
+ 460              		KeccakThetaRhoPiChi r5, Aga1, r8,  1, r6, Age1, r10, 22, r7, Agi1, r2, 30, r3, Ago1, r9, 14, r4, A
+ 461              		KeccakThetaRhoPiChi r7, Aka0, r8,  9, r3, Ake0, r11,  1, r4, Aki0, r2,  3, r5, Ako0, r9, 13, r6, A
+ 462              		ldr			r8, [sp, #mDa1]
+ 463              		KeccakThetaRhoPiChi r4, Ama1, r8, 18, r5, Ame1, r11,  5, r6, Ami1, r2,  7, r7, Amo1, r9, 28, r3, A
+ 464              		KeccakThetaRhoPiChi r6, Asa0, r8, 21, r7, Ase0, r10,  1, r3, Asi0, r2, 31, r4, Aso0, r9, 28, r5, A
+ 465              		ldr			r9, [sp, #mDo0]
+ 466              		KeccakThetaRhoPiChiIota  Aba1, r8,          Abe1, r11, 22,      Abi1, r2, 21,      Abo1, r9, 10,  
+ 467              		.endm
+ 468              	
+ 469              	
+ 470              	@----------------------------------------------------------------------------
+ 471              	@
+ 472              	@ void KeccakF1600_Initialize( void )
+ 473              	@
+ 474              	.align 8
+ 475              	.global   KeccakF1600_Initialize
+ 476              	KeccakF1600_Initialize:
+ 477 0000 7047     		bx		lr
+ 478              	
+ 479              	
+ 480              	
+ 481              	@----------------------------------------------------------------------------
+ 482              	@
+ 483              	@ void KeccakF1600_StateXORBytes(void *state, const unsigned char *data, unsigned int offset, unsig
+ 484              	@
+ 485 0002 00BFAFF3 	.align 8
+ 485      0080AFF3 
+ 485      0080AFF3 
+ 485      0080AFF3 
+ 485      0080AFF3 
+ 486              	.global   KeccakF1600_StateXORBytes
+ 487              	KeccakF1600_StateXORBytes:
+ 488 0100 03B3     		cbz		r3, KeccakF1600_StateXORBytes_Exit1
+ 489 0102 2DE9F041 		push	{r4 - r8, lr}							@ then
+ 490 0106 22F00704 		bic		r4, r2, #7								@ offset &= ~7
+ 491 010a 0019     		adds	r0, r0, r4								@ add whole lane offset to state pointer
+ 492 010c 12F00702 		ands	r2, r2, #7								@ offset &= 7 (part not lane aligned)
+ 493 0110 0BD0     		beq		KeccakF1600_StateXORBytes_CheckLanes	@ .if offset != 0
+ 494 0112 1C00     		movs	r4, r3									@ then, do remaining bytes in first lane
+ 495 0114 C2F10805 		rsb		r5, r2, #8								@ max size in lane = 8 - offset
+ 496 0118 AC42     		cmp		r4, r5
+ 497 011a 00DD     		ble		KeccakF1600_StateXORBytes_BytesAlign
+ 498 011c 2C00     		movs	r4, r5
+ 499              	KeccakF1600_StateXORBytes_BytesAlign:
+ 500 011e A3EB0408 		sub		r8, r3, r4								@ size left
+ 501 0122 2300     		movs	r3, r4
+ 502 0124 00F0ECF8 		bl		__KeccakF1600_StateXORBytesInLane
+ 503 0128 4346     		mov		r3, r8
+ 504              	KeccakF1600_StateXORBytes_CheckLanes:
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 10
+
+
+ 505 012a DA08     		lsrs	r2, r3, #3								@ .if length >= 8
+ 506 012c 04D0     		beq		KeccakF1600_StateXORBytes_Bytes
+ 507 012e 9846     		mov		r8, r3
+ 508 0130 00F066F8 		bl		__KeccakF1600_StateXORLanes
+ 509 0134 08F00703 		and		r3, r8, #7
+ 510              	KeccakF1600_StateXORBytes_Bytes:
+ 511 0138 13B1     		cbz		r3, KeccakF1600_StateXORBytes_Exit
+ 512 013a 0022     		movs	r2, #0
+ 513 013c 00F0E0F8 		bl		__KeccakF1600_StateXORBytesInLane
+ 514              	KeccakF1600_StateXORBytes_Exit:
+ 515 0140 BDE8F081 		pop		{r4 - r8, pc}
+ 516              	KeccakF1600_StateXORBytes_Exit1:
+ 517 0144 7047     		bx		lr
+ 518              	
+ 519              	
+ 520              	@----------------------------------------------------------------------------
+ 521              	@
+ 522              	@ __KeccakF1600_StateXORLanes
+ 523              	@
+ 524              	@ Input:
+ 525              	@  r0 state pointer
+ 526              	@  r1 data pointer
+ 527              	@  r2 laneCount
+ 528              	@
+ 529              	@ Output:
+ 530              	@  r0 state pointer next lane
+ 531              	@  r1 data pointer next byte to input
+ 532              	@
+ 533              	@ Changed: r2-r7
+ 534              	@
+ 535 0146 00BFAFF3 	.align 8
+ 535      0080AFF3 
+ 535      0080AFF3 
+ 535      0080AFF3 
+ 535      0080AFF3 
+ 536              	__KeccakF1600_StateXORLanes:
+ 537              	__KeccakF1600_StateXORLanes_LoopAligned:
+ 538 0200 51F8044B 		ldr		r4, [r1], #4
+ 539 0204 51F8045B 		ldr		r5, [r1], #4
+ 540 0208 D0E90067 		ldrd    r6, r7, [r0]
+ 541              		toBitInterleaving	r4, r5, r6, r7, r3, 0
+ 541              	> 
+ 541 020c 04F05533 	>  and r3,r4,#0x55555555
+ 541 0210 43EA5303 	>  orr r3,r3,r3,LSR#1
+ 541 0214 03F03333 	>  and r3,r3,#0x33333333
+ 541 0218 43EA9303 	>  orr r3,r3,r3,LSR#2
+ 541 021c 03F00F33 	>  and r3,r3,#0x0F0F0F0F
+ 541 0220 43EA1313 	>  orr r3,r3,r3,LSR#4
+ 541 0224 03F0FF13 	>  and r3,r3,#0x00FF00FF
+ 541 0228 63F30F23 	>  bfi r3,r3,#8,#8
+ 541              	>  .if 0!=0
+ 541              	>  lsr r6,r3,#8
+ 541              	>  .else
+ 541 022c 86EA1326 	>  eor r6,r6,r3,LSR#8
+ 541              	>  .endif
+ 541              	> 
+ 541 0230 05F05533 	>  and r3,r5,#0x55555555
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 11
+
+
+ 541 0234 43EA5303 	>  orr r3,r3,r3,LSR#1
+ 541 0238 03F03333 	>  and r3,r3,#0x33333333
+ 541 023c 43EA9303 	>  orr r3,r3,r3,LSR#2
+ 541 0240 03F00F33 	>  and r3,r3,#0x0F0F0F0F
+ 541 0244 43EA1313 	>  orr r3,r3,r3,LSR#4
+ 541 0248 03F0FF13 	>  and r3,r3,#0x00FF00FF
+ 541 024c 43EA1323 	>  orr r3,r3,r3,LSR#8
+ 541 0250 86EA0346 	>  eor r6,r6,r3,LSL#16
+ 541              	> 
+ 541 0254 04F0AA33 	>  and r3,r4,#0xAAAAAAAA
+ 541 0258 43EA4303 	>  orr r3,r3,r3,LSL#1
+ 541 025c 03F0CC33 	>  and r3,r3,#0xCCCCCCCC
+ 541 0260 43EA8303 	>  orr r3,r3,r3,LSL#2
+ 541 0264 03F0F033 	>  and r3,r3,#0xF0F0F0F0
+ 541 0268 43EA0313 	>  orr r3,r3,r3,LSL#4
+ 541 026c 03F0FF23 	>  and r3,r3,#0xFF00FF00
+ 541 0270 43EA0323 	>  orr r3,r3,r3,LSL#8
+ 541              	>  .if 0!=0
+ 541              	>  lsr r7,r3,#16
+ 541              	>  .else
+ 541 0274 87EA1347 	>  eor r7,r7,r3,LSR#16
+ 541              	>  .endif
+ 541              	> 
+ 541 0278 05F0AA33 	>  and r3,r5,#0xAAAAAAAA
+ 541 027c 43EA4303 	>  orr r3,r3,r3,LSL#1
+ 541 0280 03F0CC33 	>  and r3,r3,#0xCCCCCCCC
+ 541 0284 43EA8303 	>  orr r3,r3,r3,LSL#2
+ 541 0288 03F0F033 	>  and r3,r3,#0xF0F0F0F0
+ 541 028c 43EA0313 	>  orr r3,r3,r3,LSL#4
+ 541 0290 03F0FF23 	>  and r3,r3,#0xFF00FF00
+ 541 0294 43EA0323 	>  orr r3,r3,r3,LSL#8
+ 541 0298 6FF30F03 	>  bfc r3,#0,#16
+ 541 029c 5F40     	>  eors r7,r7,r3
+ 542 029e E0E80267 		strd	r6, r7, [r0], #8
+ 543 02a2 013A     		subs	r2, r2, #1
+ 544 02a4 ACD1     		bne		__KeccakF1600_StateXORLanes_LoopAligned
+ 545 02a6 7047     		bx		lr
+ 546              	
+ 547              	
+ 548              	@----------------------------------------------------------------------------
+ 549              	@
+ 550              	@ __KeccakF1600_StateXORBytesInLane
+ 551              	@
+ 552              	@ Input:
+ 553              	@  r0 state pointer
+ 554              	@  r1 data pointer
+ 555              	@  r2 offset in lane
+ 556              	@  r3 length
+ 557              	@
+ 558              	@ Output:
+ 559              	@  r0 state pointer next lane
+ 560              	@  r1 data pointer next byte to input
+ 561              	@
+ 562              	@  Changed: r2-r7
+ 563              	@
+ 564 02a8 AFF30080 	.align 8
+ 564      AFF30080 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 12
+
+
+ 564      AFF30080 
+ 564      AFF30080 
+ 564      AFF30080 
+ 565              	__KeccakF1600_StateXORBytesInLane:
+ 566 0300 0024     		movs	r4, #0
+ 567 0302 0025     		movs	r5, #0
+ 568 0304 30B4     		push	{ r4 - r5 }
+ 569 0306 6A44     		add		r2, r2, sp
+ 570              	__KeccakF1600_StateXORBytesInLane_Loop:
+ 571 0308 11F8015B 		ldrb	r5, [r1], #1
+ 572 030c 02F8015B 		strb	r5, [r2], #1
+ 573 0310 013B     		subs	r3, r3, #1
+ 574 0312 F9D1     		bne		__KeccakF1600_StateXORBytesInLane_Loop
+ 575 0314 30BC     		pop		{ r4 - r5 }
+ 576 0316 D0E90067 		ldrd    r6, r7, [r0]
+ 577              		toBitInterleaving	r4, r5, r6, r7, r3, 0
+ 577              	> 
+ 577 031a 04F05533 	>  and r3,r4,#0x55555555
+ 577 031e 43EA5303 	>  orr r3,r3,r3,LSR#1
+ 577 0322 03F03333 	>  and r3,r3,#0x33333333
+ 577 0326 43EA9303 	>  orr r3,r3,r3,LSR#2
+ 577 032a 03F00F33 	>  and r3,r3,#0x0F0F0F0F
+ 577 032e 43EA1313 	>  orr r3,r3,r3,LSR#4
+ 577 0332 03F0FF13 	>  and r3,r3,#0x00FF00FF
+ 577 0336 63F30F23 	>  bfi r3,r3,#8,#8
+ 577              	>  .if 0!=0
+ 577              	>  lsr r6,r3,#8
+ 577              	>  .else
+ 577 033a 86EA1326 	>  eor r6,r6,r3,LSR#8
+ 577              	>  .endif
+ 577              	> 
+ 577 033e 05F05533 	>  and r3,r5,#0x55555555
+ 577 0342 43EA5303 	>  orr r3,r3,r3,LSR#1
+ 577 0346 03F03333 	>  and r3,r3,#0x33333333
+ 577 034a 43EA9303 	>  orr r3,r3,r3,LSR#2
+ 577 034e 03F00F33 	>  and r3,r3,#0x0F0F0F0F
+ 577 0352 43EA1313 	>  orr r3,r3,r3,LSR#4
+ 577 0356 03F0FF13 	>  and r3,r3,#0x00FF00FF
+ 577 035a 43EA1323 	>  orr r3,r3,r3,LSR#8
+ 577 035e 86EA0346 	>  eor r6,r6,r3,LSL#16
+ 577              	> 
+ 577 0362 04F0AA33 	>  and r3,r4,#0xAAAAAAAA
+ 577 0366 43EA4303 	>  orr r3,r3,r3,LSL#1
+ 577 036a 03F0CC33 	>  and r3,r3,#0xCCCCCCCC
+ 577 036e 43EA8303 	>  orr r3,r3,r3,LSL#2
+ 577 0372 03F0F033 	>  and r3,r3,#0xF0F0F0F0
+ 577 0376 43EA0313 	>  orr r3,r3,r3,LSL#4
+ 577 037a 03F0FF23 	>  and r3,r3,#0xFF00FF00
+ 577 037e 43EA0323 	>  orr r3,r3,r3,LSL#8
+ 577              	>  .if 0!=0
+ 577              	>  lsr r7,r3,#16
+ 577              	>  .else
+ 577 0382 87EA1347 	>  eor r7,r7,r3,LSR#16
+ 577              	>  .endif
+ 577              	> 
+ 577 0386 05F0AA33 	>  and r3,r5,#0xAAAAAAAA
+ 577 038a 43EA4303 	>  orr r3,r3,r3,LSL#1
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 13
+
+
+ 577 038e 03F0CC33 	>  and r3,r3,#0xCCCCCCCC
+ 577 0392 43EA8303 	>  orr r3,r3,r3,LSL#2
+ 577 0396 03F0F033 	>  and r3,r3,#0xF0F0F0F0
+ 577 039a 43EA0313 	>  orr r3,r3,r3,LSL#4
+ 577 039e 03F0FF23 	>  and r3,r3,#0xFF00FF00
+ 577 03a2 43EA0323 	>  orr r3,r3,r3,LSL#8
+ 577 03a6 6FF30F03 	>  bfc r3,#0,#16
+ 577 03aa 5F40     	>  eors r7,r7,r3
+ 578 03ac E0E80267 		strd	r6, r7, [r0], #8
+ 579 03b0 7047     		bx		lr
+ 580              	
+ 581              	
+ 582              	
+ 583              	
+ 584              	@----------------------------------------------------------------------------
+ 585              	@
+ 586              	@ void KeccakF1600_StateExtractBytes(void *state, const unsigned char *data, unsigned int offset, u
+ 587              	@
+ 588 03b2 00BFAFF3 	.align 8
+ 588      0080AFF3 
+ 588      0080AFF3 
+ 588      00800000 
+ 588      00000000 
+ 589              	.global   KeccakF1600_StateExtractBytes
+ 590              	KeccakF1600_StateExtractBytes:
+ 591 0400 03B3     		cbz		r3, KeccakF1600_StateExtractBytes_Exit1	@ .if length != 0
+ 592 0402 2DE9F041 		push	{r4 - r8, lr}							@ then
+ 593 0406 22F00704 		bic		r4, r2, #7								@ offset &= ~7
+ 594 040a 0019     		adds	r0, r0, r4								@ add whole lane offset to state pointer
+ 595 040c 12F00702 		ands	r2, r2, #7								@ offset &= 7 (part not lane aligned)
+ 596 0410 0BD0     		beq		KeccakF1600_StateExtractBytes_CheckLanes	@ .if offset != 0
+ 597 0412 1C00     		movs	r4, r3									@ then, do remaining bytes in first lane
+ 598 0414 C2F10805 		rsb		r5, r2, #8								@ max size in lane = 8 - offset
+ 599 0418 AC42     		cmp		r4, r5
+ 600 041a 00DD     		ble		KeccakF1600_StateExtractBytes_BytesAlign
+ 601 041c 2C00     		movs	r4, r5
+ 602              	KeccakF1600_StateExtractBytes_BytesAlign:
+ 603 041e A3EB0408 		sub		r8, r3, r4								@ size left
+ 604 0422 2300     		movs	r3, r4
+ 605 0424 00F0ECF8 		bl		__KeccakF1600_StateExtractBytesInLane
+ 606 0428 4346     		mov		r3, r8
+ 607              	KeccakF1600_StateExtractBytes_CheckLanes:
+ 608 042a DA08     		lsrs	r2, r3, #3								@ .if length >= 8
+ 609 042c 04D0     		beq		KeccakF1600_StateExtractBytes_Bytes
+ 610 042e 9846     		mov		r8, r3
+ 611 0430 00F066F8 		bl		__KeccakF1600_StateExtractLanes
+ 612 0434 08F00703 		and		r3, r8, #7
+ 613              	KeccakF1600_StateExtractBytes_Bytes:
+ 614 0438 13B1     		cbz		r3, KeccakF1600_StateExtractBytes_Exit
+ 615 043a 0022     		movs	r2, #0
+ 616 043c 00F0E0F8 		bl		__KeccakF1600_StateExtractBytesInLane
+ 617              	KeccakF1600_StateExtractBytes_Exit:
+ 618 0440 BDE8F081 		pop		{r4 - r8, pc}
+ 619              	KeccakF1600_StateExtractBytes_Exit1:
+ 620 0444 7047     		bx		lr
+ 621              	
+ 622              	
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 14
+
+
+ 623              	@----------------------------------------------------------------------------
+ 624              	@
+ 625              	@ __KeccakF1600_StateExtractLanes
+ 626              	@
+ 627              	@ Input:
+ 628              	@  r0 state pointer
+ 629              	@  r1 data pointer
+ 630              	@  r2 laneCount
+ 631              	@
+ 632              	@ Output:
+ 633              	@  r0 state pointer next lane
+ 634              	@  r1 data pointer next byte to input
+ 635              	@
+ 636              	@ Changed: r2-r5
+ 637              	@
+ 638 0446 00BFAFF3 	.align 8
+ 638      0080AFF3 
+ 638      0080AFF3 
+ 638      0080AFF3 
+ 638      0080AFF3 
+ 639              	__KeccakF1600_StateExtractLanes:
+ 640              	__KeccakF1600_StateExtractLanes_LoopAligned:
+ 641 0500 F0E80245 		ldrd	r4, r5, [r0], #8
+ 642              		fromBitInterleaving	r4, r5, r3
+ 642              	> 
+ 642 0504 2300     	>  movs r3,r4
+ 642 0506 65F31F44 	>  bfi r4,r5,#16,#16
+ 642 050a 6FF30F05 	>  bfc r5,#0,#16
+ 642 050e 45EA1345 	>  orr r5,r5,r3,LSR#16
+ 642              	> 
+ 642 0512 84EA1423 	>  eor r3,r4,r4,LSR#8
+ 642 0516 03F47F43 	>  and r3,#0x0000FF00
+ 642 051a 5C40     	>  eors r4,r4,r3
+ 642 051c 84EA0324 	>  eor r4,r4,r3,LSL#8
+ 642              	> 
+ 642 0520 84EA1413 	>  eor r3,r4,r4,LSR#4
+ 642 0524 03F0F013 	>  and r3,#0x00F000F0
+ 642 0528 5C40     	>  eors r4,r4,r3
+ 642 052a 84EA0314 	>  eor r4,r4,r3,LSL#4
+ 642              	> 
+ 642 052e 84EA9403 	>  eor r3,r4,r4,LSR#2
+ 642 0532 03F00C33 	>  and r3,#0x0C0C0C0C
+ 642 0536 5C40     	>  eors r4,r4,r3
+ 642 0538 84EA8304 	>  eor r4,r4,r3,LSL#2
+ 642              	> 
+ 642 053c 84EA5403 	>  eor r3,r4,r4,LSR#1
+ 642 0540 03F02233 	>  and r3,#0x22222222
+ 642 0544 5C40     	>  eors r4,r4,r3
+ 642 0546 84EA4304 	>  eor r4,r4,r3,LSL#1
+ 642              	> 
+ 642 054a 85EA1523 	>  eor r3,r5,r5,LSR#8
+ 642 054e 03F47F43 	>  and r3,#0x0000FF00
+ 642 0552 5D40     	>  eors r5,r5,r3
+ 642 0554 85EA0325 	>  eor r5,r5,r3,LSL#8
+ 642              	> 
+ 642 0558 85EA1513 	>  eor r3,r5,r5,LSR#4
+ 642 055c 03F0F013 	>  and r3,#0x00F000F0
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 15
+
+
+ 642 0560 5D40     	>  eors r5,r5,r3
+ 642 0562 85EA0315 	>  eor r5,r5,r3,LSL#4
+ 642              	> 
+ 642 0566 85EA9503 	>  eor r3,r5,r5,LSR#2
+ 642 056a 03F00C33 	>  and r3,#0x0C0C0C0C
+ 642 056e 5D40     	>  eors r5,r5,r3
+ 642 0570 85EA8305 	>  eor r5,r5,r3,LSL#2
+ 642              	> 
+ 642 0574 85EA5503 	>  eor r3,r5,r5,LSR#1
+ 642 0578 03F02233 	>  and r3,#0x22222222
+ 642 057c 5D40     	>  eors r5,r5,r3
+ 642 057e 85EA4305 	>  eor r5,r5,r3,LSL#1
+ 643 0582 41F8044B 		str		r4, [r1], #4
+ 644 0586 013A     		subs	r2, r2, #1
+ 645 0588 41F8045B 		str		r5, [r1], #4
+ 646 058c B8D1     		bne		__KeccakF1600_StateExtractLanes_LoopAligned
+ 647 058e 7047     		bx		lr
+ 648              	
+ 649              	
+ 650              	@----------------------------------------------------------------------------
+ 651              	@
+ 652              	@ __KeccakF1600_StateExtractBytesInLane
+ 653              	@
+ 654              	@ Input:
+ 655              	@  r0 state pointer
+ 656              	@  r1 data pointer
+ 657              	@  r2 offset in lane
+ 658              	@  r3 length
+ 659              	@
+ 660              	@ Output:
+ 661              	@  r0 state pointer next lane
+ 662              	@  r1 data pointer next byte to input
+ 663              	@
+ 664              	@  Changed: r2-r6
+ 665              	@
+ 666 0590 AFF30080 	.align 8
+ 666      AFF30080 
+ 666      AFF30080 
+ 666      AFF30080 
+ 666      AFF30080 
+ 667              	__KeccakF1600_StateExtractBytesInLane:
+ 668 0600 F0E80245 		ldrd	r4, r5, [r0], #8
+ 669              		fromBitInterleaving	r4, r5, r6
+ 669              	> 
+ 669 0604 2600     	>  movs r6,r4
+ 669 0606 65F31F44 	>  bfi r4,r5,#16,#16
+ 669 060a 6FF30F05 	>  bfc r5,#0,#16
+ 669 060e 45EA1645 	>  orr r5,r5,r6,LSR#16
+ 669              	> 
+ 669 0612 84EA1426 	>  eor r6,r4,r4,LSR#8
+ 669 0616 06F47F46 	>  and r6,#0x0000FF00
+ 669 061a 7440     	>  eors r4,r4,r6
+ 669 061c 84EA0624 	>  eor r4,r4,r6,LSL#8
+ 669              	> 
+ 669 0620 84EA1416 	>  eor r6,r4,r4,LSR#4
+ 669 0624 06F0F016 	>  and r6,#0x00F000F0
+ 669 0628 7440     	>  eors r4,r4,r6
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 16
+
+
+ 669 062a 84EA0614 	>  eor r4,r4,r6,LSL#4
+ 669              	> 
+ 669 062e 84EA9406 	>  eor r6,r4,r4,LSR#2
+ 669 0632 06F00C36 	>  and r6,#0x0C0C0C0C
+ 669 0636 7440     	>  eors r4,r4,r6
+ 669 0638 84EA8604 	>  eor r4,r4,r6,LSL#2
+ 669              	> 
+ 669 063c 84EA5406 	>  eor r6,r4,r4,LSR#1
+ 669 0640 06F02236 	>  and r6,#0x22222222
+ 669 0644 7440     	>  eors r4,r4,r6
+ 669 0646 84EA4604 	>  eor r4,r4,r6,LSL#1
+ 669              	> 
+ 669 064a 85EA1526 	>  eor r6,r5,r5,LSR#8
+ 669 064e 06F47F46 	>  and r6,#0x0000FF00
+ 669 0652 7540     	>  eors r5,r5,r6
+ 669 0654 85EA0625 	>  eor r5,r5,r6,LSL#8
+ 669              	> 
+ 669 0658 85EA1516 	>  eor r6,r5,r5,LSR#4
+ 669 065c 06F0F016 	>  and r6,#0x00F000F0
+ 669 0660 7540     	>  eors r5,r5,r6
+ 669 0662 85EA0615 	>  eor r5,r5,r6,LSL#4
+ 669              	> 
+ 669 0666 85EA9506 	>  eor r6,r5,r5,LSR#2
+ 669 066a 06F00C36 	>  and r6,#0x0C0C0C0C
+ 669 066e 7540     	>  eors r5,r5,r6
+ 669 0670 85EA8605 	>  eor r5,r5,r6,LSL#2
+ 669              	> 
+ 669 0674 85EA5506 	>  eor r6,r5,r5,LSR#1
+ 669 0678 06F02236 	>  and r6,#0x22222222
+ 669 067c 7540     	>  eors r5,r5,r6
+ 669 067e 85EA4605 	>  eor r5,r5,r6,LSL#1
+ 670 0682 30B4     		push	{r4, r5}
+ 671 0684 6A44     		add		r2, sp, r2
+ 672              	__KeccakF1600_StateExtractBytesInLane_Loop:
+ 673 0686 12F8014B 		ldrb	r4, [r2], #1
+ 674 068a 013B     		subs	r3, r3, #1
+ 675 068c 01F8014B 		strb	r4, [r1], #1
+ 676 0690 F9D1     		bne		__KeccakF1600_StateExtractBytesInLane_Loop
+ 677 0692 02B0     		add		sp, #8
+ 678 0694 7047     		bx		lr
+ 679              	
+ 680              	
+ 681              	
+ 682 0696 00BFAFF3 	.align 8
+ 682      0080AFF3 
+ 682      0080AFF3 
+ 682      0080AFF3 
+ 682      0080AFF3 
+ 683              	KeccakF1600_StatePermute_RoundConstantsWithTerminator:
+ 684              		@		0			1
+ 685 0700 01000000 			.long 		0x00000001,	0x00000000
+ 685      00000000 
+ 686 0708 00000000 			.long 		0x00000000,	0x00000089
+ 686      89000000 
+ 687 0710 00000000 			.long 		0x00000000,	0x8000008b
+ 687      8B000080 
+ 688 0718 00000000 			.long 		0x00000000,	0x80008080
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 17
+
+
+ 688      80800080 
+ 689              	
+ 690 0720 01000000 			.long 		0x00000001,	0x0000008b
+ 690      8B000000 
+ 691 0728 01000000 			.long 		0x00000001,	0x00008000
+ 691      00800000 
+ 692 0730 01000000 			.long 		0x00000001,	0x80008088
+ 692      88800080 
+ 693 0738 01000000 			.long 		0x00000001,	0x80000082
+ 693      82000080 
+ 694              	
+ 695 0740 00000000 			.long 		0x00000000,	0x0000000b
+ 695      0B000000 
+ 696 0748 00000000 			.long 		0x00000000,	0x0000000a
+ 696      0A000000 
+ 697 0750 01000000 			.long 		0x00000001,	0x00008082
+ 697      82800000 
+ 698 0758 00000000 			.long 		0x00000000,	0x00008003
+ 698      03800000 
+ 699              	
+ 700 0760 01000000 			.long 		0x00000001,	0x0000808b
+ 700      8B800000 
+ 701 0768 01000000 			.long 		0x00000001,	0x8000000b
+ 701      0B000080 
+ 702 0770 01000000 			.long 		0x00000001,	0x8000008a
+ 702      8A000080 
+ 703 0778 01000000 			.long 		0x00000001,	0x80000081
+ 703      81000080 
+ 704              	
+ 705 0780 00000000 			.long 		0x00000000,	0x80000081
+ 705      81000080 
+ 706 0788 00000000 			.long 		0x00000000,	0x80000008
+ 706      08000080 
+ 707 0790 00000000 			.long 		0x00000000,	0x00000083
+ 707      83000000 
+ 708 0798 00000000 			.long 		0x00000000,	0x80008003
+ 708      03800080 
+ 709              	
+ 710 07a0 01000000 			.long 		0x00000001,	0x80008088
+ 710      88800080 
+ 711 07a8 00000000 			.long 		0x00000000,	0x80000088
+ 711      88000080 
+ 712 07b0 01000000 			.long 		0x00000001,	0x00008000
+ 712      00800000 
+ 713 07b8 00000000 			.long 		0x00000000,	0x80008082
+ 713      82800080 
+ 714              	
+ 715 07c0 FF000000 			.long 		0x000000FF	@terminator
+ 716              	
+ 717              	@----------------------------------------------------------------------------
+ 718              	@
+ 719              	@ void KeccakF1600_StatePermute( void *state )
+ 720              	@
+ 721 07c4 AFF30080 	.align 8
+ 721      AFF30080 
+ 721      AFF30080 
+ 721      AFF30080 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 18
+
+
+ 721      AFF30080 
+ 722              	.global   KeccakF1600_StatePermute
+ 723              	KeccakF1600_StatePermute:
+ 724 0800 AFF20411 		adr		r1, KeccakF1600_StatePermute_RoundConstantsWithTerminator
+ 725 0804 2DE9F05F 		push	{ r4 - r12, lr }
+ 726 0808 86B0     		sub		sp, #mSize
+ 727 080a 0591     		str		r1, [sp, #mRC]
+ 728              	KeccakF1600_StatePermute_RoundLoop:
+ 729              		KeccakRound0
+ 729              	> 
+ 729              	>  xor5 r3,Abu0,Agu0,Aku0,Amu0,Asu0
+ 729              	>> 
+ 729 080c 036A     	>>  ldr r3,[r0,#Abu0]
+ 729 080e 816C     	>>  ldr r1,[r0,#Agu0]
+ 729 0810 4B40     	>>  eors r3,r3,r1
+ 729 0812 016F     	>>  ldr r1,[r0,#Aku0]
+ 729 0814 4B40     	>>  eors r3,r3,r1
+ 729 0816 D0F89810 	>>  ldr r1,[r0,#Amu0]
+ 729 081a 4B40     	>>  eors r3,r3,r1
+ 729 081c D0F8C010 	>>  ldr r1,[r0,#Asu0]
+ 729 0820 4B40     	>>  eors r3,r3,r1
+ 729              	>  xor5 r7,Abe1,Age1,Ake1,Ame1,Ase1
+ 729              	>> 
+ 729 0822 C768     	>>  ldr r7,[r0,#Abe1]
+ 729 0824 416B     	>>  ldr r1,[r0,#Age1]
+ 729 0826 4F40     	>>  eors r7,r7,r1
+ 729 0828 C16D     	>>  ldr r1,[r0,#Ake1]
+ 729 082a 4F40     	>>  eors r7,r7,r1
+ 729 082c D0F88410 	>>  ldr r1,[r0,#Ame1]
+ 729 0830 4F40     	>>  eors r7,r7,r1
+ 729 0832 D0F8AC10 	>>  ldr r1,[r0,#Ase1]
+ 729 0836 4F40     	>>  eors r7,r7,r1
+ 729              	>  xorrol r6,r3,r7
+ 729              	>> 
+ 729 0838 83EAF776 	>>  eor r6,r3,r7,ROR#31
+ 729 083c 0096     	>  str r6,[sp,#mDa0]
+ 729              	>  xor5 r6,Abu1,Agu1,Aku1,Amu1,Asu1
+ 729              	>> 
+ 729 083e 466A     	>>  ldr r6,[r0,#Abu1]
+ 729 0840 C16C     	>>  ldr r1,[r0,#Agu1]
+ 729 0842 4E40     	>>  eors r6,r6,r1
+ 729 0844 416F     	>>  ldr r1,[r0,#Aku1]
+ 729 0846 4E40     	>>  eors r6,r6,r1
+ 729 0848 D0F89C10 	>>  ldr r1,[r0,#Amu1]
+ 729 084c 4E40     	>>  eors r6,r6,r1
+ 729 084e D0F8C410 	>>  ldr r1,[r0,#Asu1]
+ 729 0852 4E40     	>>  eors r6,r6,r1
+ 729              	>  xor5 lr,Abe0,Age0,Ake0,Ame0,Ase0
+ 729              	>> 
+ 729 0854 D0F808E0 	>>  ldr lr,[r0,#Abe0]
+ 729 0858 016B     	>>  ldr r1,[r0,#Age0]
+ 729 085a 9EEA010E 	>>  eors lr,lr,r1
+ 729 085e 816D     	>>  ldr r1,[r0,#Ake0]
+ 729 0860 9EEA010E 	>>  eors lr,lr,r1
+ 729 0864 D0F88010 	>>  ldr r1,[r0,#Ame0]
+ 729 0868 9EEA010E 	>>  eors lr,lr,r1
+ 729 086c D0F8A810 	>>  ldr r1,[r0,#Ase0]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 19
+
+
+ 729 0870 9EEA010E 	>>  eors lr,lr,r1
+ 729 0874 96EA0E08 	>  eors r8,r6,lr
+ 729 0878 CDF80480 	>  str r8,[sp,#mDa1]
+ 729              	> 
+ 729              	>  xor5 r5,Abi0,Agi0,Aki0,Ami0,Asi0
+ 729              	>> 
+ 729 087c 0569     	>>  ldr r5,[r0,#Abi0]
+ 729 087e 816B     	>>  ldr r1,[r0,#Agi0]
+ 729 0880 4D40     	>>  eors r5,r5,r1
+ 729 0882 016E     	>>  ldr r1,[r0,#Aki0]
+ 729 0884 4D40     	>>  eors r5,r5,r1
+ 729 0886 D0F88810 	>>  ldr r1,[r0,#Ami0]
+ 729 088a 4D40     	>>  eors r5,r5,r1
+ 729 088c D0F8B010 	>>  ldr r1,[r0,#Asi0]
+ 729 0890 4D40     	>>  eors r5,r5,r1
+ 729              	>  xorrol r9,r5,r6
+ 729              	>> 
+ 729 0892 85EAF679 	>>  eor r9,r5,r6,ROR#31
+ 729 0896 CDF80890 	>  str r9,[sp,#mDo0]
+ 729              	>  xor5 r4,Abi1,Agi1,Aki1,Ami1,Asi1
+ 729              	>> 
+ 729 089a 4469     	>>  ldr r4,[r0,#Abi1]
+ 729 089c C16B     	>>  ldr r1,[r0,#Agi1]
+ 729 089e 4C40     	>>  eors r4,r4,r1
+ 729 08a0 416E     	>>  ldr r1,[r0,#Aki1]
+ 729 08a2 4C40     	>>  eors r4,r4,r1
+ 729 08a4 D0F88C10 	>>  ldr r1,[r0,#Ami1]
+ 729 08a8 4C40     	>>  eors r4,r4,r1
+ 729 08aa D0F8B410 	>>  ldr r1,[r0,#Asi1]
+ 729 08ae 4C40     	>>  eors r4,r4,r1
+ 729 08b0 6340     	>  eors r3,r3,r4
+ 729 08b2 0393     	>  str r3,[sp,#mDo1]
+ 729              	> 
+ 729              	>  xor5 r3,Aba0,Aga0,Aka0,Ama0,Asa0
+ 729              	>> 
+ 729 08b4 0368     	>>  ldr r3,[r0,#Aba0]
+ 729 08b6 816A     	>>  ldr r1,[r0,#Aga0]
+ 729 08b8 4B40     	>>  eors r3,r3,r1
+ 729 08ba 016D     	>>  ldr r1,[r0,#Aka0]
+ 729 08bc 4B40     	>>  eors r3,r3,r1
+ 729 08be 816F     	>>  ldr r1,[r0,#Ama0]
+ 729 08c0 4B40     	>>  eors r3,r3,r1
+ 729 08c2 D0F8A010 	>>  ldr r1,[r0,#Asa0]
+ 729 08c6 4B40     	>>  eors r3,r3,r1
+ 729              	>  xorrol r10,r3,r4
+ 729              	>> 
+ 729 08c8 83EAF47A 	>>  eor r10,r3,r4,ROR#31
+ 729              	>  xor5 r6,Aba1,Aga1,Aka1,Ama1,Asa1
+ 729              	>> 
+ 729 08cc 4668     	>>  ldr r6,[r0,#Aba1]
+ 729 08ce C16A     	>>  ldr r1,[r0,#Aga1]
+ 729 08d0 4E40     	>>  eors r6,r6,r1
+ 729 08d2 416D     	>>  ldr r1,[r0,#Aka1]
+ 729 08d4 4E40     	>>  eors r6,r6,r1
+ 729 08d6 C16F     	>>  ldr r1,[r0,#Ama1]
+ 729 08d8 4E40     	>>  eors r6,r6,r1
+ 729 08da D0F8A410 	>>  ldr r1,[r0,#Asa1]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 20
+
+
+ 729 08de 4E40     	>>  eors r6,r6,r1
+ 729 08e0 96EA050B 	>  eors r11,r6,r5
+ 729              	> 
+ 729              	>  xor5 r4,Abo1,Ago1,Ako1,Amo1,Aso1
+ 729              	>> 
+ 729 08e4 C469     	>>  ldr r4,[r0,#Abo1]
+ 729 08e6 416C     	>>  ldr r1,[r0,#Ago1]
+ 729 08e8 4C40     	>>  eors r4,r4,r1
+ 729 08ea C16E     	>>  ldr r1,[r0,#Ako1]
+ 729 08ec 4C40     	>>  eors r4,r4,r1
+ 729 08ee D0F89410 	>>  ldr r1,[r0,#Amo1]
+ 729 08f2 4C40     	>>  eors r4,r4,r1
+ 729 08f4 D0F8BC10 	>>  ldr r1,[r0,#Aso1]
+ 729 08f8 4C40     	>>  eors r4,r4,r1
+ 729              	>  xorrol r5,lr,r4
+ 729              	>> 
+ 729 08fa 8EEAF475 	>>  eor r5,lr,r4,ROR#31
+ 729 08fe 0495     	>  str r5,[sp,#mDi0]
+ 729              	>  xor5 r5,Abo0,Ago0,Ako0,Amo0,Aso0
+ 729              	>> 
+ 729 0900 8569     	>>  ldr r5,[r0,#Abo0]
+ 729 0902 016C     	>>  ldr r1,[r0,#Ago0]
+ 729 0904 4D40     	>>  eors r5,r5,r1
+ 729 0906 816E     	>>  ldr r1,[r0,#Ako0]
+ 729 0908 4D40     	>>  eors r5,r5,r1
+ 729 090a D0F89010 	>>  ldr r1,[r0,#Amo0]
+ 729 090e 4D40     	>>  eors r5,r5,r1
+ 729 0910 D0F8B810 	>>  ldr r1,[r0,#Aso0]
+ 729 0914 4D40     	>>  eors r5,r5,r1
+ 729 0916 97EA0502 	>  eors r2,r7,r5
+ 729              	> 
+ 729              	>  xorrol r12,r5,r6
+ 729              	>> 
+ 729 091a 85EAF67C 	>>  eor r12,r5,r6,ROR#31
+ 729 091e 94EA030E 	>  eors lr,r4,r3
+ 729              	> 
+ 729              	>  KeccakThetaRhoPiChi r5,Aka1,r8,2,r6,Ame1,r11,23,r7,Asi1,r2,31,r3,Abo0,r9,14,r4,Agu0,r12,10
+ 729 0922 456D     	>>  ldr r5,[r0,#Aka1]
+ 729 0924 D0F88460 	>>  ldr r6,[r0,#Ame1]
+ 729 0928 D0F8B470 	>>  ldr r7,[r0,#Asi1]
+ 729 092c 8369     	>>  ldr r3,[r0,#Abo0]
+ 729 092e 846C     	>>  ldr r4,[r0,#Agu0]
+ 729 0930 95EA0805 	>>  eors r5,r5,r8
+ 729 0934 5740     	>>  eors r7,r7,r2
+ 729 0936 96EA0B06 	>>  eors r6,r6,r11
+ 729 093a 93EA0903 	>>  eors r3,r3,r9
+ 729 093e 94EA0C04 	>>  eors r4,r4,r12
+ 729 0942 5FEAB575 	>>  rors r5,#32-2
+ 729              	>>  .if 23>0
+ 729 0946 5FEA7626 	>>  rors r6,#32-23
+ 729              	>>  .endif
+ 729 094a 5FEA7707 	>>  rors r7,#32-31
+ 729 094e 5FEAB343 	>>  rors r3,#32-14
+ 729 0952 5FEAB454 	>>  rors r4,#32-10
+ 729              	>>  xandnot Aka1,r3,r4,r5
+ 729              	>>> 
+ 729 0956 25EA0401 	>>>  bic r1,r5,r4
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 21
+
+
+ 729 095a 5940     	>>>  eors r1,r1,r3
+ 729 095c 4165     	>>>  str r1,[r0,#Aka1]
+ 729              	>>  xandnot Ame1,r4,r5,r6
+ 729              	>>> 
+ 729 095e 26EA0501 	>>>  bic r1,r6,r5
+ 729 0962 6140     	>>>  eors r1,r1,r4
+ 729 0964 C0F88410 	>>>  str r1,[r0,#Ame1]
+ 729              	>>  xandnot Asi1,r5,r6,r7
+ 729              	>>> 
+ 729 0968 27EA0601 	>>>  bic r1,r7,r6
+ 729 096c 6940     	>>>  eors r1,r1,r5
+ 729 096e C0F8B410 	>>>  str r1,[r0,#Asi1]
+ 729              	>>  xandnot Abo0,r6,r7,r3
+ 729              	>>> 
+ 729 0972 23EA0701 	>>>  bic r1,r3,r7
+ 729 0976 7140     	>>>  eors r1,r1,r6
+ 729 0978 8161     	>>>  str r1,[r0,#Abo0]
+ 729              	>>  xandnot Agu0,r7,r3,r4
+ 729              	>>> 
+ 729 097a 24EA0301 	>>>  bic r1,r4,r3
+ 729 097e 7940     	>>>  eors r1,r1,r7
+ 729 0980 8164     	>>>  str r1,[r0,#Agu0]
+ 729              	>  KeccakThetaRhoPiChi r7,Asa1,r8,9,r3,Abe0,r10,0,r4,Agi1,r2,3,r5,Ako0,r9,12,r6,Amu1,lr,4
+ 729 0982 D0F8A470 	>>  ldr r7,[r0,#Asa1]
+ 729 0986 8368     	>>  ldr r3,[r0,#Abe0]
+ 729 0988 C46B     	>>  ldr r4,[r0,#Agi1]
+ 729 098a 856E     	>>  ldr r5,[r0,#Ako0]
+ 729 098c D0F89C60 	>>  ldr r6,[r0,#Amu1]
+ 729 0990 97EA0807 	>>  eors r7,r7,r8
+ 729 0994 5440     	>>  eors r4,r4,r2
+ 729 0996 93EA0A03 	>>  eors r3,r3,r10
+ 729 099a 95EA0905 	>>  eors r5,r5,r9
+ 729 099e 96EA0E06 	>>  eors r6,r6,lr
+ 729 09a2 5FEAF757 	>>  rors r7,#32-9
+ 729              	>>  .if 0>0
+ 729              	>>  rors r3,#32-0
+ 729              	>>  .endif
+ 729 09a6 5FEA7474 	>>  rors r4,#32-3
+ 729 09aa 5FEA3555 	>>  rors r5,#32-12
+ 729 09ae 5FEA3676 	>>  rors r6,#32-4
+ 729              	>>  xandnot Asa1,r3,r4,r5
+ 729              	>>> 
+ 729 09b2 25EA0401 	>>>  bic r1,r5,r4
+ 729 09b6 5940     	>>>  eors r1,r1,r3
+ 729 09b8 C0F8A410 	>>>  str r1,[r0,#Asa1]
+ 729              	>>  xandnot Abe0,r4,r5,r6
+ 729              	>>> 
+ 729 09bc 26EA0501 	>>>  bic r1,r6,r5
+ 729 09c0 6140     	>>>  eors r1,r1,r4
+ 729 09c2 8160     	>>>  str r1,[r0,#Abe0]
+ 729              	>>  xandnot Agi1,r5,r6,r7
+ 729              	>>> 
+ 729 09c4 27EA0601 	>>>  bic r1,r7,r6
+ 729 09c8 6940     	>>>  eors r1,r1,r5
+ 729 09ca C163     	>>>  str r1,[r0,#Agi1]
+ 729              	>>  xandnot Ako0,r6,r7,r3
+ 729              	>>> 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 22
+
+
+ 729 09cc 23EA0701 	>>>  bic r1,r3,r7
+ 729 09d0 7140     	>>>  eors r1,r1,r6
+ 729 09d2 8166     	>>>  str r1,[r0,#Ako0]
+ 729              	>>  xandnot Amu1,r7,r3,r4
+ 729              	>>> 
+ 729 09d4 24EA0301 	>>>  bic r1,r4,r3
+ 729 09d8 7940     	>>>  eors r1,r1,r7
+ 729 09da C0F89C10 	>>>  str r1,[r0,#Amu1]
+ 729 09de DDF80080 	>  ldr r8,[sp,#mDa0]
+ 729              	>  KeccakThetaRhoPiChi r4,Aga0,r8,18,r5,Ake0,r10,5,r6,Ami1,r2,8,r7,Aso0,r9,28,r3,Abu1,lr,14
+ 729 09e2 846A     	>>  ldr r4,[r0,#Aga0]
+ 729 09e4 856D     	>>  ldr r5,[r0,#Ake0]
+ 729 09e6 D0F88C60 	>>  ldr r6,[r0,#Ami1]
+ 729 09ea D0F8B870 	>>  ldr r7,[r0,#Aso0]
+ 729 09ee 436A     	>>  ldr r3,[r0,#Abu1]
+ 729 09f0 94EA0804 	>>  eors r4,r4,r8
+ 729 09f4 5640     	>>  eors r6,r6,r2
+ 729 09f6 95EA0A05 	>>  eors r5,r5,r10
+ 729 09fa 97EA0907 	>>  eors r7,r7,r9
+ 729 09fe 93EA0E03 	>>  eors r3,r3,lr
+ 729 0a02 5FEAB434 	>>  rors r4,#32-18
+ 729              	>>  .if 5>0
+ 729 0a06 5FEAF565 	>>  rors r5,#32-5
+ 729              	>>  .endif
+ 729 0a0a 5FEA3666 	>>  rors r6,#32-8
+ 729 0a0e 5FEA3717 	>>  rors r7,#32-28
+ 729 0a12 5FEAB343 	>>  rors r3,#32-14
+ 729              	>>  xandnot Aga0,r3,r4,r5
+ 729              	>>> 
+ 729 0a16 25EA0401 	>>>  bic r1,r5,r4
+ 729 0a1a 5940     	>>>  eors r1,r1,r3
+ 729 0a1c 8162     	>>>  str r1,[r0,#Aga0]
+ 729              	>>  xandnot Ake0,r4,r5,r6
+ 729              	>>> 
+ 729 0a1e 26EA0501 	>>>  bic r1,r6,r5
+ 729 0a22 6140     	>>>  eors r1,r1,r4
+ 729 0a24 8165     	>>>  str r1,[r0,#Ake0]
+ 729              	>>  xandnot Ami1,r5,r6,r7
+ 729              	>>> 
+ 729 0a26 27EA0601 	>>>  bic r1,r7,r6
+ 729 0a2a 6940     	>>>  eors r1,r1,r5
+ 729 0a2c C0F88C10 	>>>  str r1,[r0,#Ami1]
+ 729              	>>  xandnot Aso0,r6,r7,r3
+ 729              	>>> 
+ 729 0a30 23EA0701 	>>>  bic r1,r3,r7
+ 729 0a34 7140     	>>>  eors r1,r1,r6
+ 729 0a36 C0F8B810 	>>>  str r1,[r0,#Aso0]
+ 729              	>>  xandnot Abu1,r7,r3,r4
+ 729              	>>> 
+ 729 0a3a 24EA0301 	>>>  bic r1,r4,r3
+ 729 0a3e 7940     	>>>  eors r1,r1,r7
+ 729 0a40 4162     	>>>  str r1,[r0,#Abu1]
+ 729              	>  KeccakThetaRhoPiChi r6,Ama0,r8,20,r7,Ase1,r11,1,r3,Abi1,r2,31,r4,Ago0,r9,27,r5,Aku0,r12,19
+ 729 0a42 866F     	>>  ldr r6,[r0,#Ama0]
+ 729 0a44 D0F8AC70 	>>  ldr r7,[r0,#Ase1]
+ 729 0a48 4369     	>>  ldr r3,[r0,#Abi1]
+ 729 0a4a 046C     	>>  ldr r4,[r0,#Ago0]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 23
+
+
+ 729 0a4c 056F     	>>  ldr r5,[r0,#Aku0]
+ 729 0a4e 96EA0806 	>>  eors r6,r6,r8
+ 729 0a52 5340     	>>  eors r3,r3,r2
+ 729 0a54 97EA0B07 	>>  eors r7,r7,r11
+ 729 0a58 94EA0904 	>>  eors r4,r4,r9
+ 729 0a5c 95EA0C05 	>>  eors r5,r5,r12
+ 729 0a60 5FEA3636 	>>  rors r6,#32-20
+ 729              	>>  .if 1>0
+ 729 0a64 5FEAF777 	>>  rors r7,#32-1
+ 729              	>>  .endif
+ 729 0a68 5FEA7303 	>>  rors r3,#32-31
+ 729 0a6c 5FEA7414 	>>  rors r4,#32-27
+ 729 0a70 5FEA7535 	>>  rors r5,#32-19
+ 729              	>>  xandnot Ama0,r3,r4,r5
+ 729              	>>> 
+ 729 0a74 25EA0401 	>>>  bic r1,r5,r4
+ 729 0a78 5940     	>>>  eors r1,r1,r3
+ 729 0a7a 8167     	>>>  str r1,[r0,#Ama0]
+ 729              	>>  xandnot Ase1,r4,r5,r6
+ 729              	>>> 
+ 729 0a7c 26EA0501 	>>>  bic r1,r6,r5
+ 729 0a80 6140     	>>>  eors r1,r1,r4
+ 729 0a82 C0F8AC10 	>>>  str r1,[r0,#Ase1]
+ 729              	>>  xandnot Abi1,r5,r6,r7
+ 729              	>>> 
+ 729 0a86 27EA0601 	>>>  bic r1,r7,r6
+ 729 0a8a 6940     	>>>  eors r1,r1,r5
+ 729 0a8c 4161     	>>>  str r1,[r0,#Abi1]
+ 729              	>>  xandnot Ago0,r6,r7,r3
+ 729              	>>> 
+ 729 0a8e 23EA0701 	>>>  bic r1,r3,r7
+ 729 0a92 7140     	>>>  eors r1,r1,r6
+ 729 0a94 0164     	>>>  str r1,[r0,#Ago0]
+ 729              	>>  xandnot Aku0,r7,r3,r4
+ 729              	>>> 
+ 729 0a96 24EA0301 	>>>  bic r1,r4,r3
+ 729 0a9a 7940     	>>>  eors r1,r1,r7
+ 729 0a9c 0167     	>>>  str r1,[r0,#Aku0]
+ 729 0a9e DDF80C90 	>  ldr r9,[sp,#mDo1]
+ 729              	>  KeccakThetaRhoPiChiIota Aba0,r8,Age0,r10,22,Aki1,r2,22,Amo1,r9,11,Asu0,r12,7,0,0
+ 729 0aa2 0368     	>>  ldr r3,[r0,#Aba0]
+ 729 0aa4 046B     	>>  ldr r4,[r0,#Age0]
+ 729 0aa6 456E     	>>  ldr r5,[r0,#Aki1]
+ 729 0aa8 D0F89460 	>>  ldr r6,[r0,#Amo1]
+ 729 0aac D0F8C070 	>>  ldr r7,[r0,#Asu0]
+ 729 0ab0 93EA0803 	>>  eors r3,r3,r8
+ 729 0ab4 5540     	>>  eors r5,r5,r2
+ 729 0ab6 94EA0A04 	>>  eors r4,r4,r10
+ 729 0aba 96EA0906 	>>  eors r6,r6,r9
+ 729 0abe 97EA0C07 	>>  eors r7,r7,r12
+ 729 0ac2 5FEAB424 	>>  rors r4,#32-22
+ 729 0ac6 5FEAB525 	>>  rors r5,#32-22
+ 729 0aca 5FEA7656 	>>  rors r6,#32-11
+ 729 0ace 5FEA7767 	>>  rors r7,#32-7
+ 729              	>>  xandnot Age0,r4,r5,r6
+ 729              	>>> 
+ 729 0ad2 26EA0501 	>>>  bic r1,r6,r5
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 24
+
+
+ 729 0ad6 6140     	>>>  eors r1,r1,r4
+ 729 0ad8 0163     	>>>  str r1,[r0,#Age0]
+ 729              	>>  xandnot Aki1,r5,r6,r7
+ 729              	>>> 
+ 729 0ada 27EA0601 	>>>  bic r1,r7,r6
+ 729 0ade 6940     	>>>  eors r1,r1,r5
+ 729 0ae0 4166     	>>>  str r1,[r0,#Aki1]
+ 729              	>>  xandnot Amo1,r6,r7,r3
+ 729              	>>> 
+ 729 0ae2 23EA0701 	>>>  bic r1,r3,r7
+ 729 0ae6 7140     	>>>  eors r1,r1,r6
+ 729 0ae8 C0F89410 	>>>  str r1,[r0,#Amo1]
+ 729              	>>  xandnot Asu0,r7,r3,r4
+ 729              	>>> 
+ 729 0aec 24EA0301 	>>>  bic r1,r4,r3
+ 729 0af0 7940     	>>>  eors r1,r1,r7
+ 729 0af2 C0F8C010 	>>>  str r1,[r0,#Asu0]
+ 729 0af6 0599     	>>  ldr r1,[sp,#mRC]
+ 729 0af8 A543     	>>  bics r5,r5,r4
+ 729 0afa 0C68     	>>  ldr r4,[r1,#0]
+ 729 0afc 6B40     	>>  eors r3,r3,r5
+ 729 0afe 6340     	>>  eors r3,r3,r4
+ 729              	>>  .if 0==1
+ 729              	>>  ldr r4,[r1,#32]!
+ 729              	>>  str r1,[sp,#mRC]
+ 729              	>>  cmp r4,#0xFF
+ 729              	>>  .endif
+ 729 0b00 0360     	>>  str r3,[r0,#Aba0]
+ 729              	> 
+ 729 0b02 049A     	>  ldr r2,[sp,#mDi0]
+ 729              	>  KeccakThetaRhoPiChi r5,Aka0,r8,1,r6,Ame0,r10,22,r7,Asi0,r2,30,r3,Abo1,r9,14,r4,Agu1,lr,10
+ 729 0b04 056D     	>>  ldr r5,[r0,#Aka0]
+ 729 0b06 D0F88060 	>>  ldr r6,[r0,#Ame0]
+ 729 0b0a D0F8B070 	>>  ldr r7,[r0,#Asi0]
+ 729 0b0e C369     	>>  ldr r3,[r0,#Abo1]
+ 729 0b10 C46C     	>>  ldr r4,[r0,#Agu1]
+ 729 0b12 95EA0805 	>>  eors r5,r5,r8
+ 729 0b16 5740     	>>  eors r7,r7,r2
+ 729 0b18 96EA0A06 	>>  eors r6,r6,r10
+ 729 0b1c 93EA0903 	>>  eors r3,r3,r9
+ 729 0b20 94EA0E04 	>>  eors r4,r4,lr
+ 729 0b24 5FEAF575 	>>  rors r5,#32-1
+ 729              	>>  .if 22>0
+ 729 0b28 5FEAB626 	>>  rors r6,#32-22
+ 729              	>>  .endif
+ 729 0b2c 5FEAB707 	>>  rors r7,#32-30
+ 729 0b30 5FEAB343 	>>  rors r3,#32-14
+ 729 0b34 5FEAB454 	>>  rors r4,#32-10
+ 729              	>>  xandnot Aka0,r3,r4,r5
+ 729              	>>> 
+ 729 0b38 25EA0401 	>>>  bic r1,r5,r4
+ 729 0b3c 5940     	>>>  eors r1,r1,r3
+ 729 0b3e 0165     	>>>  str r1,[r0,#Aka0]
+ 729              	>>  xandnot Ame0,r4,r5,r6
+ 729              	>>> 
+ 729 0b40 26EA0501 	>>>  bic r1,r6,r5
+ 729 0b44 6140     	>>>  eors r1,r1,r4
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 25
+
+
+ 729 0b46 C0F88010 	>>>  str r1,[r0,#Ame0]
+ 729              	>>  xandnot Asi0,r5,r6,r7
+ 729              	>>> 
+ 729 0b4a 27EA0601 	>>>  bic r1,r7,r6
+ 729 0b4e 6940     	>>>  eors r1,r1,r5
+ 729 0b50 C0F8B010 	>>>  str r1,[r0,#Asi0]
+ 729              	>>  xandnot Abo1,r6,r7,r3
+ 729              	>>> 
+ 729 0b54 23EA0701 	>>>  bic r1,r3,r7
+ 729 0b58 7140     	>>>  eors r1,r1,r6
+ 729 0b5a C161     	>>>  str r1,[r0,#Abo1]
+ 729              	>>  xandnot Agu1,r7,r3,r4
+ 729              	>>> 
+ 729 0b5c 24EA0301 	>>>  bic r1,r4,r3
+ 729 0b60 7940     	>>>  eors r1,r1,r7
+ 729 0b62 C164     	>>>  str r1,[r0,#Agu1]
+ 729              	>  KeccakThetaRhoPiChi r7,Asa0,r8,9,r3,Abe1,r11,1,r4,Agi0,r2,3,r5,Ako1,r9,13,r6,Amu0,r12,4
+ 729 0b64 D0F8A070 	>>  ldr r7,[r0,#Asa0]
+ 729 0b68 C368     	>>  ldr r3,[r0,#Abe1]
+ 729 0b6a 846B     	>>  ldr r4,[r0,#Agi0]
+ 729 0b6c C56E     	>>  ldr r5,[r0,#Ako1]
+ 729 0b6e D0F89860 	>>  ldr r6,[r0,#Amu0]
+ 729 0b72 97EA0807 	>>  eors r7,r7,r8
+ 729 0b76 5440     	>>  eors r4,r4,r2
+ 729 0b78 93EA0B03 	>>  eors r3,r3,r11
+ 729 0b7c 95EA0905 	>>  eors r5,r5,r9
+ 729 0b80 96EA0C06 	>>  eors r6,r6,r12
+ 729 0b84 5FEAF757 	>>  rors r7,#32-9
+ 729              	>>  .if 1>0
+ 729 0b88 5FEAF373 	>>  rors r3,#32-1
+ 729              	>>  .endif
+ 729 0b8c 5FEA7474 	>>  rors r4,#32-3
+ 729 0b90 5FEAF545 	>>  rors r5,#32-13
+ 729 0b94 5FEA3676 	>>  rors r6,#32-4
+ 729              	>>  xandnot Asa0,r3,r4,r5
+ 729              	>>> 
+ 729 0b98 25EA0401 	>>>  bic r1,r5,r4
+ 729 0b9c 5940     	>>>  eors r1,r1,r3
+ 729 0b9e C0F8A010 	>>>  str r1,[r0,#Asa0]
+ 729              	>>  xandnot Abe1,r4,r5,r6
+ 729              	>>> 
+ 729 0ba2 26EA0501 	>>>  bic r1,r6,r5
+ 729 0ba6 6140     	>>>  eors r1,r1,r4
+ 729 0ba8 C160     	>>>  str r1,[r0,#Abe1]
+ 729              	>>  xandnot Agi0,r5,r6,r7
+ 729              	>>> 
+ 729 0baa 27EA0601 	>>>  bic r1,r7,r6
+ 729 0bae 6940     	>>>  eors r1,r1,r5
+ 729 0bb0 8163     	>>>  str r1,[r0,#Agi0]
+ 729              	>>  xandnot Ako1,r6,r7,r3
+ 729              	>>> 
+ 729 0bb2 23EA0701 	>>>  bic r1,r3,r7
+ 729 0bb6 7140     	>>>  eors r1,r1,r6
+ 729 0bb8 C166     	>>>  str r1,[r0,#Ako1]
+ 729              	>>  xandnot Amu0,r7,r3,r4
+ 729              	>>> 
+ 729 0bba 24EA0301 	>>>  bic r1,r4,r3
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 26
+
+
+ 729 0bbe 7940     	>>>  eors r1,r1,r7
+ 729 0bc0 C0F89810 	>>>  str r1,[r0,#Amu0]
+ 729 0bc4 DDF80480 	>  ldr r8,[sp,#mDa1]
+ 729              	>  KeccakThetaRhoPiChi r4,Aga1,r8,18,r5,Ake1,r11,5,r6,Ami0,r2,7,r7,Aso1,r9,28,r3,Abu0,r12,13
+ 729 0bc8 C46A     	>>  ldr r4,[r0,#Aga1]
+ 729 0bca C56D     	>>  ldr r5,[r0,#Ake1]
+ 729 0bcc D0F88860 	>>  ldr r6,[r0,#Ami0]
+ 729 0bd0 D0F8BC70 	>>  ldr r7,[r0,#Aso1]
+ 729 0bd4 036A     	>>  ldr r3,[r0,#Abu0]
+ 729 0bd6 94EA0804 	>>  eors r4,r4,r8
+ 729 0bda 5640     	>>  eors r6,r6,r2
+ 729 0bdc 95EA0B05 	>>  eors r5,r5,r11
+ 729 0be0 97EA0907 	>>  eors r7,r7,r9
+ 729 0be4 93EA0C03 	>>  eors r3,r3,r12
+ 729 0be8 5FEAB434 	>>  rors r4,#32-18
+ 729              	>>  .if 5>0
+ 729 0bec 5FEAF565 	>>  rors r5,#32-5
+ 729              	>>  .endif
+ 729 0bf0 5FEA7666 	>>  rors r6,#32-7
+ 729 0bf4 5FEA3717 	>>  rors r7,#32-28
+ 729 0bf8 5FEAF343 	>>  rors r3,#32-13
+ 729              	>>  xandnot Aga1,r3,r4,r5
+ 729              	>>> 
+ 729 0bfc 25EA0401 	>>>  bic r1,r5,r4
+ 729 0c00 5940     	>>>  eors r1,r1,r3
+ 729 0c02 C162     	>>>  str r1,[r0,#Aga1]
+ 729              	>>  xandnot Ake1,r4,r5,r6
+ 729              	>>> 
+ 729 0c04 26EA0501 	>>>  bic r1,r6,r5
+ 729 0c08 6140     	>>>  eors r1,r1,r4
+ 729 0c0a C165     	>>>  str r1,[r0,#Ake1]
+ 729              	>>  xandnot Ami0,r5,r6,r7
+ 729              	>>> 
+ 729 0c0c 27EA0601 	>>>  bic r1,r7,r6
+ 729 0c10 6940     	>>>  eors r1,r1,r5
+ 729 0c12 C0F88810 	>>>  str r1,[r0,#Ami0]
+ 729              	>>  xandnot Aso1,r6,r7,r3
+ 729              	>>> 
+ 729 0c16 23EA0701 	>>>  bic r1,r3,r7
+ 729 0c1a 7140     	>>>  eors r1,r1,r6
+ 729 0c1c C0F8BC10 	>>>  str r1,[r0,#Aso1]
+ 729              	>>  xandnot Abu0,r7,r3,r4
+ 729              	>>> 
+ 729 0c20 24EA0301 	>>>  bic r1,r4,r3
+ 729 0c24 7940     	>>>  eors r1,r1,r7
+ 729 0c26 0162     	>>>  str r1,[r0,#Abu0]
+ 729              	>  KeccakThetaRhoPiChi r6,Ama1,r8,21,r7,Ase0,r10,1,r3,Abi0,r2,31,r4,Ago1,r9,28,r5,Aku1,lr,20
+ 729 0c28 C66F     	>>  ldr r6,[r0,#Ama1]
+ 729 0c2a D0F8A870 	>>  ldr r7,[r0,#Ase0]
+ 729 0c2e 0369     	>>  ldr r3,[r0,#Abi0]
+ 729 0c30 446C     	>>  ldr r4,[r0,#Ago1]
+ 729 0c32 456F     	>>  ldr r5,[r0,#Aku1]
+ 729 0c34 96EA0806 	>>  eors r6,r6,r8
+ 729 0c38 5340     	>>  eors r3,r3,r2
+ 729 0c3a 97EA0A07 	>>  eors r7,r7,r10
+ 729 0c3e 94EA0904 	>>  eors r4,r4,r9
+ 729 0c42 95EA0E05 	>>  eors r5,r5,lr
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 27
+
+
+ 729 0c46 5FEAF626 	>>  rors r6,#32-21
+ 729              	>>  .if 1>0
+ 729 0c4a 5FEAF777 	>>  rors r7,#32-1
+ 729              	>>  .endif
+ 729 0c4e 5FEA7303 	>>  rors r3,#32-31
+ 729 0c52 5FEA3414 	>>  rors r4,#32-28
+ 729 0c56 5FEA3535 	>>  rors r5,#32-20
+ 729              	>>  xandnot Ama1,r3,r4,r5
+ 729              	>>> 
+ 729 0c5a 25EA0401 	>>>  bic r1,r5,r4
+ 729 0c5e 5940     	>>>  eors r1,r1,r3
+ 729 0c60 C167     	>>>  str r1,[r0,#Ama1]
+ 729              	>>  xandnot Ase0,r4,r5,r6
+ 729              	>>> 
+ 729 0c62 26EA0501 	>>>  bic r1,r6,r5
+ 729 0c66 6140     	>>>  eors r1,r1,r4
+ 729 0c68 C0F8A810 	>>>  str r1,[r0,#Ase0]
+ 729              	>>  xandnot Abi0,r5,r6,r7
+ 729              	>>> 
+ 729 0c6c 27EA0601 	>>>  bic r1,r7,r6
+ 729 0c70 6940     	>>>  eors r1,r1,r5
+ 729 0c72 0161     	>>>  str r1,[r0,#Abi0]
+ 729              	>>  xandnot Ago1,r6,r7,r3
+ 729              	>>> 
+ 729 0c74 23EA0701 	>>>  bic r1,r3,r7
+ 729 0c78 7140     	>>>  eors r1,r1,r6
+ 729 0c7a 4164     	>>>  str r1,[r0,#Ago1]
+ 729              	>>  xandnot Aku1,r7,r3,r4
+ 729              	>>> 
+ 729 0c7c 24EA0301 	>>>  bic r1,r4,r3
+ 729 0c80 7940     	>>>  eors r1,r1,r7
+ 729 0c82 4167     	>>>  str r1,[r0,#Aku1]
+ 729 0c84 DDF80890 	>  ldr r9,[sp,#mDo0]
+ 729              	>  KeccakThetaRhoPiChiIota Aba1,r8,Age1,r11,22,Aki0,r2,21,Amo0,r9,10,Asu1,lr,7,4,0
+ 729 0c88 4368     	>>  ldr r3,[r0,#Aba1]
+ 729 0c8a 446B     	>>  ldr r4,[r0,#Age1]
+ 729 0c8c 056E     	>>  ldr r5,[r0,#Aki0]
+ 729 0c8e D0F89060 	>>  ldr r6,[r0,#Amo0]
+ 729 0c92 D0F8C470 	>>  ldr r7,[r0,#Asu1]
+ 729 0c96 93EA0803 	>>  eors r3,r3,r8
+ 729 0c9a 5540     	>>  eors r5,r5,r2
+ 729 0c9c 94EA0B04 	>>  eors r4,r4,r11
+ 729 0ca0 96EA0906 	>>  eors r6,r6,r9
+ 729 0ca4 97EA0E07 	>>  eors r7,r7,lr
+ 729 0ca8 5FEAB424 	>>  rors r4,#32-22
+ 729 0cac 5FEAF525 	>>  rors r5,#32-21
+ 729 0cb0 5FEAB656 	>>  rors r6,#32-10
+ 729 0cb4 5FEA7767 	>>  rors r7,#32-7
+ 729              	>>  xandnot Age1,r4,r5,r6
+ 729              	>>> 
+ 729 0cb8 26EA0501 	>>>  bic r1,r6,r5
+ 729 0cbc 6140     	>>>  eors r1,r1,r4
+ 729 0cbe 4163     	>>>  str r1,[r0,#Age1]
+ 729              	>>  xandnot Aki0,r5,r6,r7
+ 729              	>>> 
+ 729 0cc0 27EA0601 	>>>  bic r1,r7,r6
+ 729 0cc4 6940     	>>>  eors r1,r1,r5
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 28
+
+
+ 729 0cc6 0166     	>>>  str r1,[r0,#Aki0]
+ 729              	>>  xandnot Amo0,r6,r7,r3
+ 729              	>>> 
+ 729 0cc8 23EA0701 	>>>  bic r1,r3,r7
+ 729 0ccc 7140     	>>>  eors r1,r1,r6
+ 729 0cce C0F89010 	>>>  str r1,[r0,#Amo0]
+ 729              	>>  xandnot Asu1,r7,r3,r4
+ 729              	>>> 
+ 729 0cd2 24EA0301 	>>>  bic r1,r4,r3
+ 729 0cd6 7940     	>>>  eors r1,r1,r7
+ 729 0cd8 C0F8C410 	>>>  str r1,[r0,#Asu1]
+ 729 0cdc 0599     	>>  ldr r1,[sp,#mRC]
+ 729 0cde A543     	>>  bics r5,r5,r4
+ 729 0ce0 4C68     	>>  ldr r4,[r1,#4]
+ 729 0ce2 6B40     	>>  eors r3,r3,r5
+ 729 0ce4 6340     	>>  eors r3,r3,r4
+ 729              	>>  .if 0==1
+ 729              	>>  ldr r4,[r1,#32]!
+ 729              	>>  str r1,[sp,#mRC]
+ 729              	>>  cmp r4,#0xFF
+ 729              	>>  .endif
+ 729 0ce6 4360     	>>  str r3,[r0,#Aba1]
+ 730              		KeccakRound1
+ 730              	> 
+ 730              	>  xor5 r3,Asu0,Agu0,Amu0,Abu1,Aku1
+ 730              	>> 
+ 730 0ce8 D0F8C030 	>>  ldr r3,[r0,#Asu0]
+ 730 0cec 816C     	>>  ldr r1,[r0,#Agu0]
+ 730 0cee 4B40     	>>  eors r3,r3,r1
+ 730 0cf0 D0F89810 	>>  ldr r1,[r0,#Amu0]
+ 730 0cf4 4B40     	>>  eors r3,r3,r1
+ 730 0cf6 416A     	>>  ldr r1,[r0,#Abu1]
+ 730 0cf8 4B40     	>>  eors r3,r3,r1
+ 730 0cfa 416F     	>>  ldr r1,[r0,#Aku1]
+ 730 0cfc 4B40     	>>  eors r3,r3,r1
+ 730              	>  xor5 r7,Age1,Ame0,Abe0,Ake1,Ase1
+ 730              	>> 
+ 730 0cfe 476B     	>>  ldr r7,[r0,#Age1]
+ 730 0d00 D0F88010 	>>  ldr r1,[r0,#Ame0]
+ 730 0d04 4F40     	>>  eors r7,r7,r1
+ 730 0d06 8168     	>>  ldr r1,[r0,#Abe0]
+ 730 0d08 4F40     	>>  eors r7,r7,r1
+ 730 0d0a C16D     	>>  ldr r1,[r0,#Ake1]
+ 730 0d0c 4F40     	>>  eors r7,r7,r1
+ 730 0d0e D0F8AC10 	>>  ldr r1,[r0,#Ase1]
+ 730 0d12 4F40     	>>  eors r7,r7,r1
+ 730              	>  xorrol r6,r3,r7
+ 730              	>> 
+ 730 0d14 83EAF776 	>>  eor r6,r3,r7,ROR#31
+ 730 0d18 0096     	>  str r6,[sp,#mDa0]
+ 730              	>  xor5 r6,Asu1,Agu1,Amu1,Abu0,Aku0
+ 730              	>> 
+ 730 0d1a D0F8C460 	>>  ldr r6,[r0,#Asu1]
+ 730 0d1e C16C     	>>  ldr r1,[r0,#Agu1]
+ 730 0d20 4E40     	>>  eors r6,r6,r1
+ 730 0d22 D0F89C10 	>>  ldr r1,[r0,#Amu1]
+ 730 0d26 4E40     	>>  eors r6,r6,r1
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 29
+
+
+ 730 0d28 016A     	>>  ldr r1,[r0,#Abu0]
+ 730 0d2a 4E40     	>>  eors r6,r6,r1
+ 730 0d2c 016F     	>>  ldr r1,[r0,#Aku0]
+ 730 0d2e 4E40     	>>  eors r6,r6,r1
+ 730              	>  xor5 lr,Age0,Ame1,Abe1,Ake0,Ase0
+ 730              	>> 
+ 730 0d30 D0F830E0 	>>  ldr lr,[r0,#Age0]
+ 730 0d34 D0F88410 	>>  ldr r1,[r0,#Ame1]
+ 730 0d38 9EEA010E 	>>  eors lr,lr,r1
+ 730 0d3c C168     	>>  ldr r1,[r0,#Abe1]
+ 730 0d3e 9EEA010E 	>>  eors lr,lr,r1
+ 730 0d42 816D     	>>  ldr r1,[r0,#Ake0]
+ 730 0d44 9EEA010E 	>>  eors lr,lr,r1
+ 730 0d48 D0F8A810 	>>  ldr r1,[r0,#Ase0]
+ 730 0d4c 9EEA010E 	>>  eors lr,lr,r1
+ 730 0d50 96EA0E08 	>  eors r8,r6,lr
+ 730 0d54 CDF80480 	>  str r8,[sp,#mDa1]
+ 730              	> 
+ 730              	>  xor5 r5,Aki1,Asi1,Agi0,Ami1,Abi0
+ 730              	>> 
+ 730 0d58 456E     	>>  ldr r5,[r0,#Aki1]
+ 730 0d5a D0F8B410 	>>  ldr r1,[r0,#Asi1]
+ 730 0d5e 4D40     	>>  eors r5,r5,r1
+ 730 0d60 816B     	>>  ldr r1,[r0,#Agi0]
+ 730 0d62 4D40     	>>  eors r5,r5,r1
+ 730 0d64 D0F88C10 	>>  ldr r1,[r0,#Ami1]
+ 730 0d68 4D40     	>>  eors r5,r5,r1
+ 730 0d6a 0169     	>>  ldr r1,[r0,#Abi0]
+ 730 0d6c 4D40     	>>  eors r5,r5,r1
+ 730              	>  xorrol r9,r5,r6
+ 730              	>> 
+ 730 0d6e 85EAF679 	>>  eor r9,r5,r6,ROR#31
+ 730 0d72 CDF80890 	>  str r9,[sp,#mDo0]
+ 730              	>  xor5 r4,Aki0,Asi0,Agi1,Ami0,Abi1
+ 730              	>> 
+ 730 0d76 046E     	>>  ldr r4,[r0,#Aki0]
+ 730 0d78 D0F8B010 	>>  ldr r1,[r0,#Asi0]
+ 730 0d7c 4C40     	>>  eors r4,r4,r1
+ 730 0d7e C16B     	>>  ldr r1,[r0,#Agi1]
+ 730 0d80 4C40     	>>  eors r4,r4,r1
+ 730 0d82 D0F88810 	>>  ldr r1,[r0,#Ami0]
+ 730 0d86 4C40     	>>  eors r4,r4,r1
+ 730 0d88 4169     	>>  ldr r1,[r0,#Abi1]
+ 730 0d8a 4C40     	>>  eors r4,r4,r1
+ 730 0d8c 6340     	>  eors r3,r3,r4
+ 730 0d8e 0393     	>  str r3,[sp,#mDo1]
+ 730              	> 
+ 730              	>  xor5 r3,Aba0,Aka1,Asa0,Aga0,Ama1
+ 730              	>> 
+ 730 0d90 0368     	>>  ldr r3,[r0,#Aba0]
+ 730 0d92 416D     	>>  ldr r1,[r0,#Aka1]
+ 730 0d94 4B40     	>>  eors r3,r3,r1
+ 730 0d96 D0F8A010 	>>  ldr r1,[r0,#Asa0]
+ 730 0d9a 4B40     	>>  eors r3,r3,r1
+ 730 0d9c 816A     	>>  ldr r1,[r0,#Aga0]
+ 730 0d9e 4B40     	>>  eors r3,r3,r1
+ 730 0da0 C16F     	>>  ldr r1,[r0,#Ama1]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 30
+
+
+ 730 0da2 4B40     	>>  eors r3,r3,r1
+ 730              	>  xorrol r10,r3,r4
+ 730              	>> 
+ 730 0da4 83EAF47A 	>>  eor r10,r3,r4,ROR#31
+ 730              	>  xor5 r6,Aba1,Aka0,Asa1,Aga1,Ama0
+ 730              	>> 
+ 730 0da8 4668     	>>  ldr r6,[r0,#Aba1]
+ 730 0daa 016D     	>>  ldr r1,[r0,#Aka0]
+ 730 0dac 4E40     	>>  eors r6,r6,r1
+ 730 0dae D0F8A410 	>>  ldr r1,[r0,#Asa1]
+ 730 0db2 4E40     	>>  eors r6,r6,r1
+ 730 0db4 C16A     	>>  ldr r1,[r0,#Aga1]
+ 730 0db6 4E40     	>>  eors r6,r6,r1
+ 730 0db8 816F     	>>  ldr r1,[r0,#Ama0]
+ 730 0dba 4E40     	>>  eors r6,r6,r1
+ 730 0dbc 96EA050B 	>  eors r11,r6,r5
+ 730              	> 
+ 730              	>  xor5 r4,Amo0,Abo1,Ako0,Aso1,Ago0
+ 730              	>> 
+ 730 0dc0 D0F89040 	>>  ldr r4,[r0,#Amo0]
+ 730 0dc4 C169     	>>  ldr r1,[r0,#Abo1]
+ 730 0dc6 4C40     	>>  eors r4,r4,r1
+ 730 0dc8 816E     	>>  ldr r1,[r0,#Ako0]
+ 730 0dca 4C40     	>>  eors r4,r4,r1
+ 730 0dcc D0F8BC10 	>>  ldr r1,[r0,#Aso1]
+ 730 0dd0 4C40     	>>  eors r4,r4,r1
+ 730 0dd2 016C     	>>  ldr r1,[r0,#Ago0]
+ 730 0dd4 4C40     	>>  eors r4,r4,r1
+ 730              	>  xorrol r5,lr,r4
+ 730              	>> 
+ 730 0dd6 8EEAF475 	>>  eor r5,lr,r4,ROR#31
+ 730 0dda 0495     	>  str r5,[sp,#mDi0]
+ 730              	>  xor5 r5,Amo1,Abo0,Ako1,Aso0,Ago1
+ 730              	>> 
+ 730 0ddc D0F89450 	>>  ldr r5,[r0,#Amo1]
+ 730 0de0 8169     	>>  ldr r1,[r0,#Abo0]
+ 730 0de2 4D40     	>>  eors r5,r5,r1
+ 730 0de4 C16E     	>>  ldr r1,[r0,#Ako1]
+ 730 0de6 4D40     	>>  eors r5,r5,r1
+ 730 0de8 D0F8B810 	>>  ldr r1,[r0,#Aso0]
+ 730 0dec 4D40     	>>  eors r5,r5,r1
+ 730 0dee 416C     	>>  ldr r1,[r0,#Ago1]
+ 730 0df0 4D40     	>>  eors r5,r5,r1
+ 730 0df2 97EA0502 	>  eors r2,r7,r5
+ 730              	> 
+ 730              	>  xorrol r12,r5,r6
+ 730              	>> 
+ 730 0df6 85EAF67C 	>>  eor r12,r5,r6,ROR#31
+ 730 0dfa 94EA030E 	>  eors lr,r4,r3
+ 730              	> 
+ 730              	>  KeccakThetaRhoPiChi r5,Asa1,r8,2,r6,Ake1,r11,23,r7,Abi1,r2,31,r3,Amo1,r9,14,r4,Agu0,r12,10
+ 730 0dfe D0F8A450 	>>  ldr r5,[r0,#Asa1]
+ 730 0e02 C66D     	>>  ldr r6,[r0,#Ake1]
+ 730 0e04 4769     	>>  ldr r7,[r0,#Abi1]
+ 730 0e06 D0F89430 	>>  ldr r3,[r0,#Amo1]
+ 730 0e0a 846C     	>>  ldr r4,[r0,#Agu0]
+ 730 0e0c 95EA0805 	>>  eors r5,r5,r8
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 31
+
+
+ 730 0e10 5740     	>>  eors r7,r7,r2
+ 730 0e12 96EA0B06 	>>  eors r6,r6,r11
+ 730 0e16 93EA0903 	>>  eors r3,r3,r9
+ 730 0e1a 94EA0C04 	>>  eors r4,r4,r12
+ 730 0e1e 5FEAB575 	>>  rors r5,#32-2
+ 730              	>>  .if 23>0
+ 730 0e22 5FEA7626 	>>  rors r6,#32-23
+ 730              	>>  .endif
+ 730 0e26 5FEA7707 	>>  rors r7,#32-31
+ 730 0e2a 5FEAB343 	>>  rors r3,#32-14
+ 730 0e2e 5FEAB454 	>>  rors r4,#32-10
+ 730              	>>  xandnot Asa1,r3,r4,r5
+ 730              	>>> 
+ 730 0e32 25EA0401 	>>>  bic r1,r5,r4
+ 730 0e36 5940     	>>>  eors r1,r1,r3
+ 730 0e38 C0F8A410 	>>>  str r1,[r0,#Asa1]
+ 730              	>>  xandnot Ake1,r4,r5,r6
+ 730              	>>> 
+ 730 0e3c 26EA0501 	>>>  bic r1,r6,r5
+ 730 0e40 6140     	>>>  eors r1,r1,r4
+ 730 0e42 C165     	>>>  str r1,[r0,#Ake1]
+ 730              	>>  xandnot Abi1,r5,r6,r7
+ 730              	>>> 
+ 730 0e44 27EA0601 	>>>  bic r1,r7,r6
+ 730 0e48 6940     	>>>  eors r1,r1,r5
+ 730 0e4a 4161     	>>>  str r1,[r0,#Abi1]
+ 730              	>>  xandnot Amo1,r6,r7,r3
+ 730              	>>> 
+ 730 0e4c 23EA0701 	>>>  bic r1,r3,r7
+ 730 0e50 7140     	>>>  eors r1,r1,r6
+ 730 0e52 C0F89410 	>>>  str r1,[r0,#Amo1]
+ 730              	>>  xandnot Agu0,r7,r3,r4
+ 730              	>>> 
+ 730 0e56 24EA0301 	>>>  bic r1,r4,r3
+ 730 0e5a 7940     	>>>  eors r1,r1,r7
+ 730 0e5c 8164     	>>>  str r1,[r0,#Agu0]
+ 730              	>  KeccakThetaRhoPiChi r7,Ama0,r8,9,r3,Age0,r10,0,r4,Asi0,r2,3,r5,Ako1,r9,12,r6,Abu0,lr,4
+ 730 0e5e 876F     	>>  ldr r7,[r0,#Ama0]
+ 730 0e60 036B     	>>  ldr r3,[r0,#Age0]
+ 730 0e62 D0F8B040 	>>  ldr r4,[r0,#Asi0]
+ 730 0e66 C56E     	>>  ldr r5,[r0,#Ako1]
+ 730 0e68 066A     	>>  ldr r6,[r0,#Abu0]
+ 730 0e6a 97EA0807 	>>  eors r7,r7,r8
+ 730 0e6e 5440     	>>  eors r4,r4,r2
+ 730 0e70 93EA0A03 	>>  eors r3,r3,r10
+ 730 0e74 95EA0905 	>>  eors r5,r5,r9
+ 730 0e78 96EA0E06 	>>  eors r6,r6,lr
+ 730 0e7c 5FEAF757 	>>  rors r7,#32-9
+ 730              	>>  .if 0>0
+ 730              	>>  rors r3,#32-0
+ 730              	>>  .endif
+ 730 0e80 5FEA7474 	>>  rors r4,#32-3
+ 730 0e84 5FEA3555 	>>  rors r5,#32-12
+ 730 0e88 5FEA3676 	>>  rors r6,#32-4
+ 730              	>>  xandnot Ama0,r3,r4,r5
+ 730              	>>> 
+ 730 0e8c 25EA0401 	>>>  bic r1,r5,r4
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 32
+
+
+ 730 0e90 5940     	>>>  eors r1,r1,r3
+ 730 0e92 8167     	>>>  str r1,[r0,#Ama0]
+ 730              	>>  xandnot Age0,r4,r5,r6
+ 730              	>>> 
+ 730 0e94 26EA0501 	>>>  bic r1,r6,r5
+ 730 0e98 6140     	>>>  eors r1,r1,r4
+ 730 0e9a 0163     	>>>  str r1,[r0,#Age0]
+ 730              	>>  xandnot Asi0,r5,r6,r7
+ 730              	>>> 
+ 730 0e9c 27EA0601 	>>>  bic r1,r7,r6
+ 730 0ea0 6940     	>>>  eors r1,r1,r5
+ 730 0ea2 C0F8B010 	>>>  str r1,[r0,#Asi0]
+ 730              	>>  xandnot Ako1,r6,r7,r3
+ 730              	>>> 
+ 730 0ea6 23EA0701 	>>>  bic r1,r3,r7
+ 730 0eaa 7140     	>>>  eors r1,r1,r6
+ 730 0eac C166     	>>>  str r1,[r0,#Ako1]
+ 730              	>>  xandnot Abu0,r7,r3,r4
+ 730              	>>> 
+ 730 0eae 24EA0301 	>>>  bic r1,r4,r3
+ 730 0eb2 7940     	>>>  eors r1,r1,r7
+ 730 0eb4 0162     	>>>  str r1,[r0,#Abu0]
+ 730 0eb6 DDF80080 	>  ldr r8,[sp,#mDa0]
+ 730              	>  KeccakThetaRhoPiChi r4,Aka1,r8,18,r5,Abe1,r10,5,r6,Ami0,r2,8,r7,Ago1,r9,28,r3,Asu1,lr,14
+ 730 0eba 446D     	>>  ldr r4,[r0,#Aka1]
+ 730 0ebc C568     	>>  ldr r5,[r0,#Abe1]
+ 730 0ebe D0F88860 	>>  ldr r6,[r0,#Ami0]
+ 730 0ec2 476C     	>>  ldr r7,[r0,#Ago1]
+ 730 0ec4 D0F8C430 	>>  ldr r3,[r0,#Asu1]
+ 730 0ec8 94EA0804 	>>  eors r4,r4,r8
+ 730 0ecc 5640     	>>  eors r6,r6,r2
+ 730 0ece 95EA0A05 	>>  eors r5,r5,r10
+ 730 0ed2 97EA0907 	>>  eors r7,r7,r9
+ 730 0ed6 93EA0E03 	>>  eors r3,r3,lr
+ 730 0eda 5FEAB434 	>>  rors r4,#32-18
+ 730              	>>  .if 5>0
+ 730 0ede 5FEAF565 	>>  rors r5,#32-5
+ 730              	>>  .endif
+ 730 0ee2 5FEA3666 	>>  rors r6,#32-8
+ 730 0ee6 5FEA3717 	>>  rors r7,#32-28
+ 730 0eea 5FEAB343 	>>  rors r3,#32-14
+ 730              	>>  xandnot Aka1,r3,r4,r5
+ 730              	>>> 
+ 730 0eee 25EA0401 	>>>  bic r1,r5,r4
+ 730 0ef2 5940     	>>>  eors r1,r1,r3
+ 730 0ef4 4165     	>>>  str r1,[r0,#Aka1]
+ 730              	>>  xandnot Abe1,r4,r5,r6
+ 730              	>>> 
+ 730 0ef6 26EA0501 	>>>  bic r1,r6,r5
+ 730 0efa 6140     	>>>  eors r1,r1,r4
+ 730 0efc C160     	>>>  str r1,[r0,#Abe1]
+ 730              	>>  xandnot Ami0,r5,r6,r7
+ 730              	>>> 
+ 730 0efe 27EA0601 	>>>  bic r1,r7,r6
+ 730 0f02 6940     	>>>  eors r1,r1,r5
+ 730 0f04 C0F88810 	>>>  str r1,[r0,#Ami0]
+ 730              	>>  xandnot Ago1,r6,r7,r3
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 33
+
+
+ 730              	>>> 
+ 730 0f08 23EA0701 	>>>  bic r1,r3,r7
+ 730 0f0c 7140     	>>>  eors r1,r1,r6
+ 730 0f0e 4164     	>>>  str r1,[r0,#Ago1]
+ 730              	>>  xandnot Asu1,r7,r3,r4
+ 730              	>>> 
+ 730 0f10 24EA0301 	>>>  bic r1,r4,r3
+ 730 0f14 7940     	>>>  eors r1,r1,r7
+ 730 0f16 C0F8C410 	>>>  str r1,[r0,#Asu1]
+ 730              	>  KeccakThetaRhoPiChi r6,Aga0,r8,20,r7,Ase1,r11,1,r3,Aki0,r2,31,r4,Abo0,r9,27,r5,Amu0,r12,19
+ 730 0f1a 866A     	>>  ldr r6,[r0,#Aga0]
+ 730 0f1c D0F8AC70 	>>  ldr r7,[r0,#Ase1]
+ 730 0f20 036E     	>>  ldr r3,[r0,#Aki0]
+ 730 0f22 8469     	>>  ldr r4,[r0,#Abo0]
+ 730 0f24 D0F89850 	>>  ldr r5,[r0,#Amu0]
+ 730 0f28 96EA0806 	>>  eors r6,r6,r8
+ 730 0f2c 5340     	>>  eors r3,r3,r2
+ 730 0f2e 97EA0B07 	>>  eors r7,r7,r11
+ 730 0f32 94EA0904 	>>  eors r4,r4,r9
+ 730 0f36 95EA0C05 	>>  eors r5,r5,r12
+ 730 0f3a 5FEA3636 	>>  rors r6,#32-20
+ 730              	>>  .if 1>0
+ 730 0f3e 5FEAF777 	>>  rors r7,#32-1
+ 730              	>>  .endif
+ 730 0f42 5FEA7303 	>>  rors r3,#32-31
+ 730 0f46 5FEA7414 	>>  rors r4,#32-27
+ 730 0f4a 5FEA7535 	>>  rors r5,#32-19
+ 730              	>>  xandnot Aga0,r3,r4,r5
+ 730              	>>> 
+ 730 0f4e 25EA0401 	>>>  bic r1,r5,r4
+ 730 0f52 5940     	>>>  eors r1,r1,r3
+ 730 0f54 8162     	>>>  str r1,[r0,#Aga0]
+ 730              	>>  xandnot Ase1,r4,r5,r6
+ 730              	>>> 
+ 730 0f56 26EA0501 	>>>  bic r1,r6,r5
+ 730 0f5a 6140     	>>>  eors r1,r1,r4
+ 730 0f5c C0F8AC10 	>>>  str r1,[r0,#Ase1]
+ 730              	>>  xandnot Aki0,r5,r6,r7
+ 730              	>>> 
+ 730 0f60 27EA0601 	>>>  bic r1,r7,r6
+ 730 0f64 6940     	>>>  eors r1,r1,r5
+ 730 0f66 0166     	>>>  str r1,[r0,#Aki0]
+ 730              	>>  xandnot Abo0,r6,r7,r3
+ 730              	>>> 
+ 730 0f68 23EA0701 	>>>  bic r1,r3,r7
+ 730 0f6c 7140     	>>>  eors r1,r1,r6
+ 730 0f6e 8161     	>>>  str r1,[r0,#Abo0]
+ 730              	>>  xandnot Amu0,r7,r3,r4
+ 730              	>>> 
+ 730 0f70 24EA0301 	>>>  bic r1,r4,r3
+ 730 0f74 7940     	>>>  eors r1,r1,r7
+ 730 0f76 C0F89810 	>>>  str r1,[r0,#Amu0]
+ 730 0f7a DDF80C90 	>  ldr r9,[sp,#mDo1]
+ 730              	>  KeccakThetaRhoPiChiIota Aba0,r8,Ame1,r10,22,Agi1,r2,22,Aso1,r9,11,Aku1,r12,7,8,0
+ 730 0f7e 0368     	>>  ldr r3,[r0,#Aba0]
+ 730 0f80 D0F88440 	>>  ldr r4,[r0,#Ame1]
+ 730 0f84 C56B     	>>  ldr r5,[r0,#Agi1]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 34
+
+
+ 730 0f86 D0F8BC60 	>>  ldr r6,[r0,#Aso1]
+ 730 0f8a 476F     	>>  ldr r7,[r0,#Aku1]
+ 730 0f8c 93EA0803 	>>  eors r3,r3,r8
+ 730 0f90 5540     	>>  eors r5,r5,r2
+ 730 0f92 94EA0A04 	>>  eors r4,r4,r10
+ 730 0f96 96EA0906 	>>  eors r6,r6,r9
+ 730 0f9a 97EA0C07 	>>  eors r7,r7,r12
+ 730 0f9e 5FEAB424 	>>  rors r4,#32-22
+ 730 0fa2 5FEAB525 	>>  rors r5,#32-22
+ 730 0fa6 5FEA7656 	>>  rors r6,#32-11
+ 730 0faa 5FEA7767 	>>  rors r7,#32-7
+ 730              	>>  xandnot Ame1,r4,r5,r6
+ 730              	>>> 
+ 730 0fae 26EA0501 	>>>  bic r1,r6,r5
+ 730 0fb2 6140     	>>>  eors r1,r1,r4
+ 730 0fb4 C0F88410 	>>>  str r1,[r0,#Ame1]
+ 730              	>>  xandnot Agi1,r5,r6,r7
+ 730              	>>> 
+ 730 0fb8 27EA0601 	>>>  bic r1,r7,r6
+ 730 0fbc 6940     	>>>  eors r1,r1,r5
+ 730 0fbe C163     	>>>  str r1,[r0,#Agi1]
+ 730              	>>  xandnot Aso1,r6,r7,r3
+ 730              	>>> 
+ 730 0fc0 23EA0701 	>>>  bic r1,r3,r7
+ 730 0fc4 7140     	>>>  eors r1,r1,r6
+ 730 0fc6 C0F8BC10 	>>>  str r1,[r0,#Aso1]
+ 730              	>>  xandnot Aku1,r7,r3,r4
+ 730              	>>> 
+ 730 0fca 24EA0301 	>>>  bic r1,r4,r3
+ 730 0fce 7940     	>>>  eors r1,r1,r7
+ 730 0fd0 4167     	>>>  str r1,[r0,#Aku1]
+ 730 0fd2 0599     	>>  ldr r1,[sp,#mRC]
+ 730 0fd4 A543     	>>  bics r5,r5,r4
+ 730 0fd6 8C68     	>>  ldr r4,[r1,#8]
+ 730 0fd8 6B40     	>>  eors r3,r3,r5
+ 730 0fda 6340     	>>  eors r3,r3,r4
+ 730              	>>  .if 0==1
+ 730              	>>  ldr r4,[r1,#32]!
+ 730              	>>  str r1,[sp,#mRC]
+ 730              	>>  cmp r4,#0xFF
+ 730              	>>  .endif
+ 730 0fdc 0360     	>>  str r3,[r0,#Aba0]
+ 730              	> 
+ 730 0fde 049A     	>  ldr r2,[sp,#mDi0]
+ 730              	>  KeccakThetaRhoPiChi r5,Asa0,r8,1,r6,Ake0,r10,22,r7,Abi0,r2,30,r3,Amo0,r9,14,r4,Agu1,lr,10
+ 730 0fe0 D0F8A050 	>>  ldr r5,[r0,#Asa0]
+ 730 0fe4 866D     	>>  ldr r6,[r0,#Ake0]
+ 730 0fe6 0769     	>>  ldr r7,[r0,#Abi0]
+ 730 0fe8 D0F89030 	>>  ldr r3,[r0,#Amo0]
+ 730 0fec C46C     	>>  ldr r4,[r0,#Agu1]
+ 730 0fee 95EA0805 	>>  eors r5,r5,r8
+ 730 0ff2 5740     	>>  eors r7,r7,r2
+ 730 0ff4 96EA0A06 	>>  eors r6,r6,r10
+ 730 0ff8 93EA0903 	>>  eors r3,r3,r9
+ 730 0ffc 94EA0E04 	>>  eors r4,r4,lr
+ 730 1000 5FEAF575 	>>  rors r5,#32-1
+ 730              	>>  .if 22>0
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 35
+
+
+ 730 1004 5FEAB626 	>>  rors r6,#32-22
+ 730              	>>  .endif
+ 730 1008 5FEAB707 	>>  rors r7,#32-30
+ 730 100c 5FEAB343 	>>  rors r3,#32-14
+ 730 1010 5FEAB454 	>>  rors r4,#32-10
+ 730              	>>  xandnot Asa0,r3,r4,r5
+ 730              	>>> 
+ 730 1014 25EA0401 	>>>  bic r1,r5,r4
+ 730 1018 5940     	>>>  eors r1,r1,r3
+ 730 101a C0F8A010 	>>>  str r1,[r0,#Asa0]
+ 730              	>>  xandnot Ake0,r4,r5,r6
+ 730              	>>> 
+ 730 101e 26EA0501 	>>>  bic r1,r6,r5
+ 730 1022 6140     	>>>  eors r1,r1,r4
+ 730 1024 8165     	>>>  str r1,[r0,#Ake0]
+ 730              	>>  xandnot Abi0,r5,r6,r7
+ 730              	>>> 
+ 730 1026 27EA0601 	>>>  bic r1,r7,r6
+ 730 102a 6940     	>>>  eors r1,r1,r5
+ 730 102c 0161     	>>>  str r1,[r0,#Abi0]
+ 730              	>>  xandnot Amo0,r6,r7,r3
+ 730              	>>> 
+ 730 102e 23EA0701 	>>>  bic r1,r3,r7
+ 730 1032 7140     	>>>  eors r1,r1,r6
+ 730 1034 C0F89010 	>>>  str r1,[r0,#Amo0]
+ 730              	>>  xandnot Agu1,r7,r3,r4
+ 730              	>>> 
+ 730 1038 24EA0301 	>>>  bic r1,r4,r3
+ 730 103c 7940     	>>>  eors r1,r1,r7
+ 730 103e C164     	>>>  str r1,[r0,#Agu1]
+ 730              	>  KeccakThetaRhoPiChi r7,Ama1,r8,9,r3,Age1,r11,1,r4,Asi1,r2,3,r5,Ako0,r9,13,r6,Abu1,r12,4
+ 730 1040 C76F     	>>  ldr r7,[r0,#Ama1]
+ 730 1042 436B     	>>  ldr r3,[r0,#Age1]
+ 730 1044 D0F8B440 	>>  ldr r4,[r0,#Asi1]
+ 730 1048 856E     	>>  ldr r5,[r0,#Ako0]
+ 730 104a 466A     	>>  ldr r6,[r0,#Abu1]
+ 730 104c 97EA0807 	>>  eors r7,r7,r8
+ 730 1050 5440     	>>  eors r4,r4,r2
+ 730 1052 93EA0B03 	>>  eors r3,r3,r11
+ 730 1056 95EA0905 	>>  eors r5,r5,r9
+ 730 105a 96EA0C06 	>>  eors r6,r6,r12
+ 730 105e 5FEAF757 	>>  rors r7,#32-9
+ 730              	>>  .if 1>0
+ 730 1062 5FEAF373 	>>  rors r3,#32-1
+ 730              	>>  .endif
+ 730 1066 5FEA7474 	>>  rors r4,#32-3
+ 730 106a 5FEAF545 	>>  rors r5,#32-13
+ 730 106e 5FEA3676 	>>  rors r6,#32-4
+ 730              	>>  xandnot Ama1,r3,r4,r5
+ 730              	>>> 
+ 730 1072 25EA0401 	>>>  bic r1,r5,r4
+ 730 1076 5940     	>>>  eors r1,r1,r3
+ 730 1078 C167     	>>>  str r1,[r0,#Ama1]
+ 730              	>>  xandnot Age1,r4,r5,r6
+ 730              	>>> 
+ 730 107a 26EA0501 	>>>  bic r1,r6,r5
+ 730 107e 6140     	>>>  eors r1,r1,r4
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 36
+
+
+ 730 1080 4163     	>>>  str r1,[r0,#Age1]
+ 730              	>>  xandnot Asi1,r5,r6,r7
+ 730              	>>> 
+ 730 1082 27EA0601 	>>>  bic r1,r7,r6
+ 730 1086 6940     	>>>  eors r1,r1,r5
+ 730 1088 C0F8B410 	>>>  str r1,[r0,#Asi1]
+ 730              	>>  xandnot Ako0,r6,r7,r3
+ 730              	>>> 
+ 730 108c 23EA0701 	>>>  bic r1,r3,r7
+ 730 1090 7140     	>>>  eors r1,r1,r6
+ 730 1092 8166     	>>>  str r1,[r0,#Ako0]
+ 730              	>>  xandnot Abu1,r7,r3,r4
+ 730              	>>> 
+ 730 1094 24EA0301 	>>>  bic r1,r4,r3
+ 730 1098 7940     	>>>  eors r1,r1,r7
+ 730 109a 4162     	>>>  str r1,[r0,#Abu1]
+ 730 109c DDF80480 	>  ldr r8,[sp,#mDa1]
+ 730              	>  KeccakThetaRhoPiChi r4,Aka0,r8,18,r5,Abe0,r11,5,r6,Ami1,r2,7,r7,Ago0,r9,28,r3,Asu0,r12,13
+ 730 10a0 046D     	>>  ldr r4,[r0,#Aka0]
+ 730 10a2 8568     	>>  ldr r5,[r0,#Abe0]
+ 730 10a4 D0F88C60 	>>  ldr r6,[r0,#Ami1]
+ 730 10a8 076C     	>>  ldr r7,[r0,#Ago0]
+ 730 10aa D0F8C030 	>>  ldr r3,[r0,#Asu0]
+ 730 10ae 94EA0804 	>>  eors r4,r4,r8
+ 730 10b2 5640     	>>  eors r6,r6,r2
+ 730 10b4 95EA0B05 	>>  eors r5,r5,r11
+ 730 10b8 97EA0907 	>>  eors r7,r7,r9
+ 730 10bc 93EA0C03 	>>  eors r3,r3,r12
+ 730 10c0 5FEAB434 	>>  rors r4,#32-18
+ 730              	>>  .if 5>0
+ 730 10c4 5FEAF565 	>>  rors r5,#32-5
+ 730              	>>  .endif
+ 730 10c8 5FEA7666 	>>  rors r6,#32-7
+ 730 10cc 5FEA3717 	>>  rors r7,#32-28
+ 730 10d0 5FEAF343 	>>  rors r3,#32-13
+ 730              	>>  xandnot Aka0,r3,r4,r5
+ 730              	>>> 
+ 730 10d4 25EA0401 	>>>  bic r1,r5,r4
+ 730 10d8 5940     	>>>  eors r1,r1,r3
+ 730 10da 0165     	>>>  str r1,[r0,#Aka0]
+ 730              	>>  xandnot Abe0,r4,r5,r6
+ 730              	>>> 
+ 730 10dc 26EA0501 	>>>  bic r1,r6,r5
+ 730 10e0 6140     	>>>  eors r1,r1,r4
+ 730 10e2 8160     	>>>  str r1,[r0,#Abe0]
+ 730              	>>  xandnot Ami1,r5,r6,r7
+ 730              	>>> 
+ 730 10e4 27EA0601 	>>>  bic r1,r7,r6
+ 730 10e8 6940     	>>>  eors r1,r1,r5
+ 730 10ea C0F88C10 	>>>  str r1,[r0,#Ami1]
+ 730              	>>  xandnot Ago0,r6,r7,r3
+ 730              	>>> 
+ 730 10ee 23EA0701 	>>>  bic r1,r3,r7
+ 730 10f2 7140     	>>>  eors r1,r1,r6
+ 730 10f4 0164     	>>>  str r1,[r0,#Ago0]
+ 730              	>>  xandnot Asu0,r7,r3,r4
+ 730              	>>> 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 37
+
+
+ 730 10f6 24EA0301 	>>>  bic r1,r4,r3
+ 730 10fa 7940     	>>>  eors r1,r1,r7
+ 730 10fc C0F8C010 	>>>  str r1,[r0,#Asu0]
+ 730              	>  KeccakThetaRhoPiChi r6,Aga1,r8,21,r7,Ase0,r10,1,r3,Aki1,r2,31,r4,Abo1,r9,28,r5,Amu1,lr,20
+ 730 1100 C66A     	>>  ldr r6,[r0,#Aga1]
+ 730 1102 D0F8A870 	>>  ldr r7,[r0,#Ase0]
+ 730 1106 436E     	>>  ldr r3,[r0,#Aki1]
+ 730 1108 C469     	>>  ldr r4,[r0,#Abo1]
+ 730 110a D0F89C50 	>>  ldr r5,[r0,#Amu1]
+ 730 110e 96EA0806 	>>  eors r6,r6,r8
+ 730 1112 5340     	>>  eors r3,r3,r2
+ 730 1114 97EA0A07 	>>  eors r7,r7,r10
+ 730 1118 94EA0904 	>>  eors r4,r4,r9
+ 730 111c 95EA0E05 	>>  eors r5,r5,lr
+ 730 1120 5FEAF626 	>>  rors r6,#32-21
+ 730              	>>  .if 1>0
+ 730 1124 5FEAF777 	>>  rors r7,#32-1
+ 730              	>>  .endif
+ 730 1128 5FEA7303 	>>  rors r3,#32-31
+ 730 112c 5FEA3414 	>>  rors r4,#32-28
+ 730 1130 5FEA3535 	>>  rors r5,#32-20
+ 730              	>>  xandnot Aga1,r3,r4,r5
+ 730              	>>> 
+ 730 1134 25EA0401 	>>>  bic r1,r5,r4
+ 730 1138 5940     	>>>  eors r1,r1,r3
+ 730 113a C162     	>>>  str r1,[r0,#Aga1]
+ 730              	>>  xandnot Ase0,r4,r5,r6
+ 730              	>>> 
+ 730 113c 26EA0501 	>>>  bic r1,r6,r5
+ 730 1140 6140     	>>>  eors r1,r1,r4
+ 730 1142 C0F8A810 	>>>  str r1,[r0,#Ase0]
+ 730              	>>  xandnot Aki1,r5,r6,r7
+ 730              	>>> 
+ 730 1146 27EA0601 	>>>  bic r1,r7,r6
+ 730 114a 6940     	>>>  eors r1,r1,r5
+ 730 114c 4166     	>>>  str r1,[r0,#Aki1]
+ 730              	>>  xandnot Abo1,r6,r7,r3
+ 730              	>>> 
+ 730 114e 23EA0701 	>>>  bic r1,r3,r7
+ 730 1152 7140     	>>>  eors r1,r1,r6
+ 730 1154 C161     	>>>  str r1,[r0,#Abo1]
+ 730              	>>  xandnot Amu1,r7,r3,r4
+ 730              	>>> 
+ 730 1156 24EA0301 	>>>  bic r1,r4,r3
+ 730 115a 7940     	>>>  eors r1,r1,r7
+ 730 115c C0F89C10 	>>>  str r1,[r0,#Amu1]
+ 730 1160 DDF80890 	>  ldr r9,[sp,#mDo0]
+ 730              	>  KeccakThetaRhoPiChiIota Aba1,r8,Ame0,r11,22,Agi0,r2,21,Aso0,r9,10,Aku0,lr,7,12,0
+ 730 1164 4368     	>>  ldr r3,[r0,#Aba1]
+ 730 1166 D0F88040 	>>  ldr r4,[r0,#Ame0]
+ 730 116a 856B     	>>  ldr r5,[r0,#Agi0]
+ 730 116c D0F8B860 	>>  ldr r6,[r0,#Aso0]
+ 730 1170 076F     	>>  ldr r7,[r0,#Aku0]
+ 730 1172 93EA0803 	>>  eors r3,r3,r8
+ 730 1176 5540     	>>  eors r5,r5,r2
+ 730 1178 94EA0B04 	>>  eors r4,r4,r11
+ 730 117c 96EA0906 	>>  eors r6,r6,r9
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 38
+
+
+ 730 1180 97EA0E07 	>>  eors r7,r7,lr
+ 730 1184 5FEAB424 	>>  rors r4,#32-22
+ 730 1188 5FEAF525 	>>  rors r5,#32-21
+ 730 118c 5FEAB656 	>>  rors r6,#32-10
+ 730 1190 5FEA7767 	>>  rors r7,#32-7
+ 730              	>>  xandnot Ame0,r4,r5,r6
+ 730              	>>> 
+ 730 1194 26EA0501 	>>>  bic r1,r6,r5
+ 730 1198 6140     	>>>  eors r1,r1,r4
+ 730 119a C0F88010 	>>>  str r1,[r0,#Ame0]
+ 730              	>>  xandnot Agi0,r5,r6,r7
+ 730              	>>> 
+ 730 119e 27EA0601 	>>>  bic r1,r7,r6
+ 730 11a2 6940     	>>>  eors r1,r1,r5
+ 730 11a4 8163     	>>>  str r1,[r0,#Agi0]
+ 730              	>>  xandnot Aso0,r6,r7,r3
+ 730              	>>> 
+ 730 11a6 23EA0701 	>>>  bic r1,r3,r7
+ 730 11aa 7140     	>>>  eors r1,r1,r6
+ 730 11ac C0F8B810 	>>>  str r1,[r0,#Aso0]
+ 730              	>>  xandnot Aku0,r7,r3,r4
+ 730              	>>> 
+ 730 11b0 24EA0301 	>>>  bic r1,r4,r3
+ 730 11b4 7940     	>>>  eors r1,r1,r7
+ 730 11b6 0167     	>>>  str r1,[r0,#Aku0]
+ 730 11b8 0599     	>>  ldr r1,[sp,#mRC]
+ 730 11ba A543     	>>  bics r5,r5,r4
+ 730 11bc CC68     	>>  ldr r4,[r1,#12]
+ 730 11be 6B40     	>>  eors r3,r3,r5
+ 730 11c0 6340     	>>  eors r3,r3,r4
+ 730              	>>  .if 0==1
+ 730              	>>  ldr r4,[r1,#32]!
+ 730              	>>  str r1,[sp,#mRC]
+ 730              	>>  cmp r4,#0xFF
+ 730              	>>  .endif
+ 730 11c2 4360     	>>  str r3,[r0,#Aba1]
+ 731              		KeccakRound2
+ 731              	> 
+ 731              	>  xor5 r3,Aku1,Agu0,Abu1,Asu1,Amu1
+ 731              	>> 
+ 731 11c4 436F     	>>  ldr r3,[r0,#Aku1]
+ 731 11c6 816C     	>>  ldr r1,[r0,#Agu0]
+ 731 11c8 4B40     	>>  eors r3,r3,r1
+ 731 11ca 416A     	>>  ldr r1,[r0,#Abu1]
+ 731 11cc 4B40     	>>  eors r3,r3,r1
+ 731 11ce D0F8C410 	>>  ldr r1,[r0,#Asu1]
+ 731 11d2 4B40     	>>  eors r3,r3,r1
+ 731 11d4 D0F89C10 	>>  ldr r1,[r0,#Amu1]
+ 731 11d8 4B40     	>>  eors r3,r3,r1
+ 731              	>  xor5 r7,Ame0,Ake0,Age0,Abe0,Ase1
+ 731              	>> 
+ 731 11da D0F88070 	>>  ldr r7,[r0,#Ame0]
+ 731 11de 816D     	>>  ldr r1,[r0,#Ake0]
+ 731 11e0 4F40     	>>  eors r7,r7,r1
+ 731 11e2 016B     	>>  ldr r1,[r0,#Age0]
+ 731 11e4 4F40     	>>  eors r7,r7,r1
+ 731 11e6 8168     	>>  ldr r1,[r0,#Abe0]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 39
+
+
+ 731 11e8 4F40     	>>  eors r7,r7,r1
+ 731 11ea D0F8AC10 	>>  ldr r1,[r0,#Ase1]
+ 731 11ee 4F40     	>>  eors r7,r7,r1
+ 731              	>  xorrol r6,r3,r7
+ 731              	>> 
+ 731 11f0 83EAF776 	>>  eor r6,r3,r7,ROR#31
+ 731 11f4 0096     	>  str r6,[sp,#mDa0]
+ 731              	>  xor5 r6,Aku0,Agu1,Abu0,Asu0,Amu0
+ 731              	>> 
+ 731 11f6 066F     	>>  ldr r6,[r0,#Aku0]
+ 731 11f8 C16C     	>>  ldr r1,[r0,#Agu1]
+ 731 11fa 4E40     	>>  eors r6,r6,r1
+ 731 11fc 016A     	>>  ldr r1,[r0,#Abu0]
+ 731 11fe 4E40     	>>  eors r6,r6,r1
+ 731 1200 D0F8C010 	>>  ldr r1,[r0,#Asu0]
+ 731 1204 4E40     	>>  eors r6,r6,r1
+ 731 1206 D0F89810 	>>  ldr r1,[r0,#Amu0]
+ 731 120a 4E40     	>>  eors r6,r6,r1
+ 731              	>  xor5 lr,Ame1,Ake1,Age1,Abe1,Ase0
+ 731              	>> 
+ 731 120c D0F884E0 	>>  ldr lr,[r0,#Ame1]
+ 731 1210 C16D     	>>  ldr r1,[r0,#Ake1]
+ 731 1212 9EEA010E 	>>  eors lr,lr,r1
+ 731 1216 416B     	>>  ldr r1,[r0,#Age1]
+ 731 1218 9EEA010E 	>>  eors lr,lr,r1
+ 731 121c C168     	>>  ldr r1,[r0,#Abe1]
+ 731 121e 9EEA010E 	>>  eors lr,lr,r1
+ 731 1222 D0F8A810 	>>  ldr r1,[r0,#Ase0]
+ 731 1226 9EEA010E 	>>  eors lr,lr,r1
+ 731 122a 96EA0E08 	>  eors r8,r6,lr
+ 731 122e CDF80480 	>  str r8,[sp,#mDa1]
+ 731              	> 
+ 731              	>  xor5 r5,Agi1,Abi1,Asi1,Ami0,Aki1
+ 731              	>> 
+ 731 1232 C56B     	>>  ldr r5,[r0,#Agi1]
+ 731 1234 4169     	>>  ldr r1,[r0,#Abi1]
+ 731 1236 4D40     	>>  eors r5,r5,r1
+ 731 1238 D0F8B410 	>>  ldr r1,[r0,#Asi1]
+ 731 123c 4D40     	>>  eors r5,r5,r1
+ 731 123e D0F88810 	>>  ldr r1,[r0,#Ami0]
+ 731 1242 4D40     	>>  eors r5,r5,r1
+ 731 1244 416E     	>>  ldr r1,[r0,#Aki1]
+ 731 1246 4D40     	>>  eors r5,r5,r1
+ 731              	>  xorrol r9,r5,r6
+ 731              	>> 
+ 731 1248 85EAF679 	>>  eor r9,r5,r6,ROR#31
+ 731 124c CDF80890 	>  str r9,[sp,#mDo0]
+ 731              	>  xor5 r4,Agi0,Abi0,Asi0,Ami1,Aki0
+ 731              	>> 
+ 731 1250 846B     	>>  ldr r4,[r0,#Agi0]
+ 731 1252 0169     	>>  ldr r1,[r0,#Abi0]
+ 731 1254 4C40     	>>  eors r4,r4,r1
+ 731 1256 D0F8B010 	>>  ldr r1,[r0,#Asi0]
+ 731 125a 4C40     	>>  eors r4,r4,r1
+ 731 125c D0F88C10 	>>  ldr r1,[r0,#Ami1]
+ 731 1260 4C40     	>>  eors r4,r4,r1
+ 731 1262 016E     	>>  ldr r1,[r0,#Aki0]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 40
+
+
+ 731 1264 4C40     	>>  eors r4,r4,r1
+ 731 1266 6340     	>  eors r3,r3,r4
+ 731 1268 0393     	>  str r3,[sp,#mDo1]
+ 731              	> 
+ 731              	>  xor5 r3,Aba0,Asa1,Ama1,Aka1,Aga1
+ 731              	>> 
+ 731 126a 0368     	>>  ldr r3,[r0,#Aba0]
+ 731 126c D0F8A410 	>>  ldr r1,[r0,#Asa1]
+ 731 1270 4B40     	>>  eors r3,r3,r1
+ 731 1272 C16F     	>>  ldr r1,[r0,#Ama1]
+ 731 1274 4B40     	>>  eors r3,r3,r1
+ 731 1276 416D     	>>  ldr r1,[r0,#Aka1]
+ 731 1278 4B40     	>>  eors r3,r3,r1
+ 731 127a C16A     	>>  ldr r1,[r0,#Aga1]
+ 731 127c 4B40     	>>  eors r3,r3,r1
+ 731              	>  xorrol r10,r3,r4
+ 731              	>> 
+ 731 127e 83EAF47A 	>>  eor r10,r3,r4,ROR#31
+ 731              	>  xor5 r6,Aba1,Asa0,Ama0,Aka0,Aga0
+ 731              	>> 
+ 731 1282 4668     	>>  ldr r6,[r0,#Aba1]
+ 731 1284 D0F8A010 	>>  ldr r1,[r0,#Asa0]
+ 731 1288 4E40     	>>  eors r6,r6,r1
+ 731 128a 816F     	>>  ldr r1,[r0,#Ama0]
+ 731 128c 4E40     	>>  eors r6,r6,r1
+ 731 128e 016D     	>>  ldr r1,[r0,#Aka0]
+ 731 1290 4E40     	>>  eors r6,r6,r1
+ 731 1292 816A     	>>  ldr r1,[r0,#Aga0]
+ 731 1294 4E40     	>>  eors r6,r6,r1
+ 731 1296 96EA050B 	>  eors r11,r6,r5
+ 731              	> 
+ 731              	>  xor5 r4,Aso0,Amo0,Ako1,Ago0,Abo0
+ 731              	>> 
+ 731 129a D0F8B840 	>>  ldr r4,[r0,#Aso0]
+ 731 129e D0F89010 	>>  ldr r1,[r0,#Amo0]
+ 731 12a2 4C40     	>>  eors r4,r4,r1
+ 731 12a4 C16E     	>>  ldr r1,[r0,#Ako1]
+ 731 12a6 4C40     	>>  eors r4,r4,r1
+ 731 12a8 016C     	>>  ldr r1,[r0,#Ago0]
+ 731 12aa 4C40     	>>  eors r4,r4,r1
+ 731 12ac 8169     	>>  ldr r1,[r0,#Abo0]
+ 731 12ae 4C40     	>>  eors r4,r4,r1
+ 731              	>  xorrol r5,lr,r4
+ 731              	>> 
+ 731 12b0 8EEAF475 	>>  eor r5,lr,r4,ROR#31
+ 731 12b4 0495     	>  str r5,[sp,#mDi0]
+ 731              	>  xor5 r5,Aso1,Amo1,Ako0,Ago1,Abo1
+ 731              	>> 
+ 731 12b6 D0F8BC50 	>>  ldr r5,[r0,#Aso1]
+ 731 12ba D0F89410 	>>  ldr r1,[r0,#Amo1]
+ 731 12be 4D40     	>>  eors r5,r5,r1
+ 731 12c0 816E     	>>  ldr r1,[r0,#Ako0]
+ 731 12c2 4D40     	>>  eors r5,r5,r1
+ 731 12c4 416C     	>>  ldr r1,[r0,#Ago1]
+ 731 12c6 4D40     	>>  eors r5,r5,r1
+ 731 12c8 C169     	>>  ldr r1,[r0,#Abo1]
+ 731 12ca 4D40     	>>  eors r5,r5,r1
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 41
+
+
+ 731 12cc 97EA0502 	>  eors r2,r7,r5
+ 731              	> 
+ 731              	>  xorrol r12,r5,r6
+ 731              	>> 
+ 731 12d0 85EAF67C 	>>  eor r12,r5,r6,ROR#31
+ 731 12d4 94EA030E 	>  eors lr,r4,r3
+ 731              	> 
+ 731              	>  KeccakThetaRhoPiChi r5,Ama0,r8,2,r6,Abe0,r11,23,r7,Aki0,r2,31,r3,Aso1,r9,14,r4,Agu0,r12,10
+ 731 12d8 856F     	>>  ldr r5,[r0,#Ama0]
+ 731 12da 8668     	>>  ldr r6,[r0,#Abe0]
+ 731 12dc 076E     	>>  ldr r7,[r0,#Aki0]
+ 731 12de D0F8BC30 	>>  ldr r3,[r0,#Aso1]
+ 731 12e2 846C     	>>  ldr r4,[r0,#Agu0]
+ 731 12e4 95EA0805 	>>  eors r5,r5,r8
+ 731 12e8 5740     	>>  eors r7,r7,r2
+ 731 12ea 96EA0B06 	>>  eors r6,r6,r11
+ 731 12ee 93EA0903 	>>  eors r3,r3,r9
+ 731 12f2 94EA0C04 	>>  eors r4,r4,r12
+ 731 12f6 5FEAB575 	>>  rors r5,#32-2
+ 731              	>>  .if 23>0
+ 731 12fa 5FEA7626 	>>  rors r6,#32-23
+ 731              	>>  .endif
+ 731 12fe 5FEA7707 	>>  rors r7,#32-31
+ 731 1302 5FEAB343 	>>  rors r3,#32-14
+ 731 1306 5FEAB454 	>>  rors r4,#32-10
+ 731              	>>  xandnot Ama0,r3,r4,r5
+ 731              	>>> 
+ 731 130a 25EA0401 	>>>  bic r1,r5,r4
+ 731 130e 5940     	>>>  eors r1,r1,r3
+ 731 1310 8167     	>>>  str r1,[r0,#Ama0]
+ 731              	>>  xandnot Abe0,r4,r5,r6
+ 731              	>>> 
+ 731 1312 26EA0501 	>>>  bic r1,r6,r5
+ 731 1316 6140     	>>>  eors r1,r1,r4
+ 731 1318 8160     	>>>  str r1,[r0,#Abe0]
+ 731              	>>  xandnot Aki0,r5,r6,r7
+ 731              	>>> 
+ 731 131a 27EA0601 	>>>  bic r1,r7,r6
+ 731 131e 6940     	>>>  eors r1,r1,r5
+ 731 1320 0166     	>>>  str r1,[r0,#Aki0]
+ 731              	>>  xandnot Aso1,r6,r7,r3
+ 731              	>>> 
+ 731 1322 23EA0701 	>>>  bic r1,r3,r7
+ 731 1326 7140     	>>>  eors r1,r1,r6
+ 731 1328 C0F8BC10 	>>>  str r1,[r0,#Aso1]
+ 731              	>>  xandnot Agu0,r7,r3,r4
+ 731              	>>> 
+ 731 132c 24EA0301 	>>>  bic r1,r4,r3
+ 731 1330 7940     	>>>  eors r1,r1,r7
+ 731 1332 8164     	>>>  str r1,[r0,#Agu0]
+ 731              	>  KeccakThetaRhoPiChi r7,Aga0,r8,9,r3,Ame1,r10,0,r4,Abi0,r2,3,r5,Ako0,r9,12,r6,Asu0,lr,4
+ 731 1334 876A     	>>  ldr r7,[r0,#Aga0]
+ 731 1336 D0F88430 	>>  ldr r3,[r0,#Ame1]
+ 731 133a 0469     	>>  ldr r4,[r0,#Abi0]
+ 731 133c 856E     	>>  ldr r5,[r0,#Ako0]
+ 731 133e D0F8C060 	>>  ldr r6,[r0,#Asu0]
+ 731 1342 97EA0807 	>>  eors r7,r7,r8
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 42
+
+
+ 731 1346 5440     	>>  eors r4,r4,r2
+ 731 1348 93EA0A03 	>>  eors r3,r3,r10
+ 731 134c 95EA0905 	>>  eors r5,r5,r9
+ 731 1350 96EA0E06 	>>  eors r6,r6,lr
+ 731 1354 5FEAF757 	>>  rors r7,#32-9
+ 731              	>>  .if 0>0
+ 731              	>>  rors r3,#32-0
+ 731              	>>  .endif
+ 731 1358 5FEA7474 	>>  rors r4,#32-3
+ 731 135c 5FEA3555 	>>  rors r5,#32-12
+ 731 1360 5FEA3676 	>>  rors r6,#32-4
+ 731              	>>  xandnot Aga0,r3,r4,r5
+ 731              	>>> 
+ 731 1364 25EA0401 	>>>  bic r1,r5,r4
+ 731 1368 5940     	>>>  eors r1,r1,r3
+ 731 136a 8162     	>>>  str r1,[r0,#Aga0]
+ 731              	>>  xandnot Ame1,r4,r5,r6
+ 731              	>>> 
+ 731 136c 26EA0501 	>>>  bic r1,r6,r5
+ 731 1370 6140     	>>>  eors r1,r1,r4
+ 731 1372 C0F88410 	>>>  str r1,[r0,#Ame1]
+ 731              	>>  xandnot Abi0,r5,r6,r7
+ 731              	>>> 
+ 731 1376 27EA0601 	>>>  bic r1,r7,r6
+ 731 137a 6940     	>>>  eors r1,r1,r5
+ 731 137c 0161     	>>>  str r1,[r0,#Abi0]
+ 731              	>>  xandnot Ako0,r6,r7,r3
+ 731              	>>> 
+ 731 137e 23EA0701 	>>>  bic r1,r3,r7
+ 731 1382 7140     	>>>  eors r1,r1,r6
+ 731 1384 8166     	>>>  str r1,[r0,#Ako0]
+ 731              	>>  xandnot Asu0,r7,r3,r4
+ 731              	>>> 
+ 731 1386 24EA0301 	>>>  bic r1,r4,r3
+ 731 138a 7940     	>>>  eors r1,r1,r7
+ 731 138c C0F8C010 	>>>  str r1,[r0,#Asu0]
+ 731 1390 DDF80080 	>  ldr r8,[sp,#mDa0]
+ 731              	>  KeccakThetaRhoPiChi r4,Asa1,r8,18,r5,Age1,r10,5,r6,Ami1,r2,8,r7,Abo1,r9,28,r3,Aku0,lr,14
+ 731 1394 D0F8A440 	>>  ldr r4,[r0,#Asa1]
+ 731 1398 456B     	>>  ldr r5,[r0,#Age1]
+ 731 139a D0F88C60 	>>  ldr r6,[r0,#Ami1]
+ 731 139e C769     	>>  ldr r7,[r0,#Abo1]
+ 731 13a0 036F     	>>  ldr r3,[r0,#Aku0]
+ 731 13a2 94EA0804 	>>  eors r4,r4,r8
+ 731 13a6 5640     	>>  eors r6,r6,r2
+ 731 13a8 95EA0A05 	>>  eors r5,r5,r10
+ 731 13ac 97EA0907 	>>  eors r7,r7,r9
+ 731 13b0 93EA0E03 	>>  eors r3,r3,lr
+ 731 13b4 5FEAB434 	>>  rors r4,#32-18
+ 731              	>>  .if 5>0
+ 731 13b8 5FEAF565 	>>  rors r5,#32-5
+ 731              	>>  .endif
+ 731 13bc 5FEA3666 	>>  rors r6,#32-8
+ 731 13c0 5FEA3717 	>>  rors r7,#32-28
+ 731 13c4 5FEAB343 	>>  rors r3,#32-14
+ 731              	>>  xandnot Asa1,r3,r4,r5
+ 731              	>>> 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 43
+
+
+ 731 13c8 25EA0401 	>>>  bic r1,r5,r4
+ 731 13cc 5940     	>>>  eors r1,r1,r3
+ 731 13ce C0F8A410 	>>>  str r1,[r0,#Asa1]
+ 731              	>>  xandnot Age1,r4,r5,r6
+ 731              	>>> 
+ 731 13d2 26EA0501 	>>>  bic r1,r6,r5
+ 731 13d6 6140     	>>>  eors r1,r1,r4
+ 731 13d8 4163     	>>>  str r1,[r0,#Age1]
+ 731              	>>  xandnot Ami1,r5,r6,r7
+ 731              	>>> 
+ 731 13da 27EA0601 	>>>  bic r1,r7,r6
+ 731 13de 6940     	>>>  eors r1,r1,r5
+ 731 13e0 C0F88C10 	>>>  str r1,[r0,#Ami1]
+ 731              	>>  xandnot Abo1,r6,r7,r3
+ 731              	>>> 
+ 731 13e4 23EA0701 	>>>  bic r1,r3,r7
+ 731 13e8 7140     	>>>  eors r1,r1,r6
+ 731 13ea C161     	>>>  str r1,[r0,#Abo1]
+ 731              	>>  xandnot Aku0,r7,r3,r4
+ 731              	>>> 
+ 731 13ec 24EA0301 	>>>  bic r1,r4,r3
+ 731 13f0 7940     	>>>  eors r1,r1,r7
+ 731 13f2 0167     	>>>  str r1,[r0,#Aku0]
+ 731              	>  KeccakThetaRhoPiChi r6,Aka1,r8,20,r7,Ase1,r11,1,r3,Agi0,r2,31,r4,Amo1,r9,27,r5,Abu1,r12,19
+ 731 13f4 466D     	>>  ldr r6,[r0,#Aka1]
+ 731 13f6 D0F8AC70 	>>  ldr r7,[r0,#Ase1]
+ 731 13fa 836B     	>>  ldr r3,[r0,#Agi0]
+ 731 13fc D0F89440 	>>  ldr r4,[r0,#Amo1]
+ 731 1400 456A     	>>  ldr r5,[r0,#Abu1]
+ 731 1402 96EA0806 	>>  eors r6,r6,r8
+ 731 1406 5340     	>>  eors r3,r3,r2
+ 731 1408 97EA0B07 	>>  eors r7,r7,r11
+ 731 140c 94EA0904 	>>  eors r4,r4,r9
+ 731 1410 95EA0C05 	>>  eors r5,r5,r12
+ 731 1414 5FEA3636 	>>  rors r6,#32-20
+ 731              	>>  .if 1>0
+ 731 1418 5FEAF777 	>>  rors r7,#32-1
+ 731              	>>  .endif
+ 731 141c 5FEA7303 	>>  rors r3,#32-31
+ 731 1420 5FEA7414 	>>  rors r4,#32-27
+ 731 1424 5FEA7535 	>>  rors r5,#32-19
+ 731              	>>  xandnot Aka1,r3,r4,r5
+ 731              	>>> 
+ 731 1428 25EA0401 	>>>  bic r1,r5,r4
+ 731 142c 5940     	>>>  eors r1,r1,r3
+ 731 142e 4165     	>>>  str r1,[r0,#Aka1]
+ 731              	>>  xandnot Ase1,r4,r5,r6
+ 731              	>>> 
+ 731 1430 26EA0501 	>>>  bic r1,r6,r5
+ 731 1434 6140     	>>>  eors r1,r1,r4
+ 731 1436 C0F8AC10 	>>>  str r1,[r0,#Ase1]
+ 731              	>>  xandnot Agi0,r5,r6,r7
+ 731              	>>> 
+ 731 143a 27EA0601 	>>>  bic r1,r7,r6
+ 731 143e 6940     	>>>  eors r1,r1,r5
+ 731 1440 8163     	>>>  str r1,[r0,#Agi0]
+ 731              	>>  xandnot Amo1,r6,r7,r3
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 44
+
+
+ 731              	>>> 
+ 731 1442 23EA0701 	>>>  bic r1,r3,r7
+ 731 1446 7140     	>>>  eors r1,r1,r6
+ 731 1448 C0F89410 	>>>  str r1,[r0,#Amo1]
+ 731              	>>  xandnot Abu1,r7,r3,r4
+ 731              	>>> 
+ 731 144c 24EA0301 	>>>  bic r1,r4,r3
+ 731 1450 7940     	>>>  eors r1,r1,r7
+ 731 1452 4162     	>>>  str r1,[r0,#Abu1]
+ 731 1454 DDF80C90 	>  ldr r9,[sp,#mDo1]
+ 731              	>  KeccakThetaRhoPiChiIota Aba0,r8,Ake1,r10,22,Asi0,r2,22,Ago0,r9,11,Amu1,r12,7,16,0
+ 731 1458 0368     	>>  ldr r3,[r0,#Aba0]
+ 731 145a C46D     	>>  ldr r4,[r0,#Ake1]
+ 731 145c D0F8B050 	>>  ldr r5,[r0,#Asi0]
+ 731 1460 066C     	>>  ldr r6,[r0,#Ago0]
+ 731 1462 D0F89C70 	>>  ldr r7,[r0,#Amu1]
+ 731 1466 93EA0803 	>>  eors r3,r3,r8
+ 731 146a 5540     	>>  eors r5,r5,r2
+ 731 146c 94EA0A04 	>>  eors r4,r4,r10
+ 731 1470 96EA0906 	>>  eors r6,r6,r9
+ 731 1474 97EA0C07 	>>  eors r7,r7,r12
+ 731 1478 5FEAB424 	>>  rors r4,#32-22
+ 731 147c 5FEAB525 	>>  rors r5,#32-22
+ 731 1480 5FEA7656 	>>  rors r6,#32-11
+ 731 1484 5FEA7767 	>>  rors r7,#32-7
+ 731              	>>  xandnot Ake1,r4,r5,r6
+ 731              	>>> 
+ 731 1488 26EA0501 	>>>  bic r1,r6,r5
+ 731 148c 6140     	>>>  eors r1,r1,r4
+ 731 148e C165     	>>>  str r1,[r0,#Ake1]
+ 731              	>>  xandnot Asi0,r5,r6,r7
+ 731              	>>> 
+ 731 1490 27EA0601 	>>>  bic r1,r7,r6
+ 731 1494 6940     	>>>  eors r1,r1,r5
+ 731 1496 C0F8B010 	>>>  str r1,[r0,#Asi0]
+ 731              	>>  xandnot Ago0,r6,r7,r3
+ 731              	>>> 
+ 731 149a 23EA0701 	>>>  bic r1,r3,r7
+ 731 149e 7140     	>>>  eors r1,r1,r6
+ 731 14a0 0164     	>>>  str r1,[r0,#Ago0]
+ 731              	>>  xandnot Amu1,r7,r3,r4
+ 731              	>>> 
+ 731 14a2 24EA0301 	>>>  bic r1,r4,r3
+ 731 14a6 7940     	>>>  eors r1,r1,r7
+ 731 14a8 C0F89C10 	>>>  str r1,[r0,#Amu1]
+ 731 14ac 0599     	>>  ldr r1,[sp,#mRC]
+ 731 14ae A543     	>>  bics r5,r5,r4
+ 731 14b0 0C69     	>>  ldr r4,[r1,#16]
+ 731 14b2 6B40     	>>  eors r3,r3,r5
+ 731 14b4 6340     	>>  eors r3,r3,r4
+ 731              	>>  .if 0==1
+ 731              	>>  ldr r4,[r1,#32]!
+ 731              	>>  str r1,[sp,#mRC]
+ 731              	>>  cmp r4,#0xFF
+ 731              	>>  .endif
+ 731 14b6 0360     	>>  str r3,[r0,#Aba0]
+ 731              	> 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 45
+
+
+ 731 14b8 049A     	>  ldr r2,[sp,#mDi0]
+ 731              	>  KeccakThetaRhoPiChi r5,Ama1,r8,1,r6,Abe1,r10,22,r7,Aki1,r2,30,r3,Aso0,r9,14,r4,Agu1,lr,10
+ 731 14ba C56F     	>>  ldr r5,[r0,#Ama1]
+ 731 14bc C668     	>>  ldr r6,[r0,#Abe1]
+ 731 14be 476E     	>>  ldr r7,[r0,#Aki1]
+ 731 14c0 D0F8B830 	>>  ldr r3,[r0,#Aso0]
+ 731 14c4 C46C     	>>  ldr r4,[r0,#Agu1]
+ 731 14c6 95EA0805 	>>  eors r5,r5,r8
+ 731 14ca 5740     	>>  eors r7,r7,r2
+ 731 14cc 96EA0A06 	>>  eors r6,r6,r10
+ 731 14d0 93EA0903 	>>  eors r3,r3,r9
+ 731 14d4 94EA0E04 	>>  eors r4,r4,lr
+ 731 14d8 5FEAF575 	>>  rors r5,#32-1
+ 731              	>>  .if 22>0
+ 731 14dc 5FEAB626 	>>  rors r6,#32-22
+ 731              	>>  .endif
+ 731 14e0 5FEAB707 	>>  rors r7,#32-30
+ 731 14e4 5FEAB343 	>>  rors r3,#32-14
+ 731 14e8 5FEAB454 	>>  rors r4,#32-10
+ 731              	>>  xandnot Ama1,r3,r4,r5
+ 731              	>>> 
+ 731 14ec 25EA0401 	>>>  bic r1,r5,r4
+ 731 14f0 5940     	>>>  eors r1,r1,r3
+ 731 14f2 C167     	>>>  str r1,[r0,#Ama1]
+ 731              	>>  xandnot Abe1,r4,r5,r6
+ 731              	>>> 
+ 731 14f4 26EA0501 	>>>  bic r1,r6,r5
+ 731 14f8 6140     	>>>  eors r1,r1,r4
+ 731 14fa C160     	>>>  str r1,[r0,#Abe1]
+ 731              	>>  xandnot Aki1,r5,r6,r7
+ 731              	>>> 
+ 731 14fc 27EA0601 	>>>  bic r1,r7,r6
+ 731 1500 6940     	>>>  eors r1,r1,r5
+ 731 1502 4166     	>>>  str r1,[r0,#Aki1]
+ 731              	>>  xandnot Aso0,r6,r7,r3
+ 731              	>>> 
+ 731 1504 23EA0701 	>>>  bic r1,r3,r7
+ 731 1508 7140     	>>>  eors r1,r1,r6
+ 731 150a C0F8B810 	>>>  str r1,[r0,#Aso0]
+ 731              	>>  xandnot Agu1,r7,r3,r4
+ 731              	>>> 
+ 731 150e 24EA0301 	>>>  bic r1,r4,r3
+ 731 1512 7940     	>>>  eors r1,r1,r7
+ 731 1514 C164     	>>>  str r1,[r0,#Agu1]
+ 731              	>  KeccakThetaRhoPiChi r7,Aga1,r8,9,r3,Ame0,r11,1,r4,Abi1,r2,3,r5,Ako1,r9,13,r6,Asu1,r12,4
+ 731 1516 C76A     	>>  ldr r7,[r0,#Aga1]
+ 731 1518 D0F88030 	>>  ldr r3,[r0,#Ame0]
+ 731 151c 4469     	>>  ldr r4,[r0,#Abi1]
+ 731 151e C56E     	>>  ldr r5,[r0,#Ako1]
+ 731 1520 D0F8C460 	>>  ldr r6,[r0,#Asu1]
+ 731 1524 97EA0807 	>>  eors r7,r7,r8
+ 731 1528 5440     	>>  eors r4,r4,r2
+ 731 152a 93EA0B03 	>>  eors r3,r3,r11
+ 731 152e 95EA0905 	>>  eors r5,r5,r9
+ 731 1532 96EA0C06 	>>  eors r6,r6,r12
+ 731 1536 5FEAF757 	>>  rors r7,#32-9
+ 731              	>>  .if 1>0
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 46
+
+
+ 731 153a 5FEAF373 	>>  rors r3,#32-1
+ 731              	>>  .endif
+ 731 153e 5FEA7474 	>>  rors r4,#32-3
+ 731 1542 5FEAF545 	>>  rors r5,#32-13
+ 731 1546 5FEA3676 	>>  rors r6,#32-4
+ 731              	>>  xandnot Aga1,r3,r4,r5
+ 731              	>>> 
+ 731 154a 25EA0401 	>>>  bic r1,r5,r4
+ 731 154e 5940     	>>>  eors r1,r1,r3
+ 731 1550 C162     	>>>  str r1,[r0,#Aga1]
+ 731              	>>  xandnot Ame0,r4,r5,r6
+ 731              	>>> 
+ 731 1552 26EA0501 	>>>  bic r1,r6,r5
+ 731 1556 6140     	>>>  eors r1,r1,r4
+ 731 1558 C0F88010 	>>>  str r1,[r0,#Ame0]
+ 731              	>>  xandnot Abi1,r5,r6,r7
+ 731              	>>> 
+ 731 155c 27EA0601 	>>>  bic r1,r7,r6
+ 731 1560 6940     	>>>  eors r1,r1,r5
+ 731 1562 4161     	>>>  str r1,[r0,#Abi1]
+ 731              	>>  xandnot Ako1,r6,r7,r3
+ 731              	>>> 
+ 731 1564 23EA0701 	>>>  bic r1,r3,r7
+ 731 1568 7140     	>>>  eors r1,r1,r6
+ 731 156a C166     	>>>  str r1,[r0,#Ako1]
+ 731              	>>  xandnot Asu1,r7,r3,r4
+ 731              	>>> 
+ 731 156c 24EA0301 	>>>  bic r1,r4,r3
+ 731 1570 7940     	>>>  eors r1,r1,r7
+ 731 1572 C0F8C410 	>>>  str r1,[r0,#Asu1]
+ 731 1576 DDF80480 	>  ldr r8,[sp,#mDa1]
+ 731              	>  KeccakThetaRhoPiChi r4,Asa0,r8,18,r5,Age0,r11,5,r6,Ami0,r2,7,r7,Abo0,r9,28,r3,Aku1,r12,13
+ 731 157a D0F8A040 	>>  ldr r4,[r0,#Asa0]
+ 731 157e 056B     	>>  ldr r5,[r0,#Age0]
+ 731 1580 D0F88860 	>>  ldr r6,[r0,#Ami0]
+ 731 1584 8769     	>>  ldr r7,[r0,#Abo0]
+ 731 1586 436F     	>>  ldr r3,[r0,#Aku1]
+ 731 1588 94EA0804 	>>  eors r4,r4,r8
+ 731 158c 5640     	>>  eors r6,r6,r2
+ 731 158e 95EA0B05 	>>  eors r5,r5,r11
+ 731 1592 97EA0907 	>>  eors r7,r7,r9
+ 731 1596 93EA0C03 	>>  eors r3,r3,r12
+ 731 159a 5FEAB434 	>>  rors r4,#32-18
+ 731              	>>  .if 5>0
+ 731 159e 5FEAF565 	>>  rors r5,#32-5
+ 731              	>>  .endif
+ 731 15a2 5FEA7666 	>>  rors r6,#32-7
+ 731 15a6 5FEA3717 	>>  rors r7,#32-28
+ 731 15aa 5FEAF343 	>>  rors r3,#32-13
+ 731              	>>  xandnot Asa0,r3,r4,r5
+ 731              	>>> 
+ 731 15ae 25EA0401 	>>>  bic r1,r5,r4
+ 731 15b2 5940     	>>>  eors r1,r1,r3
+ 731 15b4 C0F8A010 	>>>  str r1,[r0,#Asa0]
+ 731              	>>  xandnot Age0,r4,r5,r6
+ 731              	>>> 
+ 731 15b8 26EA0501 	>>>  bic r1,r6,r5
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 47
+
+
+ 731 15bc 6140     	>>>  eors r1,r1,r4
+ 731 15be 0163     	>>>  str r1,[r0,#Age0]
+ 731              	>>  xandnot Ami0,r5,r6,r7
+ 731              	>>> 
+ 731 15c0 27EA0601 	>>>  bic r1,r7,r6
+ 731 15c4 6940     	>>>  eors r1,r1,r5
+ 731 15c6 C0F88810 	>>>  str r1,[r0,#Ami0]
+ 731              	>>  xandnot Abo0,r6,r7,r3
+ 731              	>>> 
+ 731 15ca 23EA0701 	>>>  bic r1,r3,r7
+ 731 15ce 7140     	>>>  eors r1,r1,r6
+ 731 15d0 8161     	>>>  str r1,[r0,#Abo0]
+ 731              	>>  xandnot Aku1,r7,r3,r4
+ 731              	>>> 
+ 731 15d2 24EA0301 	>>>  bic r1,r4,r3
+ 731 15d6 7940     	>>>  eors r1,r1,r7
+ 731 15d8 4167     	>>>  str r1,[r0,#Aku1]
+ 731              	>  KeccakThetaRhoPiChi r6,Aka0,r8,21,r7,Ase0,r10,1,r3,Agi1,r2,31,r4,Amo0,r9,28,r5,Abu0,lr,20
+ 731 15da 066D     	>>  ldr r6,[r0,#Aka0]
+ 731 15dc D0F8A870 	>>  ldr r7,[r0,#Ase0]
+ 731 15e0 C36B     	>>  ldr r3,[r0,#Agi1]
+ 731 15e2 D0F89040 	>>  ldr r4,[r0,#Amo0]
+ 731 15e6 056A     	>>  ldr r5,[r0,#Abu0]
+ 731 15e8 96EA0806 	>>  eors r6,r6,r8
+ 731 15ec 5340     	>>  eors r3,r3,r2
+ 731 15ee 97EA0A07 	>>  eors r7,r7,r10
+ 731 15f2 94EA0904 	>>  eors r4,r4,r9
+ 731 15f6 95EA0E05 	>>  eors r5,r5,lr
+ 731 15fa 5FEAF626 	>>  rors r6,#32-21
+ 731              	>>  .if 1>0
+ 731 15fe 5FEAF777 	>>  rors r7,#32-1
+ 731              	>>  .endif
+ 731 1602 5FEA7303 	>>  rors r3,#32-31
+ 731 1606 5FEA3414 	>>  rors r4,#32-28
+ 731 160a 5FEA3535 	>>  rors r5,#32-20
+ 731              	>>  xandnot Aka0,r3,r4,r5
+ 731              	>>> 
+ 731 160e 25EA0401 	>>>  bic r1,r5,r4
+ 731 1612 5940     	>>>  eors r1,r1,r3
+ 731 1614 0165     	>>>  str r1,[r0,#Aka0]
+ 731              	>>  xandnot Ase0,r4,r5,r6
+ 731              	>>> 
+ 731 1616 26EA0501 	>>>  bic r1,r6,r5
+ 731 161a 6140     	>>>  eors r1,r1,r4
+ 731 161c C0F8A810 	>>>  str r1,[r0,#Ase0]
+ 731              	>>  xandnot Agi1,r5,r6,r7
+ 731              	>>> 
+ 731 1620 27EA0601 	>>>  bic r1,r7,r6
+ 731 1624 6940     	>>>  eors r1,r1,r5
+ 731 1626 C163     	>>>  str r1,[r0,#Agi1]
+ 731              	>>  xandnot Amo0,r6,r7,r3
+ 731              	>>> 
+ 731 1628 23EA0701 	>>>  bic r1,r3,r7
+ 731 162c 7140     	>>>  eors r1,r1,r6
+ 731 162e C0F89010 	>>>  str r1,[r0,#Amo0]
+ 731              	>>  xandnot Abu0,r7,r3,r4
+ 731              	>>> 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 48
+
+
+ 731 1632 24EA0301 	>>>  bic r1,r4,r3
+ 731 1636 7940     	>>>  eors r1,r1,r7
+ 731 1638 0162     	>>>  str r1,[r0,#Abu0]
+ 731 163a DDF80890 	>  ldr r9,[sp,#mDo0]
+ 731              	>  KeccakThetaRhoPiChiIota Aba1,r8,Ake0,r11,22,Asi1,r2,21,Ago1,r9,10,Amu0,lr,7,20,0
+ 731 163e 4368     	>>  ldr r3,[r0,#Aba1]
+ 731 1640 846D     	>>  ldr r4,[r0,#Ake0]
+ 731 1642 D0F8B450 	>>  ldr r5,[r0,#Asi1]
+ 731 1646 466C     	>>  ldr r6,[r0,#Ago1]
+ 731 1648 D0F89870 	>>  ldr r7,[r0,#Amu0]
+ 731 164c 93EA0803 	>>  eors r3,r3,r8
+ 731 1650 5540     	>>  eors r5,r5,r2
+ 731 1652 94EA0B04 	>>  eors r4,r4,r11
+ 731 1656 96EA0906 	>>  eors r6,r6,r9
+ 731 165a 97EA0E07 	>>  eors r7,r7,lr
+ 731 165e 5FEAB424 	>>  rors r4,#32-22
+ 731 1662 5FEAF525 	>>  rors r5,#32-21
+ 731 1666 5FEAB656 	>>  rors r6,#32-10
+ 731 166a 5FEA7767 	>>  rors r7,#32-7
+ 731              	>>  xandnot Ake0,r4,r5,r6
+ 731              	>>> 
+ 731 166e 26EA0501 	>>>  bic r1,r6,r5
+ 731 1672 6140     	>>>  eors r1,r1,r4
+ 731 1674 8165     	>>>  str r1,[r0,#Ake0]
+ 731              	>>  xandnot Asi1,r5,r6,r7
+ 731              	>>> 
+ 731 1676 27EA0601 	>>>  bic r1,r7,r6
+ 731 167a 6940     	>>>  eors r1,r1,r5
+ 731 167c C0F8B410 	>>>  str r1,[r0,#Asi1]
+ 731              	>>  xandnot Ago1,r6,r7,r3
+ 731              	>>> 
+ 731 1680 23EA0701 	>>>  bic r1,r3,r7
+ 731 1684 7140     	>>>  eors r1,r1,r6
+ 731 1686 4164     	>>>  str r1,[r0,#Ago1]
+ 731              	>>  xandnot Amu0,r7,r3,r4
+ 731              	>>> 
+ 731 1688 24EA0301 	>>>  bic r1,r4,r3
+ 731 168c 7940     	>>>  eors r1,r1,r7
+ 731 168e C0F89810 	>>>  str r1,[r0,#Amu0]
+ 731 1692 0599     	>>  ldr r1,[sp,#mRC]
+ 731 1694 A543     	>>  bics r5,r5,r4
+ 731 1696 4C69     	>>  ldr r4,[r1,#20]
+ 731 1698 6B40     	>>  eors r3,r3,r5
+ 731 169a 6340     	>>  eors r3,r3,r4
+ 731              	>>  .if 0==1
+ 731              	>>  ldr r4,[r1,#32]!
+ 731              	>>  str r1,[sp,#mRC]
+ 731              	>>  cmp r4,#0xFF
+ 731              	>>  .endif
+ 731 169c 4360     	>>  str r3,[r0,#Aba1]
+ 732              		KeccakRound3
+ 732              	> 
+ 732              	>  xor5 r3,Amu1,Agu0,Asu1,Aku0,Abu0
+ 732              	>> 
+ 732 169e D0F89C30 	>>  ldr r3,[r0,#Amu1]
+ 732 16a2 816C     	>>  ldr r1,[r0,#Agu0]
+ 732 16a4 4B40     	>>  eors r3,r3,r1
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 49
+
+
+ 732 16a6 D0F8C410 	>>  ldr r1,[r0,#Asu1]
+ 732 16aa 4B40     	>>  eors r3,r3,r1
+ 732 16ac 016F     	>>  ldr r1,[r0,#Aku0]
+ 732 16ae 4B40     	>>  eors r3,r3,r1
+ 732 16b0 016A     	>>  ldr r1,[r0,#Abu0]
+ 732 16b2 4B40     	>>  eors r3,r3,r1
+ 732              	>  xor5 r7,Ake0,Abe1,Ame1,Age0,Ase1
+ 732              	>> 
+ 732 16b4 876D     	>>  ldr r7,[r0,#Ake0]
+ 732 16b6 C168     	>>  ldr r1,[r0,#Abe1]
+ 732 16b8 4F40     	>>  eors r7,r7,r1
+ 732 16ba D0F88410 	>>  ldr r1,[r0,#Ame1]
+ 732 16be 4F40     	>>  eors r7,r7,r1
+ 732 16c0 016B     	>>  ldr r1,[r0,#Age0]
+ 732 16c2 4F40     	>>  eors r7,r7,r1
+ 732 16c4 D0F8AC10 	>>  ldr r1,[r0,#Ase1]
+ 732 16c8 4F40     	>>  eors r7,r7,r1
+ 732              	>  xorrol r6,r3,r7
+ 732              	>> 
+ 732 16ca 83EAF776 	>>  eor r6,r3,r7,ROR#31
+ 732 16ce 0096     	>  str r6,[sp,#mDa0]
+ 732              	>  xor5 r6,Amu0,Agu1,Asu0,Aku1,Abu1
+ 732              	>> 
+ 732 16d0 D0F89860 	>>  ldr r6,[r0,#Amu0]
+ 732 16d4 C16C     	>>  ldr r1,[r0,#Agu1]
+ 732 16d6 4E40     	>>  eors r6,r6,r1
+ 732 16d8 D0F8C010 	>>  ldr r1,[r0,#Asu0]
+ 732 16dc 4E40     	>>  eors r6,r6,r1
+ 732 16de 416F     	>>  ldr r1,[r0,#Aku1]
+ 732 16e0 4E40     	>>  eors r6,r6,r1
+ 732 16e2 416A     	>>  ldr r1,[r0,#Abu1]
+ 732 16e4 4E40     	>>  eors r6,r6,r1
+ 732              	>  xor5 lr,Ake1,Abe0,Ame0,Age1,Ase0
+ 732              	>> 
+ 732 16e6 D0F85CE0 	>>  ldr lr,[r0,#Ake1]
+ 732 16ea 8168     	>>  ldr r1,[r0,#Abe0]
+ 732 16ec 9EEA010E 	>>  eors lr,lr,r1
+ 732 16f0 D0F88010 	>>  ldr r1,[r0,#Ame0]
+ 732 16f4 9EEA010E 	>>  eors lr,lr,r1
+ 732 16f8 416B     	>>  ldr r1,[r0,#Age1]
+ 732 16fa 9EEA010E 	>>  eors lr,lr,r1
+ 732 16fe D0F8A810 	>>  ldr r1,[r0,#Ase0]
+ 732 1702 9EEA010E 	>>  eors lr,lr,r1
+ 732 1706 96EA0E08 	>  eors r8,r6,lr
+ 732 170a CDF80480 	>  str r8,[sp,#mDa1]
+ 732              	> 
+ 732              	>  xor5 r5,Asi0,Aki0,Abi1,Ami1,Agi1
+ 732              	>> 
+ 732 170e D0F8B050 	>>  ldr r5,[r0,#Asi0]
+ 732 1712 016E     	>>  ldr r1,[r0,#Aki0]
+ 732 1714 4D40     	>>  eors r5,r5,r1
+ 732 1716 4169     	>>  ldr r1,[r0,#Abi1]
+ 732 1718 4D40     	>>  eors r5,r5,r1
+ 732 171a D0F88C10 	>>  ldr r1,[r0,#Ami1]
+ 732 171e 4D40     	>>  eors r5,r5,r1
+ 732 1720 C16B     	>>  ldr r1,[r0,#Agi1]
+ 732 1722 4D40     	>>  eors r5,r5,r1
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 50
+
+
+ 732              	>  xorrol r9,r5,r6
+ 732              	>> 
+ 732 1724 85EAF679 	>>  eor r9,r5,r6,ROR#31
+ 732 1728 CDF80890 	>  str r9,[sp,#mDo0]
+ 732              	>  xor5 r4,Asi1,Aki1,Abi0,Ami0,Agi0
+ 732              	>> 
+ 732 172c D0F8B440 	>>  ldr r4,[r0,#Asi1]
+ 732 1730 416E     	>>  ldr r1,[r0,#Aki1]
+ 732 1732 4C40     	>>  eors r4,r4,r1
+ 732 1734 0169     	>>  ldr r1,[r0,#Abi0]
+ 732 1736 4C40     	>>  eors r4,r4,r1
+ 732 1738 D0F88810 	>>  ldr r1,[r0,#Ami0]
+ 732 173c 4C40     	>>  eors r4,r4,r1
+ 732 173e 816B     	>>  ldr r1,[r0,#Agi0]
+ 732 1740 4C40     	>>  eors r4,r4,r1
+ 732 1742 6340     	>  eors r3,r3,r4
+ 732 1744 0393     	>  str r3,[sp,#mDo1]
+ 732              	> 
+ 732              	>  xor5 r3,Aba0,Ama0,Aga1,Asa1,Aka0
+ 732              	>> 
+ 732 1746 0368     	>>  ldr r3,[r0,#Aba0]
+ 732 1748 816F     	>>  ldr r1,[r0,#Ama0]
+ 732 174a 4B40     	>>  eors r3,r3,r1
+ 732 174c C16A     	>>  ldr r1,[r0,#Aga1]
+ 732 174e 4B40     	>>  eors r3,r3,r1
+ 732 1750 D0F8A410 	>>  ldr r1,[r0,#Asa1]
+ 732 1754 4B40     	>>  eors r3,r3,r1
+ 732 1756 016D     	>>  ldr r1,[r0,#Aka0]
+ 732 1758 4B40     	>>  eors r3,r3,r1
+ 732              	>  xorrol r10,r3,r4
+ 732              	>> 
+ 732 175a 83EAF47A 	>>  eor r10,r3,r4,ROR#31
+ 732              	>  xor5 r6,Aba1,Ama1,Aga0,Asa0,Aka1
+ 732              	>> 
+ 732 175e 4668     	>>  ldr r6,[r0,#Aba1]
+ 732 1760 C16F     	>>  ldr r1,[r0,#Ama1]
+ 732 1762 4E40     	>>  eors r6,r6,r1
+ 732 1764 816A     	>>  ldr r1,[r0,#Aga0]
+ 732 1766 4E40     	>>  eors r6,r6,r1
+ 732 1768 D0F8A010 	>>  ldr r1,[r0,#Asa0]
+ 732 176c 4E40     	>>  eors r6,r6,r1
+ 732 176e 416D     	>>  ldr r1,[r0,#Aka1]
+ 732 1770 4E40     	>>  eors r6,r6,r1
+ 732 1772 96EA050B 	>  eors r11,r6,r5
+ 732              	> 
+ 732              	>  xor5 r4,Ago1,Aso0,Ako0,Abo0,Amo1
+ 732              	>> 
+ 732 1776 446C     	>>  ldr r4,[r0,#Ago1]
+ 732 1778 D0F8B810 	>>  ldr r1,[r0,#Aso0]
+ 732 177c 4C40     	>>  eors r4,r4,r1
+ 732 177e 816E     	>>  ldr r1,[r0,#Ako0]
+ 732 1780 4C40     	>>  eors r4,r4,r1
+ 732 1782 8169     	>>  ldr r1,[r0,#Abo0]
+ 732 1784 4C40     	>>  eors r4,r4,r1
+ 732 1786 D0F89410 	>>  ldr r1,[r0,#Amo1]
+ 732 178a 4C40     	>>  eors r4,r4,r1
+ 732              	>  xorrol r5,lr,r4
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 51
+
+
+ 732              	>> 
+ 732 178c 8EEAF475 	>>  eor r5,lr,r4,ROR#31
+ 732 1790 0495     	>  str r5,[sp,#mDi0]
+ 732              	>  xor5 r5,Ago0,Aso1,Ako1,Abo1,Amo0
+ 732              	>> 
+ 732 1792 056C     	>>  ldr r5,[r0,#Ago0]
+ 732 1794 D0F8BC10 	>>  ldr r1,[r0,#Aso1]
+ 732 1798 4D40     	>>  eors r5,r5,r1
+ 732 179a C16E     	>>  ldr r1,[r0,#Ako1]
+ 732 179c 4D40     	>>  eors r5,r5,r1
+ 732 179e C169     	>>  ldr r1,[r0,#Abo1]
+ 732 17a0 4D40     	>>  eors r5,r5,r1
+ 732 17a2 D0F89010 	>>  ldr r1,[r0,#Amo0]
+ 732 17a6 4D40     	>>  eors r5,r5,r1
+ 732 17a8 97EA0502 	>  eors r2,r7,r5
+ 732              	> 
+ 732              	>  xorrol r12,r5,r6
+ 732              	>> 
+ 732 17ac 85EAF67C 	>>  eor r12,r5,r6,ROR#31
+ 732 17b0 94EA030E 	>  eors lr,r4,r3
+ 732              	> 
+ 732              	>  KeccakThetaRhoPiChi r5,Aga0,r8,2,r6,Age0,r11,23,r7,Agi0,r2,31,r3,Ago0,r9,14,r4,Agu0,r12,10
+ 732 17b4 856A     	>>  ldr r5,[r0,#Aga0]
+ 732 17b6 066B     	>>  ldr r6,[r0,#Age0]
+ 732 17b8 876B     	>>  ldr r7,[r0,#Agi0]
+ 732 17ba 036C     	>>  ldr r3,[r0,#Ago0]
+ 732 17bc 846C     	>>  ldr r4,[r0,#Agu0]
+ 732 17be 95EA0805 	>>  eors r5,r5,r8
+ 732 17c2 5740     	>>  eors r7,r7,r2
+ 732 17c4 96EA0B06 	>>  eors r6,r6,r11
+ 732 17c8 93EA0903 	>>  eors r3,r3,r9
+ 732 17cc 94EA0C04 	>>  eors r4,r4,r12
+ 732 17d0 5FEAB575 	>>  rors r5,#32-2
+ 732              	>>  .if 23>0
+ 732 17d4 5FEA7626 	>>  rors r6,#32-23
+ 732              	>>  .endif
+ 732 17d8 5FEA7707 	>>  rors r7,#32-31
+ 732 17dc 5FEAB343 	>>  rors r3,#32-14
+ 732 17e0 5FEAB454 	>>  rors r4,#32-10
+ 732              	>>  xandnot Aga0,r3,r4,r5
+ 732              	>>> 
+ 732 17e4 25EA0401 	>>>  bic r1,r5,r4
+ 732 17e8 5940     	>>>  eors r1,r1,r3
+ 732 17ea 8162     	>>>  str r1,[r0,#Aga0]
+ 732              	>>  xandnot Age0,r4,r5,r6
+ 732              	>>> 
+ 732 17ec 26EA0501 	>>>  bic r1,r6,r5
+ 732 17f0 6140     	>>>  eors r1,r1,r4
+ 732 17f2 0163     	>>>  str r1,[r0,#Age0]
+ 732              	>>  xandnot Agi0,r5,r6,r7
+ 732              	>>> 
+ 732 17f4 27EA0601 	>>>  bic r1,r7,r6
+ 732 17f8 6940     	>>>  eors r1,r1,r5
+ 732 17fa 8163     	>>>  str r1,[r0,#Agi0]
+ 732              	>>  xandnot Ago0,r6,r7,r3
+ 732              	>>> 
+ 732 17fc 23EA0701 	>>>  bic r1,r3,r7
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 52
+
+
+ 732 1800 7140     	>>>  eors r1,r1,r6
+ 732 1802 0164     	>>>  str r1,[r0,#Ago0]
+ 732              	>>  xandnot Agu0,r7,r3,r4
+ 732              	>>> 
+ 732 1804 24EA0301 	>>>  bic r1,r4,r3
+ 732 1808 7940     	>>>  eors r1,r1,r7
+ 732 180a 8164     	>>>  str r1,[r0,#Agu0]
+ 732              	>  KeccakThetaRhoPiChi r7,Aka1,r8,9,r3,Ake1,r10,0,r4,Aki1,r2,3,r5,Ako1,r9,12,r6,Aku1,lr,4
+ 732 180c 476D     	>>  ldr r7,[r0,#Aka1]
+ 732 180e C36D     	>>  ldr r3,[r0,#Ake1]
+ 732 1810 446E     	>>  ldr r4,[r0,#Aki1]
+ 732 1812 C56E     	>>  ldr r5,[r0,#Ako1]
+ 732 1814 466F     	>>  ldr r6,[r0,#Aku1]
+ 732 1816 97EA0807 	>>  eors r7,r7,r8
+ 732 181a 5440     	>>  eors r4,r4,r2
+ 732 181c 93EA0A03 	>>  eors r3,r3,r10
+ 732 1820 95EA0905 	>>  eors r5,r5,r9
+ 732 1824 96EA0E06 	>>  eors r6,r6,lr
+ 732 1828 5FEAF757 	>>  rors r7,#32-9
+ 732              	>>  .if 0>0
+ 732              	>>  rors r3,#32-0
+ 732              	>>  .endif
+ 732 182c 5FEA7474 	>>  rors r4,#32-3
+ 732 1830 5FEA3555 	>>  rors r5,#32-12
+ 732 1834 5FEA3676 	>>  rors r6,#32-4
+ 732              	>>  xandnot Aka1,r3,r4,r5
+ 732              	>>> 
+ 732 1838 25EA0401 	>>>  bic r1,r5,r4
+ 732 183c 5940     	>>>  eors r1,r1,r3
+ 732 183e 4165     	>>>  str r1,[r0,#Aka1]
+ 732              	>>  xandnot Ake1,r4,r5,r6
+ 732              	>>> 
+ 732 1840 26EA0501 	>>>  bic r1,r6,r5
+ 732 1844 6140     	>>>  eors r1,r1,r4
+ 732 1846 C165     	>>>  str r1,[r0,#Ake1]
+ 732              	>>  xandnot Aki1,r5,r6,r7
+ 732              	>>> 
+ 732 1848 27EA0601 	>>>  bic r1,r7,r6
+ 732 184c 6940     	>>>  eors r1,r1,r5
+ 732 184e 4166     	>>>  str r1,[r0,#Aki1]
+ 732              	>>  xandnot Ako1,r6,r7,r3
+ 732              	>>> 
+ 732 1850 23EA0701 	>>>  bic r1,r3,r7
+ 732 1854 7140     	>>>  eors r1,r1,r6
+ 732 1856 C166     	>>>  str r1,[r0,#Ako1]
+ 732              	>>  xandnot Aku1,r7,r3,r4
+ 732              	>>> 
+ 732 1858 24EA0301 	>>>  bic r1,r4,r3
+ 732 185c 7940     	>>>  eors r1,r1,r7
+ 732 185e 4167     	>>>  str r1,[r0,#Aku1]
+ 732 1860 DDF80080 	>  ldr r8,[sp,#mDa0]
+ 732              	>  KeccakThetaRhoPiChi r4,Ama0,r8,18,r5,Ame0,r10,5,r6,Ami0,r2,8,r7,Amo0,r9,28,r3,Amu0,lr,14
+ 732 1864 846F     	>>  ldr r4,[r0,#Ama0]
+ 732 1866 D0F88050 	>>  ldr r5,[r0,#Ame0]
+ 732 186a D0F88860 	>>  ldr r6,[r0,#Ami0]
+ 732 186e D0F89070 	>>  ldr r7,[r0,#Amo0]
+ 732 1872 D0F89830 	>>  ldr r3,[r0,#Amu0]
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 53
+
+
+ 732 1876 94EA0804 	>>  eors r4,r4,r8
+ 732 187a 5640     	>>  eors r6,r6,r2
+ 732 187c 95EA0A05 	>>  eors r5,r5,r10
+ 732 1880 97EA0907 	>>  eors r7,r7,r9
+ 732 1884 93EA0E03 	>>  eors r3,r3,lr
+ 732 1888 5FEAB434 	>>  rors r4,#32-18
+ 732              	>>  .if 5>0
+ 732 188c 5FEAF565 	>>  rors r5,#32-5
+ 732              	>>  .endif
+ 732 1890 5FEA3666 	>>  rors r6,#32-8
+ 732 1894 5FEA3717 	>>  rors r7,#32-28
+ 732 1898 5FEAB343 	>>  rors r3,#32-14
+ 732              	>>  xandnot Ama0,r3,r4,r5
+ 732              	>>> 
+ 732 189c 25EA0401 	>>>  bic r1,r5,r4
+ 732 18a0 5940     	>>>  eors r1,r1,r3
+ 732 18a2 8167     	>>>  str r1,[r0,#Ama0]
+ 732              	>>  xandnot Ame0,r4,r5,r6
+ 732              	>>> 
+ 732 18a4 26EA0501 	>>>  bic r1,r6,r5
+ 732 18a8 6140     	>>>  eors r1,r1,r4
+ 732 18aa C0F88010 	>>>  str r1,[r0,#Ame0]
+ 732              	>>  xandnot Ami0,r5,r6,r7
+ 732              	>>> 
+ 732 18ae 27EA0601 	>>>  bic r1,r7,r6
+ 732 18b2 6940     	>>>  eors r1,r1,r5
+ 732 18b4 C0F88810 	>>>  str r1,[r0,#Ami0]
+ 732              	>>  xandnot Amo0,r6,r7,r3
+ 732              	>>> 
+ 732 18b8 23EA0701 	>>>  bic r1,r3,r7
+ 732 18bc 7140     	>>>  eors r1,r1,r6
+ 732 18be C0F89010 	>>>  str r1,[r0,#Amo0]
+ 732              	>>  xandnot Amu0,r7,r3,r4
+ 732              	>>> 
+ 732 18c2 24EA0301 	>>>  bic r1,r4,r3
+ 732 18c6 7940     	>>>  eors r1,r1,r7
+ 732 18c8 C0F89810 	>>>  str r1,[r0,#Amu0]
+ 732              	>  KeccakThetaRhoPiChi r6,Asa1,r8,20,r7,Ase1,r11,1,r3,Asi1,r2,31,r4,Aso1,r9,27,r5,Asu1,r12,19
+ 732 18cc D0F8A460 	>>  ldr r6,[r0,#Asa1]
+ 732 18d0 D0F8AC70 	>>  ldr r7,[r0,#Ase1]
+ 732 18d4 D0F8B430 	>>  ldr r3,[r0,#Asi1]
+ 732 18d8 D0F8BC40 	>>  ldr r4,[r0,#Aso1]
+ 732 18dc D0F8C450 	>>  ldr r5,[r0,#Asu1]
+ 732 18e0 96EA0806 	>>  eors r6,r6,r8
+ 732 18e4 5340     	>>  eors r3,r3,r2
+ 732 18e6 97EA0B07 	>>  eors r7,r7,r11
+ 732 18ea 94EA0904 	>>  eors r4,r4,r9
+ 732 18ee 95EA0C05 	>>  eors r5,r5,r12
+ 732 18f2 5FEA3636 	>>  rors r6,#32-20
+ 732              	>>  .if 1>0
+ 732 18f6 5FEAF777 	>>  rors r7,#32-1
+ 732              	>>  .endif
+ 732 18fa 5FEA7303 	>>  rors r3,#32-31
+ 732 18fe 5FEA7414 	>>  rors r4,#32-27
+ 732 1902 5FEA7535 	>>  rors r5,#32-19
+ 732              	>>  xandnot Asa1,r3,r4,r5
+ 732              	>>> 
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 54
+
+
+ 732 1906 25EA0401 	>>>  bic r1,r5,r4
+ 732 190a 5940     	>>>  eors r1,r1,r3
+ 732 190c C0F8A410 	>>>  str r1,[r0,#Asa1]
+ 732              	>>  xandnot Ase1,r4,r5,r6
+ 732              	>>> 
+ 732 1910 26EA0501 	>>>  bic r1,r6,r5
+ 732 1914 6140     	>>>  eors r1,r1,r4
+ 732 1916 C0F8AC10 	>>>  str r1,[r0,#Ase1]
+ 732              	>>  xandnot Asi1,r5,r6,r7
+ 732              	>>> 
+ 732 191a 27EA0601 	>>>  bic r1,r7,r6
+ 732 191e 6940     	>>>  eors r1,r1,r5
+ 732 1920 C0F8B410 	>>>  str r1,[r0,#Asi1]
+ 732              	>>  xandnot Aso1,r6,r7,r3
+ 732              	>>> 
+ 732 1924 23EA0701 	>>>  bic r1,r3,r7
+ 732 1928 7140     	>>>  eors r1,r1,r6
+ 732 192a C0F8BC10 	>>>  str r1,[r0,#Aso1]
+ 732              	>>  xandnot Asu1,r7,r3,r4
+ 732              	>>> 
+ 732 192e 24EA0301 	>>>  bic r1,r4,r3
+ 732 1932 7940     	>>>  eors r1,r1,r7
+ 732 1934 C0F8C410 	>>>  str r1,[r0,#Asu1]
+ 732 1938 DDF80C90 	>  ldr r9,[sp,#mDo1]
+ 732              	>  KeccakThetaRhoPiChiIota Aba0,r8,Abe0,r10,22,Abi0,r2,22,Abo0,r9,11,Abu0,r12,7,24,0
+ 732 193c 0368     	>>  ldr r3,[r0,#Aba0]
+ 732 193e 8468     	>>  ldr r4,[r0,#Abe0]
+ 732 1940 0569     	>>  ldr r5,[r0,#Abi0]
+ 732 1942 8669     	>>  ldr r6,[r0,#Abo0]
+ 732 1944 076A     	>>  ldr r7,[r0,#Abu0]
+ 732 1946 93EA0803 	>>  eors r3,r3,r8
+ 732 194a 5540     	>>  eors r5,r5,r2
+ 732 194c 94EA0A04 	>>  eors r4,r4,r10
+ 732 1950 96EA0906 	>>  eors r6,r6,r9
+ 732 1954 97EA0C07 	>>  eors r7,r7,r12
+ 732 1958 5FEAB424 	>>  rors r4,#32-22
+ 732 195c 5FEAB525 	>>  rors r5,#32-22
+ 732 1960 5FEA7656 	>>  rors r6,#32-11
+ 732 1964 5FEA7767 	>>  rors r7,#32-7
+ 732              	>>  xandnot Abe0,r4,r5,r6
+ 732              	>>> 
+ 732 1968 26EA0501 	>>>  bic r1,r6,r5
+ 732 196c 6140     	>>>  eors r1,r1,r4
+ 732 196e 8160     	>>>  str r1,[r0,#Abe0]
+ 732              	>>  xandnot Abi0,r5,r6,r7
+ 732              	>>> 
+ 732 1970 27EA0601 	>>>  bic r1,r7,r6
+ 732 1974 6940     	>>>  eors r1,r1,r5
+ 732 1976 0161     	>>>  str r1,[r0,#Abi0]
+ 732              	>>  xandnot Abo0,r6,r7,r3
+ 732              	>>> 
+ 732 1978 23EA0701 	>>>  bic r1,r3,r7
+ 732 197c 7140     	>>>  eors r1,r1,r6
+ 732 197e 8161     	>>>  str r1,[r0,#Abo0]
+ 732              	>>  xandnot Abu0,r7,r3,r4
+ 732              	>>> 
+ 732 1980 24EA0301 	>>>  bic r1,r4,r3
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 55
+
+
+ 732 1984 7940     	>>>  eors r1,r1,r7
+ 732 1986 0162     	>>>  str r1,[r0,#Abu0]
+ 732 1988 0599     	>>  ldr r1,[sp,#mRC]
+ 732 198a A543     	>>  bics r5,r5,r4
+ 732 198c 8C69     	>>  ldr r4,[r1,#24]
+ 732 198e 6B40     	>>  eors r3,r3,r5
+ 732 1990 6340     	>>  eors r3,r3,r4
+ 732              	>>  .if 0==1
+ 732              	>>  ldr r4,[r1,#32]!
+ 732              	>>  str r1,[sp,#mRC]
+ 732              	>>  cmp r4,#0xFF
+ 732              	>>  .endif
+ 732 1992 0360     	>>  str r3,[r0,#Aba0]
+ 732              	> 
+ 732 1994 049A     	>  ldr r2,[sp,#mDi0]
+ 732              	>  KeccakThetaRhoPiChi r5,Aga1,r8,1,r6,Age1,r10,22,r7,Agi1,r2,30,r3,Ago1,r9,14,r4,Agu1,lr,10
+ 732 1996 C56A     	>>  ldr r5,[r0,#Aga1]
+ 732 1998 466B     	>>  ldr r6,[r0,#Age1]
+ 732 199a C76B     	>>  ldr r7,[r0,#Agi1]
+ 732 199c 436C     	>>  ldr r3,[r0,#Ago1]
+ 732 199e C46C     	>>  ldr r4,[r0,#Agu1]
+ 732 19a0 95EA0805 	>>  eors r5,r5,r8
+ 732 19a4 5740     	>>  eors r7,r7,r2
+ 732 19a6 96EA0A06 	>>  eors r6,r6,r10
+ 732 19aa 93EA0903 	>>  eors r3,r3,r9
+ 732 19ae 94EA0E04 	>>  eors r4,r4,lr
+ 732 19b2 5FEAF575 	>>  rors r5,#32-1
+ 732              	>>  .if 22>0
+ 732 19b6 5FEAB626 	>>  rors r6,#32-22
+ 732              	>>  .endif
+ 732 19ba 5FEAB707 	>>  rors r7,#32-30
+ 732 19be 5FEAB343 	>>  rors r3,#32-14
+ 732 19c2 5FEAB454 	>>  rors r4,#32-10
+ 732              	>>  xandnot Aga1,r3,r4,r5
+ 732              	>>> 
+ 732 19c6 25EA0401 	>>>  bic r1,r5,r4
+ 732 19ca 5940     	>>>  eors r1,r1,r3
+ 732 19cc C162     	>>>  str r1,[r0,#Aga1]
+ 732              	>>  xandnot Age1,r4,r5,r6
+ 732              	>>> 
+ 732 19ce 26EA0501 	>>>  bic r1,r6,r5
+ 732 19d2 6140     	>>>  eors r1,r1,r4
+ 732 19d4 4163     	>>>  str r1,[r0,#Age1]
+ 732              	>>  xandnot Agi1,r5,r6,r7
+ 732              	>>> 
+ 732 19d6 27EA0601 	>>>  bic r1,r7,r6
+ 732 19da 6940     	>>>  eors r1,r1,r5
+ 732 19dc C163     	>>>  str r1,[r0,#Agi1]
+ 732              	>>  xandnot Ago1,r6,r7,r3
+ 732              	>>> 
+ 732 19de 23EA0701 	>>>  bic r1,r3,r7
+ 732 19e2 7140     	>>>  eors r1,r1,r6
+ 732 19e4 4164     	>>>  str r1,[r0,#Ago1]
+ 732              	>>  xandnot Agu1,r7,r3,r4
+ 732              	>>> 
+ 732 19e6 24EA0301 	>>>  bic r1,r4,r3
+ 732 19ea 7940     	>>>  eors r1,r1,r7
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 56
+
+
+ 732 19ec C164     	>>>  str r1,[r0,#Agu1]
+ 732              	>  KeccakThetaRhoPiChi r7,Aka0,r8,9,r3,Ake0,r11,1,r4,Aki0,r2,3,r5,Ako0,r9,13,r6,Aku0,r12,4
+ 732 19ee 076D     	>>  ldr r7,[r0,#Aka0]
+ 732 19f0 836D     	>>  ldr r3,[r0,#Ake0]
+ 732 19f2 046E     	>>  ldr r4,[r0,#Aki0]
+ 732 19f4 856E     	>>  ldr r5,[r0,#Ako0]
+ 732 19f6 066F     	>>  ldr r6,[r0,#Aku0]
+ 732 19f8 97EA0807 	>>  eors r7,r7,r8
+ 732 19fc 5440     	>>  eors r4,r4,r2
+ 732 19fe 93EA0B03 	>>  eors r3,r3,r11
+ 732 1a02 95EA0905 	>>  eors r5,r5,r9
+ 732 1a06 96EA0C06 	>>  eors r6,r6,r12
+ 732 1a0a 5FEAF757 	>>  rors r7,#32-9
+ 732              	>>  .if 1>0
+ 732 1a0e 5FEAF373 	>>  rors r3,#32-1
+ 732              	>>  .endif
+ 732 1a12 5FEA7474 	>>  rors r4,#32-3
+ 732 1a16 5FEAF545 	>>  rors r5,#32-13
+ 732 1a1a 5FEA3676 	>>  rors r6,#32-4
+ 732              	>>  xandnot Aka0,r3,r4,r5
+ 732              	>>> 
+ 732 1a1e 25EA0401 	>>>  bic r1,r5,r4
+ 732 1a22 5940     	>>>  eors r1,r1,r3
+ 732 1a24 0165     	>>>  str r1,[r0,#Aka0]
+ 732              	>>  xandnot Ake0,r4,r5,r6
+ 732              	>>> 
+ 732 1a26 26EA0501 	>>>  bic r1,r6,r5
+ 732 1a2a 6140     	>>>  eors r1,r1,r4
+ 732 1a2c 8165     	>>>  str r1,[r0,#Ake0]
+ 732              	>>  xandnot Aki0,r5,r6,r7
+ 732              	>>> 
+ 732 1a2e 27EA0601 	>>>  bic r1,r7,r6
+ 732 1a32 6940     	>>>  eors r1,r1,r5
+ 732 1a34 0166     	>>>  str r1,[r0,#Aki0]
+ 732              	>>  xandnot Ako0,r6,r7,r3
+ 732              	>>> 
+ 732 1a36 23EA0701 	>>>  bic r1,r3,r7
+ 732 1a3a 7140     	>>>  eors r1,r1,r6
+ 732 1a3c 8166     	>>>  str r1,[r0,#Ako0]
+ 732              	>>  xandnot Aku0,r7,r3,r4
+ 732              	>>> 
+ 732 1a3e 24EA0301 	>>>  bic r1,r4,r3
+ 732 1a42 7940     	>>>  eors r1,r1,r7
+ 732 1a44 0167     	>>>  str r1,[r0,#Aku0]
+ 732 1a46 DDF80480 	>  ldr r8,[sp,#mDa1]
+ 732              	>  KeccakThetaRhoPiChi r4,Ama1,r8,18,r5,Ame1,r11,5,r6,Ami1,r2,7,r7,Amo1,r9,28,r3,Amu1,r12,13
+ 732 1a4a C46F     	>>  ldr r4,[r0,#Ama1]
+ 732 1a4c D0F88450 	>>  ldr r5,[r0,#Ame1]
+ 732 1a50 D0F88C60 	>>  ldr r6,[r0,#Ami1]
+ 732 1a54 D0F89470 	>>  ldr r7,[r0,#Amo1]
+ 732 1a58 D0F89C30 	>>  ldr r3,[r0,#Amu1]
+ 732 1a5c 94EA0804 	>>  eors r4,r4,r8
+ 732 1a60 5640     	>>  eors r6,r6,r2
+ 732 1a62 95EA0B05 	>>  eors r5,r5,r11
+ 732 1a66 97EA0907 	>>  eors r7,r7,r9
+ 732 1a6a 93EA0C03 	>>  eors r3,r3,r12
+ 732 1a6e 5FEAB434 	>>  rors r4,#32-18
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 57
+
+
+ 732              	>>  .if 5>0
+ 732 1a72 5FEAF565 	>>  rors r5,#32-5
+ 732              	>>  .endif
+ 732 1a76 5FEA7666 	>>  rors r6,#32-7
+ 732 1a7a 5FEA3717 	>>  rors r7,#32-28
+ 732 1a7e 5FEAF343 	>>  rors r3,#32-13
+ 732              	>>  xandnot Ama1,r3,r4,r5
+ 732              	>>> 
+ 732 1a82 25EA0401 	>>>  bic r1,r5,r4
+ 732 1a86 5940     	>>>  eors r1,r1,r3
+ 732 1a88 C167     	>>>  str r1,[r0,#Ama1]
+ 732              	>>  xandnot Ame1,r4,r5,r6
+ 732              	>>> 
+ 732 1a8a 26EA0501 	>>>  bic r1,r6,r5
+ 732 1a8e 6140     	>>>  eors r1,r1,r4
+ 732 1a90 C0F88410 	>>>  str r1,[r0,#Ame1]
+ 732              	>>  xandnot Ami1,r5,r6,r7
+ 732              	>>> 
+ 732 1a94 27EA0601 	>>>  bic r1,r7,r6
+ 732 1a98 6940     	>>>  eors r1,r1,r5
+ 732 1a9a C0F88C10 	>>>  str r1,[r0,#Ami1]
+ 732              	>>  xandnot Amo1,r6,r7,r3
+ 732              	>>> 
+ 732 1a9e 23EA0701 	>>>  bic r1,r3,r7
+ 732 1aa2 7140     	>>>  eors r1,r1,r6
+ 732 1aa4 C0F89410 	>>>  str r1,[r0,#Amo1]
+ 732              	>>  xandnot Amu1,r7,r3,r4
+ 732              	>>> 
+ 732 1aa8 24EA0301 	>>>  bic r1,r4,r3
+ 732 1aac 7940     	>>>  eors r1,r1,r7
+ 732 1aae C0F89C10 	>>>  str r1,[r0,#Amu1]
+ 732              	>  KeccakThetaRhoPiChi r6,Asa0,r8,21,r7,Ase0,r10,1,r3,Asi0,r2,31,r4,Aso0,r9,28,r5,Asu0,lr,20
+ 732 1ab2 D0F8A060 	>>  ldr r6,[r0,#Asa0]
+ 732 1ab6 D0F8A870 	>>  ldr r7,[r0,#Ase0]
+ 732 1aba D0F8B030 	>>  ldr r3,[r0,#Asi0]
+ 732 1abe D0F8B840 	>>  ldr r4,[r0,#Aso0]
+ 732 1ac2 D0F8C050 	>>  ldr r5,[r0,#Asu0]
+ 732 1ac6 96EA0806 	>>  eors r6,r6,r8
+ 732 1aca 5340     	>>  eors r3,r3,r2
+ 732 1acc 97EA0A07 	>>  eors r7,r7,r10
+ 732 1ad0 94EA0904 	>>  eors r4,r4,r9
+ 732 1ad4 95EA0E05 	>>  eors r5,r5,lr
+ 732 1ad8 5FEAF626 	>>  rors r6,#32-21
+ 732              	>>  .if 1>0
+ 732 1adc 5FEAF777 	>>  rors r7,#32-1
+ 732              	>>  .endif
+ 732 1ae0 5FEA7303 	>>  rors r3,#32-31
+ 732 1ae4 5FEA3414 	>>  rors r4,#32-28
+ 732 1ae8 5FEA3535 	>>  rors r5,#32-20
+ 732              	>>  xandnot Asa0,r3,r4,r5
+ 732              	>>> 
+ 732 1aec 25EA0401 	>>>  bic r1,r5,r4
+ 732 1af0 5940     	>>>  eors r1,r1,r3
+ 732 1af2 C0F8A010 	>>>  str r1,[r0,#Asa0]
+ 732              	>>  xandnot Ase0,r4,r5,r6
+ 732              	>>> 
+ 732 1af6 26EA0501 	>>>  bic r1,r6,r5
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 58
+
+
+ 732 1afa 6140     	>>>  eors r1,r1,r4
+ 732 1afc C0F8A810 	>>>  str r1,[r0,#Ase0]
+ 732              	>>  xandnot Asi0,r5,r6,r7
+ 732              	>>> 
+ 732 1b00 27EA0601 	>>>  bic r1,r7,r6
+ 732 1b04 6940     	>>>  eors r1,r1,r5
+ 732 1b06 C0F8B010 	>>>  str r1,[r0,#Asi0]
+ 732              	>>  xandnot Aso0,r6,r7,r3
+ 732              	>>> 
+ 732 1b0a 23EA0701 	>>>  bic r1,r3,r7
+ 732 1b0e 7140     	>>>  eors r1,r1,r6
+ 732 1b10 C0F8B810 	>>>  str r1,[r0,#Aso0]
+ 732              	>>  xandnot Asu0,r7,r3,r4
+ 732              	>>> 
+ 732 1b14 24EA0301 	>>>  bic r1,r4,r3
+ 732 1b18 7940     	>>>  eors r1,r1,r7
+ 732 1b1a C0F8C010 	>>>  str r1,[r0,#Asu0]
+ 732 1b1e DDF80890 	>  ldr r9,[sp,#mDo0]
+ 732              	>  KeccakThetaRhoPiChiIota Aba1,r8,Abe1,r11,22,Abi1,r2,21,Abo1,r9,10,Abu1,lr,7,28,1
+ 732 1b22 4368     	>>  ldr r3,[r0,#Aba1]
+ 732 1b24 C468     	>>  ldr r4,[r0,#Abe1]
+ 732 1b26 4569     	>>  ldr r5,[r0,#Abi1]
+ 732 1b28 C669     	>>  ldr r6,[r0,#Abo1]
+ 732 1b2a 476A     	>>  ldr r7,[r0,#Abu1]
+ 732 1b2c 93EA0803 	>>  eors r3,r3,r8
+ 732 1b30 5540     	>>  eors r5,r5,r2
+ 732 1b32 94EA0B04 	>>  eors r4,r4,r11
+ 732 1b36 96EA0906 	>>  eors r6,r6,r9
+ 732 1b3a 97EA0E07 	>>  eors r7,r7,lr
+ 732 1b3e 5FEAB424 	>>  rors r4,#32-22
+ 732 1b42 5FEAF525 	>>  rors r5,#32-21
+ 732 1b46 5FEAB656 	>>  rors r6,#32-10
+ 732 1b4a 5FEA7767 	>>  rors r7,#32-7
+ 732              	>>  xandnot Abe1,r4,r5,r6
+ 732              	>>> 
+ 732 1b4e 26EA0501 	>>>  bic r1,r6,r5
+ 732 1b52 6140     	>>>  eors r1,r1,r4
+ 732 1b54 C160     	>>>  str r1,[r0,#Abe1]
+ 732              	>>  xandnot Abi1,r5,r6,r7
+ 732              	>>> 
+ 732 1b56 27EA0601 	>>>  bic r1,r7,r6
+ 732 1b5a 6940     	>>>  eors r1,r1,r5
+ 732 1b5c 4161     	>>>  str r1,[r0,#Abi1]
+ 732              	>>  xandnot Abo1,r6,r7,r3
+ 732              	>>> 
+ 732 1b5e 23EA0701 	>>>  bic r1,r3,r7
+ 732 1b62 7140     	>>>  eors r1,r1,r6
+ 732 1b64 C161     	>>>  str r1,[r0,#Abo1]
+ 732              	>>  xandnot Abu1,r7,r3,r4
+ 732              	>>> 
+ 732 1b66 24EA0301 	>>>  bic r1,r4,r3
+ 732 1b6a 7940     	>>>  eors r1,r1,r7
+ 732 1b6c 4162     	>>>  str r1,[r0,#Abu1]
+ 732 1b6e 0599     	>>  ldr r1,[sp,#mRC]
+ 732 1b70 A543     	>>  bics r5,r5,r4
+ 732 1b72 CC69     	>>  ldr r4,[r1,#28]
+ 732 1b74 6B40     	>>  eors r3,r3,r5
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 59
+
+
+ 732 1b76 6340     	>>  eors r3,r3,r4
+ 732              	>>  .if 1==1
+ 732 1b78 51F8204F 	>>  ldr r4,[r1,#32]!
+ 732 1b7c 0591     	>>  str r1,[sp,#mRC]
+ 732 1b7e FF2C     	>>  cmp r4,#0xFF
+ 732              	>>  .endif
+ 732 1b80 4360     	>>  str r3,[r0,#Aba1]
+ 733 1b82 7EF443AE 		bne		KeccakF1600_StatePermute_RoundLoop
+ 734 1b86 06B0     		add		sp, #mSize
+ 735 1b88 BDE8F09F 		pop		{ r4 - r12, pc }
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 60
+
+
+DEFINED SYMBOLS
+       keccakf1600.S:126    *ABS*:00000000 Aba0
+       keccakf1600.S:127    *ABS*:00000004 Aba1
+       keccakf1600.S:128    *ABS*:00000008 Abe0
+       keccakf1600.S:129    *ABS*:0000000c Abe1
+       keccakf1600.S:130    *ABS*:00000010 Abi0
+       keccakf1600.S:131    *ABS*:00000014 Abi1
+       keccakf1600.S:132    *ABS*:00000018 Abo0
+       keccakf1600.S:133    *ABS*:0000001c Abo1
+       keccakf1600.S:134    *ABS*:00000020 Abu0
+       keccakf1600.S:135    *ABS*:00000024 Abu1
+       keccakf1600.S:136    *ABS*:00000028 Aga0
+       keccakf1600.S:137    *ABS*:0000002c Aga1
+       keccakf1600.S:138    *ABS*:00000030 Age0
+       keccakf1600.S:139    *ABS*:00000034 Age1
+       keccakf1600.S:140    *ABS*:00000038 Agi0
+       keccakf1600.S:141    *ABS*:0000003c Agi1
+       keccakf1600.S:142    *ABS*:00000040 Ago0
+       keccakf1600.S:143    *ABS*:00000044 Ago1
+       keccakf1600.S:144    *ABS*:00000048 Agu0
+       keccakf1600.S:145    *ABS*:0000004c Agu1
+       keccakf1600.S:146    *ABS*:00000050 Aka0
+       keccakf1600.S:147    *ABS*:00000054 Aka1
+       keccakf1600.S:148    *ABS*:00000058 Ake0
+       keccakf1600.S:149    *ABS*:0000005c Ake1
+       keccakf1600.S:150    *ABS*:00000060 Aki0
+       keccakf1600.S:151    *ABS*:00000064 Aki1
+       keccakf1600.S:152    *ABS*:00000068 Ako0
+       keccakf1600.S:153    *ABS*:0000006c Ako1
+       keccakf1600.S:154    *ABS*:00000070 Aku0
+       keccakf1600.S:155    *ABS*:00000074 Aku1
+       keccakf1600.S:156    *ABS*:00000078 Ama0
+       keccakf1600.S:157    *ABS*:0000007c Ama1
+       keccakf1600.S:158    *ABS*:00000080 Ame0
+       keccakf1600.S:159    *ABS*:00000084 Ame1
+       keccakf1600.S:160    *ABS*:00000088 Ami0
+       keccakf1600.S:161    *ABS*:0000008c Ami1
+       keccakf1600.S:162    *ABS*:00000090 Amo0
+       keccakf1600.S:163    *ABS*:00000094 Amo1
+       keccakf1600.S:164    *ABS*:00000098 Amu0
+       keccakf1600.S:165    *ABS*:0000009c Amu1
+       keccakf1600.S:166    *ABS*:000000a0 Asa0
+       keccakf1600.S:167    *ABS*:000000a4 Asa1
+       keccakf1600.S:168    *ABS*:000000a8 Ase0
+       keccakf1600.S:169    *ABS*:000000ac Ase1
+       keccakf1600.S:170    *ABS*:000000b0 Asi0
+       keccakf1600.S:171    *ABS*:000000b4 Asi1
+       keccakf1600.S:172    *ABS*:000000b8 Aso0
+       keccakf1600.S:173    *ABS*:000000bc Aso1
+       keccakf1600.S:174    *ABS*:000000c0 Asu0
+       keccakf1600.S:175    *ABS*:000000c4 Asu1
+       keccakf1600.S:178    *ABS*:00000000 mDa0
+       keccakf1600.S:179    *ABS*:00000004 mDa1
+       keccakf1600.S:180    *ABS*:00000008 mDo0
+       keccakf1600.S:181    *ABS*:0000000c mDo1
+       keccakf1600.S:182    *ABS*:00000010 mDi0
+       keccakf1600.S:183    *ABS*:00000014 mRC
+ARM GAS  C:\Users\Ridwane\AppData\Local\Temp\ccBMk24g.s 			page 61
+
+
+       keccakf1600.S:184    *ABS*:00000018 mSize
+       keccakf1600.S:474    .text:00000000 $t
+       keccakf1600.S:476    .text:00000000 KeccakF1600_Initialize
+       keccakf1600.S:487    .text:00000100 KeccakF1600_StateXORBytes
+       keccakf1600.S:516    .text:00000144 KeccakF1600_StateXORBytes_Exit1
+       keccakf1600.S:504    .text:0000012a KeccakF1600_StateXORBytes_CheckLanes
+       keccakf1600.S:499    .text:0000011e KeccakF1600_StateXORBytes_BytesAlign
+       keccakf1600.S:565    .text:00000300 __KeccakF1600_StateXORBytesInLane
+       keccakf1600.S:510    .text:00000138 KeccakF1600_StateXORBytes_Bytes
+       keccakf1600.S:536    .text:00000200 __KeccakF1600_StateXORLanes
+       keccakf1600.S:514    .text:00000140 KeccakF1600_StateXORBytes_Exit
+       keccakf1600.S:537    .text:00000200 __KeccakF1600_StateXORLanes_LoopAligned
+       keccakf1600.S:570    .text:00000308 __KeccakF1600_StateXORBytesInLane_Loop
+       keccakf1600.S:590    .text:00000400 KeccakF1600_StateExtractBytes
+       keccakf1600.S:619    .text:00000444 KeccakF1600_StateExtractBytes_Exit1
+       keccakf1600.S:607    .text:0000042a KeccakF1600_StateExtractBytes_CheckLanes
+       keccakf1600.S:602    .text:0000041e KeccakF1600_StateExtractBytes_BytesAlign
+       keccakf1600.S:667    .text:00000600 __KeccakF1600_StateExtractBytesInLane
+       keccakf1600.S:613    .text:00000438 KeccakF1600_StateExtractBytes_Bytes
+       keccakf1600.S:639    .text:00000500 __KeccakF1600_StateExtractLanes
+       keccakf1600.S:617    .text:00000440 KeccakF1600_StateExtractBytes_Exit
+       keccakf1600.S:640    .text:00000500 __KeccakF1600_StateExtractLanes_LoopAligned
+       keccakf1600.S:672    .text:00000686 __KeccakF1600_StateExtractBytesInLane_Loop
+       keccakf1600.S:683    .text:00000700 KeccakF1600_StatePermute_RoundConstantsWithTerminator
+       keccakf1600.S:685    .text:00000700 $d
+       keccakf1600.S:721    .text:000007c4 $t
+       keccakf1600.S:723    .text:00000800 KeccakF1600_StatePermute
+       keccakf1600.S:728    .text:0000080c KeccakF1600_StatePermute_RoundLoop
+
+NO UNDEFINED SYMBOLS

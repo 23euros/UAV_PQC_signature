@@ -40,16 +40,16 @@ int32_t decompose(int32_t *a0, int32_t a) {
   int32_t a1;
 
   a1  = (a + 127) >> 7;
-#if GAMMA2 == (Q-1)/32
+#if GAMMA2 == (Q1-1)/32
   a1  = (a1*1025 + (1 << 21)) >> 22;
   a1 &= 15;
-#elif GAMMA2 == (Q-1)/88
+#elif GAMMA2 == (Q1-1)/88
   a1  = (a1*11275 + (1 << 23)) >> 24;
   a1 ^= ((43 - a1) >> 31) & a1;
 #endif
 
   *a0  = a - a1*2*GAMMA2;
-  *a0 -= (((Q-1)/2 - *a0) >> 31) & Q;
+  *a0 -= (((Q1-1)/2 - *a0) >> 31) & Q1;
   return a1;
 }
 
@@ -88,12 +88,12 @@ int32_t use_hint(int32_t a, unsigned int hint) {
   if(hint == 0)
     return a1;
 
-#if GAMMA2 == (Q-1)/32
+#if GAMMA2 == (Q1-1)/32
   if(a0 > 0)
     return (a1 + 1) & 15;
   else
     return (a1 - 1) & 15;
-#elif GAMMA2 == (Q-1)/88
+#elif GAMMA2 == (Q1-1)/88
   if(a0 > 0)
     return (a1 == 43) ?  0 : a1 + 1;
   else
