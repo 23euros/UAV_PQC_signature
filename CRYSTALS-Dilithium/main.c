@@ -87,9 +87,9 @@ static THD_FUNCTION(Thread1, arg) {
 
     /* Initialize the parameters for the signature */
     uint8_t message[MESSAGE_SIZE_BYTES];
-    unsigned long long mlen = MESSAGE_SIZE_BYTES;
-    unsigned long long smlen = CRYPTO_BYTES;
-    uint8_t signature[CRYPTO_BYTES];
+    unsigned int mlen = MESSAGE_SIZE_BYTES;
+    unsigned int smlen = CRYPTO_BYTES;
+    uint8_t signature[CRYPTO_BYTES+mlen];
     uint8_t public_key[CRYPTO_PUBLICKEYBYTES];
     uint8_t secret_key[CRYPTO_SECRETKEYBYTES];
 

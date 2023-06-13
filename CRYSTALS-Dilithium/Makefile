@@ -147,7 +147,6 @@ CPPSRC = $(ALLCPPSRC)
 
 # List ASM source files here.
 ASMSRC = $(ALLASMSRC) \
-vectors.s \
 vector.s \
 crypto_hashblocks_sha512_inner32.s \
 pointwise_mont.s
@@ -162,7 +161,6 @@ aes-encrypt.S \
 aes-keyschedule.S \
 aes-publicinputs.S \
 basemul_257.S \
-startup_MPS2.S \
 keccakf1600.S
 
 # Inclusion directories.
