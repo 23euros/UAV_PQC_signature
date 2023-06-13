@@ -1,5 +1,0 @@
-# 0 "../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/vectors.S"
-# 1 "C:\\ChibiStudio\\workspace_user\\CRYSTALS-Dilithium//"
-# 0 "<built-in>"
-# 0 "<command-line>"
-# 1 "../../chibios2111/os/common/startup/ARMCMx/compilers/GCC/vectors.S"
