@@ -25,7 +25,7 @@
 
 /* Define the size of the message to sign */
 #define MESSAGE_SIZE_BYTES 16
-#define FALCON_SIG_WORKBUF_SIZE 8192
+#define FALCON_SIG_WORKBUF_SIZE 52000
 
 /* Define the Falcon signature parameters */
 #define FALCON_PARAM_SET CRYPTO_SECRETKEYBYTES
@@ -37,7 +37,7 @@ static int available_ms = 256;
 
 /* Create a mutex and the interruptions counter */
 static MUTEX_DECL(mutex);
-static int counter = 0;
+static int count = 0;
 
 /* Create the thread working areas */
 static THD_WORKING_AREA(waThread1, FALCON_SIG_WORKBUF_SIZE);
@@ -51,23 +51,23 @@ static THD_FUNCTION(Monopolize, arg) {
   uint32_t start;
   uint32_t elapsed;
 //  uint32_t end;
-  counter = 0;
+  count = 0;
 
   while (!chThdShouldTerminateX()) {
-    counter ++;
+    count ++;
     start = chVTGetSystemTimeX();
     palSetPad(GPIOD, GPIOD_LED4);
 //    chMtxLock(&mutex);
 //    chprintf((BaseSequentialStream *)&SD2, "Time elapsed %lu - loops: %lu \r\n", start - end, loop);
 //    chMtxUnlock(&mutex);
     elapsed = 0;
-    uint32_t matrix[10][10];
-    for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                matrix[i][j] = rand();
-            }
-    }
-    chprintf((BaseSequentialStream *)&SD1,"%lu",matrix[rand() % 10][rand() % 10]);
+//    uint32_t matrix[10][10];
+//    for (int i = 0; i < 10; i++) {
+//            for (int j = 0; j < 10; j++) {
+//                matrix[i][j] = rand();
+//            }
+//    }
+//    chprintf((BaseSequentialStream *)&SD1,"%lu",matrix[rand() % 10][rand() % 10]);
 
 
     while ((elapsed < MS2RTC(CH_CFG_ST_FREQUENCY, MONOPOLIZE_TIME_MS)) & (!chThdShouldTerminateX())){
@@ -113,8 +113,10 @@ static THD_FUNCTION(Thread1, arg) {
     /* Generate key pair */
     crypto_sign_keypair(public_key, secret_key);
 
+
     while (true){
       loops = 0;
+//      chprintf((BaseSequentialStream *)&SD2,"pk: %lu - sk: %lu\r\n", public_key, secret_key);
       while (loops<100) {
           DWT->CYCCNT = 0;
           loops ++;
@@ -144,29 +146,21 @@ static THD_FUNCTION(Thread1, arg) {
           palClearPad(GPIOD, GPIOD_LED3);     // Orange.
           cycle_counter = end_cycle - start_cycle;
           timer = end_time - start_time;
-  //        if (timer <= min_t) min_t = timer;
-  //        if (timer >= max_t) max_t = timer;
-  //        avg_t = (avg_t / (float) loops * (float) (loops - 1) + (float) timer / (float) loops);
-  //        if (cycle_counter <= min) min = cycle_counter;
-  //        if (cycle_counter >= max) max = cycle_counter;
-  //        avg = (avg / (float) loops * (float) (loops - 1) + (float) cycle_counter / (float) loops);
-  //        if (avg==0) break;
 
           /* Display the current loop results */
           chMtxLock(&mutex);
-  //        chprintf((BaseSequentialStream *)&SD2,"Loop: %lu - Crypto_sign: Delta cycle count: %lu - Delta time: %lu\r\n", loops, cycle_counter, timer);
-          chprintf((BaseSequentialStream *)&SD2,"%lu,%lu,%lu,%lu,%lu\r\n", available_ms, loops, cycle_counter, timer, counter);
+          chprintf((BaseSequentialStream *)&SD2,"%lu,%lu,%lu,%lu,%lu\r\n", available_ms, loops, cycle_counter, timer, count);
           chMtxUnlock(&mutex);
 
           /* Verify the signature (for testing purposes) */
-          int signature_verified = crypto_sign_open(message, &mlen, signature, smlen, public_key);
-
-          if (signature_verified != 0) {
-            chMtxLock(&mutex);
-            chprintf((BaseSequentialStream *)&SD2, "Error - Signature non verified at loop %lu \r\n", loops);
-            chMtxUnlock(&mutex);
-            chThdExit(MSG_RESET);
-          }
+//          int signature_verified = crypto_sign_open(message, &mlen, signature, smlen, public_key);
+//
+//          if (signature_verified != 0) {
+//            chMtxLock(&mutex);
+//            chprintf((BaseSequentialStream *)&SD2, "Error - Signature non verified at loop %lu \r\n", loops);
+//            chMtxUnlock(&mutex);
+//            chThdExit(MSG_RESET);
+//          }
 
       }
     if (available_ms == 1) break;

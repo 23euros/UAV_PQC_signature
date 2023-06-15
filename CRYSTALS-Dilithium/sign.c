@@ -145,6 +145,7 @@ rej:
   shake256_inc_absorb(&state, sig, K*POLYW1_PACKEDBYTES);
   shake256_inc_finalize(&state);
   shake256_inc_squeeze(sig, SEEDBYTES, &state);
+  shake256_inc_ctx_release(&state);
   poly_challenge(&cp, sig);
   
   poly_small_ntt_precomp(&cp_small, &cp_small_prime, &cp);
@@ -271,6 +272,7 @@ int crypto_sign_verify(const uint8_t *sig,
   shake256_inc_absorb(&state, m, mlen);
   shake256_inc_finalize(&state);
   shake256_inc_squeeze(mu, CRHBYTES, &state);
+  shake256_inc_ctx_release(&state);
 
   /* Matrix-vector multiplication; compute Az - c2^dt1 */
   poly_challenge(&cp, c);

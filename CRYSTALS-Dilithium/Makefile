@@ -5,7 +5,7 @@
 
 # Compiler options here.
 ifeq ($(USE_OPT),)
-  USE_OPT = -O2 -ggdb -fomit-frame-pointer -falign-functions=16 --specs=nosys.specs --specs=nano.specs
+  USE_OPT = -O0 -ggdb -fomit-frame-pointer -falign-functions=16 --specs=nosys.specs --specs=nano.specs
 endif
 
 # C specific options here (added to USE_OPT).
@@ -148,19 +148,21 @@ CPPSRC = $(ALLCPPSRC)
 # List ASM source files here.
 ASMSRC = $(ALLASMSRC) \
 vector.s \
-crypto_hashblocks_sha512_inner32.s \
 pointwise_mont.s
+#crypto_hashblocks_sha512_inner32.s \
+
 
 # List ASM with preprocessor source files here.
 ASMXSRC = $(ALLXASMSRC) \
+basemul_257.S \
 ntt.S \
 fnt_257.S \
-ifnt_257.S \
-smallntt.S \
-aes-encrypt.S \
-aes-keyschedule.S \
+ifnt_257.S #\
+smallntt.S #\
+aes-encrypt.S #\
+aes-keyschedule.S #\
 aes-publicinputs.S \
-basemul_257.S \
+ #\
 keccakf1600.S
 
 # Inclusion directories.
