@@ -42,6 +42,19 @@ def compute_mean(data_dict):
     
     return dict(sorted(mean_dict.items(), key=lambda x: int(x[0])))
 
+def compute_max(data_dict):
+    max_dict = {}
+    
+    for key, values in data_dict.items():
+        # Compute the max for the desired fields
+        cycles = [float(value[1]) for value in values]  
+        times = [float(value[2]) for value in values]  
+        max_cycles = max(cycles)
+        max_time = max(times)
+        max_dict[key] = (max_cycles,max_time)
+    
+    return dict(sorted(max_dict.items(), key=lambda x: int(x[0])))
+
 def plot_graph(data_dict, keyname):
     keys = []
     values1 = []
@@ -74,14 +87,17 @@ def plot_graph(data_dict, keyname):
 
 
 
+def create_plot():
+    filename = input("Enter the filename: ")
+    filename = "C:/Users/Ridwane/Documents/Thèse/Resultats/"+filename
+    dicts = parse_text_file(filename)
+    d_interval = compute_max(dicts[0])
+    print (d_interval)
+    d_interrupts = compute_max(dicts[1])
+    print(d_interrupts)
+    plot_graph(d_interval, "Alloted time")
+    plot_graph(d_interrupts, "Number of interruptions")
+    return 0
 
-filename = input("Enter the filename: ")
-filename = "C:/Users/Ridwane/Documents/Thèse/Resultats/"+filename
-dicts = parse_text_file(filename)
-d_interval = compute_mean(dicts[0])
-print (d_interval)
-d_interrupts = compute_mean(dicts[1])
-print(d_interrupts)
-plot_graph(d_interval, "Alloted time")
-plot_graph(d_interrupts, "Number of interruptions")
+#create_plot()
 
