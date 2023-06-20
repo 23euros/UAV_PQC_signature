@@ -56,7 +56,6 @@ def plot_comp(data_dicts, keyname, filenames):
     ax1.set_xscale('log')
     ax1.yaxis.set_major_locator(ticker.LogLocator(numticks=10))
     ax1.yaxis.set_major_formatter(ticker.LogFormatter())
-    print(max_value, min_value)
     exp_max = np.ceil(np.log10(max_value))
     exp_min = np.floor(np.log10(min_value))
     y_max = np.power(10, exp_max)
@@ -67,29 +66,32 @@ def plot_comp(data_dicts, keyname, filenames):
     ax1.set_xticklabels(keys, rotation=45, ha='right')
 
 
-    plt.title(keyname[0]+'processing cycles of signature based on ' + keyname[1])
+    plt.title(keyname[0]+'processing cycles of '+ keyname[1] + ' based on ' + keyname[2])
     plt.tight_layout()
     plt.legend()
     plt.show()
 
-def plot_comp_max(filenames_dicts, filenames):
+def plot_comp_max(filenames_dicts, filenames, keyname):
     d_intervals = []
     for data_dict in filenames_dicts:
         d_intervals.append(compute_max(data_dict))
-    plot_comp(d_intervals, ["Maximum ","Alloted Time"], filenames)
+    plot_comp(d_intervals, ["Maximum ", keyname, "Alloted Time"], filenames)
     
-def plot_comp_mean(filenames_dicts, filenames):
+def plot_comp_mean(filenames_dicts, filenames, keyname):
     d_intervals = []
     for data_dict in filenames_dicts:
         d_intervals.append(compute_mean(data_dict))
-    plot_comp(d_intervals, ["Mean ", "Alloted Time"], filenames)
+    plot_comp(d_intervals, ["Mean ", keyname, "Alloted Time"], filenames)
 
 def main():
     filenames = get_filenames()
-    filenames = ["C:/Users/Ridwane/Documents/Thèse/Resultats/"+filename for filename in ("Dilithium2signO0.csv", "Dilithium3signO0.csv", "Dilithium2signOfast.csv", "Falcon512signO0.csv", "Falcon512signOfast.csv")]
+    if (filenames==[]): filenames = ["C:/Users/Ridwane/Documents/Thèse/Resultats/"+filename for filename in ("Dilithium2signO0.csv", "Dilithium3signO0.csv", "Dilithium2signOfast.csv", "Falcon512signO0.csv", "Falcon512signOfast.csv")]
     filenames_dicts = parse_files(filenames)
-    plot_comp_max(filenames_dicts, filenames)
-    plot_comp_mean(filenames_dicts, filenames)
+    plot_comp_max(filenames_dicts, filenames, "signature")
+    plot_comp_mean(filenames_dicts, filenames, "signature")
+    filenames = ["C:/Users/Ridwane/Documents/Thèse/Resultats/"+filename for filename in ("Dilithium2verifyO0.csv", "Dilithium3verifyO0.csv", "Dilithium2verifyOfast.csv", "Falcon512verifyO0.csv", "Falcon512verifyOfast.csv")]
+    filenames_dicts = parse_files(filenames)
+    plot_comp_mean(filenames_dicts, filenames, "verify")
 
 
 main()
