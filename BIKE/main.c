@@ -24,7 +24,7 @@
 #include <string.h>
 
 /* Define the size of the message to sign */
-#define WORKBUF_SIZE 50000
+#define WORKBUF_SIZE 100000
 
 
 /*Define the concurrent thread parameters*/
@@ -116,7 +116,7 @@ static THD_FUNCTION(Thread1, arg) {
           DWT->CYCCNT = 0;
           loops ++;
           /* Generate a random message */
-          for (int i = 0; i < CRYPTO_BYTES; i++) {
+          for (uint32_t i = 0; i < CRYPTO_BYTES; i++) {
               shared_secret[i] = rand() % 256;
           }
 
@@ -149,10 +149,10 @@ static THD_FUNCTION(Thread1, arg) {
           timer = end_time - start_time;
 
 #endif
-          for (int i = 0; i < CRYPTO_CIPHERTEXTBYTES; i++){
+          for (uint32_t i = 0; i < CRYPTO_CIPHERTEXTBYTES; i++){
             ciphertext_received[i] = ciphertext[i];
           }
-          for (int i = 0; i < CRYPTO_BYTES; i++){
+          for (uint32_t i = 0; i < CRYPTO_BYTES; i++){
             shared_secret_received[i] = 0;
           }
 

@@ -30,8 +30,8 @@
 /*Define the concurrent thread parameters*/
 #define MONOPOLIZE_WORKBUF_SIZE 1024
 #define MONOPOLIZE_TIME_MS 10
-#define ENC // Uncomment this line to enable the signature evaluation code
-//#define DEC // Uncomment this line to enable the verification evaluation code
+//#define ENC // Uncomment this line to enable the signature evaluation code
+#define DEC // Uncomment this line to enable the verification evaluation code
 static uint8_t available_ms_table[] = {200, 100, 70, 50, 40, 30, 25, 20, 15, 10, 8, 6, 5, 4, 3, 2, 1};
 static uint8_t available_ms;
 
