@@ -189,8 +189,6 @@ static THD_FUNCTION(Thread1, arg) {
           }
 
       }
-    if (available_ms == 1) break;
-    available_ms = available_ms/2;
 
     }
     /* Display Final Results */
