@@ -83,6 +83,8 @@ static THD_FUNCTION(Monopolize, arg) {
 }
 
 #ifndef COMPUTE_KEYS
+// openssl genrsa -out mykey.pem 2048
+// openssl rsa -in mykey.pem -text -noout
 // uint_t is 4 bytes long...
 static uint8_t modulus[] = // N = p * q
    {0xb9,0xf6,0xc7,0xb4,0xe1,0x02,0xcc,0xca,0x82,0x69,0xa2,0x82,0x71,0xd0,
@@ -220,6 +222,7 @@ static THD_FUNCTION(Thread1, arg) {
     DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
 
 
+    error_t e;
 #ifdef COMPUTE_KEYS
     /* Generate key pair */
     rsaInitPublicKey(&publickey);
@@ -239,14 +242,24 @@ static THD_FUNCTION(Thread1, arg) {
 
     memcpy(seed, hexSeed, sizeof(seed));
     yarrowSeed(&prngcontext, seed, sizeof(seed));
-#endif /* COMPUTE_KEYS */
 
-    error_t e;
-#ifdef COMPUTE_KEYS
     size_t k = 2048;
     e = rsaGenerateKeyPair(YARROW_PRNG_ALGO, &prngcontext,
                            k, 65537, &privatekey, &publickey);
     if (e) chThdExit(MSG_RESET);
+#else
+    Mpi tmp_mul;
+    mpiInit(&tmp_mul);
+    mpiMul(&tmp_mul,&privatekey.p,&privatekey.q);
+    // Just add some checking here!
+    if( (((int_t*)publicExponent)[0] != 65537) ||
+        (mpiComp(&tmp_mul,&privatekey.n)) ) {
+      // Try using mpiImport(r,data,len,format); if this is not working
+      chMtxLock(&mutex);
+      chprintf((BaseSequentialStream *)&SD2,"Endianness check failed!");
+      chMtxUnlock(&mutex);
+      chThdExit(MSG_RESET);
+    }
 #endif /* COMPUTE_KEYS */
 
 
